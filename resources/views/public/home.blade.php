@@ -3,138 +3,194 @@
 @section('title', 'Community Resource Sharing Platform')
 
 @section('content')
-<!-- Hero Section -->
-<section class="hero-section">
-    <div class="container hero-grid">
-        <div class="hero-content">
-            <span class="status-pill status-verified" style="margin-bottom: 14px;">
-                <x-icon name="check-circle" size="14" /> Verified Non-Cash Resource Donation Ecosystem
+
+{{-- ============================================================
+     HERO SECTION  (wireframe: big h1 · lead copy · cta buttons · trust line)
+     ============================================================ --}}
+<section class="pub-hero">
+    <div class="container pub-hero-grid">
+
+        {{-- Left: Text content --}}
+        <div class="pub-hero-text">
+            <span class="pub-hero-badge">
+                <x-icon name="shield" size="14" />
+                Verified Non-Cash Resource Donation Ecosystem
             </span>
-            <h1>Give what you can. <br><span>Help where it matters.</span></h1>
-            <p>
-                Connect directly with schools, local relief centers, and families in genuine need. 
-                Share educational supplies, non-perishable food, assistive medical equipment, and essential home goods with complete verification and transparency.
+
+            <h1>Give with care.<br><span style="color:var(--brand-accent);">Receive with dignity.</span></h1>
+
+            <p class="pub-hero-lead">
+                iCareDonate connects people who have items to share with individuals and
+                communities who genuinely need them — with full admin verification every step of the way.
             </p>
-            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+
+            <div class="pub-hero-btns">
                 <a href="{{ route('donations.create') }}" class="btn btn-accent btn-lg">
                     <x-icon name="gift" size="18" /> Post a Donation
                 </a>
                 <a href="{{ route('donations.index') }}" class="btn btn-outline btn-lg">
-                    <x-icon name="search" size="18" /> Browse Available Items
+                    <x-icon name="search" size="18" /> Browse Items
                 </a>
             </div>
 
-            <!-- Dynamic Platform Statistics from MySQL -->
-            <div class="hero-stats">
-                <div class="stat-box">
-                    <h3>{{ number_format($stats['total_items_shared']) }}+</h3>
-                    <p>Physical Items Shared</p>
-                </div>
-                <div class="stat-box">
-                    <h3>{{ number_format($stats['completed_claims']) }}</h3>
-                    <p>Verified Claims Completed</p>
-                </div>
-                <div class="stat-box">
-                    <h3>{{ number_format($stats['active_members']) }}</h3>
-                    <p>Active Community Members</p>
-                </div>
-            </div>
+            <p class="pub-hero-trust">
+                <x-icon name="check" size="14" />
+                Every donation and request is verified by an administrator.
+            </p>
         </div>
 
-        <div style="display: flex; justify-content: center;">
-            <div class="card" style="width: 100%; max-width: 440px; background: var(--surface); border: 2px solid var(--border-strong); box-shadow: var(--shadow-lg);">
-                <div style="font-family: var(--font-heading); font-size: 20px; color: var(--brand-primary); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
-                    <x-icon name="shield" size="22" /> Transparent Process
-                </div>
-                <div style="display: flex; flex-direction: column; gap: 16px;">
-                    <div style="display: flex; gap: 12px;">
-                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--brand-primary-light); color: var(--brand-primary-dark); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">1</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 14px;">Donation Verification</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Administrators review condition, validity, and quantities before publication.</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--brand-primary-light); color: var(--brand-primary-dark); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">2</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 14px;">Proof-backed Requests</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Requesters submit genuine certificates or proofs of urgency.</div>
-                        </div>
-                    </div>
-                    <div style="display: flex; gap: 12px;">
-                        <div style="width: 32px; height: 32px; border-radius: 50%; background: var(--brand-primary-light); color: var(--brand-primary-dark); display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0;">3</div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 14px;">Secure Claim Codes</div>
-                            <div style="font-size: 12px; color: var(--text-muted);">Automated claim codes and deadlines guarantee items reach the right hands.</div>
-                        </div>
+        {{-- Right: Stats panel (wireframe "hframe / hbox") --}}
+        <div class="pub-hero-panel">
+            <div class="pub-hero-panel-title">
+                <x-icon name="shield" size="20" />
+                Transparent Process
+            </div>
+            <div class="pub-steps">
+                <div class="pub-step-item">
+                    <div class="pub-step-num">1</div>
+                    <div>
+                        <div class="pub-step-label">Donation Verification</div>
+                        <div class="pub-step-desc">Admins review condition, validity & quantities before publication.</div>
                     </div>
                 </div>
-                <div style="margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border); text-align: center;">
-                    <a href="{{ route('how-it-works') }}" style="font-size: 13px; font-weight: 600;">Learn full workflow details &rarr;</a>
+                <div class="pub-step-item">
+                    <div class="pub-step-num">2</div>
+                    <div>
+                        <div class="pub-step-label">Proof-backed Requests</div>
+                        <div class="pub-step-desc">Requesters submit genuine certificates or proofs of urgency.</div>
+                    </div>
                 </div>
+                <div class="pub-step-item">
+                    <div class="pub-step-num">3</div>
+                    <div>
+                        <div class="pub-step-label">Secure Claim Codes</div>
+                        <div class="pub-step-desc">Automated codes & deadlines guarantee items reach the right hands.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="pub-hero-panel-footer">
+                <a href="{{ route('how-it-works') }}" style="font-size:13px;font-weight:600;">
+                    Learn full workflow &rarr;
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {{-- Dynamic Platform Statistics --}}
+    <div class="container">
+        <div class="pub-stats-row">
+            <div class="pub-stat">
+                <div class="pub-stat-num">{{ number_format($stats['total_items_shared']) }}+</div>
+                <div class="pub-stat-label">Physical Items Shared</div>
+            </div>
+            <div class="pub-stat">
+                <div class="pub-stat-num">{{ number_format($stats['completed_claims']) }}</div>
+                <div class="pub-stat-label">Verified Claims Completed</div>
+            </div>
+            <div class="pub-stat">
+                <div class="pub-stat-num">{{ number_format($stats['active_members']) }}</div>
+                <div class="pub-stat-label">Active Community Members</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Resource Categories Section -->
-<section style="padding: 60px 0; background: var(--bg);">
+{{-- ============================================================
+     HOW IT WORKS  (wireframe: 3-step cards below hero)
+     ============================================================ --}}
+<section class="pub-section" style="background: var(--surface-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
     <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px;">
-            <div>
-                <span class="status-pill status-info" style="margin-bottom: 8px;">Categories</span>
-                <h2>What Can You Share?</h2>
-                <p>We focus on high-impact physical resources categorized for rapid matching.</p>
+        <div class="pub-section-header">
+            <span class="status-pill status-info">How It Works</span>
+            <h2>Simple. Transparent. Trusted.</h2>
+            <p>Three steps from surplus to someone who needs it.</p>
+        </div>
+        <div class="pub-steps-grid">
+            <div class="pub-card-step">
+                <div class="pub-card-step-num">1</div>
+                <div style="color:var(--brand-primary);margin-bottom:14px;"><x-icon name="gift" size="36" /></div>
+                <h3>Post</h3>
+                <p>Donors list a physical item with photos and details. Requesters post what they need with proof documentation.</p>
             </div>
-            <a href="{{ route('categories') }}" class="btn btn-outline btn-sm">View All Categories &rarr;</a>
+            <div class="pub-card-step">
+                <div class="pub-card-step-num">2</div>
+                <div style="color:var(--brand-primary);margin-bottom:14px;"><x-icon name="shield" size="36" /></div>
+                <h3>Admin Verifies</h3>
+                <p>Every post is reviewed by an administrator before it goes live. Quality and legitimacy are confirmed.</p>
+            </div>
+            <div class="pub-card-step">
+                <div class="pub-card-step-num">3</div>
+                <div style="color:var(--brand-primary);margin-bottom:14px;"><x-icon name="check-circle" size="36" /></div>
+                <h3>Match & Claim</h3>
+                <p>Matched items are claimed through a secure code-verified pickup. No cash ever changes hands.</p>
+            </div>
+        </div>
+        <div style="text-align:center;">
+            <a href="{{ route('how-it-works') }}" class="btn btn-outline">See full workflow details &rarr;</a>
+        </div>
+    </div>
+</section>
+
+{{-- ============================================================
+     CATEGORIES  (wireframe: grid of category cards)
+     ============================================================ --}}
+<section class="pub-section">
+    <div class="container">
+        <div class="pub-section-header">
+            <span class="status-pill status-approved">Categories</span>
+            <h2>What Can You Share?</h2>
+            <p>We focus on high-impact physical resources categorised for rapid matching.</p>
         </div>
 
         <div class="grid-3">
             @foreach($categories as $category)
-                <a href="{{ route('donations.index', ['category' => $category->id]) }}" class="card" style="text-decoration: none; color: inherit;">
-                    <div style="color: var(--brand-primary); margin-bottom: 12px;">
+                <a href="{{ route('donations.index', ['category' => $category->id]) }}" class="pub-cat-card">
+                    <div class="pub-cat-icon">
                         @switch($category->slug)
-                            @case('food') <x-icon name="utensils" size="32" /> @break
-                            @case('school-supplies') <x-icon name="book-open" size="32" /> @break
-                            @case('clothing') <x-icon name="shirt" size="32" /> @break
-                            @case('medical') <x-icon name="activity" size="32" /> @break
-                            @case('household') <x-icon name="home" size="32" /> @break
-                            @case('electronics') <x-icon name="laptop" size="32" /> @break
-                            @default <x-icon name="package" size="32" />
+                            @case('food')           <x-icon name="utensils"  size="28" /> @break
+                            @case('school-supplies')<x-icon name="book-open" size="28" /> @break
+                            @case('clothing')       <x-icon name="shirt"     size="28" /> @break
+                            @case('medical')        <x-icon name="activity"  size="28" /> @break
+                            @case('household')      <x-icon name="home"      size="28" /> @break
+                            @case('electronics')    <x-icon name="laptop"    size="28" /> @break
+                            @default                <x-icon name="package"   size="28" />
                         @endswitch
                     </div>
-                    <div style="font-family: var(--font-heading); font-size: 18px; color: var(--brand-primary); margin-bottom: 6px;">
-                        {{ $category->name }}
-                    </div>
-                    <p style="font-size: 13px; color: var(--text-soft); margin-bottom: 14px; min-height: 40px;">
-                        {{ Str::limit($category->description, 90) }}
-                    </p>
-                    <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 10px;">
+                    <h3>{{ $category->name }}</h3>
+                    <p>{{ Str::limit($category->description, 90) }}</p>
+                    <div class="pub-cat-footer">
                         <span>Available items:</span>
                         <span class="status-pill status-approved">{{ $category->donations_count }} listings</span>
                     </div>
                 </a>
             @endforeach
         </div>
+
+        <div style="text-align:center;margin-top:32px;">
+            <a href="{{ route('categories') }}" class="btn btn-outline">View All Categories &rarr;</a>
+        </div>
     </div>
 </section>
 
-<!-- Available Items Preview Section -->
-<section style="padding: 60px 0; background: var(--surface-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+{{-- ============================================================
+     APPROVED DONATIONS PREVIEW
+     ============================================================ --}}
+<section class="pub-section" style="background: var(--surface-soft); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
     <div class="container">
-        <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 32px;">
+        <div class="pub-section-header-row">
             <div>
-                <span class="status-pill status-approved" style="margin-bottom: 8px;">Available Now</span>
+                <span class="status-pill status-approved" style="margin-bottom:8px;">Available Now</span>
                 <h2>Approved Physical Donations</h2>
-                <p>Browse verified resources currently waiting to be matched with beneficiaries.</p>
+                <p>Verified resources waiting to be matched with beneficiaries.</p>
             </div>
-            <a href="{{ route('donations.index') }}" class="btn btn-primary btn-sm">Browse All Donations &rarr;</a>
+            <a href="{{ route('donations.index') }}" class="btn btn-primary btn-sm">Browse All &rarr;</a>
         </div>
 
         @if($featuredDonations->isEmpty())
-            <div class="card" style="text-align: center; padding: 48px;">
-                <p style="color: var(--text-muted);">No approved items currently listed. Be the first to post a resource!</p>
-                <a href="{{ route('donations.create') }}" class="btn btn-accent btn-sm" style="margin-top: 12px;">
+            <div class="card" style="text-align:center;padding:64px;">
+                <div style="color:var(--text-muted);margin-bottom:16px;"><x-icon name="package" size="52" /></div>
+                <p>No approved items currently listed. Be the first to post a resource!</p>
+                <a href="{{ route('donations.create') }}" class="btn btn-accent btn-sm" style="margin-top:12px;">
                     <x-icon name="gift" size="14" /> Post a Donation
                 </a>
             </div>
@@ -146,39 +202,33 @@
                             @if($donation->images->isNotEmpty())
                                 <img src="{{ $donation->images->first()->url }}" alt="{{ $donation->title }}">
                             @else
-                                <div style="color: var(--text-muted); opacity: 0.5;">
+                                <div style="color:var(--text-muted);opacity:0.5;">
                                     @switch($donation->category->slug ?? '')
-                                        @case('food') <x-icon name="utensils" size="48" /> @break
-                                        @case('school-supplies') <x-icon name="book-open" size="48" /> @break
-                                        @case('clothing') <x-icon name="shirt" size="48" /> @break
-                                        @case('medical') <x-icon name="activity" size="48" /> @break
-                                        @default <x-icon name="package" size="48" />
+                                        @case('food')           <x-icon name="utensils"  size="52" /> @break
+                                        @case('school-supplies')<x-icon name="book-open" size="52" /> @break
+                                        @case('clothing')       <x-icon name="shirt"     size="52" /> @break
+                                        @case('medical')        <x-icon name="activity"  size="52" /> @break
+                                        @default                <x-icon name="package"   size="52" />
                                     @endswitch
                                 </div>
                             @endif
-                            <span class="status-pill status-approved" style="position: absolute; top: 12px; right: 12px; box-shadow: var(--shadow-sm);">
+                            <span class="status-pill status-approved" style="position:absolute;top:12px;right:12px;box-shadow:var(--shadow-sm);">
                                 {{ $donation->quantity_available }} {{ $donation->unit }} available
                             </span>
                         </div>
                         <div class="donation-card-body">
-                            <div style="font-size: 11px; text-transform: uppercase; font-weight: 700; color: var(--brand-primary); margin-bottom: 4px;">
+                            <div style="font-size:11px;text-transform:uppercase;font-weight:700;color:var(--brand-primary);margin-bottom:4px;">
                                 {{ $donation->category->name ?? 'General' }}
                             </div>
                             <h3 class="donation-card-title">{{ Str::limit($donation->title, 55) }}</h3>
                             <div class="donation-meta">
                                 <span><x-icon name="map-pin" size="13" /> {{ $donation->pickup_city ?? 'Makati' }}</span>
-                                <span><x-icon name="check" size="13" /> {{ ucfirst(str_replace('_', ' ', $donation->condition_type)) }}</span>
+                                <span><x-icon name="check"   size="13" /> {{ ucfirst(str_replace('_', ' ', $donation->condition_type)) }}</span>
                             </div>
-                            <p style="font-size: 13px; color: var(--text-soft); margin-bottom: 16px;">
-                                {{ Str::limit($donation->description, 85) }}
-                            </p>
+                            <p style="font-size:13px;color:var(--text-soft);margin-bottom:16px;">{{ Str::limit($donation->description, 85) }}</p>
                             <div class="donation-card-footer">
-                                <span style="font-size: 12px; color: var(--text-muted);">
-                                    By {{ $donation->donor->name ?? 'Verified Donor' }}
-                                </span>
-                                <a href="{{ route('donations.show', $donation->id) }}" class="btn btn-primary btn-sm">
-                                    View Details
-                                </a>
+                                <span style="font-size:12px;color:var(--text-muted);">By {{ $donation->donor->name ?? 'Verified Donor' }}</span>
+                                <a href="{{ route('donations.show', $donation->id) }}" class="btn btn-primary btn-sm">View Details</a>
                             </div>
                         </div>
                     </div>
@@ -188,16 +238,16 @@
     </div>
 </section>
 
-<!-- Call to Action Banner -->
-<section style="padding: 60px 0; background: var(--bg);">
+{{-- ============================================================
+     CTA BANNER
+     ============================================================ --}}
+<section class="pub-section">
     <div class="container">
-        <div class="card" style="background: linear-gradient(135deg, var(--surface-soft) 0%, var(--surface) 100%); border: 2px solid var(--border); padding: 48px; text-align: center; border-radius: var(--radius-xl);">
-            <div style="max-width: 640px; margin: 0 auto;">
-                <h2 style="font-size: 2.2rem; color: var(--brand-primary); margin-bottom: 12px;">Do You Have Surplus Physical Items to Share?</h2>
-                <p style="font-size: 1.1rem; margin-bottom: 24px;">
-                    Whether you are an individual with books and uniforms, or an organization with excess inventory, your surplus can directly uplift a community.
-                </p>
-                <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+        <div class="pub-cta-banner">
+            <div>
+                <h2>Do You Have Surplus Physical Items to Share?</h2>
+                <p>Whether you're an individual with books and uniforms, or an organisation with excess inventory — your surplus can directly uplift a community.</p>
+                <div class="pub-cta-btns">
                     <a href="{{ route('donations.create') }}" class="btn btn-accent btn-lg">
                         <x-icon name="gift" size="18" /> Post Donation Offer
                     </a>
@@ -209,4 +259,5 @@
         </div>
     </div>
 </section>
+
 @endsection

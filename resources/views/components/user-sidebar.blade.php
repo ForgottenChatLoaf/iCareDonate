@@ -1,5 +1,6 @@
 <aside class="sidebar">
     <div class="sidebar-heading">Donor &amp; Requester Portal</div>
+
     <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
         <x-icon name="dashboard" size="16" /> Dashboard
     </a>
@@ -7,7 +8,7 @@
         <x-icon name="gift" size="16" /> Post a Donation
     </a>
     <a href="{{ route('user.donations') }}" class="sidebar-link {{ request()->routeIs('user.donations*') ? 'active' : '' }}">
-        <x-icon name="package" size="16" /> My Donations
+        <x-icon name="heart" size="16" /> My Donations
     </a>
     <a href="{{ route('user.requests') }}" class="sidebar-link {{ request()->routeIs('user.requests*') ? 'active' : '' }}">
         <x-icon name="file-text" size="16" /> My Requests
@@ -30,7 +31,7 @@
         <x-icon name="message" size="16" /> Support &amp; Concerns
     </a>
     <a href="{{ route('profile.index') }}" class="sidebar-link {{ request()->routeIs('profile.*') ? 'active' : '' }}">
-        <x-icon name="settings" size="16" /> Profile &amp; Settings
+        <x-icon name="user" size="16" /> Profile &amp; Settings
     </a>
 
     <div style="margin-top: auto; padding-top: 16px; border-top: 1px solid var(--border);">

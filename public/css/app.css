@@ -764,3 +764,372 @@ tr:hover td {
     .footer-grid { grid-template-columns: 1fr; }
     .footer-bottom { flex-direction: column; gap: 8px; }
 }
+
+/* ============================================================
+   PUBLIC PAGE LAYOUT SYSTEM
+   Matches wireframe: spacious, breathable, wireframe-style layout.
+   ============================================================ */
+
+/* Nav link icons — small inline icons beside text */
+.nav-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Hero Section */
+.pub-hero {
+    padding: 64px 0 48px;
+    background: var(--bg);
+}
+
+.pub-hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 56px;
+    align-items: center;
+    margin-bottom: 56px;
+}
+
+.pub-hero-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.pub-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--brand-primary-light);
+    color: var(--brand-primary-dark);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: var(--radius-full);
+    margin-bottom: 20px;
+    width: fit-content;
+}
+
+.pub-hero-text h1 {
+    font-size: 3rem;
+    line-height: 1.08;
+    margin-bottom: 18px;
+    color: var(--text);
+}
+
+.pub-hero-lead {
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    line-height: 1.65;
+    margin-bottom: 28px;
+    max-width: 46ch;
+}
+
+.pub-hero-btns {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.pub-hero-trust {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+
+/* Right panel card */
+.pub-hero-panel {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-lg);
+}
+
+.pub-hero-panel-title {
+    font-family: var(--font-heading);
+    font-size: 18px;
+    color: var(--brand-primary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.pub-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.pub-step-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.pub-step-num {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--brand-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.pub-step-label {
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 2px;
+    color: var(--text);
+}
+
+.pub-step-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.45;
+}
+
+.pub-hero-panel-footer {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+}
+
+/* Stats row below hero */
+.pub-stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.pub-stat {
+    background: var(--surface);
+    padding: 28px 24px;
+    text-align: center;
+}
+
+.pub-stat-num {
+    font-family: var(--font-heading);
+    font-size: 2.2rem;
+    color: var(--brand-primary);
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.pub-stat-label {
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+/* Generic public section spacing */
+.pub-section {
+    padding: 72px 0;
+}
+
+.pub-section-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+
+.pub-section-header h2 {
+    font-size: 2rem;
+    margin: 8px 0;
+}
+
+.pub-section-header p {
+    color: var(--text-soft);
+    max-width: 48ch;
+    margin: 0 auto;
+}
+
+.pub-section-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 36px;
+}
+
+/* Page hero (inner pages — about, categories, etc.) */
+.pub-page-hero {
+    padding: 72px 0 56px;
+    background: var(--surface-soft);
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+}
+
+.pub-page-hero h1 {
+    font-size: 2.6rem;
+    margin-bottom: 16px;
+}
+
+/* How it works — step cards (wireframe: 3-col grid) */
+.pub-steps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.pub-card-step {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px 24px;
+    background: var(--surface);
+    position: relative;
+}
+
+.pub-card-step-num {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--text);
+    color: var(--surface);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 16px;
+}
+
+.pub-card-step h3 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    color: var(--text);
+}
+
+.pub-card-step p {
+    font-size: 14px;
+    color: var(--text-soft);
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Category cards */
+.pub-cat-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 24px;
+    transition: var(--transition);
+}
+
+.pub-cat-card:hover {
+    border-color: var(--brand-primary);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+    color: inherit;
+}
+
+.pub-cat-icon {
+    width: 52px;
+    height: 52px;
+    border-radius: var(--radius-md);
+    background: var(--brand-primary-light);
+    color: var(--brand-primary-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+}
+
+.pub-cat-card h3 {
+    font-size: 1.1rem;
+    color: var(--brand-primary);
+    margin-bottom: 8px;
+}
+
+.pub-cat-card p {
+    font-size: 13px;
+    color: var(--text-soft);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    min-height: 40px;
+}
+
+.pub-cat-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 12px;
+    margin-top: auto;
+}
+
+/* CTA Banner */
+.pub-cta-banner {
+    background: linear-gradient(135deg, var(--surface-soft) 0%, var(--surface) 100%);
+    border: 2px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 64px 48px;
+    text-align: center;
+}
+
+.pub-cta-banner h2 {
+    font-size: 2rem;
+    color: var(--brand-primary);
+    margin-bottom: 14px;
+}
+
+.pub-cta-banner p {
+    font-size: 1.05rem;
+    margin-bottom: 32px;
+    max-width: 56ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.pub-cta-btns {
+    display: flex;
+    gap: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+/* Lucide icon sizing consistency */
+.lucide-icon {
+    stroke-width: 1.75;
+    pointer-events: none;
+}
+
+/* ---- Responsive: public pages ---- */
+@media (max-width: 900px) {
+    .pub-hero-grid   { grid-template-columns: 1fr; gap: 36px; }
+    .pub-steps-grid  { grid-template-columns: 1fr; gap: 16px; }
+    .pub-stats-row   { grid-template-columns: 1fr; }
+    .pub-hero-text h1 { font-size: 2.3rem; }
+}
+
+@media (max-width: 640px) {
+    .pub-hero        { padding: 40px 0 32px; }
+    .pub-section     { padding: 48px 0; }
+    .pub-page-hero   { padding: 48px 0 36px; }
+    .pub-page-hero h1 { font-size: 1.9rem; }
+    .pub-cta-banner  { padding: 40px 20px; }
+    .pub-cta-banner h2 { font-size: 1.5rem; }
+    .pub-section-header-row { flex-direction: column; align-items: flex-start; }
+}
+

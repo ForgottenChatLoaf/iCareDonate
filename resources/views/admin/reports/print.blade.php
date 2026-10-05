@@ -19,7 +19,7 @@
 <body>
     <div class="print-btn-bar">
         <div>
-            <button onclick="window.print()" class="btn btn-primary btn-sm">🖨️ Print / Save as PDF</button>
+            <button onclick="window.print()" class="btn btn-primary btn-sm"><x-icon name="printer" size="14" /> Print / Save as PDF</button>
             <button onclick="window.close()" class="btn btn-outline btn-sm" style="margin-left: 8px;">Close Window</button>
         </div>
         <span style="font-size: 12px; color: #666;">Generated on {{ now()->format('F d, Y h:i A') }}</span>

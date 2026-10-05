@@ -1,32 +1,40 @@
 // iCareDonate — Application Interactions & Vanilla UI Enhancements
 document.addEventListener('DOMContentLoaded', () => {
-    // 1. Theme Toggle
+
+    // 0. Initialise Lucide icons (CDN loaded before this script)
+    if (window.lucide) lucide.createIcons();
+
+    // 1. Theme Toggle — uses Lucide sun / moon icons
     const themeBtn = document.getElementById('theme-toggle');
     const savedTheme = localStorage.getItem('icaredonate_theme');
-    
+
+    function applyTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        updateThemeIcon(theme);
+    }
+
     if (savedTheme) {
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
+        applyTheme(savedTheme);
     } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-        updateThemeIcon('dark');
+        applyTheme('dark');
     }
 
     if (themeBtn) {
         themeBtn.addEventListener('click', () => {
             const current = document.documentElement.getAttribute('data-theme');
             const target = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', target);
             localStorage.setItem('icaredonate_theme', target);
-            updateThemeIcon(target);
+            applyTheme(target);
         });
     }
 
     function updateThemeIcon(theme) {
         if (!themeBtn) return;
-        themeBtn.innerHTML = theme === 'dark' 
-            ? '☀️' 
-            : '🌙';
+        // Replace inner icon element with the correct Lucide icon
+        themeBtn.innerHTML = theme === 'dark'
+            ? '<i data-lucide="sun"   style="width:16px;height:16px;display:block;"></i>'
+            : '<i data-lucide="moon" style="width:16px;height:16px;display:block;"></i>';
+        if (window.lucide) lucide.createIcons({ nodes: [themeBtn] });
     }
 
     // 2. Mobile Menu Toggle
@@ -86,9 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.modal-overlay').forEach(modal => {
         modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.classList.remove('active');
-            }
+            if (e.target === modal) modal.classList.remove('active');
         });
     });
 

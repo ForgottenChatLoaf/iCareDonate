@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Give what you can. Help where it matters.') — iCareDonate</title>
-    
+
     <!-- Design System Fonts & Stylesheets -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     @stack('styles')
@@ -13,7 +13,9 @@
 <body>
     @yield('body')
 
-    <!-- Flash Notifications / Alerts Script -->
+    <!-- Lucide Icons CDN — renders all <i data-lucide="..."> elements -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <!-- Application JS (theme toggle, modals, alerts) -->
     <script src="{{ asset('js/app.js') }}"></script>
     @stack('scripts')
 </body>

@@ -105,7 +105,7 @@
                 <!-- Reject Drawer Form -->
                 <div style="padding-top: 14px; border-top: 1px solid var(--border);">
                     <button type="button" class="btn btn-outline btn-sm" style="width: 100%; color: var(--danger); border-color: var(--danger);" onclick="document.getElementById('reject-form-box').style.display = document.getElementById('reject-form-box').style.display === 'none' ? 'block' : 'none'">
-                        ⚠️ Reject Donation Offer
+                        <x-icon name="alert" size="14" /> Reject Donation Offer
                     </button>
                     <div id="reject-form-box" style="display: none; background: var(--danger-bg); padding: 14px; border-radius: var(--radius-md); margin-top: 10px;">
                         <form action="{{ route('admin.donations.reject', $donation->id) }}" method="POST">

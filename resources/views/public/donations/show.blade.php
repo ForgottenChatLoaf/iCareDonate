@@ -21,12 +21,12 @@
                         <img id="main-donation-image" src="{{ $donation->images->first()->url }}" alt="{{ $donation->title }}" style="width: 100%; height: 100%; object-fit: contain;">
                     @else
                         <div style="font-size: 80px; opacity: 0.5;">
-                            @switch($donation->category->slug ?? '')
-                                @case('food') 🥫 @break
-                                @case('school-supplies') 🎒 @break
-                                @case('clothing') 👕 @break
-                                @case('medical') 🩺 @break
-                                @default 📦
+                        @switch($donation->category->slug ?? '')
+                                @case('food')           <x-icon name="utensils"  size="80" /> @break
+                                @case('school-supplies')<x-icon name="book-open" size="80" /> @break
+                                @case('clothing')       <x-icon name="shirt"     size="80" /> @break
+                                @case('medical')        <x-icon name="activity"  size="80" /> @break
+                                @default                <x-icon name="package"   size="80" />
                             @endswitch
                         </div>
                     @endif
@@ -85,7 +85,7 @@
 
                 @if($donation->quantity_available > 0)
                     <a href="{{ route('requests.create', ['donation_id' => $donation->id]) }}" class="btn btn-accent btn-lg" style="width: 100%; margin-bottom: 12px;">
-                        📋 Request This Resource
+                        <x-icon name="file-text" size="16" /> Request This Resource
                     </a>
                     <p style="font-size: 12px; text-align: center; color: var(--text-muted); margin: 0;">
                         Requires supporting certificate or proof of need during application.

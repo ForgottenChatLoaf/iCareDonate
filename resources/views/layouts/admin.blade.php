@@ -14,7 +14,9 @@
             </div>
 
             <div class="nav-actions">
-                <button id="theme-toggle" class="theme-btn" title="Toggle theme">🌙</button>
+                <button id="theme-toggle" class="theme-btn" title="Toggle dark mode">
+                    <x-icon name="moon" size="16" />
+                </button>
                 <a href="{{ route('home') }}" class="btn btn-sm btn-outline" target="_blank">View Live Site ↗</a>
                 <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                     @csrf
@@ -30,14 +32,14 @@
         <main class="dashboard-main">
             @if(session('success'))
                 <div class="alert alert-success alert-auto-dismiss">
-                    <span>✓ {{ session('success') }}</span>
+                    <span><x-icon name="check-circle" size="14" /> {{ session('success') }}</span>
                     <button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:inherit;font-weight:bold;">&times;</button>
                 </div>
             @endif
 
             @if(session('error'))
                 <div class="alert alert-danger alert-auto-dismiss">
-                    <span>⚠️ {{ session('error') }}</span>
+                    <span><x-icon name="alert" size="14" /> {{ session('error') }}</span>
                     <button type="button" onclick="this.parentElement.remove()" style="background:none;border:none;cursor:pointer;color:inherit;font-weight:bold;">&times;</button>
                 </div>
             @endif

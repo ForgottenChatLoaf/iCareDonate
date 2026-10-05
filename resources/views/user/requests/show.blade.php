@@ -48,7 +48,7 @@
     @if($resourceRequest->transactions->isNotEmpty())
         <div class="card" style="margin-bottom: 24px; border: 2px solid var(--brand-primary); background: var(--surface-soft);">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <h3 style="color: var(--brand-primary); margin: 0;">🎉 Matched Resource Allocation Ready!</h3>
+                <h3 style="color: var(--brand-primary); margin: 0;"><x-icon name="check-circle" size="20" /> Matched Resource Allocation Ready!</h3>
                 <span class="status-pill status-approved">Ready for Pickup</span>
             </div>
             <p>Your request has been matched with physical items. Present your official claim code at the designated location.</p>
@@ -117,7 +117,7 @@
             <div style="display: flex; gap: 12px; flex-wrap: wrap;">
                 @foreach($resourceRequest->proofs as $proof)
                     <div style="border: 1px solid var(--border); padding: 10px 14px; border-radius: var(--radius-md); background: var(--surface-soft); font-size: 13px; display: flex; align-items: center; gap: 8px;">
-                        <span>📄</span>
+                        <x-icon name="file-text" size="14" />
                         <a href="{{ $proof->url }}" target="_blank" style="font-weight: 600;">
                             {{ Str::limit($proof->file_name, 25) }}
                         </a>

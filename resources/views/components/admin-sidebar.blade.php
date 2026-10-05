@@ -10,19 +10,15 @@
         <x-icon name="dashboard" size="16" /> Dashboard
     </a>
     <a href="{{ route('admin.donations.index') }}" class="sidebar-link {{ request()->routeIs('admin.donations*') ? 'active' : '' }}">
-        <x-icon name="package" size="16" /> Review Donations
-        @php
-            $pendingDonations = \App\Models\Donation::where('status', 'pending_verification')->count();
-        @endphp
+        <x-icon name="heart" size="16" /> Review Donations
+        @php $pendingDonations = \App\Models\Donation::where('status', 'pending_verification')->count(); @endphp
         @if($pendingDonations > 0)
             <span class="status-pill status-pending" style="margin-left: auto; padding: 2px 6px; font-size: 11px;">{{ $pendingDonations }}</span>
         @endif
     </a>
     <a href="{{ route('admin.requests.index') }}" class="sidebar-link {{ request()->routeIs('admin.requests*') ? 'active' : '' }}">
         <x-icon name="file-text" size="16" /> Review Requests
-        @php
-            $pendingRequests = \App\Models\ResourceRequest::whereIn('status', ['submitted', 'proof_review'])->count();
-        @endphp
+        @php $pendingRequests = \App\Models\ResourceRequest::whereIn('status', ['submitted', 'proof_review'])->count(); @endphp
         @if($pendingRequests > 0)
             <span class="status-pill status-pending" style="margin-left: auto; padding: 2px 6px; font-size: 11px;">{{ $pendingRequests }}</span>
         @endif

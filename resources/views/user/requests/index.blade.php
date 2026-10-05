@@ -10,14 +10,14 @@
         <p>Track your submitted requests, proof review progress, and active claim slips.</p>
     </div>
     <a href="{{ route('donations.index') }}" class="btn btn-primary">
-        🔍 Browse Available Resources
+        <x-icon name="search" size="16" /> Browse Available Resources
     </a>
 </div>
 
 <div class="card">
     @if($requests->isEmpty())
         <div style="text-align: center; padding: 48px 20px;">
-            <div style="font-size: 48px; margin-bottom: 12px;">📋</div>
+            <div style="color: var(--text-muted); margin-bottom: 12px;"><x-icon name="file-text" size="48" /></div>
             <h3>No Requests Submitted</h3>
             <p style="color: var(--text-muted); margin-bottom: 16px;">
                 You haven't applied for any resources yet. Browse available donations to request items.
