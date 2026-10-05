@@ -28,8 +28,8 @@
                 <a href="{{ route('donations.create') }}" class="btn btn-accent btn-lg">
                     <x-icon name="gift" size="18" /> Post a Donation
                 </a>
-                <a href="{{ route('donations.index') }}" class="btn btn-outline btn-lg">
-                    <x-icon name="search" size="18" /> Browse Items
+                <a href="{{ route('requests.create') }}" class="btn btn-outline btn-lg">
+                    <x-icon name="file-text" size="18" /> Request an Item
                 </a>
             </div>
 

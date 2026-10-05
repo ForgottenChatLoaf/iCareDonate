@@ -27,11 +27,6 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('donations.index') }}" class="{{ request()->routeIs('donations.index') ? 'active' : '' }}">
-                    <x-icon name="heart" size="15" /> Browse Donations
-                </a>
-            </li>
-            <li>
                 <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">
                     <x-icon name="mail" size="15" /> Contact
                 </a>
@@ -66,9 +61,8 @@
                 <a href="{{ route('login') }}" class="btn btn-sm btn-outline">
                     <x-icon name="log-in" size="14" /> Sign In
                 </a>
-                <a href="{{ route('register') }}" class="btn btn-sm btn-primary">Join Us</a>
-                <a href="{{ route('donations.create') }}" class="btn btn-sm btn-accent">
-                    <x-icon name="gift" size="14" /> Donate
+                <a href="{{ route('register') }}" class="btn btn-sm btn-primary">
+                    <x-icon name="user" size="14" /> Sign Up
                 </a>
             @endauth
         </div>
