@@ -1,6 +1,7 @@
 <?php
 // includes/nav-user.php
-$base    = '/CommunityDono';
+require_once __DIR__ . '/../config/app.php';
+$base    = APP_BASE;
 $current = basename($_SERVER['PHP_SELF']);
 $dir     = basename(dirname($_SERVER['PHP_SELF']));
 $unread  = 0;

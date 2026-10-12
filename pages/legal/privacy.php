@@ -302,7 +302,7 @@ require_once __DIR__ . '/../../includes/nav-public.php';
         <li>Request deletion or anonymization where applicable.</li>
         <li>Raise concerns about the handling of your personal information.</li>
       </ul>
-      <p>You may raise privacy concerns or requests through the <a href="/CommunityDono/pages/contact.php">Contact Us page</a>.</p>
+      <p>You may raise privacy concerns or requests through the <a href="<?= $base ?>/pages/contact.php">Contact Us page</a>.</p>
 
       <h2 id="privacy-10">10. Privacy and Third-Party Services</h2>
       <p>iCareDonate does not sell or share personal information with external advertising or commercial third parties. The platform currently operates as a self-contained local academic prototype. If external cloud hosting, external database storage, or external email services (such as SMTP providers for verification notices) are connected in production, this policy will be updated to reflect those service providers and their data practices.</p>
@@ -312,7 +312,7 @@ require_once __DIR__ . '/../../includes/nav-public.php';
       <p>When changes are made, the <strong>Last Updated date</strong> will be revised accordingly.</p>
 
       <h2 id="privacy-12">12. Contact Us</h2>
-      <p>If you have questions, concerns, or requests regarding your personal information or this Privacy Policy, you may contact iCareDonate through <a href="/CommunityDono/pages/contact.php">the official contact information provided on the website</a>.</p>
+      <p>If you have questions, concerns, or requests regarding your personal information or this Privacy Policy, you may contact iCareDonate through <a href="<?= $base ?>/pages/contact.php">the official contact information provided on the website</a>.</p>
 
       <!-- TODO: confirm official contact email -->
       <div class="contact-block">
@@ -321,7 +321,7 @@ require_once __DIR__ . '/../../includes/nav-public.php';
           Email: <a href="mailto:icaredonate.team@gmail.com">icaredonate.team@gmail.com</a>
         </p>
         <p class="contact-block-line">
-          Inquiries &amp; Support: <a href="/CommunityDono/pages/contact.php">Contact Us page</a>
+          Inquiries &amp; Support: <a href="<?= $base ?>/pages/contact.php">Contact Us page</a>
         </p>
       </div>
     </article>

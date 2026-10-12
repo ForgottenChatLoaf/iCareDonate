@@ -43,7 +43,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Logistics &amp; Handover Tracking</h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/dashboard.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
+        <a href="<?= $base ?>/user/dashboard.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
           &larr; Dashboard
         </a>
       </div>
@@ -59,7 +59,7 @@ require_once __DIR__ . '/../includes/header.php';
           <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 24px;">
             When an admin matches a donation to your request (or your donation to a requester), handover coordination will appear here.
           </p>
-          <a href="/CommunityDono/pages/browse.php" class="btn btn-primary">Browse Listings</a>
+          <a href="<?= $base ?>/pages/browse.php" class="btn btn-primary">Browse Listings</a>
         </div>
       <?php else: ?>
         <div style="display: flex; flex-direction: column; gap: 20px;">
@@ -126,7 +126,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <div style="display: flex; gap: 10px;">
                   <?php if ($tx['status'] === 'created' || $tx['status'] === 'pending_claim'): ?>
-                    <form action="/CommunityDono/api/transactions/update-status.php" method="POST" style="display: inline;">
+                    <form action="<?= $base ?>/api/transactions/update-status.php" method="POST" style="display: inline;">
                       <?= csrfField() ?>
                       <input type="hidden" name="transaction_id" value="<?= (int)$tx['id'] ?>">
                       <input type="hidden" name="action" value="claim">
@@ -137,7 +137,7 @@ require_once __DIR__ . '/../includes/header.php';
                   <?php endif; ?>
 
                   <?php if ($tx['status'] === 'claimed' || ($tx['status'] === 'pending_claim' && $isDonor)): ?>
-                    <form action="/CommunityDono/api/transactions/update-status.php" method="POST" style="display: inline;">
+                    <form action="<?= $base ?>/api/transactions/update-status.php" method="POST" style="display: inline;">
                       <?= csrfField() ?>
                       <input type="hidden" name="transaction_id" value="<?= (int)$tx['id'] ?>">
                       <input type="hidden" name="action" value="complete">

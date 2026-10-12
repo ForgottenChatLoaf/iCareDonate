@@ -6,9 +6,9 @@
    Independent of PHP backend styles in assets/css/php/.
    ============================================================ */
 
-@import url('/CommunityDono/assets/css/frontend/tokens.css');
-@import url('/CommunityDono/assets/css/frontend/base.css');
-@import url('/CommunityDono/assets/css/frontend/components.css');
-@import url('/CommunityDono/assets/css/frontend/public.css');
-@import url('/CommunityDono/assets/css/frontend/auth.css');
-@import url('/CommunityDono/assets/css/frontend/legal.css');
+@import url('../assets/css/frontend/tokens.css');
+@import url('../assets/css/frontend/base.css');
+@import url('../assets/css/frontend/components.css');
+@import url('../assets/css/frontend/public.css');
+@import url('../assets/css/frontend/auth.css');
+@import url('../assets/css/frontend/legal.css');

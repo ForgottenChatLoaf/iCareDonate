@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/settings.php?tab=privacy');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=privacy');
     exit;
 }
 
@@ -32,11 +32,11 @@ try {
     logAudit($pdo, $userId, 'user', 'USER_PREFERENCES_UPDATED', 'user', $userId, null, null, 'Updated privacy & location preferences');
 
     setFlash('success', 'Privacy and location settings saved.');
-    header('Location: /CommunityDono/user/settings.php?tab=privacy');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=privacy');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to save preferences.');
-    header('Location: /CommunityDono/user/settings.php?tab=privacy');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=privacy');
     exit;
 }

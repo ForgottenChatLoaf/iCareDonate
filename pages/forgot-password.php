@@ -24,7 +24,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <p style="color: var(--color-text-muted); font-size: 14px;">Enter your registered email address and we will generate a password recovery link.</p>
       </div>
 
-      <form action="/CommunityDono/api/auth/forgot-password.php" method="POST" data-validate>
+      <form action="<?= $base ?>/api/auth/forgot-password.php" method="POST" data-validate>
         <?= csrfField() ?>
 
         <div class="form-group" style="margin-bottom: 20px;">
@@ -37,7 +37,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         </button>
 
         <div style="text-align: center; font-size: 14px; color: var(--color-text-muted);">
-          Remember your password? <a href="/CommunityDono/pages/login.php" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">Log in</a>
+          Remember your password? <a href="<?= $base ?>/pages/login.php" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">Log in</a>
         </div>
       </form>
     </div>

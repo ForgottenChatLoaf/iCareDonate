@@ -269,7 +269,7 @@ require_once __DIR__ . '/../includes/header.php';
         <button type="button" onclick="window.print()" class="btn btn-outline" style="font-size: 12px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 4px;">
           <i data-lucide="printer" style="width: 14px; height: 14px;"></i> Print / PDF
         </button>
-        <a href="/CommunityDono/admin/reports.php?type=<?= urlencode($reportType) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&category_id=<?= $categoryId ?>&export=csv" class="btn btn-primary" style="font-size: 12px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 4px;">
+        <a href="<?= $base ?>/admin/reports.php?type=<?= urlencode($reportType) ?>&start_date=<?= urlencode($startDate) ?>&end_date=<?= urlencode($endDate) ?>&category_id=<?= $categoryId ?>&export=csv" class="btn btn-primary" style="font-size: 12px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 4px;">
           <i data-lucide="download" style="width: 14px; height: 14px;"></i> Export CSV
         </a>
       </div>
@@ -286,7 +286,7 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- Report Controls & Filters -->
       <div class="card report-controls" style="padding: 18px 24px; border: 1px solid var(--color-border); border-radius: var(--radius-md); margin-bottom: 20px;">
-        <form method="GET" action="/CommunityDono/admin/reports.php" style="display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end;">
+        <form method="GET" action="<?= $base ?>/admin/reports.php" style="display: flex; gap: 14px; flex-wrap: wrap; align-items: flex-end;">
           <div>
             <label style="display: block; font-size: 11px; font-weight: 700; color: var(--color-text-muted); margin-bottom: 4px;">Report Type</label>
             <select name="type" class="form-input" style="height: 34px; font-size: 12px; min-width: 160px;" onchange="this.form.submit()">

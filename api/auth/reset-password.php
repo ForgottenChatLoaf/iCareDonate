@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../includes/functions.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/pages/login.php');
+    header('Location: ' . APP_BASE . '/pages/login.php');
     exit;
 }
 
@@ -18,7 +18,7 @@ $confirm = $_POST['confirm_password'] ?? '';
 
 if (empty($token) || strlen($newPass) < 8 || $newPass !== $confirm) {
     setFlash('error', 'Please ensure passwords match and are at least 8 characters long.');
-    header("Location: /CommunityDono/pages/reset-password.php?token=" . urlencode($token));
+    header("Location: " . APP_BASE . "/pages/reset-password.php?token=" . urlencode($token));
     exit;
 }
 
@@ -54,7 +54,7 @@ try {
     $pdo->commit();
 
     setFlash('success', 'Your password has been reset successfully! You can now log in.');
-    header('Location: /CommunityDono/pages/login.php');
+    header('Location: ' . APP_BASE . '/pages/login.php');
     exit;
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
@@ -62,6 +62,6 @@ try {
     }
     error_log($e->getMessage());
     setFlash('error', 'Failed to reset password: ' . $e->getMessage());
-    header('Location: /CommunityDono/pages/forgot-password.php');
+    header('Location: ' . APP_BASE . '/pages/forgot-password.php');
     exit;
 }

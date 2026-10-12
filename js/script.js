@@ -128,7 +128,8 @@
     var statsSection = document.getElementById('platform-impact-stats');
     if (statsSection) {
       // Attempt to fetch fresh numbers if server is online
-      fetch('/CommunityDono/api/v1/donations.php?action=stats')
+      var appBase = (typeof window !== 'undefined' && window.APP_BASE !== undefined) ? window.APP_BASE : (window.location.pathname.indexOf('/CommunityDono') === 0 ? '/CommunityDono' : '');
+      fetch(appBase + '/api/v1/donations.php?action=stats')
         .then(function (res) {
           if (res.ok) return res.json();
           throw new Error('API offline');

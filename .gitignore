@@ -12,9 +12,16 @@ scratch/
 *.env.*.local
 
 # ----- Local uploads (user-submitted files) ------------------
-# Keeps the folder tracked so clones can receive uploads.
-uploads/*
+# Keeps the folder structure tracked without committing uploaded files
+uploads/**
+!uploads/
 !uploads/.gitkeep
+!uploads/donations/
+!uploads/donations/.gitkeep
+!uploads/private/
+!uploads/private/.gitkeep
+!uploads/private/proofs/
+!uploads/private/proofs/.gitkeep
 
 # ----- Logs and debug output ---------------------------------
 *.log

@@ -185,7 +185,7 @@ require_once __DIR__ . '/../../includes/nav-public.php';
       <p>iCareDonate limits the visibility of users' personal information.</p>
       <p>Personal contact information is not publicly displayed. Certain information may become available to matched parties only after a match has been confirmed and when necessary for the transaction.</p>
       <p>Proof-of-need documents are kept private and are not publicly accessible.</p>
-      <p>For more information about how personal information is collected, used, protected, retained, and deleted, please refer to the <a href="/CommunityDono/pages/legal/privacy.php"><strong>iCareDonate Privacy Policy.</strong></a></p>
+      <p>For more information about how personal information is collected, used, protected, retained, and deleted, please refer to the <a href="<?= $base ?>/pages/legal/privacy.php"><strong>iCareDonate Privacy Policy.</strong></a></p>
 
       <h2 id="terms-13">13. Account Deletion</h2>
       <p>Users may request deletion of their account.</p>
@@ -196,7 +196,7 @@ require_once __DIR__ . '/../../includes/nav-public.php';
       <p>Any updated version will include a <strong>revised Last Updated date</strong>.</p>
 
       <h2 id="terms-15">15. Contact Us</h2>
-      <p>If you have questions or concerns about these Terms of Service, please contact iCareDonate through the <a href="/CommunityDono/pages/contact.php">official contact information provided on the website</a>.</p>
+      <p>If you have questions or concerns about these Terms of Service, please contact iCareDonate through the <a href="<?= $base ?>/pages/contact.php">official contact information provided on the website</a>.</p>
     </article>
 
   </div>

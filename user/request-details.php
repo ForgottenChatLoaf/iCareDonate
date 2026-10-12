@@ -11,7 +11,7 @@ $userId = (int)$_SESSION['user_id'];
 $requestId = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($requestId <= 0) {
-    header('Location: /CommunityDono/user/requests.php');
+    header('Location: ' . APP_BASE . '/user/requests.php');
     exit;
 }
 
@@ -32,7 +32,7 @@ $req = $stmt->fetch();
 
 if (!$req) {
     setFlash('error', 'Request not found.');
-    header('Location: /CommunityDono/user/requests.php');
+    header('Location: ' . APP_BASE . '/user/requests.php');
     exit;
 }
 
@@ -50,7 +50,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Request Tracking #<?= (int)$req['id'] ?></h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/requests.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
+        <a href="<?= $base ?>/user/requests.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
           &larr; My Requests
         </a>
       </div>
@@ -124,7 +124,7 @@ require_once __DIR__ . '/../includes/header.php';
         <?php if (!empty($req['proof_path'])): ?>
           <div style="margin-bottom: 20px; font-size: 13px;">
             <strong>Attached Proof Document:</strong>
-            <a href="/CommunityDono/<?= e($req['proof_path']) ?>" target="_blank" style="color: var(--color-primary); font-weight: 600; margin-left: 6px;">
+            <a href="<?= $base ?>/<?= e($req['proof_path']) ?>" target="_blank" style="color: var(--color-primary); font-weight: 600; margin-left: 6px;">
               View Uploaded File ↗
             </a>
           </div>
@@ -133,7 +133,7 @@ require_once __DIR__ . '/../includes/header.php';
         <?php if (!empty($req['tx_id'])): ?>
           <div style="padding-top: 16px; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center;">
             <span style="font-size: 14px; color: var(--color-text); font-weight: 600;">Transaction Handover is Active!</span>
-            <a href="/CommunityDono/user/transactions.php" class="btn btn-primary" style="font-size: 13px; padding: 6px 16px;">
+            <a href="<?= $base ?>/user/transactions.php" class="btn btn-primary" style="font-size: 13px; padding: 6px 16px;">
               Manage Handover &rarr;
             </a>
           </div>

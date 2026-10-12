@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -23,7 +23,7 @@ $intDt     = trim($_POST['interview_datetime'] ?? '');
 
 if ($requestId <= 0) {
     setFlash('error', 'Invalid request ID.');
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -82,7 +82,7 @@ try {
     }
 
     $pdo->commit();
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 
 } catch (Exception $e) {
@@ -91,6 +91,6 @@ try {
     }
     error_log($e->getMessage());
     setFlash('error', 'Action failed: ' . $e->getMessage());
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }

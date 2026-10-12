@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/admin/users.php');
+    header('Location: ' . APP_BASE . '/admin/users.php');
     exit;
 }
 
@@ -18,11 +18,11 @@ $adminId = (int)$_SESSION['user_id'];
 $targetUserId = (int)($_POST['user_id'] ?? 0);
 $action = trim($_POST['action'] ?? '');
 $reason = trim($_POST['reason'] ?? '');
-$redirect = trim($_POST['redirect'] ?? '/CommunityDono/admin/users.php');
+$redirect = trim($_POST['redirect'] ?? (APP_BASE . '/admin/users.php'));
 
 // Validate allowed redirect
-if (!str_starts_with($redirect, '/CommunityDono/admin/')) {
-    $redirect = '/CommunityDono/admin/users.php';
+if (!str_starts_with($redirect, APP_BASE . '/admin/') || !isSafeInternalRedirect($redirect)) {
+    $redirect = APP_BASE . '/admin/users.php';
 }
 
 if ($targetUserId <= 0 || !in_array($action, ['warn', 'suspend', 'ban', 'activate'], true)) {

@@ -11,7 +11,7 @@ $userId = (int)$_SESSION['user_id'];
 $donationId = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($donationId <= 0) {
-    header('Location: /CommunityDono/pages/browse.php');
+    header('Location: ' . APP_BASE . '/pages/browse.php');
     exit;
 }
 
@@ -29,20 +29,20 @@ $donation = $stmt->fetch();
 
 if (!$donation) {
     setFlash('error', 'The requested donation is no longer available.');
-    header('Location: /CommunityDono/pages/browse.php');
+    header('Location: ' . APP_BASE . '/pages/browse.php');
     exit;
 }
 
 if ((int)$donation['donor_id'] === $userId) {
     setFlash('error', 'You cannot request your own donation listing.');
-    header('Location: /CommunityDono/user/donations.php');
+    header('Location: ' . APP_BASE . '/user/donations.php');
     exit;
 }
 
 $available = (int)$donation['quantity_total'] - (int)$donation['quantity_reserved'] - (int)$donation['quantity_claimed'];
 if ($available <= 0) {
     setFlash('error', 'This item has already been fully allocated.');
-    header('Location: /CommunityDono/pages/donation-details.php?id=' . $donationId);
+    header('Location: ' . APP_BASE . '/pages/donation-details.php?id=' . $donationId);
     exit;
 }
 
@@ -65,7 +65,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Submit Resource Request</h1>
       </div>
       <div>
-        <a href="/CommunityDono/pages/donation-details.php?id=<?= $donationId ?>" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
+        <a href="<?= $base ?>/pages/donation-details.php?id=<?= $donationId ?>" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
           &larr; Back to Item Details
         </a>
       </div>
@@ -85,7 +85,7 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- Request Form -->
       <div class="card" style="padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);">
-        <form id="request-form" action="/CommunityDono/api/requests/create.php" method="POST" enctype="multipart/form-data" data-validate>
+        <form id="request-form" action="<?= $base ?>/api/requests/create.php" method="POST" enctype="multipart/form-data" data-validate>
           <?= csrfField() ?>
           <input type="hidden" name="donation_id" value="<?= $donationId ?>">
 
@@ -148,7 +148,7 @@ require_once __DIR__ . '/../includes/header.php';
           </div>
 
           <div style="display: flex; justify-content: flex-end; gap: 12px;">
-            <a href="/CommunityDono/pages/donation-details.php?id=<?= $donationId ?>" class="btn btn-outline">Cancel</a>
+            <a href="<?= $base ?>/pages/donation-details.php?id=<?= $donationId ?>" class="btn btn-outline">Cancel</a>
             <button type="submit" class="btn btn-primary" style="padding: 12px 28px; font-size: 15px;">
               Submit Resource Request &rarr;
             </button>

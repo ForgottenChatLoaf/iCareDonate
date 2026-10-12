@@ -1,9 +1,11 @@
 <?php
 // includes/nav-public.php
-$base     = '/CommunityDono';
+require_once __DIR__ . '/../config/app.php';
+$base     = APP_BASE;
 $loggedIn = isLoggedIn();
 $current  = basename($_SERVER['PHP_SELF']);
-$isHome   = ($current === 'index.php' || $current === '' || $_SERVER['REQUEST_URI'] === $base . '/' || $_SERVER['REQUEST_URI'] === $base);
+$homeUri  = ($base === '') ? '/' : $base . '/';
+$isHome   = ($current === 'index.php' || $current === '' || $_SERVER['REQUEST_URI'] === $homeUri || ($base !== '' && $_SERVER['REQUEST_URI'] === $base));
 ?>
 <header class="nav-public" role="banner">
   <div class="container nav-public__inner">

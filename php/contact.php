@@ -15,8 +15,7 @@ require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/../includes/functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/pages/contact.html');
-    exit;
+    appRedirect('/pages/contact.php');
 }
 
 $name    = trim($_POST['name'] ?? '');
@@ -26,14 +25,12 @@ $message = trim($_POST['message'] ?? '');
 
 if (empty($name) || empty($email) || empty($subject) || empty($message)) {
     $_SESSION['contact_error'] = 'Please complete all required fields.';
-    header('Location: /CommunityDono/pages/contact.html?error=required');
-    exit;
+    appRedirect('/pages/contact.php?error=required');
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $_SESSION['contact_error'] = 'Please provide a valid email address.';
-    header('Location: /CommunityDono/pages/contact.html?error=invalid_email');
-    exit;
+    appRedirect('/pages/contact.php?error=invalid_email');
 }
 
 try {
@@ -45,11 +42,9 @@ try {
     $stmt->execute([$userId, "[$name] " . $subject, $message, $email]);
 
     $_SESSION['contact_success'] = 'Thank you! Your message has been sent to our team.';
-    header('Location: /CommunityDono/pages/contact.html?success=1');
-    exit;
+    appRedirect('/pages/contact.php?success=1');
 } catch (Exception $e) {
     error_log('Contact form error: ' . $e->getMessage());
     $_SESSION['contact_error'] = 'Failed to submit inquiry. Please try again later.';
-    header('Location: /CommunityDono/pages/contact.html?error=failed');
-    exit;
+    appRedirect('/pages/contact.php?error=failed');
 }

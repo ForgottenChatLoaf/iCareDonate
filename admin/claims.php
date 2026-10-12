@@ -65,7 +65,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0;">Claim & Pick-up Monitoring</h1>
       </div>
       <div>
-        <form method="GET" action="/CommunityDono/admin/claims.php" style="display: flex; gap: 8px;">
+        <form method="GET" action="<?= $base ?>/admin/claims.php" style="display: flex; gap: 8px;">
           <?php if ($statusFilter !== 'all'): ?>
             <input type="hidden" name="status" value="<?= e($statusFilter) ?>">
           <?php endif; ?>
@@ -80,19 +80,19 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- Filter tabs -->
       <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-        <a href="/CommunityDono/admin/claims.php?status=all<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/claims.php?status=all<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           All Claims (<?= $counts['all'] ?>)
         </a>
-        <a href="/CommunityDono/admin/claims.php?status=pending_claim<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'pending_claim' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/claims.php?status=pending_claim<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'pending_claim' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Ready for Claim (<?= $counts['pending_claim'] ?>)
         </a>
-        <a href="/CommunityDono/admin/claims.php?status=claimed<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'claimed' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/claims.php?status=claimed<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'claimed' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Claimed / Picked up (<?= $counts['claimed'] ?>)
         </a>
-        <a href="/CommunityDono/admin/claims.php?status=completed<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'completed' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/claims.php?status=completed<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'completed' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Completed (<?= $counts['completed'] ?>)
         </a>
-        <a href="/CommunityDono/admin/claims.php?status=expired<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'expired' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/claims.php?status=expired<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'expired' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Expired (<?= $counts['expired'] ?>)
         </a>
       </div>
@@ -130,18 +130,18 @@ require_once __DIR__ . '/../includes/header.php';
                     </span>
                   </td>
                   <td>
-                    <a href="/CommunityDono/admin/donation-review.php?id=<?= (int)$c['donation_id'] ?>" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">
+                    <a href="<?= $base ?>/admin/donation-review.php?id=<?= (int)$c['donation_id'] ?>" style="color: var(--color-primary); font-weight: 600; text-decoration: none;">
                       <?= e($c['donation_title']) ?>
                     </a>
                   </td>
                   <td><?= (int)$c['quantity'] ?> <?= e($c['donation_unit'] ?? 'items') ?></td>
                   <td>
-                    <a href="/CommunityDono/admin/user-detail.php?id=<?= (int)$c['requester_id'] ?>" style="text-decoration: none; color: inherit;">
+                    <a href="<?= $base ?>/admin/user-detail.php?id=<?= (int)$c['requester_id'] ?>" style="text-decoration: none; color: inherit;">
                       <?= e($c['req_fn'] . ' ' . $c['req_ln']) ?>
                     </a>
                   </td>
                   <td>
-                    <a href="/CommunityDono/admin/user-detail.php?id=<?= (int)$c['donor_id'] ?>" style="text-decoration: none; color: inherit;">
+                    <a href="<?= $base ?>/admin/user-detail.php?id=<?= (int)$c['donor_id'] ?>" style="text-decoration: none; color: inherit;">
                       <?= e($c['donor_fn'] . ' ' . $c['donor_ln']) ?>
                     </a>
                   </td>
@@ -155,25 +155,25 @@ require_once __DIR__ . '/../includes/header.php';
                   </td>
                   <td><?= renderBadge($c['status']) ?></td>
                   <td style="white-space: nowrap;">
-                    <a href="/CommunityDono/admin/transactions.php" class="btn btn-outline" style="font-size: 11px; padding: 4px 8px;">
+                    <a href="<?= $base ?>/admin/transactions.php" class="btn btn-outline" style="font-size: 11px; padding: 4px 8px;">
                       View Details
                     </a>
                     <?php if ($c['status'] === 'pending_claim'): ?>
-                      <form action="/CommunityDono/api/transactions/status.php" method="POST" style="display: inline;">
+                      <form action="<?= $base ?>/api/transactions/status.php" method="POST" style="display: inline;">
                         <?= csrfField() ?>
                         <input type="hidden" name="transaction_id" value="<?= (int)$c['id'] ?>">
                         <input type="hidden" name="status" value="claimed">
-                        <input type="hidden" name="redirect" value="/CommunityDono/admin/claims.php">
+                        <input type="hidden" name="redirect" value="<?= $base ?>/admin/claims.php">
                         <button type="submit" class="btn btn-primary" style="font-size: 11px; padding: 4px 8px;">
                           Mark Claimed
                         </button>
                       </form>
                     <?php elseif ($c['status'] === 'claimed'): ?>
-                      <form action="/CommunityDono/api/transactions/status.php" method="POST" style="display: inline;">
+                      <form action="<?= $base ?>/api/transactions/status.php" method="POST" style="display: inline;">
                         <?= csrfField() ?>
                         <input type="hidden" name="transaction_id" value="<?= (int)$c['id'] ?>">
                         <input type="hidden" name="status" value="completed">
-                        <input type="hidden" name="redirect" value="/CommunityDono/admin/claims.php">
+                        <input type="hidden" name="redirect" value="<?= $base ?>/admin/claims.php">
                         <button type="submit" class="btn btn-success" style="font-size: 11px; padding: 4px 8px;">
                           Complete
                         </button>

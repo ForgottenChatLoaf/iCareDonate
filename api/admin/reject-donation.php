@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }
 
@@ -20,7 +20,7 @@ $reason = trim($_POST['reason'] ?? 'Did not meet listing guidelines');
 
 if ($donationId <= 0) {
     setFlash('error', 'Invalid donation ID.');
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }
 
@@ -31,19 +31,19 @@ try {
 
     if (!$donation) {
         setFlash('error', 'Donation not found.');
-        header('Location: /CommunityDono/admin/donations.php');
+        header('Location: ' . APP_BASE . '/admin/donations.php');
         exit;
     }
 
     if ($donation['status'] === 'archived') {
         setFlash('error', 'Archived donations cannot be rejected directly.');
-        header('Location: /CommunityDono/admin/donation-review.php?id=' . $donationId);
+        header('Location: ' . APP_BASE . '/admin/donation-review.php?id=' . $donationId);
         exit;
     }
 
     if (!in_array($donation['status'], ['pending_verification', 'needs_information', 'draft'], true)) {
         setFlash('error', 'Donation cannot be rejected from its current status (' . $donation['status'] . ').');
-        header('Location: /CommunityDono/admin/donations.php');
+        header('Location: ' . APP_BASE . '/admin/donations.php');
         exit;
     }
 
@@ -61,11 +61,11 @@ try {
     createNotification($pdo, (int)$donation['donor_id'], 'DONATION_REJECTED', 'Donation Listing Update', 'Your donation listing "' . $donation['title'] . '" was not approved. Reason: ' . $reason);
 
     setFlash('success', 'Donation rejected.');
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to reject donation.');
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }

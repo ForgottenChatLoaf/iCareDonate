@@ -61,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             setFlash('error', 'Failed to update transaction status.');
         }
     }
-    header('Location: /CommunityDono/admin/transactions.php' . ($statusFilter !== 'all' ? '?status=' . urlencode($statusFilter) : ''));
+    header('Location: ' . APP_BASE . '/admin/transactions.php' . ($statusFilter !== 'all' ? '?status=' . urlencode($statusFilter) : ''));
     exit;
 }
 
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             setFlash('error', 'Cannot delete transaction: Linked records exist.');
         }
     }
-    header('Location: /CommunityDono/admin/transactions.php' . ($statusFilter !== 'all' ? '?status=' . urlencode($statusFilter) : ''));
+    header('Location: ' . APP_BASE . '/admin/transactions.php' . ($statusFilter !== 'all' ? '?status=' . urlencode($statusFilter) : ''));
     exit;
 }
 
@@ -483,7 +483,7 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- Search & Quick Query Bar -->
       <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
-        <form method="GET" action="/CommunityDono/admin/transactions.php" style="display: flex; gap: 8px; width: 100%; max-width: 360px;">
+        <form method="GET" action="<?= $base ?>/admin/transactions.php" style="display: flex; gap: 8px; width: 100%; max-width: 360px;">
           <?php if ($statusFilter !== 'all'): ?>
             <input type="hidden" name="status" value="<?= e($statusFilter) ?>">
           <?php endif; ?>
@@ -580,7 +580,7 @@ require_once __DIR__ . '/../includes/header.php';
                       </button>
 
                       <!-- Delete Action -->
-                      <form action="/CommunityDono/admin/transactions.php" method="POST" style="display: inline;" onsubmit="return confirm('Delete transaction record #<?= $tx['id'] ?>? Historical audit logs will record this action.');">
+                      <form action="<?= $base ?>/admin/transactions.php" method="POST" style="display: inline;" onsubmit="return confirm('Delete transaction record #<?= $tx['id'] ?>? Historical audit logs will record this action.');">
                         <?= csrfField() ?>
                         <input type="hidden" name="action" value="delete">
                         <input type="hidden" name="transaction_id" value="<?= (int)$tx['id'] ?>">
@@ -689,7 +689,7 @@ require_once __DIR__ . '/../includes/header.php';
           Administrative Decision &amp; Status Control
         </div>
         
-        <form action="/CommunityDono/admin/transactions.php" method="POST" id="tx-decision-form">
+        <form action="<?= $base ?>/admin/transactions.php" method="POST" id="tx-decision-form">
           <?= csrfField() ?>
           <input type="hidden" name="action" value="update_status">
           <input type="hidden" id="modal-tx-id" name="transaction_id" value="">

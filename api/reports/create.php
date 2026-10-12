@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/pages/browse.php');
+    header('Location: ' . APP_BASE . '/pages/browse.php');
     exit;
 }
 
@@ -22,7 +22,7 @@ $description = trim($_POST['description'] ?? '');
 
 if ($targetId <= 0 || empty($reason)) {
     setFlash('error', 'Please provide a valid report reason.');
-    header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/CommunityDono/pages/browse.php'));
+    header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? (APP_BASE . '/pages/browse.php')));
     exit;
 }
 
@@ -40,11 +40,11 @@ try {
     ], 'User submitted problem report');
 
     setFlash('success', 'Thank you for keeping our community safe. Your report has been submitted to moderators.');
-    header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/CommunityDono/pages/browse.php'));
+    header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? (APP_BASE . '/pages/browse.php')));
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to submit report. Please try again.');
-    header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/CommunityDono/pages/browse.php'));
+    header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? (APP_BASE . '/pages/browse.php')));
     exit;
 }

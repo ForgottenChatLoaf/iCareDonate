@@ -60,7 +60,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
     <div class="card" style="padding: 32px; margin-top: 48px; text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-sm);">
       <h3 style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; color: var(--color-text); margin-bottom: 8px;">Still have questions?</h3>
       <p style="color: var(--color-text-muted); font-size: 14.5px; margin-bottom: 20px;">Our community support team is always here to assist you.</p>
-      <a href="/CommunityDono/pages/contact.php" class="btn btn-primary" style="border-radius: var(--radius-full); padding: 10px 26px;">Contact Support</a>
+      <a href="<?= $base ?>/pages/contact.php" class="btn btn-primary" style="border-radius: var(--radius-full); padding: 10px 26px;">Contact Support</a>
     </div>
 
   </div>

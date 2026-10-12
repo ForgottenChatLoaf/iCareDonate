@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/settings.php?tab=password');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=password');
     exit;
 }
 
@@ -21,7 +21,7 @@ $confirm = $_POST['confirm_password'] ?? '';
 
 if (empty($current) || strlen($new) < 8 || $new !== $confirm) {
     setFlash('error', 'Please verify your current password and ensure the new password is at least 8 characters.');
-    header('Location: /CommunityDono/user/settings.php?tab=password');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=password');
     exit;
 }
 
@@ -32,7 +32,7 @@ try {
 
     if (!$user || !password_verify($current, $user['password_hash'])) {
         setFlash('error', 'Incorrect current password.');
-        header('Location: /CommunityDono/user/settings.php?tab=password');
+        header('Location: ' . APP_BASE . '/user/settings.php?tab=password');
         exit;
     }
 
@@ -43,11 +43,11 @@ try {
     logAudit($pdo, $userId, 'user', 'PASSWORD_CHANGED', 'user', $userId, null, null, 'User changed password via account settings');
 
     setFlash('success', 'Password updated successfully!');
-    header('Location: /CommunityDono/user/settings.php?tab=password');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=password');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to update password.');
-    header('Location: /CommunityDono/user/settings.php?tab=password');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=password');
     exit;
 }

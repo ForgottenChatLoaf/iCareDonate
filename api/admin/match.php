@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -22,7 +22,7 @@ $pickupMethod = in_array($_POST['pickup_method'] ?? '', ['pickup', 'delivery'], 
 
 if ($requestId <= 0 || $donationId <= 0) {
     setFlash('error', 'Invalid match parameters.');
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -104,7 +104,7 @@ try {
     $pdo->commit();
 
     setFlash('success', 'Match created successfully! Transaction #' . $txId . ' has been initiated and both parties notified.');
-    header('Location: /CommunityDono/admin/matches.php');
+    header('Location: ' . APP_BASE . '/admin/matches.php');
     exit;
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
@@ -112,6 +112,6 @@ try {
     }
     error_log($e->getMessage());
     setFlash('error', 'Failed to create match: ' . $e->getMessage());
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }

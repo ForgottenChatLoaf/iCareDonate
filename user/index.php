@@ -1,4 +1,4 @@
 <?php
 declare(strict_types=1);
-header('Location: /CommunityDono/user/dashboard.php');
+header('Location: ' . APP_BASE . '/user/dashboard.php');
 exit;

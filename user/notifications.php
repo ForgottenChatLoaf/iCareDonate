@@ -37,7 +37,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Notification Center</h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/dashboard.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
+        <a href="<?= $base ?>/user/dashboard.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
           &larr; Dashboard
         </a>
       </div>

@@ -185,28 +185,28 @@ require_once __DIR__ . '/../includes/header.php';
         <div style="font-size:15px;font-weight:700;color:var(--color-text);margin-bottom:14px;">Quick Actions</div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
 
-          <a href="/CommunityDono/user/offer-donation.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='var(--color-primary)';this.style.background='var(--color-tint-teal)'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
+          <a href="<?= $base ?>/user/offer-donation.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='var(--color-primary)';this.style.background='var(--color-tint-teal)'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
             <div style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--color-primary);display:flex;align-items:center;justify-content:center;">
               <i data-lucide="heart-handshake" style="width:22px;height:22px;color:#fff;"></i>
             </div>
             Donate Now
           </a>
 
-          <a href="/CommunityDono/user/browse-donations.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='#D97706';this.style.background='#FEF3C7'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
+          <a href="<?= $base ?>/user/browse-donations.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='#D97706';this.style.background='#FEF3C7'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
             <div style="width:44px;height:44px;border-radius:var(--radius-md);background:#D97706;display:flex;align-items:center;justify-content:center;">
               <i data-lucide="search" style="width:22px;height:22px;color:#fff;"></i>
             </div>
             Browse Items
           </a>
 
-          <a href="/CommunityDono/user/requests.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='#7C3AED';this.style.background='#F5F3FF'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
+          <a href="<?= $base ?>/user/requests.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='#7C3AED';this.style.background='#F5F3FF'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
             <div style="width:44px;height:44px;border-radius:var(--radius-md);background:#7C3AED;display:flex;align-items:center;justify-content:center;">
               <i data-lucide="clipboard-list" style="width:22px;height:22px;color:#fff;"></i>
             </div>
             My Requests
           </a>
 
-          <a href="/CommunityDono/user/notifications.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='var(--color-accent)';this.style.background='var(--color-tint-coral)'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
+          <a href="<?= $base ?>/user/notifications.php" style="display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:#fff;border:1px solid var(--color-border);border-radius:var(--radius-lg);text-decoration:none;color:var(--color-text);font-size:13px;font-weight:600;transition:all 0.15s ease;" onmouseover="this.style.borderColor='var(--color-accent)';this.style.background='var(--color-tint-coral)'" onmouseout="this.style.borderColor='var(--color-border)';this.style.background='#fff'">
             <div style="width:44px;height:44px;border-radius:var(--radius-md);background:var(--color-accent);display:flex;align-items:center;justify-content:center;">
               <i data-lucide="bell" style="width:22px;height:22px;color:#fff;"></i>
             </div>

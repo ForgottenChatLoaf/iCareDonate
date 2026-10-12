@@ -15,7 +15,7 @@ requireAdmin();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     setFlash('error', 'Method not allowed. Archiving requires a POST request.');
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }
 
@@ -38,7 +38,7 @@ if ($donationId <= 0) {
         'reason'      => 'Invalid or missing donation ID.',
     ]);
     setFlash('error', 'Invalid donation ID.');
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }
 
@@ -53,7 +53,7 @@ if ($reason === '') {
         'reason'      => 'Archive attempt rejected: mandatory reason was omitted.',
     ]);
     setFlash('error', 'Please provide a non-empty reason for archiving this donation.');
-    header('Location: /CommunityDono/admin/donation-review.php?id=' . $donationId);
+    header('Location: ' . APP_BASE . '/admin/donation-review.php?id=' . $donationId);
     exit;
 }
 
@@ -81,7 +81,7 @@ try {
             'reason'      => 'Target donation record not found.',
         ]);
         setFlash('error', 'Donation not found. It may have already been removed.');
-        header('Location: /CommunityDono/admin/donations.php');
+        header('Location: ' . APP_BASE . '/admin/donations.php');
         exit;
     }
 
@@ -89,7 +89,7 @@ try {
     if ($donation['status'] === 'archived') {
         $pdo->rollBack();
         setFlash('info', 'This donation is already archived.');
-        header('Location: /CommunityDono/admin/donations.php?status=archived');
+        header('Location: ' . APP_BASE . '/admin/donations.php?status=archived');
         exit;
     }
 
@@ -144,7 +144,7 @@ try {
         ]);
 
         setFlash('error', 'Cannot archive: this donation has ' . implode(', ', $details) . '. Resolve or complete them before archiving.');
-        header('Location: /CommunityDono/admin/donation-review.php?id=' . $donationId);
+        header('Location: ' . APP_BASE . '/admin/donation-review.php?id=' . $donationId);
         exit;
     }
 
@@ -224,7 +224,7 @@ try {
     $pdo->commit();
 
     setFlash('success', 'Donation "' . $donation['title'] . '" has been archived successfully and hidden from public views.');
-    header('Location: /CommunityDono/admin/donations.php?status=archived');
+    header('Location: ' . APP_BASE . '/admin/donations.php?status=archived');
     exit;
 
 } catch (Exception $e) {
@@ -243,6 +243,6 @@ try {
     ]);
 
     setFlash('error', 'Unable to archive donation due to a system error. Please try again.');
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }

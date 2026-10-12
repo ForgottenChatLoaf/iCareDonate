@@ -11,7 +11,7 @@ $userId = (int)$_SESSION['user_id'];
 $donationId = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($donationId <= 0) {
-    header('Location: /CommunityDono/user/donations.php');
+    header('Location: ' . APP_BASE . '/user/donations.php');
     exit;
 }
 
@@ -21,7 +21,7 @@ $donation = $stmt->fetch();
 
 if (!$donation || in_array($donation['status'], ['approved', 'fully_allocated', 'archived', 'cancelled', 'expired'], true)) {
     setFlash('error', 'This donation cannot be edited at its current stage.');
-    header('Location: /CommunityDono/user/donations.php');
+    header('Location: ' . APP_BASE . '/user/donations.php');
     exit;
 }
 
@@ -41,7 +41,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Edit / Resubmit Donation</h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/donations.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
+        <a href="<?= $base ?>/user/donations.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
           &larr; My Donations
         </a>
       </div>
@@ -51,7 +51,7 @@ require_once __DIR__ . '/../includes/header.php';
       <?php renderFlash(); ?>
 
       <div class="card" style="padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm);">
-        <form action="/CommunityDono/api/donations/update.php" method="POST" enctype="multipart/form-data" data-validate>
+        <form action="<?= $base ?>/api/donations/update.php" method="POST" enctype="multipart/form-data" data-validate>
           <?= csrfField() ?>
           <input type="hidden" name="donation_id" value="<?= (int)$donation['id'] ?>">
 
@@ -112,7 +112,7 @@ require_once __DIR__ . '/../includes/header.php';
           </div>
 
           <div style="display: flex; gap: 12px; justify-content: flex-end;">
-            <a href="/CommunityDono/user/donations.php" class="btn btn-outline">Cancel</a>
+            <a href="<?= $base ?>/user/donations.php" class="btn btn-outline">Cancel</a>
             <button type="submit" class="btn btn-primary">Save &amp; Resubmit for Verification</button>
           </div>
         </form>

@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../includes/functions.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/pages/forgot-password.php');
+    header('Location: ' . APP_BASE . '/pages/forgot-password.php');
     exit;
 }
 
@@ -16,7 +16,7 @@ $email = trim($_POST['email'] ?? '');
 
 if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
     setFlash('error', 'Please enter a valid email address.');
-    header('Location: /CommunityDono/pages/forgot-password.php');
+    header('Location: ' . APP_BASE . '/pages/forgot-password.php');
     exit;
 }
 
@@ -38,19 +38,19 @@ try {
         logAudit($pdo, (int)$user['id'], 'user', 'PASSWORD_RESET_REQUESTED', 'user', (int)$user['id'], null, null, 'Requested password reset link');
 
         // For local development demonstration: redirect directly with flash containing token link
-        $resetUrl = "/CommunityDono/pages/reset-password.php?token={$token}";
+        $resetUrl = APP_BASE . "/pages/reset-password.php?token={$token}";
         setFlash('success', 'Password reset generated! For local demo: <a href="' . $resetUrl . '" style="color: inherit; text-decoration: underline; font-weight: bold;">Click here to reset your password</a>');
-        header('Location: /CommunityDono/pages/forgot-password.php');
+        header('Location: ' . APP_BASE . '/pages/forgot-password.php');
         exit;
     } else {
         // Generic message for security
         setFlash('info', 'If an account exists with that email, a password reset link has been issued.');
-        header('Location: /CommunityDono/pages/forgot-password.php');
+        header('Location: ' . APP_BASE . '/pages/forgot-password.php');
         exit;
     }
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Unable to process request. Please try again.');
-    header('Location: /CommunityDono/pages/forgot-password.php');
+    header('Location: ' . APP_BASE . '/pages/forgot-password.php');
     exit;
 }

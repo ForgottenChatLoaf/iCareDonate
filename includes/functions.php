@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 // includes/functions.php
+require_once __DIR__ . '/../config/app.php';
 
 /**
  * HTML-escape output. Use on every piece of user-supplied data.
@@ -430,7 +431,7 @@ function getDonationImage(?string $customPath, string $category = '', int|string
         if (str_starts_with($customPath, 'http://') || str_starts_with($customPath, 'https://')) {
             return $customPath;
         }
-        return '/CommunityDono/' . ltrim($customPath, '/');
+        return appUrl('/' . ltrim($customPath, '/'));
     }
 
     $cat = strtolower(trim($category));

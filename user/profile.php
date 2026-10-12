@@ -14,7 +14,7 @@ $stmt->execute([$userId]);
 $user = $stmt->fetch();
 
 if (!$user) {
-    header('Location: /CommunityDono/pages/login.php');
+    header('Location: ' . APP_BASE . '/pages/login.php');
     exit;
 }
 
@@ -32,7 +32,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Account Settings</h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/dashboard.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
+        <a href="<?= $base ?>/user/dashboard.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
           &larr; Dashboard
         </a>
       </div>
@@ -46,7 +46,7 @@ require_once __DIR__ . '/../includes/header.php';
           Personal &amp; Contact Details
         </h2>
 
-        <form action="/CommunityDono/api/user/update-profile.php" method="POST" data-validate>
+        <form action="<?= $base ?>/api/user/update-profile.php" method="POST" data-validate>
           <?= csrfField() ?>
 
           <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">

@@ -42,7 +42,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
     <div class="card" style="padding: 32px; border-radius: var(--radius-lg); text-align: center; background: var(--color-tint-teal); border: 1px solid rgba(31, 79, 163, 0.12);">
       <h3 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0 0 8px;">Want to collaborate or join?</h3>
       <p style="font-size: 14px; color: var(--color-text-muted); margin-bottom: 20px;">Send our operations team a message with your background and area of interest.</p>
-      <a href="/CommunityDono/pages/contact.php" class="btn btn-primary">Contact Operations Team</a>
+      <a href="<?= $base ?>/pages/contact.php" class="btn btn-primary">Contact Operations Team</a>
     </div>
 
   </div>

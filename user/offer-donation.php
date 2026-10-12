@@ -30,7 +30,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Post a Donation</h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/donations.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
+        <a href="<?= $base ?>/user/donations.php" class="btn btn-outline" style="font-size: 13.5px; padding: 6px 14px;">
           &larr; My Donations
         </a>
       </div>
@@ -46,7 +46,7 @@ require_once __DIR__ . '/../includes/header.php';
           <p style="color: var(--color-text-muted); font-size: 14px;">Provide clear details so community members and moderators can verify your listing.</p>
         </div>
 
-        <form id="donation-form" action="/CommunityDono/api/donations/create.php" method="POST" enctype="multipart/form-data" data-validate>
+        <form id="donation-form" action="<?= $base ?>/api/donations/create.php" method="POST" enctype="multipart/form-data" data-validate>
           <?= csrfField() ?>
 
           <!-- 1. Donation Information -->
@@ -242,7 +242,7 @@ require_once __DIR__ . '/../includes/header.php';
 
           <!-- Action buttons with Donation Preview -->
           <div style="display: flex; gap: 12px; justify-content: flex-end; align-items: center;">
-            <a href="/CommunityDono/user/donations.php" class="btn btn-outline">Cancel</a>
+            <a href="<?= $base ?>/user/donations.php" class="btn btn-outline">Cancel</a>
             <button type="button" class="btn btn-soft" onclick="openDonationPreview();" style="border: 1px solid var(--color-border);">
               <i data-lucide="eye" style="width:14px;height:14px;"></i> Donation Preview
             </button>
@@ -277,7 +277,7 @@ require_once __DIR__ . '/../includes/header.php';
   </div>
 </div>
 
-<script src="/CommunityDono/assets/js/date-time-picker.js"></script>
+<script src="<?= $base ?>/assets/js/date-time-picker.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   // Ensure lucide renders any dynamic icons

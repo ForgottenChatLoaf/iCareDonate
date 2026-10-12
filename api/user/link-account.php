@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/settings.php?tab=linked');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=linked');
     exit;
 }
 
@@ -19,7 +19,7 @@ $provider = trim($_POST['provider'] ?? '');
 
 if (!in_array($provider, ['google', 'facebook'], true)) {
     setFlash('error', 'Invalid provider.');
-    header('Location: /CommunityDono/user/settings.php?tab=linked');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=linked');
     exit;
 }
 
@@ -33,11 +33,11 @@ try {
     logAudit($pdo, $userId, 'user', 'LINKED_ACCOUNT_TOGGLED', 'user', $userId, null, ['provider' => $provider], 'Toggled linked account');
 
     setFlash('success', ucfirst($provider) . ' account status updated.');
-    header('Location: /CommunityDono/user/settings.php?tab=linked');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=linked');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to update linked account.');
-    header('Location: /CommunityDono/user/settings.php?tab=linked');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=linked');
     exit;
 }

@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/pages/browse.php');
+    header('Location: ' . APP_BASE . '/pages/browse.php');
     exit;
 }
 
@@ -22,7 +22,7 @@ $purpose = trim($_POST['purpose'] ?? '');
 
 if ($donationId <= 0 || empty($purpose)) {
     setFlash('error', 'Please complete all required fields.');
-    header('Location: /CommunityDono/user/request-donation.php?id=' . $donationId);
+    header('Location: ' . APP_BASE . '/user/request-donation.php?id=' . $donationId);
     exit;
 }
 
@@ -33,13 +33,13 @@ $donation = $stmt->fetch();
 
 if (!$donation || $donation['status'] !== 'approved') {
     setFlash('error', 'This donation is no longer available for requests.');
-    header('Location: /CommunityDono/pages/browse.php');
+    header('Location: ' . APP_BASE . '/pages/browse.php');
     exit;
 }
 
 if ((int)$donation['donor_id'] === $userId) {
     setFlash('error', 'You cannot request your own donation listing.');
-    header('Location: /CommunityDono/user/donations.php');
+    header('Location: ' . APP_BASE . '/user/donations.php');
     exit;
 }
 
@@ -52,14 +52,14 @@ $activeReqStmt = $pdo->prepare('
 $activeReqStmt->execute([$userId, $donationId]);
 if ($activeReqStmt->fetch()) {
     setFlash('error', 'You already have an active request for this donation item.');
-    header('Location: /CommunityDono/user/requests.php');
+    header('Location: ' . APP_BASE . '/user/requests.php');
     exit;
 }
 
 $available = (int)$donation['quantity_total'] - (int)$donation['quantity_reserved'] - (int)$donation['quantity_claimed'];
 if ($quantityRequested > $available) {
     setFlash('error', 'Requested quantity exceeds available stock (' . $available . ' available).');
-    header('Location: /CommunityDono/user/request-donation.php?id=' . $donationId);
+    header('Location: ' . APP_BASE . '/user/request-donation.php?id=' . $donationId);
     exit;
 }
 
@@ -113,7 +113,7 @@ try {
     $pdo->commit();
 
     setFlash('success', 'Your request was successfully submitted! Our team will review your application.');
-    header('Location: /CommunityDono/user/requests.php');
+    header('Location: ' . APP_BASE . '/user/requests.php');
     exit;
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
@@ -121,6 +121,6 @@ try {
     }
     error_log($e->getMessage());
     setFlash('error', 'Failed to submit request. Please try again.');
-    header('Location: /CommunityDono/user/request-donation.php?id=' . $donationId);
+    header('Location: ' . APP_BASE . '/user/request-donation.php?id=' . $donationId);
     exit;
 }

@@ -326,7 +326,7 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Modal Form & Content -->
-    <form id="modal-decision-form" action="/CommunityDono/api/admin/decide-request.php" method="POST">
+    <form id="modal-decision-form" action="<?= $base ?>/api/admin/decide-request.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="request_id" id="modal-req-id" value="">
       <input type="hidden" name="decision" id="modal-decision" value="">
@@ -459,7 +459,7 @@ function openRequestModal(r) {
   
   var proofWrap = document.getElementById('m-proof-link-wrap');
   if (r.proof_path) {
-    proofWrap.innerHTML = '<a href="/CommunityDono/' + r.proof_path + '" target="_blank" class="btn btn-outline" style="font-size:11.5px;padding:3px 10px;margin-top:6px;display:inline-flex;align-items:center;gap:4px;"><i data-lucide="external-link" style="width:12px;height:12px;"></i> View Attached Document ↗</a>';
+    proofWrap.innerHTML = '<a href="<?= $base ?>/' + r.proof_path + '" target="_blank" class="btn btn-outline" style="font-size:11.5px;padding:3px 10px;margin-top:6px;display:inline-flex;align-items:center;gap:4px;"><i data-lucide="external-link" style="width:12px;height:12px;"></i> View Attached Document ↗</a>';
   } else {
     proofWrap.innerHTML = '';
   }
@@ -500,7 +500,7 @@ function deleteRequestRecord(id) {
   if (confirm('Are you sure you want to delete this request record?')) {
     var form = document.createElement('form');
     form.method = 'POST';
-    form.action = '/CommunityDono/api/admin/delete-request.php';
+    form.action = '<?= $base ?>/api/admin/delete-request.php';
 
     var csrf = document.createElement('input');
     csrf.type = 'hidden';

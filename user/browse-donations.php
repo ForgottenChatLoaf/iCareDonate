@@ -76,7 +76,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size:20px;font-weight:700;color:var(--color-text);margin:0;">Browse Donations</h1>
       </div>
       <div style="display:flex;gap:12px;align-items:center;">
-        <a href="/CommunityDono/user/offer-donation.php" class="btn btn-primary" style="font-size:13px;padding:8px 16px;">
+        <a href="<?= $base ?>/user/offer-donation.php" class="btn btn-primary" style="font-size:13px;padding:8px 16px;">
           <i data-lucide="plus" style="width:15px;height:15px;"></i> Post Donation
         </a>
       </div>
@@ -128,7 +128,7 @@ require_once __DIR__ . '/../includes/header.php';
           <i data-lucide="search-x" style="width:48px;height:48px;color:var(--color-text-muted);margin-bottom:12px;"></i>
           <h3 style="font-size:18px;margin-bottom:8px;color:var(--color-text);">No donations found</h3>
           <p style="color:var(--color-text-muted);font-size:14px;margin-bottom:20px;">Try a different keyword or clear the filters.</p>
-          <a href="/CommunityDono/user/browse-donations.php" class="btn btn-outline">Clear Filters</a>
+          <a href="<?= $base ?>/user/browse-donations.php" class="btn btn-outline">Clear Filters</a>
         </div>
       <?php else: ?>
         <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;">
@@ -156,7 +156,7 @@ require_once __DIR__ . '/../includes/header.php';
               </div>
             </div>
             <div class="browse-card__footer">
-              <a href="/CommunityDono/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="browse-card__btn">View Details</a>
+              <a href="<?= $base ?>/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="browse-card__btn">View Details</a>
             </div>
           </div>
           <?php endforeach; ?>

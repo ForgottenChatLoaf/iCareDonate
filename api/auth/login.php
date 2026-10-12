@@ -6,19 +6,19 @@ require_once __DIR__ . '/../../includes/functions.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/pages/login.php');
+    header('Location: ' . APP_BASE . '/pages/login.php');
     exit;
 }
 
 $redirect = trim($_POST['redirect'] ?? '');
-$redirectQuery = (!empty($redirect) && str_starts_with($redirect, '/CommunityDono/'))
+$redirectQuery = (!empty($redirect) && isSafeInternalRedirect($redirect))
     ? '?redirect=' . urlencode($redirect)
     : '';
 
 // Graceful CSRF validation
 if (empty($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $_POST['csrf_token'] ?? '')) {
     setFlash('error', 'Your session has expired. Please try signing in again.');
-    header('Location: /CommunityDono/pages/login.php' . $redirectQuery);
+    header('Location: ' . APP_BASE . '/pages/login.php' . $redirectQuery);
     exit;
 }
 
@@ -28,7 +28,7 @@ $password = $_POST['password'] ?? '';
 if (empty($email) || empty($password)) {
     $_SESSION['login_email'] = $email;
     setFlash('error', 'Please provide both email and password.');
-    header('Location: /CommunityDono/pages/login.php' . $redirectQuery);
+    header('Location: ' . APP_BASE . '/pages/login.php' . $redirectQuery);
     exit;
 }
 
@@ -40,7 +40,7 @@ $user = $stmt->fetch();
 if (!$user || !password_verify($password, $user['password_hash'])) {
     $_SESSION['login_email'] = $email;
     setFlash('error', 'Invalid email or password.');
-    header('Location: /CommunityDono/pages/login.php' . $redirectQuery);
+    header('Location: ' . APP_BASE . '/pages/login.php' . $redirectQuery);
     exit;
 }
 
@@ -48,19 +48,19 @@ if (!$user || !password_verify($password, $user['password_hash'])) {
 if ($user['status'] === 'pending_verification') {
     $_SESSION['login_email'] = $email;
     setFlash('info', 'Your email is not yet verified. Please verify your email before logging in.');
-    header('Location: /CommunityDono/pages/login.php' . $redirectQuery);
+    header('Location: ' . APP_BASE . '/pages/login.php' . $redirectQuery);
     exit;
 }
 
 if ($user['status'] === 'suspended') {
     setFlash('error', 'Your account has been suspended. Please contact our support team.');
-    header('Location: /CommunityDono/pages/login.php?e=suspended');
+    header('Location: ' . APP_BASE . '/pages/login.php?e=suspended');
     exit;
 }
 
 if ($user['status'] === 'banned') {
     setFlash('error', 'Your account has been permanently banned.');
-    header('Location: /CommunityDono/pages/login.php?e=banned');
+    header('Location: ' . APP_BASE . '/pages/login.php?e=banned');
     exit;
 }
 
@@ -84,14 +84,14 @@ $upd->execute([$user['id']]);
 logAudit($pdo, (int)$user['id'], $user['role'], 'USER_LOGIN', 'user', (int)$user['id'], null, null, 'User signed in');
 
 // Safe redirect check
-if (!empty($redirect) && str_starts_with($redirect, '/CommunityDono/') && !str_contains($redirect, "\n") && !str_contains($redirect, "\r")) {
+if (!empty($redirect) && isSafeInternalRedirect($redirect)) {
     header('Location: ' . $redirect);
     exit;
 }
 
 if (in_array($user['role'], ['admin', 'superadmin'], true)) {
-    header('Location: /CommunityDono/admin/index.php');
+    header('Location: ' . APP_BASE . '/admin/index.php');
 } else {
-    header('Location: /CommunityDono/user/dashboard.php');
+    header('Location: ' . APP_BASE . '/user/dashboard.php');
 }
 exit;

@@ -10,7 +10,7 @@ requireAdmin();
 $id = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id <= 0) {
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }
 
@@ -31,7 +31,7 @@ $donation = $stmt->fetch();
 
 if (!$donation) {
     setFlash('error', 'Donation not found.');
-    header('Location: /CommunityDono/admin/donations.php');
+    header('Location: ' . APP_BASE . '/admin/donations.php');
     exit;
 }
 
@@ -54,7 +54,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0;">Review Donation #<?= (int)$donation['id'] ?></h1>
       </div>
       <div>
-        <a href="/CommunityDono/admin/donations.php" class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;">
+        <a href="<?= $base ?>/admin/donations.php" class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;">
           &larr; Back to Queue
         </a>
       </div>
@@ -96,8 +96,8 @@ require_once __DIR__ . '/../includes/header.php';
             <?php else: ?>
               <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 10px;">
                 <?php foreach ($images as $img): ?>
-                  <a href="/CommunityDono/<?= e($img['file_path']) ?>" target="_blank" style="aspect-ratio: 1; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); display: block;">
-                    <img src="/CommunityDono/<?= e($img['file_path']) ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                  <a href="<?= $base ?>/<?= e($img['file_path']) ?>" target="_blank" style="aspect-ratio: 1; border-radius: var(--radius-md); overflow: hidden; border: 1px solid var(--color-border); display: block;">
+                    <img src="<?= $base ?>/<?= e($img['file_path']) ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                   </a>
                 <?php endforeach; ?>
               </div>
@@ -197,7 +197,7 @@ require_once __DIR__ . '/../includes/header.php';
               <div style="display: flex; flex-direction: column; gap: 14px;">
                 <?php if (in_array($donation['status'], ['pending_verification', 'needs_information', 'draft'], true)): ?>
                   <!-- Approve Button -->
-                  <form action="/CommunityDono/api/admin/approve-donation.php" method="POST">
+                  <form action="<?= $base ?>/api/admin/approve-donation.php" method="POST">
                     <?= csrfField() ?>
                     <input type="hidden" name="donation_id" value="<?= (int)$donation['id'] ?>">
                     <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 11px; font-weight: 600; font-size: 13.5px; border-radius: 10px; box-shadow: 0 4px 12px rgba(31, 79, 163, 0.2);">
@@ -207,7 +207,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                   <!-- Reject Form with Reason -->
                   <div style="background: var(--color-surface-soft, #F8FAFC); border: 1px solid var(--color-border); border-radius: 10px; padding: 12px;">
-                    <form action="/CommunityDono/api/admin/reject-donation.php" method="POST">
+                    <form action="<?= $base ?>/api/admin/reject-donation.php" method="POST">
                       <?= csrfField() ?>
                       <input type="hidden" name="donation_id" value="<?= (int)$donation['id'] ?>">
                       <div class="form-group" style="margin-bottom: 8px;">
@@ -273,7 +273,7 @@ require_once __DIR__ . '/../includes/header.php';
             You can restore this listing at any time.</span>
     </div>
 
-    <form id="archive-dialog-form" action="/CommunityDono/api/admin/delete-donation.php" method="POST">
+    <form id="archive-dialog-form" action="<?= $base ?>/api/admin/delete-donation.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="donation_id" id="archive-dialog-donation-id" value="">
 
@@ -331,7 +331,7 @@ require_once __DIR__ . '/../includes/header.php';
             If approved, it will become publicly visible again subject to availability and expiration rules.</span>
     </div>
 
-    <form id="restore-dialog-form" action="/CommunityDono/api/admin/restore-donation.php" method="POST">
+    <form id="restore-dialog-form" action="<?= $base ?>/api/admin/restore-donation.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="donation_id" id="restore-dialog-donation-id" value="">
 

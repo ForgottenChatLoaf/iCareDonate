@@ -41,7 +41,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">My Assistance Requests</h1>
       </div>
       <div>
-        <a href="/CommunityDono/pages/browse.php" class="btn btn-primary" style="font-size: 13.5px; padding: 8px 16px;">
+        <a href="<?= $base ?>/pages/browse.php" class="btn btn-primary" style="font-size: 13.5px; padding: 8px 16px;">
           + Request New Items
         </a>
       </div>
@@ -57,7 +57,7 @@ require_once __DIR__ . '/../includes/header.php';
           <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 24px;">
             Explore our browse section to find available food, school supplies, clothes, and essentials for your household.
           </p>
-          <a href="/CommunityDono/pages/browse.php" class="btn btn-primary">Browse Available Items</a>
+          <a href="<?= $base ?>/pages/browse.php" class="btn btn-primary">Browse Available Items</a>
         </div>
       <?php else: ?>
         <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -104,7 +104,7 @@ require_once __DIR__ . '/../includes/header.php';
 
               <?php if (in_array($r['status'], ['matched', 'pickup_scheduled', 'claimed'], true)): ?>
                 <div style="display: flex; justify-content: flex-end; margin-top: 12px;">
-                  <a href="/CommunityDono/user/transactions.php" class="btn btn-primary" style="font-size: 13px; padding: 6px 14px;">
+                  <a href="<?= $base ?>/user/transactions.php" class="btn btn-primary" style="font-size: 13px; padding: 6px 14px;">
                     View Handover Instructions &rarr;
                   </a>
                 </div>

@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             setFlash('error', 'Failed to submit inquiry.');
         }
     }
-    header('Location: /CommunityDono/user/support.php');
+    header('Location: ' . APP_BASE . '/user/support.php');
     exit;
 }
 
@@ -90,7 +90,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Messages &amp; Support</h1>
       </div>
       <div>
-        <a href="/CommunityDono/pages/faq.php" class="btn btn-outline" style="font-size: 13px; padding: 6px 14px;" target="_blank">
+        <a href="<?= $base ?>/pages/faq.php" class="btn btn-outline" style="font-size: 13px; padding: 6px 14px;" target="_blank">
           Help &amp; FAQs ↗
         </a>
       </div>
@@ -134,7 +134,7 @@ require_once __DIR__ . '/../includes/header.php';
           Send a Support Concern or Inquiry
         </h2>
 
-        <form action="/CommunityDono/user/support.php" method="POST" enctype="multipart/form-data" data-validate>
+        <form action="<?= $base ?>/user/support.php" method="POST" enctype="multipart/form-data" data-validate>
           <?= csrfField() ?>
           <input type="hidden" name="action" value="send_concern">
 

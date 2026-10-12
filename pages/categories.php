@@ -43,7 +43,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
 
     <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 24px;">
       <?php foreach ($categories as $cat): ?>
-        <a href="/CommunityDono/pages/browse.php?category=<?= (int)$cat['id'] ?>" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+        <a href="<?= $base ?>/pages/browse.php?category=<?= (int)$cat['id'] ?>" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
           
           <div>
             <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">

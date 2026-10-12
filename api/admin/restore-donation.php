@@ -15,7 +15,7 @@ requireAdmin();
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
     setFlash('error', 'Method not allowed. Restoration requires a POST request.');
-    header('Location: /CommunityDono/admin/donations.php?status=archived');
+    header('Location: ' . APP_BASE . '/admin/donations.php?status=archived');
     exit;
 }
 
@@ -35,7 +35,7 @@ if ($donationId <= 0) {
         'reason'      => 'Invalid or missing donation ID for restore operation.',
     ]);
     setFlash('error', 'Invalid donation ID.');
-    header('Location: /CommunityDono/admin/donations.php?status=archived');
+    header('Location: ' . APP_BASE . '/admin/donations.php?status=archived');
     exit;
 }
 
@@ -68,14 +68,14 @@ try {
             'reason'      => 'Target donation record not found for restore operation.',
         ]);
         setFlash('error', 'Donation not found.');
-        header('Location: /CommunityDono/admin/donations.php?status=archived');
+        header('Location: ' . APP_BASE . '/admin/donations.php?status=archived');
         exit;
     }
 
     if ($donation['status'] !== 'archived') {
         $pdo->rollBack();
         setFlash('error', 'Only archived donations can be restored. Current status is "' . $donation['status'] . '".');
-        header('Location: /CommunityDono/admin/donations.php?status=archived');
+        header('Location: ' . APP_BASE . '/admin/donations.php?status=archived');
         exit;
     }
 
@@ -111,7 +111,7 @@ try {
                 'reason'      => 'Cannot restore to Approved: donation reached its expiration date on ' . $donation['expires_at'],
             ]);
             setFlash('error', 'Cannot restore donation to Approved: the listing has expired (' . date('M d, Y', strtotime($donation['expires_at'])) . ').');
-            header('Location: /CommunityDono/admin/donation-review.php?id=' . $donationId);
+            header('Location: ' . APP_BASE . '/admin/donation-review.php?id=' . $donationId);
             exit;
         }
     }
@@ -128,7 +128,7 @@ try {
             'reason'      => 'Cannot restore: donor account is currently ' . $donation['donor_status'],
         ]);
         setFlash('error', 'Cannot restore donation: the donor account (' . $donation['donor_first'] . ' ' . $donation['donor_last'] . ') is currently ' . $donation['donor_status'] . '.');
-        header('Location: /CommunityDono/admin/donation-review.php?id=' . $donationId);
+        header('Location: ' . APP_BASE . '/admin/donation-review.php?id=' . $donationId);
         exit;
     }
 
@@ -144,7 +144,7 @@ try {
             'reason'      => 'Cannot restore: associated category is inactive.',
         ]);
         setFlash('error', 'Cannot restore donation: the assigned category is currently deactivated.');
-        header('Location: /CommunityDono/admin/donation-review.php?id=' . $donationId);
+        header('Location: ' . APP_BASE . '/admin/donation-review.php?id=' . $donationId);
         exit;
     }
 
@@ -188,7 +188,7 @@ try {
     $pdo->commit();
 
     setFlash('success', 'Donation "' . $donation['title'] . '" has been successfully restored to ' . ucfirst(str_replace('_', ' ', $prevStatus)) . '.');
-    header('Location: /CommunityDono/admin/donations.php?status=' . urlencode($prevStatus));
+    header('Location: ' . APP_BASE . '/admin/donations.php?status=' . urlencode($prevStatus));
     exit;
 
 } catch (Exception $e) {
@@ -207,6 +207,6 @@ try {
     ]);
 
     setFlash('error', 'Unable to restore donation due to a system error. Please try again.');
-    header('Location: /CommunityDono/admin/donations.php?status=archived');
+    header('Location: ' . APP_BASE . '/admin/donations.php?status=archived');
     exit;
 }

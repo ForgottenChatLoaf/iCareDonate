@@ -126,7 +126,7 @@ require_once __DIR__ . '/../includes/header.php';
       <h1 class="admin-topbar__title">Dashboard</h1>
       <?php
         $topbarBtnId = 'adminUserMenuBtn';
-        $profileUrl  = '/CommunityDono/admin/profile.php';
+        $profileUrl  = $base . '/admin/profile.php';
         $isAdmin     = true;
         require_once __DIR__ . '/../includes/topbar-user-btn.php';
       ?>
@@ -143,10 +143,10 @@ require_once __DIR__ . '/../includes/header.php';
           <div style="font-size:14px;opacity:0.85;">Overview &bull; Action queues &bull; Moderation controls</div>
         </div>
         <div style="display:flex;gap:12px;flex-wrap:wrap;">
-          <a href="/CommunityDono/admin/donations.php?status=pending_verification" style="background:rgba(255,255,255,0.2);color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
+          <a href="<?= $base ?>/admin/donations.php?status=pending_verification" style="background:rgba(255,255,255,0.2);color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.3)'" onmouseout="this.style.background='rgba(255,255,255,0.2)'">
             <i data-lucide="gift" style="width:15px;height:15px;"></i> Review Donations (<?= (int)$stats['pending_donations'] ?>)
           </a>
-          <a href="/CommunityDono/admin/requests.php?status=pending" style="background:rgba(255,255,255,0.1);color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+          <a href="<?= $base ?>/admin/requests.php?status=pending" style="background:rgba(255,255,255,0.1);color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
             <i data-lucide="clipboard-list" style="width:15px;height:15px;"></i> Review Requests (<?= (int)$stats['pending_requests'] ?>)
           </a>
         </div>
@@ -155,7 +155,7 @@ require_once __DIR__ . '/../includes/header.php';
       <!-- 4 Stat Cards (Clickable Links) -->
       <div class="admin-stats-row">
 
-        <a href="/CommunityDono/admin/donations.php?status=pending_verification" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
+        <a href="<?= $base ?>/admin/donations.php?status=pending_verification" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
           <div class="admin-stat-card__icon" style="background:var(--sky);">
             <i data-lucide="gift" style="width:20px;height:20px;color:var(--cobalt);"></i>
           </div>
@@ -163,7 +163,7 @@ require_once __DIR__ . '/../includes/header.php';
           <div class="admin-stat-card__value"><?= (int)$stats['pending_donations'] ?></div>
         </a>
 
-        <a href="/CommunityDono/admin/requests.php?status=pending" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
+        <a href="<?= $base ?>/admin/requests.php?status=pending" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
           <div class="admin-stat-card__icon" style="background:#FAE9E7;">
             <i data-lucide="clipboard-list" style="width:20px;height:20px;color:var(--coral);"></i>
           </div>
@@ -171,7 +171,7 @@ require_once __DIR__ . '/../includes/header.php';
           <div class="admin-stat-card__value"><?= (int)$stats['pending_requests'] ?></div>
         </a>
 
-        <a href="/CommunityDono/admin/transactions.php" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
+        <a href="<?= $base ?>/admin/transactions.php" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
           <div class="admin-stat-card__icon" style="background:#FEF6E0;">
             <i data-lucide="arrow-right-left" style="width:20px;height:20px;color:var(--gold);"></i>
           </div>
@@ -179,7 +179,7 @@ require_once __DIR__ . '/../includes/header.php';
           <div class="admin-stat-card__value"><?= (int)$stats['active_matches'] ?></div>
         </a>
 
-        <a href="/CommunityDono/admin/support.php" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
+        <a href="<?= $base ?>/admin/support.php" class="admin-stat-card" style="text-decoration:none;color:inherit;cursor:pointer;">
           <div class="admin-stat-card__icon" style="background:#FAE9E7;">
             <i data-lucide="message-circle-warning" style="width:20px;height:20px;color:var(--rejected);"></i>
           </div>
@@ -199,28 +199,28 @@ require_once __DIR__ . '/../includes/header.php';
           <div class="admin-section-title">Quick Actions</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px;">
 
-            <a href="/CommunityDono/admin/donations.php" class="admin-action-card" style="border-color:var(--sky);" onmouseover="this.style.background='var(--sky)';this.style.borderColor='var(--cobalt)'" onmouseout="this.style.background='#fff';this.style.borderColor='var(--sky)'">
+            <a href="<?= $base ?>/admin/donations.php" class="admin-action-card" style="border-color:var(--sky);" onmouseover="this.style.background='var(--sky)';this.style.borderColor='var(--cobalt)'" onmouseout="this.style.background='#fff';this.style.borderColor='var(--sky)'">
               <div style="width:40px;height:40px;border-radius:10px;background:var(--cobalt);display:flex;align-items:center;justify-content:center;">
                 <i data-lucide="gift" style="width:20px;height:20px;color:#fff;"></i>
               </div>
               <span style="font-size:12.5px;">Review Donations</span>
             </a>
 
-            <a href="/CommunityDono/admin/requests.php" class="admin-action-card" style="border-color:#FAE9E7;" onmouseover="this.style.background='#FAE9E7';this.style.borderColor='var(--coral)'" onmouseout="this.style.background='#fff';this.style.borderColor='#FAE9E7'">
+            <a href="<?= $base ?>/admin/requests.php" class="admin-action-card" style="border-color:#FAE9E7;" onmouseover="this.style.background='#FAE9E7';this.style.borderColor='var(--coral)'" onmouseout="this.style.background='#fff';this.style.borderColor='#FAE9E7'">
               <div style="width:40px;height:40px;border-radius:10px;background:var(--coral);display:flex;align-items:center;justify-content:center;">
                 <i data-lucide="clipboard-list" style="width:20px;height:20px;color:#fff;"></i>
               </div>
               <span style="font-size:12.5px;">Review Requests</span>
             </a>
 
-            <a href="/CommunityDono/admin/users.php" class="admin-action-card" style="border-color:#F5F3FF;" onmouseover="this.style.background='#F5F3FF';this.style.borderColor='#7C3AED'" onmouseout="this.style.background='#fff';this.style.borderColor='#F5F3FF'">
+            <a href="<?= $base ?>/admin/users.php" class="admin-action-card" style="border-color:#F5F3FF;" onmouseover="this.style.background='#F5F3FF';this.style.borderColor='#7C3AED'" onmouseout="this.style.background='#fff';this.style.borderColor='#F5F3FF'">
               <div style="width:40px;height:40px;border-radius:10px;background:#7C3AED;display:flex;align-items:center;justify-content:center;">
                 <i data-lucide="users" style="width:20px;height:20px;color:#fff;"></i>
               </div>
               <span style="font-size:12.5px;">Manage Users</span>
             </a>
 
-            <a href="/CommunityDono/admin/transactions.php" class="admin-action-card" style="border-color:#FEF3C7;" onmouseover="this.style.background='#FEF3C7';this.style.borderColor='#D97706'" onmouseout="this.style.background='#fff';this.style.borderColor='#FEF3C7'">
+            <a href="<?= $base ?>/admin/transactions.php" class="admin-action-card" style="border-color:#FEF3C7;" onmouseover="this.style.background='#FEF3C7';this.style.borderColor='#D97706'" onmouseout="this.style.background='#fff';this.style.borderColor='#FEF3C7'">
               <div style="width:40px;height:40px;border-radius:10px;background:#D97706;display:flex;align-items:center;justify-content:center;">
                 <i data-lucide="arrow-right-left" style="width:20px;height:20px;color:#fff;"></i>
               </div>
@@ -281,7 +281,7 @@ require_once __DIR__ . '/../includes/header.php';
                   </h2>
                   <span style="font-size:11px;background:var(--warning-bg);color:var(--warning);padding:2px 9px;border-radius:20px;font-weight:700;display:inline-flex;align-items:center;gap:4px;"><i data-lucide="clock" style="width:11px;height:11px;"></i> Pending Review</span>
                 </div>
-                <a href="/CommunityDono/admin/donation-review.php?id=<?= (int)$activeDonation['id'] ?>" class="admin-btn admin-btn--outline admin-btn--sm">
+                <a href="<?= $base ?>/admin/donation-review.php?id=<?= (int)$activeDonation['id'] ?>" class="admin-btn admin-btn--outline admin-btn--sm">
                   <i data-lucide="maximize-2" style="width:12px;height:12px;"></i> Full Review
                 </a>
               </div>
@@ -360,7 +360,7 @@ require_once __DIR__ . '/../includes/header.php';
                   <strong>Rejection reason required</strong> when choosing to reject a donation.
                 </div>
 
-                <form action="/CommunityDono/api/admin/approve-donation.php" method="POST">
+                <form action="<?= $base ?>/api/admin/approve-donation.php" method="POST">
                   <?= csrfField() ?>
                   <input type="hidden" name="donation_id" value="<?= (int)$activeDonation['id'] ?>">
 
@@ -384,10 +384,10 @@ require_once __DIR__ . '/../includes/header.php';
                     <button type="submit" class="admin-btn admin-btn--primary">
                       <i data-lucide="check-circle" style="width:14px;height:14px;"></i> Approve
                     </button>
-                    <button type="submit" formaction="/CommunityDono/api/admin/reject-donation.php" class="admin-btn admin-btn--danger" onclick="if(!document.getElementById('reasonInput').value.trim()){alert('Rejection reason required.');return false;}">
+                    <button type="submit" formaction="<?= $base ?>/api/admin/reject-donation.php" class="admin-btn admin-btn--danger" onclick="if(!document.getElementById('reasonInput').value.trim()){alert('Rejection reason required.');return false;}">
                       <i data-lucide="x-circle" style="width:14px;height:14px;"></i> Reject
                     </button>
-                    <a href="/CommunityDono/admin/donations.php" class="admin-btn admin-btn--outline">
+                    <a href="<?= $base ?>/admin/donations.php" class="admin-btn admin-btn--outline">
                       <i data-lucide="message-square" style="width:14px;height:14px;"></i> Clarify
                     </a>
                   </div>
@@ -408,7 +408,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <?= count($dashboardRequests) ?> request(s) awaiting verification &amp; matching
                   </span>
                 </div>
-                <a href="/CommunityDono/admin/requests.php?status=pending" class="admin-btn admin-btn--outline admin-btn--sm">
+                <a href="<?= $base ?>/admin/requests.php?status=pending" class="admin-btn admin-btn--outline admin-btn--sm">
                   View All (<?= (int)$stats['pending_requests'] ?>) &rarr;
                 </a>
               </div>
@@ -440,7 +440,7 @@ require_once __DIR__ . '/../includes/header.php';
                           <span style="color:var(--text-muted);">Standard Request</span>
                         <?php endif; ?>
                       </span>
-                      <a href="/CommunityDono/admin/requests.php?status=pending" class="admin-btn admin-btn--primary admin-btn--sm" style="padding:5px 12px;font-size:12px;">
+                      <a href="<?= $base ?>/admin/requests.php?status=pending" class="admin-btn admin-btn--primary admin-btn--sm" style="padding:5px 12px;font-size:12px;">
                         <i data-lucide="zap" style="width:12px;height:12px;"></i> Review &amp; Match
                       </a>
                     </div>
@@ -459,8 +459,8 @@ require_once __DIR__ . '/../includes/header.php';
                 <h3 style="font-size:16px;font-weight:700;color:var(--text);margin:0 0 8px;">All Queues Clear</h3>
                 <p style="font-size:13px;color:var(--text-muted);margin:0 0 20px;">No pending donations or requests requiring moderation at this time.</p>
                 <div style="display:flex;justify-content:center;gap:10px;">
-                  <a href="/CommunityDono/admin/donations.php?status=all" class="admin-btn admin-btn--outline">View All Donations</a>
-                  <a href="/CommunityDono/admin/requests.php?status=all" class="admin-btn admin-btn--outline">Check Requests Queue</a>
+                  <a href="<?= $base ?>/admin/donations.php?status=all" class="admin-btn admin-btn--outline">View All Donations</a>
+                  <a href="<?= $base ?>/admin/requests.php?status=all" class="admin-btn admin-btn--outline">Check Requests Queue</a>
                 </div>
               </div>
             </div>
@@ -474,9 +474,9 @@ require_once __DIR__ . '/../includes/header.php';
     <footer class="admin-footer">
       <div>&copy; 2025 iCareDonate Community Platform. All rights reserved.</div>
       <div class="admin-footer-links">
-        <a href="/CommunityDono/pages/legal/privacy.php">Privacy Policy</a>
-        <a href="/CommunityDono/pages/legal/terms.php">Terms of Service</a>
-        <a href="/CommunityDono/pages/faq.php">Help Center</a>
+        <a href="<?= $base ?>/pages/legal/privacy.php">Privacy Policy</a>
+        <a href="<?= $base ?>/pages/legal/terms.php">Terms of Service</a>
+        <a href="<?= $base ?>/pages/faq.php">Help Center</a>
       </div>
     </footer>
 

@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/offer-donation.php');
+    header('Location: ' . APP_BASE . '/user/offer-donation.php');
     exit;
 }
 
@@ -31,7 +31,7 @@ $pickupNotes = trim($_POST['pickup_notes'] ?? '');
 
 if (empty($title) || $categoryId <= 0 || empty($pickupCity)) {
     setFlash('error', 'Please fill in all required donation fields.');
-    header('Location: /CommunityDono/user/offer-donation.php');
+    header('Location: ' . APP_BASE . '/user/offer-donation.php');
     exit;
 }
 
@@ -95,7 +95,7 @@ try {
     $pdo->commit();
 
     setFlash('success', 'Thank you! Your donation was submitted and is pending quick review by our admin team.');
-    header('Location: /CommunityDono/user/donations.php');
+    header('Location: ' . APP_BASE . '/user/donations.php');
     exit;
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
@@ -103,6 +103,6 @@ try {
     }
     error_log($e->getMessage());
     setFlash('error', 'Failed to save donation listing. Please try again.');
-    header('Location: /CommunityDono/user/offer-donation.php');
+    header('Location: ' . APP_BASE . '/user/offer-donation.php');
     exit;
 }
