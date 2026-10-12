@@ -91,7 +91,7 @@
   <!-- ============================================================
        MAIN CONTENT
        ============================================================ -->
-  <main style="padding: 32px 0 72px;">
+  <main style="padding: 32px 0 0;">
     <div class="container" style="max-width: 1040px; margin: 0 auto; padding: 0 20px;">
       
       <!-- Hero Section -->
@@ -187,34 +187,67 @@
 
         <div class="g" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 48px; align-items: stretch;">
           
-          <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; height: 100%;">
-            <div style="height: 80px; border-radius: 14px; background: #FEF6E0; color: #BC7F08; display: grid; place-items: center; margin-bottom: 16px; flex-shrink: 0;">
-              <i data-lucide="flame" style="width: 32px; height: 32px;"></i>
+          <!-- Category Card 1: Emergency & Disaster Relief -->
+          <div class="card" style="padding: 0; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; height: 100%; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(31,79,163,0.14)'" onmouseleave="this.style.transform='';this.style.boxShadow='var(--shadow-sm)'">
+            <div style="height: 110px; background: linear-gradient(135deg, #BC4E2B 0%, #E0553D 50%, #F2904A 100%); display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; position: relative; overflow: hidden; flex-shrink: 0;">
+              <div style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: -30px; left: 40px; width: 80px; height: 80px; background: rgba(255,255,255,0.06); border-radius: 50%;"></div>
+              <div>
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.75); text-transform: uppercase; margin-bottom: 4px;">Category</div>
+                <div style="font-size: 18px; font-weight: 700; color: #fff; font-family: var(--font-heading); line-height: 1.2;">Emergency<br>&amp; Relief</div>
+              </div>
+              <div style="width: 52px; height: 52px; background: rgba(255,255,255,0.18); border-radius: 14px; display: grid; place-items: center; backdrop-filter: blur(4px); flex-shrink: 0;">
+                <i data-lucide="flame" style="width: 26px; height: 26px; color: #fff;"></i>
+              </div>
             </div>
-            <h3 style="margin: 0 0 8px; font-size: 19px;">Emergency &amp; Disaster Relief</h3>
-            <p class="sm mut" style="font-size: 13.5px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; min-height: 42px;">Essential immediate sustenance, clean water, and shelter supplies for urgent relief.</p>
-            <p style="font-size: 12.5px; color: var(--navy); margin-bottom: 20px;"><strong style="color: var(--cobalt);">Accepted:</strong> Food packs, canned goods, blankets</p>
-            <a href="/CommunityDono/pages/browse.php?category=1" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+            <div style="padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column;">
+              <h3 style="margin: 0 0 8px; font-size: 17px; color: var(--cobalt);">Emergency &amp; Disaster Relief</h3>
+              <p style="font-size: 13px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; flex: 1;">Essential immediate sustenance, clean water, and shelter supplies for urgent relief.</p>
+              <p style="font-size: 12px; color: var(--navy); margin-bottom: 18px;"><strong style="color: var(--cobalt);">Accepted:</strong> Food packs, canned goods, blankets</p>
+              <a href="/CommunityDono/pages/browse.php?category=1" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+            </div>
           </div>
 
-          <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; height: 100%;">
-            <div style="height: 80px; border-radius: 14px; background: #FAE9E7; color: var(--coral); display: grid; place-items: center; margin-bottom: 16px; flex-shrink: 0;">
-              <i data-lucide="heart-pulse" style="width: 32px; height: 32px;"></i>
+          <!-- Category Card 2: Healthcare & Hygiene -->
+          <div class="card" style="padding: 0; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; height: 100%; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(31,79,163,0.14)'" onmouseleave="this.style.transform='';this.style.boxShadow='var(--shadow-sm)'">
+            <div style="height: 110px; background: linear-gradient(135deg, #A0244E 0%, #D4456B 50%, #E87A8C 100%); display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; position: relative; overflow: hidden; flex-shrink: 0;">
+              <div style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: -30px; left: 40px; width: 80px; height: 80px; background: rgba(255,255,255,0.06); border-radius: 50%;"></div>
+              <div>
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.75); text-transform: uppercase; margin-bottom: 4px;">Category</div>
+                <div style="font-size: 18px; font-weight: 700; color: #fff; font-family: var(--font-heading); line-height: 1.2;">Healthcare<br>&amp; Hygiene</div>
+              </div>
+              <div style="width: 52px; height: 52px; background: rgba(255,255,255,0.18); border-radius: 14px; display: grid; place-items: center; backdrop-filter: blur(4px); flex-shrink: 0;">
+                <i data-lucide="heart-pulse" style="width: 26px; height: 26px; color: #fff;"></i>
+              </div>
             </div>
-            <h3 style="margin: 0 0 8px; font-size: 19px;">Healthcare &amp; Hygiene Kits</h3>
-            <p class="sm mut" style="font-size: 13.5px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; min-height: 42px;">Hygiene and basic wellness kits supporting vulnerable community members and seniors.</p>
-            <p style="font-size: 12.5px; color: var(--navy); margin-bottom: 20px;"><strong style="color: var(--cobalt);">Accepted:</strong> Hygiene packs, first-aid, vitamins</p>
-            <a href="/CommunityDono/pages/browse.php?category=4" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+            <div style="padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column;">
+              <h3 style="margin: 0 0 8px; font-size: 17px; color: var(--cobalt);">Healthcare &amp; Hygiene Kits</h3>
+              <p style="font-size: 13px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; flex: 1;">Hygiene and basic wellness kits supporting vulnerable community members and seniors.</p>
+              <p style="font-size: 12px; color: var(--navy); margin-bottom: 18px;"><strong style="color: var(--cobalt);">Accepted:</strong> Hygiene packs, first-aid, vitamins</p>
+              <a href="/CommunityDono/pages/browse.php?category=4" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+            </div>
           </div>
 
-          <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; height: 100%;">
-            <div style="height: 80px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: grid; place-items: center; margin-bottom: 16px; flex-shrink: 0;">
-              <i data-lucide="book-open" style="width: 32px; height: 32px;"></i>
+          <!-- Category Card 3: Education & Youth Support -->
+          <div class="card" style="padding: 0; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); display: flex; flex-direction: column; height: 100%; overflow: hidden; transition: transform 0.2s ease, box-shadow 0.2s ease;" onmouseenter="this.style.transform='translateY(-4px)';this.style.boxShadow='0 12px 32px rgba(31,79,163,0.14)'" onmouseleave="this.style.transform='';this.style.boxShadow='var(--shadow-sm)'">
+            <div style="height: 110px; background: linear-gradient(135deg, #0E3D8A 0%, #1F4FA3 50%, #4278D1 100%); display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; position: relative; overflow: hidden; flex-shrink: 0;">
+              <div style="position: absolute; top: -20px; right: -20px; width: 120px; height: 120px; background: rgba(255,255,255,0.08); border-radius: 50%;"></div>
+              <div style="position: absolute; bottom: -30px; left: 40px; width: 80px; height: 80px; background: rgba(255,255,255,0.06); border-radius: 50%;"></div>
+              <div>
+                <div style="font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: rgba(255,255,255,0.75); text-transform: uppercase; margin-bottom: 4px;">Category</div>
+                <div style="font-size: 18px; font-weight: 700; color: #fff; font-family: var(--font-heading); line-height: 1.2;">Education<br>&amp; Youth</div>
+              </div>
+              <div style="width: 52px; height: 52px; background: rgba(255,255,255,0.18); border-radius: 14px; display: grid; place-items: center; backdrop-filter: blur(4px); flex-shrink: 0;">
+                <i data-lucide="book-open" style="width: 26px; height: 26px; color: #fff;"></i>
+              </div>
             </div>
-            <h3 style="margin: 0 0 8px; font-size: 19px;">Education &amp; Youth Support</h3>
-            <p class="sm mut" style="font-size: 13.5px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; min-height: 42px;">Learning materials, books, and backpacks empowering young students in local schools.</p>
-            <p style="font-size: 12.5px; color: var(--navy); margin-bottom: 20px;"><strong style="color: var(--cobalt);">Accepted:</strong> School bags, notebooks, tablets</p>
-            <a href="/CommunityDono/pages/browse.php?category=2" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+            <div style="padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column;">
+              <h3 style="margin: 0 0 8px; font-size: 17px; color: var(--cobalt);">Education &amp; Youth Support</h3>
+              <p style="font-size: 13px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; flex: 1;">Learning materials, books, and backpacks empowering young students in local schools.</p>
+              <p style="font-size: 12px; color: var(--navy); margin-bottom: 18px;"><strong style="color: var(--cobalt);">Accepted:</strong> School bags, notebooks, tablets</p>
+              <a href="/CommunityDono/pages/browse.php?category=2" class="btn btn-primary" style="width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+            </div>
           </div>
 
         </div>
@@ -303,7 +336,7 @@
           <!-- Item 3: Laptops -->
           <div class="card" style="border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow-sm); padding: 0;">
             <div style="height: 170px; position: relative; overflow: hidden; background: var(--surface-soft);">
-              <img src="/CommunityDono/assets/img/categories/electronics-gadgets.avif" alt="Working Lenovo Student Laptops with Chargers" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+              <img src="/CommunityDono/assets/img/categories/school-supplies-alt.avif" alt="Working Student Laptops and Electronics with Chargers" style="width: 100%; height: 100%; object-fit: cover; display: block;">
               <span style="position: absolute; top: 12px; left: 12px; background: rgba(20, 33, 61, 0.82); color: #fff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; backdrop-filter: blur(4px);">
                 Electronics &amp; Gadgets
               </span>
@@ -333,9 +366,37 @@
   </main>
 
   <!-- ============================================================
+       CALL TO ACTION BAND
+       ============================================================ -->
+  <section style="background: linear-gradient(135deg, #0E1A33 0%, #14213D 35%, #1F4FA3 100%); padding: 64px 20px; text-align: center; position: relative; overflow: hidden;">
+    <!-- Decorative orbs -->
+    <div style="position: absolute; top: -60px; left: -60px; width: 280px; height: 280px; background: radial-gradient(circle, rgba(242,184,75,0.12) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+    <div style="position: absolute; bottom: -60px; right: -40px; width: 240px; height: 240px; background: radial-gradient(circle, rgba(91,141,232,0.14) 0%, transparent 70%); border-radius: 50%; pointer-events: none;"></div>
+    <div style="position: relative; z-index: 1; max-width: 640px; margin: 0 auto;">
+      <div style="display: inline-flex; align-items: center; gap: 6px; background: rgba(242,184,75,0.15); border: 1px solid rgba(242,184,75,0.3); color: var(--amber); font-size: 11.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; padding: 5px 14px; border-radius: 999px; margin-bottom: 20px;">
+        <i data-lucide="heart" style="width: 12px; height: 12px;"></i> Join the Community
+      </div>
+      <h2 style="font-family: var(--font-heading); font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 800; color: #fff; margin: 0 0 14px; line-height: 1.2; letter-spacing: -0.02em;">Ready to make a difference?</h2>
+      <p style="color: rgba(255,255,255,0.72); font-size: 1.05rem; margin: 0 0 32px; line-height: 1.65; max-width: 480px; margin-left: auto; margin-right: auto;">Whether you have something to give or something you need — iCareDonate connects you with your community. Every contribution counts.</p>
+      <div style="display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+        <a href="/CommunityDono/pages/login.php" class="btn-donate" style="display: inline-flex; align-items: center; gap: 8px; background: var(--coral); border: 2px solid var(--coral); color: #fff; font-family: var(--font-heading); font-weight: 700; font-size: 1rem; border-radius: 999px; padding: 13px 28px; text-decoration: none; box-shadow: 0 4px 16px rgba(224,85,61,0.35); transition: all 0.2s;">
+          <i data-lucide="gift" style="width: 18px; height: 18px;"></i> Start donating
+        </a>
+        <a href="/CommunityDono/pages/browse.php" style="display: inline-flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.35); color: #fff; font-family: var(--font-heading); font-weight: 700; font-size: 1rem; border-radius: 999px; padding: 13px 28px; text-decoration: none; backdrop-filter: blur(4px); transition: all 0.2s;">
+          <i data-lucide="search" style="width: 18px; height: 18px;"></i> Browse donations
+        </a>
+      </div>
+      <p style="color: rgba(255,255,255,0.48); font-size: 12.5px; margin-top: 20px;">
+        <i data-lucide="shield-check" style="width: 13px; height: 13px; display: inline; vertical-align: middle;"></i>
+        100% free &nbsp;·&nbsp; Admin-verified &nbsp;·&nbsp; Local community only
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
        PUBLIC FOOTER
        ============================================================ -->
-  <footer class="footer-public" role="contentinfo">
+  <footer class="footer-public" role="contentinfo" style="margin-top: 0;">
     <div class="container footer-public__container">
       <div class="footer-public__grid">
         
