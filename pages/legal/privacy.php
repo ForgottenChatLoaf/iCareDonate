@@ -1,0 +1,332 @@
+<?php
+declare(strict_types=1);
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../includes/functions.php';
+require_once __DIR__ . '/../../includes/auth.php';
+
+if (session_status() === PHP_SESSION_NONE) { session_start(); }
+
+$pageTitle = 'Privacy Policy';
+$extraCss = 'public.css';
+require_once __DIR__ . '/../../includes/header.php';
+require_once __DIR__ . '/../../includes/nav-public.php';
+?>
+
+<style>
+.legal-container {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+.legal-card {
+  padding: 40px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  color: var(--color-text);
+  font-size: 15px;
+  line-height: 1.75;
+}
+.legal-card h1 {
+  font-family: var(--font-heading);
+  font-size: 32px;
+  color: var(--color-text);
+  margin-top: 0;
+  margin-bottom: 8px;
+  line-height: 1.25;
+}
+.legal-card h2 {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--cobalt);
+  margin-top: 36px;
+  margin-bottom: 12px;
+  scroll-margin-top: 90px;
+}
+.legal-card p {
+  margin-top: 0;
+  margin-bottom: 14px;
+}
+.legal-card ul {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-left: 24px;
+}
+.legal-card li {
+  margin-bottom: 6px;
+}
+.legal-card a {
+  color: var(--cobalt);
+  text-decoration: underline;
+}
+.legal-card a:hover {
+  color: var(--brand-primary-dark);
+}
+
+/* Visibility Matrix Table */
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 20px 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+.visibility-table {
+  width: 100%;
+  min-width: 620px;
+  border-collapse: collapse;
+  font-size: 14px;
+  text-align: left;
+}
+.visibility-table th[scope="col"] {
+  background: var(--surface-soft);
+  color: var(--cobalt);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  padding: 12px 16px;
+  border-bottom: 2px solid var(--border);
+  white-space: nowrap;
+}
+.visibility-table th[scope="row"] {
+  color: var(--color-text);
+  font-weight: 600;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+.visibility-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  color: var(--color-text-muted);
+}
+.visibility-table tbody tr:last-child th,
+.visibility-table tbody tr:last-child td {
+  border-bottom: none;
+}
+.visibility-table tbody tr:hover td,
+.visibility-table tbody tr:hover th {
+  background: rgba(227, 238, 251, 0.4);
+}
+
+.contact-block {
+  margin-top: 24px;
+  padding: 22px 24px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+}
+.contact-block-title {
+  margin: 0 0 10px 0;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--cobalt);
+}
+.contact-block-line {
+  margin: 0 0 6px 0;
+  font-size: 14px;
+  color: var(--color-text);
+}
+.contact-block-line:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+  .legal-card {
+    padding: 24px 20px;
+  }
+  .legal-card h1 {
+    font-size: 26px;
+  }
+  .legal-card h2 {
+    font-size: 18px;
+  }
+}
+</style>
+
+<main style="padding: 48px 0 80px; background: var(--color-bg);">
+  <div class="container legal-container">
+    
+    <article class="legal-card">
+      <h1>iCareDonate — Privacy Policy</h1>
+
+      <!-- TODO: confirm official Last Updated date -->
+      <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 24px;">Last Updated: <?= e(LEGAL_LAST_UPDATED) ?></p>
+
+      <p>At <strong>iCareDonate</strong>, we value your privacy and are committed to protecting your personal information. This Privacy Policy explains what information we collect, why we collect it, how we use and protect it, and how you can manage your information when using iCareDonate.</p>
+
+      <p>iCareDonate is an item-based donation platform developed by <strong>Ambagan Inc.</strong></p>
+
+      <h2 id="privacy-1">1. Information We Collect</h2>
+      <p>When you create an account or use iCareDonate, we may collect information necessary to provide the platform's services.</p>
+      <p>This may include:</p>
+      <ul>
+        <li>First and last name</li>
+        <li>Email address</li>
+        <li>Password information</li>
+        <li>Phone number</li>
+        <li>Barangay, city, and province</li>
+        <li>Profile information</li>
+        <li>Email verification information</li>
+        <li>Donation information</li>
+        <li>Request information</li>
+        <li>Pickup location and related information</li>
+        <li>Proof-of-need documents submitted with requests</li>
+        <li>Information related to transactions and platform activity</li>
+      </ul>
+      <p>We collect only information necessary for the purposes of operating and supporting the platform.</p>
+
+      <h2 id="privacy-2">2. How We Use Your Information</h2>
+      <p>We use personal information to:</p>
+      <ul>
+        <li>Create and manage user accounts.</li>
+        <li>Verify user email addresses.</li>
+        <li>Allow users to post and manage donations.</li>
+        <li>Allow users to submit requests for available donations.</li>
+        <li>Review donations and requests.</li>
+        <li>Verify proof of need.</li>
+        <li>Facilitate matching between donors and requesters.</li>
+        <li>Support donation transactions and claiming.</li>
+        <li>Send notifications related to account and donation activity.</li>
+        <li>Respond to reports, concerns, and support requests.</li>
+        <li>Maintain platform security and prevent misuse.</li>
+        <li>Maintain records necessary for accountability.</li>
+      </ul>
+
+      <h2 id="privacy-3">3. How Information Is Shared</h2>
+      <p>iCareDonate limits access to personal information based on what is necessary for the platform's operation.</p>
+      <p>Personal information is not publicly displayed by default.</p>
+      <p>For example:</p>
+
+      <div class="table-container">
+        <table class="visibility-table">
+          <thead>
+            <tr>
+              <th scope="col">Information</th>
+              <th scope="col">Public</th>
+              <th scope="col">Logged-in Users</th>
+              <th scope="col">Matched Parties</th>
+              <th scope="col">Administrators</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">Donor name</th>
+              <td>Hidden</td>
+              <td>Hidden</td>
+              <td>First name only</td>
+              <td>Full</td>
+            </tr>
+            <tr>
+              <th scope="row">Donor contact</th>
+              <td>Hidden</td>
+              <td>Hidden</td>
+              <td>After confirmed match</td>
+              <td>Full</td>
+            </tr>
+            <tr>
+              <th scope="row">Requester name</th>
+              <td>Hidden</td>
+              <td>Hidden</td>
+              <td>Hidden until match</td>
+              <td>Full</td>
+            </tr>
+            <tr>
+              <th scope="row">Requester contact</th>
+              <td>Hidden</td>
+              <td>Hidden</td>
+              <td>After confirmed match</td>
+              <td>Full</td>
+            </tr>
+            <tr>
+              <th scope="row">Proof documents</th>
+              <td>Never</td>
+              <td>Never</td>
+              <td>Never</td>
+              <td>Full</td>
+            </tr>
+            <tr>
+              <th scope="row">Full addresses</th>
+              <td>Hidden</td>
+              <td>Hidden</td>
+              <td>Only when needed for pickup</td>
+              <td>Full</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h2 id="privacy-4">4. Proof-of-Need Documents</h2>
+      <p>Requesters may be required to submit proof of need when requesting a donation.</p>
+      <p>These documents are treated as private information. They are not publicly accessible and should not be exposed through publicly accessible URLs.</p>
+      <p>Access to proof documents is restricted to authorized administrators as required for request review.</p>
+
+      <h2 id="privacy-5">5. How We Protect Your Information</h2>
+      <p>iCareDonate is designed with security measures intended to protect personal information from unauthorized access, use, or disclosure.</p>
+      <p>These measures include:</p>
+      <ul>
+        <li>Password hashing.</li>
+        <li>Secure session cookies.</li>
+        <li>Email verification.</li>
+        <li>Access controls based on user roles.</li>
+        <li>Server-side input validation.</li>
+        <li>Protection against common web security risks.</li>
+        <li>Restricted access to private files.</li>
+        <li>Audit logging of important administrative actions.</li>
+      </ul>
+
+      <h2 id="privacy-6">6. Retention of Personal Information</h2>
+      <p>iCareDonate retains personal information only for as long as necessary for the purposes for which it was collected, subject to applicable legal and operational requirements.</p>
+      <p>Certain transaction records may need to be preserved for accountability even after a user's personal information has been anonymized.</p>
+      <p>The National Privacy Commission explains that personal information should be retained only as long as necessary for its declared, specified, and legitimate purposes, legal claims, legitimate business purposes consistent with applicable standards, or when otherwise required by law.</p>
+
+      <h2 id="privacy-7">7. Account Deletion</h2>
+      <p>Users may request deletion of their iCareDonate account.</p>
+      <p>When an account deletion request is processed, personal information is anonymized while necessary transaction records may be retained for accountability.</p>
+      <p>Active transactions must be resolved or cancelled before account deletion can be completed.</p>
+
+      <h2 id="privacy-8">8. Disposal of Personal Information</h2>
+      <p>When personal information is no longer necessary, it should be securely disposed of in a way that prevents unauthorized access, disclosure, or further processing.</p>
+      <p>The National Privacy Commission recommends secure disposal methods that make paper records unreadable and digital records irretrievable.</p>
+
+      <h2 id="privacy-9">9. Your Privacy Rights</h2>
+      <p>You may have rights regarding your personal information under applicable Philippine data privacy laws.</p>
+      <p>Depending on the circumstances, these may include the ability to:</p>
+      <ul>
+        <li>Know what personal information is being processed.</li>
+        <li>Request access to your personal information.</li>
+        <li>Request correction of inaccurate information.</li>
+        <li>Request deletion or anonymization where applicable.</li>
+        <li>Raise concerns about the handling of your personal information.</li>
+      </ul>
+      <p>You may raise privacy concerns or requests through the <a href="/CommunityDono/pages/contact.php">Contact Us page</a>.</p>
+
+      <h2 id="privacy-10">10. Privacy and Third-Party Services</h2>
+      <p>iCareDonate does not sell or share personal information with external advertising or commercial third parties. The platform currently operates as a self-contained local academic prototype. If external cloud hosting, external database storage, or external email services (such as SMTP providers for verification notices) are connected in production, this policy will be updated to reflect those service providers and their data practices.</p>
+
+      <h2 id="privacy-11">11. Changes to This Privacy Policy</h2>
+      <p>iCareDonate may update this Privacy Policy when necessary to reflect changes in the platform, its data practices, or applicable requirements.</p>
+      <p>When changes are made, the <strong>Last Updated date</strong> will be revised accordingly.</p>
+
+      <h2 id="privacy-12">12. Contact Us</h2>
+      <p>If you have questions, concerns, or requests regarding your personal information or this Privacy Policy, you may contact iCareDonate through <a href="/CommunityDono/pages/contact.php">the official contact information provided on the website</a>.</p>
+
+      <!-- TODO: confirm official contact email -->
+      <div class="contact-block">
+        <div class="contact-block-title">Official Contact Information</div>
+        <p class="contact-block-line">
+          Email: <a href="mailto:icaredonate.team@gmail.com">icaredonate.team@gmail.com</a>
+        </p>
+        <p class="contact-block-line">
+          Inquiries &amp; Support: <a href="/CommunityDono/pages/contact.php">Contact Us page</a>
+        </p>
+      </div>
+    </article>
+
+  </div>
+</main>
+
+<?php require_once __DIR__ . '/../../includes/footer.php'; ?>

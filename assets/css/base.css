@@ -1,0 +1,234 @@
+/* ============================================================
+   assets/css/base.css
+   Reset + Base Styles — all derived from tokens.css
+   Brand: Poppins (headings/buttons) + Inter (body)
+   ============================================================ */
+
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+/* ── Custom Scrollbars (token-derived) ────────────────────── */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+
+::-webkit-scrollbar        { width: 6px; height: 6px; }
+::-webkit-scrollbar-track  { background: transparent; }
+::-webkit-scrollbar-thumb  { background: var(--color-border-strong); border-radius: var(--radius-full); }
+::-webkit-scrollbar-thumb:hover { background: var(--color-text-muted); }
+
+/* ── Body ────────────────────────────────────────────────── */
+body {
+  background: var(--color-background);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Typography ──────────────────────────────────────────── */
+/*
+ * Poppins  → h1, h2, h3, buttons, wordmark, stat numbers (500/600/700)
+ * Inter    → h4–h6, body, forms, captions, tables     (400/500/600)
+ */
+h1, h2, h3 {
+  font-family: var(--font-heading);  /* Poppins */
+  font-weight: 700;
+  color: var(--cobalt);              /* Brand-specified: headings are cobalt */
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.hero__headline,
+.display {
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+
+h1 {
+  font-size: var(--text-h1);   /* ~42px */
+  line-height: var(--line-h1);
+}
+
+h2 {
+  font-size: var(--text-h2);   /* 32px */
+  line-height: var(--line-h2);
+}
+
+h3 {
+  font-size: var(--text-h3);   /* 20px */
+  line-height: var(--line-h3);
+}
+
+h4, h5, h6 {
+  font-family: var(--font-body);  /* Inter */
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--color-text);
+}
+
+h4 { font-size: var(--text-h4); }
+h5 { font-size: var(--text-sm); font-weight: 600; }
+h6 { font-size: var(--text-xs); font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+
+/* ── Brand / Logo Lockup ────────────────────────────────── */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.logo:hover {
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  display: block;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.logo-wordmark,
+.brand-text,
+.user-sidebar__logo {
+  font-family: var(--font-heading) !important;
+  font-weight: 700 !important;
+  font-size: 1.5rem;
+  letter-spacing: -0.015em;
+  color: var(--cobalt);
+  line-height: 1;
+  display: inline-block;
+}
+
+.logo-wordmark em,
+.logo-wordmark .accent {
+  font-style: normal;
+  color: var(--gold); /* #BC7F08 on light backgrounds */
+  font-weight: 700;
+}
+
+/* Dark mode and dark containers (e.g. footer) */
+:root[data-theme="dark"] .logo-wordmark,
+.dark .logo-wordmark,
+.footer-logo .logo-wordmark {
+  color: #FFFFFF !important;
+}
+
+:root[data-theme="dark"] .logo-wordmark em,
+:root[data-theme="dark"] .logo-wordmark .accent,
+.dark .logo-wordmark em,
+.dark .logo-wordmark .accent,
+.footer-logo .logo-wordmark em,
+.footer-logo .logo-wordmark .accent {
+  color: var(--amber) !important; /* #F2B84B on dark backgrounds */
+}
+
+
+p {
+  font-size: var(--text-body);
+  line-height: var(--line-body);
+  color: var(--color-text-soft);
+}
+
+.text-caption, .caption, .helper-text, small {
+  font-size: var(--text-caption);
+  line-height: var(--line-caption);
+  color: var(--color-text-muted);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+
+a:hover {
+  color: var(--color-primary-dark);
+  text-decoration: underline;
+}
+
+/* ── Focus Rings (amber per brand guide) ────────────────── */
+:focus-visible {
+  outline: 3px solid var(--amber);   /* #F2B84B — brand specified focus color */
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Media ───────────────────────────────────────────────── */
+img, svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* ── Lists ───────────────────────────────────────────────── */
+ul, ol { list-style: none; }
+
+/* ── Form base ───────────────────────────────────────────── */
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button   { cursor: pointer; }
+textarea { resize: vertical; }
+
+input, select, textarea {
+  background: var(--color-surface);
+}
+
+/* ── Table base ──────────────────────────────────────────── */
+table { border-collapse: collapse; width: 100%; }
+
+/* ── Accessibility ───────────────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ── Layout Containers ───────────────────────────────────── */
+.container {
+  width: min(var(--container-max), calc(100% - var(--space-5) * 2));
+  margin-inline: auto;
+}
+
+.container--narrow {
+  width: min(var(--container-narrow), calc(100% - var(--space-5) * 2));
+  margin-inline: auto;
+}
+
+.container--auth {
+  width: min(var(--container-auth), calc(100% - var(--space-5) * 2));
+  margin-inline: auto;
+}
+
+/* ── Reduced Motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

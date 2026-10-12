@@ -1,0 +1,17 @@
+# Local scratch and test scripts
+scratch/
+
+# Environment and secrets
+.env
+*.local
+
+# Dependencies and uploads
+vendor/
+uploads/*
+!uploads/.gitkeep
+
+# IDE and OS files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

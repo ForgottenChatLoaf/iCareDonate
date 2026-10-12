@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guides &amp; FAQs — iCareDonate</title>
+  <meta name="description" content="Official guides and frequently asked questions about donating, requesting aid, verification, and privacy on iCareDonate.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/CommunityDono/icaredonate-icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="/CommunityDono/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar" id="main-nav">
+    <div class="container nav-container">
+      <a href="/CommunityDono/index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Icon">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="/CommunityDono/pages/browse.php" class="nav-link">Browse</a>
+        <a href="/CommunityDono/pages/categories.php" class="nav-link">Categories</a>
+        <a href="/CommunityDono/pages/how-it-works.html" class="nav-link">How It Works</a>
+        <a href="/CommunityDono/pages/about.html" class="nav-link">About Us</a>
+        <a href="/CommunityDono/pages/faq.html" class="nav-link active">FAQs</a>
+        <a href="/CommunityDono/pages/contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/CommunityDono/pages/login.php" class="btn btn-outline btn-sm">Log in</a>
+        <a href="/CommunityDono/pages/login.php" class="btn btn-donate btn-sm">
+          <i data-lucide="gift" style="width:16px;height:16px;"></i> Donate
+        </a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <nav class="mobile-nav-links">
+        <a href="/CommunityDono/pages/browse.php" class="mobile-nav-link">Browse</a>
+        <a href="/CommunityDono/pages/categories.php" class="mobile-nav-link">Categories</a>
+        <a href="/CommunityDono/pages/how-it-works.html" class="mobile-nav-link">How It Works</a>
+        <a href="/CommunityDono/pages/about.html" class="mobile-nav-link">About Us</a>
+        <a href="/CommunityDono/pages/faq.html" class="mobile-nav-link">FAQs</a>
+        <a href="/CommunityDono/pages/contact.html" class="mobile-nav-link">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="padding: 56px 0 80px; background: var(--color-bg);">
+    <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+      
+      <div style="text-align: center; margin-bottom: 40px;">
+        <span class="badge badge-info" style="margin-bottom: 12px; display: inline-block;">Support &amp; Guidance</span>
+        <h1 style="font-family: var(--font-heading); font-size: 36px; color: var(--color-text); margin-bottom: 12px; line-height: 1.2;">
+          Guides &amp; FAQs
+        </h1>
+        <p style="font-size: 16px; color: var(--color-text-muted); max-width: 600px; margin: 0 auto;">
+          Find answers to common questions about item donations, requesting assistance, safety standards, and account management.
+        </p>
+      </div>
+
+      <div class="faq-accordion">
+        
+        <details class="faq-item" open>
+          <summary class="faq-summary">
+            <span>1. What is iCareDonate?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>iCareDonate is an item-based donation platform that connects people who want to donate useful items with individuals or communities who need support. It is not a cash-donation platform.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>2. Who can use iCareDonate?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>iCareDonate is for people who want to donate useful items and individuals who need assistance. Users must have an active account to participate in donations and requests.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>3. How can I donate an item?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>After creating and verifying your account, you can post a donation by providing the required information about the item, including its title, category, quantity, condition, pickup method, and pickup location. You can also provide photos, an expiration date, and a description.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>4. Are donations immediately visible on the website?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>No. Submitted donations are reviewed by an administrator first. A donation becomes available for others to browse only after it has been approved.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>5. How can I request a donated item?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>You can request an approved donation that has available quantity. You must provide the required request information and upload proof of need for administrator review.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>6. Why do I need to provide proof of need?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>Proof of need allows administrators to review requests and help ensure that support is provided appropriately. Proof documents are kept private and are not publicly displayed.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>7. Can I request more items than what is available?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>No. A request cannot exceed the available quantity of the donation.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>8. Can I request the same donation more than once?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>You cannot have multiple active requests for the same donation.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>9. What happens after I submit a request?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>Your request is reviewed by an administrator. If it is approved and a match is made, the donation quantity is reserved and the donation process can proceed toward claiming and completion.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>10. How does iCareDonate protect my personal information?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>iCareDonate limits the visibility of personal information. For example, contact information is not publicly displayed and is only shared with matched parties when the match has been confirmed and the information is needed.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>11. Can I edit my donation?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>You can edit a donation while it is in draft or when additional information has been requested. A donation cannot be edited while it is pending verification.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>12. What happens if my donation is rejected?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>If an administrator rejects a donation, the donor is notified and the reason for the rejection is provided.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>13. Can I report a donation?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>Yes. Active users can report donations that they believe are inappropriate, fraudulent, or misleading. Administrators review reported content and may take appropriate moderation action.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>14. Can my account be suspended or banned?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>Yes. Administrators may issue warnings, remove content, suspend accounts, or ban users when moderation rules are violated.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>15. Can I delete my account?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>Yes. Users can request account deletion. Personal information is anonymized while necessary transaction records may be preserved for accountability. Any active transactions must be resolved or cancelled before account deletion.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-summary">
+            <span>16. What should I do if I need help?</span>
+            <i data-lucide="chevron-down" class="faq-icon"></i>
+          </summary>
+          <div class="faq-content">
+            <p>You can contact iCareDonate through the available contact or support channels provided on the website.</p>
+          </div>
+        </details>
+
+      </div>
+
+      <!-- Still have questions card -->
+      <div class="card" style="padding: 32px; border-radius: 20px; text-align: center; margin-top: 40px; background: var(--sky); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+        <h3 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 8px;">Still have questions?</h3>
+        <p style="font-size: 15px; color: var(--slate); margin: 0 0 20px;">Our community team is happy to answer any questions or clarify guidelines.</p>
+        <a href="/CommunityDono/pages/contact.html" class="btn btn-primary" style="border-radius: 999px; padding: 12px 28px;">Contact Support</a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <div class="footer-public__col">
+          <a href="/CommunityDono/index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-theme-toggle-wrap">
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
+              <span class="theme-toggle-text">Dark mode</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/about.html">Our mission</a></li>
+            <li><a href="/CommunityDono/pages/careers.html">Careers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Support</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/how-it-works.html">Help center</a></li>
+            <li><a href="/CommunityDono/pages/faq.html">Guides and FAQs</a></li>
+            <li><a href="/CommunityDono/pages/contact.html">Contact support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Legal</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/legal/terms.html">Terms of service</a></li>
+            <li><a href="/CommunityDono/pages/legal/privacy.html">Privacy policy</a></li>
+            <li><a href="/CommunityDono/pages/login.html">Admin log in</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/CommunityDono/assets/js/main.js" defer></script>
+  <script src="/CommunityDono/js/script.js" defer></script>
+</body>
+</html>

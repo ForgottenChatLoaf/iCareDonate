@@ -1,0 +1,27 @@
+# Apache configuration for iCareDonate
+Options -Indexes
+ServerSignature Off
+
+# ── CRITICAL: Pass Authorization header to PHP (Bearer token auth) ──────────
+# Apache strips Authorization by default. This rule forwards it so that
+# $_SERVER['HTTP_AUTHORIZATION'] is populated in all PHP API endpoints.
+RewriteEngine On
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]
+
+# Also set REDIRECT_HTTP_AUTHORIZATION for some PHP-CGI setups
+RewriteCond %{HTTP:Authorization} ^(.+)$
+RewriteRule ^ - [E=REDIRECT_HTTP_AUTHORIZATION:%1]
+
+# Directory Index: prefer index.html, then index.php
+DirectoryIndex index.html index.php
+
+# Deny access to sensitive files
+<FilesMatch "^(\.env|\.git|composer\.json|package\.json|schema\.sql|database\.sql)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Enable UTF-8 encoding
+AddDefaultCharset UTF-8
+

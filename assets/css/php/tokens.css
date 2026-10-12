@@ -1,0 +1,296 @@
+/* ============================================================
+   assets/css/tokens.css
+   iCareDonate — MASTER DESIGN SYSTEM TOKENS
+   Brand palette from: docs/brand_palette.html
+   ─────────────────────────────────────────
+   Cobalt  #1F4FA3  → Primary: navbar, headings, logo heart, links
+   Coral   #E0553D  → Main CTA only: "Donate now" button
+   Amber   #F2B84B  → Highlights, badges, "Care" on dark
+   Gold    #BC7F08  → "Care" in logo on light backgrounds
+   Cream   #FBF7F2  → Page background (60% use)
+   Sky     #E3EEFB  → Cards, panels, section bands (60% use)
+   Navy    #14213D  → Body text, footer, dark sections
+   Slate   #5A6781  → Captions, helper text, placeholders
+
+   Status (always pair with text label — never color alone):
+   Approved  #2E6FDB
+   Pending   #E8A317
+   Rejected  #C0392B
+   ============================================================ */
+
+/* ── Google Fonts: Poppins (headings/buttons) + Inter (body) ─ */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap');
+
+/* ══════════════════════════════════════════════════════════
+   LIGHT MODE (Default)
+   ══════════════════════════════════════════════════════════ */
+:root {
+
+  /* ── Brand Core ─────────────────────────────────────────── */
+  --cobalt:           #1F4FA3;   /* Primary: navbar, headings, logo, Request help */
+  --coral:            #E0553D;   /* Main CTA only: Donate now button              */
+  --amber:            #F2B84B;   /* Highlights: stat numbers, badges, dark "Care" */
+  --amber-dark:       #D99B26;   /* Richer gold for hover states                  */
+  --amber-hover:      #D99B26;   /* Richer gold for hover states                  */
+  --gold:             #BC7F08;   /* "Care" wordmark on light backgrounds          */
+
+  /* ── Neutrals ───────────────────────────────────────────── */
+  --cream:            #FBF7F2;   /* Page background                               */
+  --sky:              #E3EEFB;   /* Cards, section bands, dashboard panels        */
+  --navy:             #14213D;   /* Body text, footer, dark sections              */
+  --slate:            #5A6781;   /* Captions, helper text, placeholders           */
+
+  /* ── Status (brand-specified) ───────────────────────────── */
+  --approved:         #2E6FDB;   /* Admin approved — always show the word too     */
+  --approved-bg:      #EBF1FB;
+  --pending:          #E8A317;   /* Waiting for admin review                      */
+  --pending-bg:       #FEF6E0;
+  --rejected:         #C0392B;   /* Admin rejected, errors                        */
+  --rejected-bg:      #FAE9E7;
+
+  /* ── Surface palette (derived from brand neutrals) ──────── */
+  --bg:               var(--cream);    /* #FBF7F2 — page background                */
+  --surface:          #FFFFFF;         /* White card surfaces                      */
+  --surface-soft:     var(--sky);      /* #E3EEFB — tinted panels/inputs          */
+  --text:             var(--navy);     /* #14213D — primary body text              */
+  --text-soft:        #2E3F5C;         /* Mid-tone for subheadings                 */
+  --text-muted:       var(--slate);    /* #5A6781 — captions, helpers              */
+  --border:           #C8D9F0;         /* Sky-derived border                       */
+  --border-strong:    #A8C0E4;         /* Stronger border for focus rings          */
+
+  /* ── Semantic status (mapped to brand spec) ─────────────── */
+  --success:          var(--approved);     /* #2E6FDB  */
+  --success-bg:       var(--approved-bg);  /* #EBF1FB  */
+  --warning:          #9A6800;             /* readable amber on light               */
+  --warning-bg:       var(--pending-bg);   /* #FEF6E0  */
+  --danger:           var(--rejected);     /* #C0392B  */
+  --danger-bg:        var(--rejected-bg);  /* #FAE9E7  */
+  --info:             var(--cobalt);       /* #1F4FA3  */
+  --info-bg:          var(--sky);          /* #E3EEFB  */
+
+  --on-primary:       #FFFFFF;
+  --shadow:           0 8px 24px rgba(31, 79, 163, 0.12);
+
+  /* ── Brand alias tokens (used throughout PHP pages) ─────── */
+  --brand-primary:        var(--cobalt);      /* #1F4FA3 */
+  --brand-primary-dark:   #163A7A;            /* Darker cobalt for hover */
+  --brand-primary-light:  var(--sky);         /* #E3EEFB — tint bg      */
+  --brand-accent:         var(--coral);       /* #E0553D — CTA only     */
+  --brand-accent-dark:    #C4412A;            /* Coral hover             */
+  --brand-accent-light:   #FAECE8;            /* Soft coral tint         */
+
+  /* ── Standard alias tokens (used in PHP inline styles) ───── */
+  --color-background:     var(--bg);
+  --color-bg:             var(--bg);
+  --color-surface:        var(--surface);
+  --color-surface-soft:   var(--surface-soft);
+  --color-text:           var(--text);
+  --color-text-soft:      var(--text-soft);
+  --color-text-muted:     var(--text-muted);
+  --color-border:         var(--border);
+  --color-border-strong:  var(--border-strong);
+  --color-border-focus:   var(--amber);        /* Amber focus ring per brand guide */
+
+  --color-primary:        var(--cobalt);
+  --color-primary-cta:    var(--coral);        /* Donate now = Coral */
+  --color-primary-dark:   var(--brand-primary-dark);
+  --color-primary-light:  var(--sky);
+  --color-accent:         var(--coral);
+  --color-accent-hover:   var(--brand-accent-dark);
+  --color-accent-light:   var(--brand-accent-light);
+
+  --color-success:        var(--approved);
+  --color-success-bg:     var(--approved-bg);
+  --color-success-text:   var(--approved);
+  --color-warning:        var(--warning);
+  --color-warning-bg:     var(--warning-bg);
+  --color-warning-text:   var(--warning);
+  --color-danger:         var(--rejected);
+  --color-danger-bg:      var(--rejected-bg);
+  --color-danger-text:    var(--rejected);
+  --color-info:           var(--cobalt);
+  --color-info-bg:        var(--sky);
+  --color-info-text:      var(--cobalt);
+
+  /* Status badge aliases */
+  --status-ok-fg:         var(--approved);
+  --status-ok-bg:         var(--approved-bg);
+  --status-pending-fg:    var(--pending);
+  --status-pending-bg:    var(--pending-bg);
+  --status-error-fg:      var(--rejected);
+  --status-error-bg:      var(--rejected-bg);
+  --status-info-fg:       var(--cobalt);
+  --status-info-bg:       var(--sky);
+  --status-neutral-fg:    var(--slate);
+  --status-neutral-bg:    var(--surface-soft);
+
+  /* Alert aliases */
+  --alert-info-border:    var(--cobalt);
+  --alert-info-bg:        var(--sky);
+  --alert-success-border: var(--approved);
+  --alert-success-bg:     var(--approved-bg);
+  --alert-warning-border: var(--pending);
+  --alert-warning-bg:     var(--pending-bg);
+  --alert-error-border:   var(--rejected);
+  --alert-error-bg:       var(--rejected-bg);
+
+  /* Backward-compat tint aliases */
+  --color-tint-teal:      var(--sky);           /* Sky replaces teal tint  */
+  --color-tint-coral:     var(--brand-accent-light);
+  --color-text-xmuted:    var(--text-muted);
+
+  /* ── Typography ─────────────────────────────────────────── */
+  /*
+   * Poppins  → headings (h1–h3), buttons, wordmark, stat numbers (500/600/700)
+   * Inter    → body text, forms, captions, tables (400/500/600)
+   */
+  --font-brand:    'Poppins', system-ui, sans-serif;   /* headings/brand */
+  --font-heading:  'Poppins', system-ui, sans-serif;   /* same in brand guide */
+  --font-body:     'Inter', system-ui, sans-serif;     /* body/forms/tables */
+
+  --text-hero:     clamp(2.4rem, 5vw, 4.2rem);
+  --line-hero:     1.1;
+  --text-h1:       clamp(2rem, 4vw, 2.625rem);   /* ~42px at max */
+  --line-h1:       1.15;
+  --text-h2:       2rem;                          /* 32px */
+  --line-h2:       1.2;
+  --text-h3:       1.25rem;                       /* 20px */
+  --line-h3:       1.3;
+  --text-h4:       1.1rem;
+  --line-h4:       1.3;
+  --text-body:     1rem;                          /* 16px, line-height 1.65 */
+  --line-body:     1.65;
+  --text-caption:  0.875rem;                      /* 14px */
+  --line-caption:  1.5;
+  --text-sm:       0.875rem;
+  --text-xs:       0.75rem;
+  --text-btn:      1.0625rem;                     /* ~17px, bold Poppins */
+
+  /* ── Spacing ────────────────────────────────────────────── */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+
+  /* ── Radius ─────────────────────────────────────────────── */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   18px;
+  --radius-xl:   24px;
+  --radius-full: 999px;
+
+  /* ── Shadows (cobalt-tinted) ─────────────────────────────── */
+  --shadow-sm:  0 1px 4px rgba(31, 79, 163, 0.07), 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md:  0 8px 24px rgba(31, 79, 163, 0.12);
+  --shadow-lg:  0 12px 32px rgba(31, 79, 163, 0.16), 0 4px 12px rgba(0,0,0,0.07);
+  --shadow-xl:  0 20px 60px rgba(0,0,0,0.12);
+
+  /* ── Transitions ────────────────────────────────────────── */
+  --transition-fast:   0.10s ease;
+  --transition-base:   0.20s ease;
+  --transition-smooth: 0.25s ease;
+
+  /* ── Layout ─────────────────────────────────────────────── */
+  --container-max:    1160px;
+  --container-auth:   440px;
+  --container-narrow: 660px;
+  --sidebar-width:    240px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DARK MODE (optional — brand uses cream/navy so dark mode
+   is a tasteful deep navy with lighter cobalt)
+   ══════════════════════════════════════════════════════════ */
+:root[data-theme="dark"] {
+  --bg:               #0F1826;   /* Deep navy-blue background */
+  --surface:          #182036;   /* Card surface              */
+  --surface-soft:     #1E2A44;   /* Tinted panel              */
+  --text:             #EDF2FB;   /* Near-white text           */
+  --text-soft:        #B8C8E8;
+  --text-muted:       #8A9FBF;
+  --border:           #263354;
+  --border-strong:    #344470;
+
+  --cobalt:           #5B8DE8;   /* Lighter cobalt readable on dark */
+  --brand-primary:    #5B8DE8;
+  --brand-primary-dark: #7AABFF;
+  --brand-primary-light: #1A2A4A;
+
+  --coral:            #F0705A;   /* Lighter coral on dark     */
+  --brand-accent:     #F0705A;
+  --brand-accent-dark: #FF8C75;
+  --brand-accent-light: #3A1A16;
+
+  --amber:            #F2B84B;   /* Amber stays same          */
+  --amber-dark:       #E0A335;   /* Richer gold for hover in dark mode */
+  --amber-hover:      #E0A335;
+
+  --on-primary:       #FFFFFF;
+  --shadow:           0 8px 24px rgba(0, 0, 0, 0.4);
+  --shadow-sm:        0 1px 4px rgba(0,0,0,0.3);
+  --shadow-md:        0 8px 24px rgba(0,0,0,0.4);
+  --shadow-lg:        0 12px 32px rgba(0,0,0,0.5);
+
+  --color-primary:        var(--cobalt);
+  --color-primary-light:  var(--brand-primary-light);
+  --color-primary-dark:   var(--brand-primary-dark);
+  --color-tint-teal:      var(--brand-primary-light);
+  --color-border:         var(--border);
+  --color-border-strong:  var(--border-strong);
+  --color-surface:        var(--surface);
+  --color-surface-soft:   var(--surface-soft);
+  --color-background:     var(--bg);
+  --color-bg:             var(--bg);
+  --color-text:           var(--text);
+  --color-text-soft:      var(--text-soft);
+  --color-text-muted:     var(--text-muted);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:               #0F1826;
+    --surface:          #182036;
+    --surface-soft:     #1E2A44;
+    --text:             #EDF2FB;
+    --text-soft:        #B8C8E8;
+    --text-muted:       #8A9FBF;
+    --border:           #263354;
+    --border-strong:    #344470;
+
+    --cobalt:           #5B8DE8;
+    --brand-primary:    #5B8DE8;
+    --brand-primary-dark: #7AABFF;
+    --brand-primary-light: #1A2A4A;
+
+    --coral:            #F0705A;
+    --brand-accent:     #F0705A;
+    --brand-accent-dark: #FF8C75;
+    --brand-accent-light: #3A1A16;
+
+    --amber:            #F2B84B;
+
+    --on-primary:       #FFFFFF;
+    --shadow:           0 8px 24px rgba(0, 0, 0, 0.4);
+    --shadow-sm:        0 1px 4px rgba(0,0,0,0.3);
+    --shadow-md:        0 8px 24px rgba(0,0,0,0.4);
+    --shadow-lg:        0 12px 32px rgba(0,0,0,0.5);
+
+    --color-primary:        var(--cobalt);
+    --color-primary-light:  var(--brand-primary-light);
+    --color-primary-dark:   var(--brand-primary-dark);
+    --color-tint-teal:      var(--brand-primary-light);
+    --color-border:         var(--border);
+    --color-border-strong:  var(--border-strong);
+    --color-surface:        var(--surface);
+    --color-surface-soft:   var(--surface-soft);
+    --color-background:     var(--bg);
+    --color-bg:             var(--bg);
+    --color-text:           var(--text);
+    --color-text-soft:      var(--text-soft);
+    --color-text-muted:     var(--text-muted);
+  }
+}

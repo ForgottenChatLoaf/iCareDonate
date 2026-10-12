@@ -1,0 +1,422 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guides &amp; FAQs — iCareDonate</title>
+  <meta name="description" content="Give what you can. Help where it matters. iCareDonate connects donors with communities that need them.">
+  <meta name="theme-color" content="#1F4FA3">
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/CommunityDono/icaredonate-icon.svg">
+
+  <!-- Google Fonts: Poppins (headings/buttons/wordmark) + Inter (body/forms) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
+  <!-- Design system CSS (Cache-busted) -->
+  <link rel="stylesheet" href="/CommunityDono/assets/css/tokens.css?v=1791641328">
+  <link rel="stylesheet" href="/CommunityDono/assets/css/base.css?v=1791641347">
+  <link rel="stylesheet" href="/CommunityDono/assets/css/components.css?v=1791641420">
+
+    <link rel="stylesheet" href="/CommunityDono/assets/css/public.css?v=1791710771">
+  
+  </head>
+<body class=""><header class="nav-public" role="banner">
+  <div class="container nav-public__inner">
+
+    <!-- Logo -->
+    <a href="/CommunityDono/" class="logo" aria-label="iCareDonate — Home">
+      <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+      <span class="logo-wordmark">i<em>Care</em>Donate</span>
+    </a>
+
+    <!-- Desktop nav (Wireframe spec: Home, About us, How it works, Categories, Contact us, Log in / Sign up) -->
+    <nav class="nav-public__links" aria-label="Main navigation">
+      <a href="/CommunityDono/" class="nav-link ">Home</a>
+      <a href="/CommunityDono/pages/about.php" class="nav-link ">About us</a>
+      <a href="/CommunityDono/pages/how-it-works.php" class="nav-link ">How it works</a>
+      <a href="/CommunityDono/pages/categories.php" class="nav-link ">Categories</a>
+      <a href="/CommunityDono/pages/contact.php" class="nav-link ">Contact us</a>
+    </nav>
+
+    <!-- Actions / Auth Button -->
+    <div class="nav-public__actions">
+      <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
+        <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
+      </button>
+
+              <a href="/CommunityDono/pages/login.php" class="btn-pub-auth">Log in / Sign up</a>
+          </div>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <i data-lucide="menu"></i>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+    <nav class="mobile-menu__links" aria-label="Mobile navigation">
+      <a href="/CommunityDono/" class="mobile-link ">Home</a>
+      <a href="/CommunityDono/pages/about.php" class="mobile-link ">About us</a>
+      <a href="/CommunityDono/pages/how-it-works.php" class="mobile-link ">How it works</a>
+      <a href="/CommunityDono/pages/categories.php" class="mobile-link ">Categories</a>
+      <a href="/CommunityDono/pages/contact.php" class="mobile-link ">Contact us</a>
+              <a href="/CommunityDono/pages/login.php" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+          </nav>
+  </div>
+</header>
+<style>
+.faq-accordion {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.faq-item {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base);
+}
+.faq-item:hover {
+  border-color: var(--border-strong);
+}
+.faq-item[open] {
+  border-color: var(--cobalt);
+}
+.faq-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  cursor: pointer;
+  font-family: var(--font-heading);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--surface);
+  user-select: none;
+  list-style: none;
+  transition: background var(--transition-base);
+}
+.faq-summary::-webkit-details-marker,
+.faq-summary::marker {
+  display: none;
+  content: "";
+}
+.faq-summary:focus-visible {
+  outline: 2px solid var(--cobalt);
+  outline-offset: -2px;
+}
+.faq-item[open] .faq-summary {
+  background: var(--surface-soft);
+  border-bottom: 1px solid var(--border);
+}
+.faq-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  color: var(--cobalt);
+  transition: transform var(--transition-base);
+}
+.faq-item[open] .faq-icon {
+  transform: rotate(180deg);
+}
+.faq-content {
+  padding: 20px 24px;
+  background: var(--surface);
+  font-size: 15px;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+}
+.faq-content p {
+  margin: 0;
+}
+</style>
+
+<main style="padding: 56px 0 80px; background: var(--color-bg);">
+  <div class="container" style="max-width: 800px; margin: 0 auto; padding: 0 20px;">
+    
+    <div style="text-align: center; margin-bottom: 40px;">
+      <span class="badge badge-info" style="margin-bottom: 12px;">Support</span>
+      <h1 style="font-family: var(--font-heading); font-size: 36px; color: var(--color-text); margin-bottom: 12px; line-height: 1.2;">
+        Guides &amp; FAQs
+      </h1>
+      <p style="font-size: 16px; color: var(--color-text-muted); max-width: 600px; margin: 0 auto;">
+        Find answers to common questions about item donations, requesting assistance, safety standards, and account management.
+      </p>
+    </div>
+
+    <!-- Accessible Accordion (collapsed by default, fully keyboard operable) -->
+    <div class="faq-accordion" role="region" aria-label="Frequently Asked Questions">
+                        <details class="faq-item">
+            <summary class="faq-summary">
+              <span>1. What is iCareDonate?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>iCareDonate is an item-based donation platform that connects people who want to donate useful items with individuals or communities who need support.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>2. Who can use iCareDonate?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>iCareDonate is for people who want to donate useful items and individuals who need assistance. Users must have an active account to participate in donations and requests.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>3. How can I donate an item?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>After creating and verifying your account, you can post a donation by providing the required information about the item, including its title, category, quantity, condition, pickup method, and pickup location. You can also provide photos, an expiration date, and a description.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>4. Are donations immediately visible on the website?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>No. Submitted donations are reviewed by an administrator first. A donation becomes available for others to browse only after it has been approved.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>5. How can I request a donated item?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>You can request an approved donation that has available quantity. You must provide the required request information and upload proof of need for administrator review.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>6. Why do I need to provide proof of need?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>Proof of need allows administrators to review requests and help ensure that support is provided appropriately. Proof documents are kept private and are not publicly displayed.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>7. Can I request more items than what is available?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>No. A request cannot exceed the available quantity of the donation.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>8. Can I request the same donation more than once?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>You cannot have multiple active requests for the same donation.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>9. What happens after I submit a request?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>Your request is reviewed by an administrator. If it is approved and a match is made, the donation quantity is reserved and the donation process can proceed toward claiming and completion.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>10. How does iCareDonate protect my personal information?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>iCareDonate limits the visibility of personal information. For example, contact information is not publicly displayed and is only shared with matched parties when the match has been confirmed and the information is needed.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>11. Can I edit my donation?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>You can edit a donation while it is in draft or when additional information has been requested. A donation cannot be edited while it is pending verification.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>12. What happens if my donation is rejected?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>If an administrator rejects a donation, the donor is notified and the reason for the rejection is provided.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>13. Can I report a donation?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>Yes. Active users can report donations that they believe are inappropriate, fraudulent, or misleading. Administrators review reported content and may take appropriate moderation action.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>14. Can my account be suspended or banned?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>Yes. Administrators may issue warnings, remove content, suspend accounts, or ban users when moderation rules are violated.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>15. Can I delete my account?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>Yes. Users can request account deletion. Personal information is anonymized while necessary transaction records may be preserved for accountability. Any active transactions must be resolved or cancelled before account deletion.</p>
+            </div>
+          </details>
+                  <details class="faq-item">
+            <summary class="faq-summary">
+              <span>16. What should I do if I need help?</span>
+              <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </summary>
+            <div class="faq-content">
+              <p>You can contact iCareDonate through the available contact or support channels provided on the website.</p>
+            </div>
+          </details>
+                  </div>
+
+    <div class="card" style="padding: 32px; margin-top: 48px; text-align: center; border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--surface); box-shadow: var(--shadow-sm);">
+      <h3 style="font-family: var(--font-heading); font-size: 20px; font-weight: 700; color: var(--color-text); margin-bottom: 8px;">Still have questions?</h3>
+      <p style="color: var(--color-text-muted); font-size: 14.5px; margin-bottom: 20px;">Our community support team is always here to assist you.</p>
+      <a href="/CommunityDono/pages/contact.php" class="btn btn-primary" style="border-radius: var(--radius-full); padding: 10px 26px;">Contact Support</a>
+    </div>
+
+  </div>
+</main>
+
+
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        
+        <!-- Col 1: Brand / Home -->
+        <div class="footer-public__col">
+          <a href="/CommunityDono/" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-theme-toggle-wrap">
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
+              <span class="theme-toggle-text">Dark mode</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Col 2: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/about.php">Our mission</a></li>
+            <li><a href="/CommunityDono/pages/careers.php">Careers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Support -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Support</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/how-it-works.php">Help center</a></li>
+            <li><a href="/CommunityDono/pages/faq.php">Guides and FAQs</a></li>
+            <li><a href="/CommunityDono/pages/contact.php">Contact support</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Legal</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/legal/terms.php">Terms of service</a></li>
+            <li><a href="/CommunityDono/pages/legal/privacy.php">Privacy policy</a></li>
+            <li><a href="/CommunityDono/pages/login.php">Admin log in</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/CommunityDono/assets/js/main.js" defer></script>
+    <script>
+    // Init Lucide icons
+    document.addEventListener('DOMContentLoaded', () => { if(window.lucide) lucide.createIcons(); });
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+/* ============================================================
+   css/style.css
+   iCareDonate — Frontend Master Stylesheet (HTML Pages)
+   Imports isolated frontend design tokens, base reset,
+   components, and layouts from assets/css/frontend/.
+   Independent of PHP backend styles in assets/css/php/.
+   ============================================================ */
+
+@import url('/CommunityDono/assets/css/frontend/tokens.css');
+@import url('/CommunityDono/assets/css/frontend/base.css');
+@import url('/CommunityDono/assets/css/frontend/components.css');
+@import url('/CommunityDono/assets/css/frontend/public.css');
+@import url('/CommunityDono/assets/css/frontend/auth.css');
+@import url('/CommunityDono/assets/css/frontend/legal.css');

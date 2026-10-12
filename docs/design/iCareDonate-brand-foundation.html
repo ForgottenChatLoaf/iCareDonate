@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iCareDonate — Brand Palette</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Outfit:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* ===== LIGHT MODE (default) ===== */
+    :root {
+      --brand-primary: #0D9488;
+      --brand-primary-dark: #0F766E;
+      --brand-primary-light: #D9F7F1;
+
+      --brand-accent: #F2603F;
+      --brand-accent-dark: #C94B32;
+      --brand-accent-light: #FFE8E0;
+
+      --bg: #FFFEFC;
+      --surface: #FFFFFF;
+      --surface-soft: #F0FAF8;
+      --text: #17363A;
+      --text-soft: #46636A;
+      --text-muted: #5F7B80;
+      --border: #D9ECE8;
+      --border-strong: #B8D8D2;
+
+      --success: #1B9A5E;
+      --success-bg: #E3F8EC;
+      --warning: #A15C00;
+      --warning-bg: #FFF1C7;
+      --danger: #D92D20;
+      --danger-bg: #FFE9E6;
+      --info: #2F6BFF;
+      --info-bg: #E6EEFF;
+
+      --on-primary: #FFFFFF;
+      --shadow: 0 8px 24px rgba(13, 148, 136, 0.14);
+    }
+
+    /* ===== DARK MODE ===== */
+    :root[data-theme="dark"] {
+      --brand-primary: #2DD4BF;
+      --brand-primary-dark: #5EEAD4;
+      --brand-primary-light: #123430;
+
+      --brand-accent: #FF7A5C;
+      --brand-accent-dark: #FF9A84;
+      --brand-accent-light: #3A1E18;
+
+      --bg: #0E1514;
+      --surface: #151E1D;
+      --surface-soft: #1A2524;
+      --text: #F1F5F4;
+      --text-soft: #CBD5D3;
+      --text-muted: #93A5A2;
+      --border: #263331;
+      --border-strong: #364744;
+
+      --success: #4ADE9A;
+      --success-bg: #12301F;
+      --warning: #FBBF24;
+      --warning-bg: #33290D;
+      --danger: #F87171;
+      --danger-bg: #3A1816;
+      --info: #7AA7FF;
+      --info-bg: #172545;
+
+      --on-primary: #06201D;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-width: 320px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Outfit", system-ui, sans-serif;
+      line-height: 1.6;
+      transition: background .25s ease, color .25s ease;
+    }
+
+    h1,
+    h2,
+    h3,
+    .display {
+      font-family: "Lilita One", "Outfit", sans-serif;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--brand-accent);
+      outline-offset: 3px;
+    }
+
+    .container {
+      width: min(1120px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bar {
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-family: "Lilita One", sans-serif;
+      font-size: 1.6rem;
+      color: var(--brand-primary-dark);
+    }
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background: var(--brand-primary);
+      color: var(--on-primary);
+    }
+
+    .logo-mark svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .toggle {
+      min-height: 42px;
+      padding: 8px 16px;
+      border-radius: 11px;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      color: var(--text);
+      font: 600 0.95rem "Outfit", sans-serif;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toggle:hover {
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+
+    /* Sections */
+    section {
+      padding: 64px 0 8px;
+    }
+
+    .intro {
+      padding: 56px 0 0;
+    }
+
+    .intro h1 {
+      font-size: clamp(2.6rem, 6vw, 4.4rem);
+      line-height: 1.05;
+    }
+
+    .intro p {
+      margin-top: 14px;
+      color: var(--text-soft);
+      max-width: 58ch;
+      font-size: 1.1rem;
+    }
+
+    h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      line-height: 1.1;
+    }
+
+    .lede {
+      margin: 8px 0 24px;
+      color: var(--text-soft);
+      max-width: 60ch;
+    }
+
+    /* Swatches */
+    .grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: background .25s ease, border-color .25s ease;
+    }
+
+    .chip {
+      height: 96px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .info {
+      padding: 14px 16px 16px;
+    }
+
+    .info strong {
+      display: block;
+      font-weight: 600;
+    }
+
+    .token {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      font-family: ui-monospace, Menlo, monospace;
+    }
+
+    .values {
+      margin-top: 10px;
+      display: grid;
+      gap: 6px;
+    }
+
+    .val {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 0.82rem;
+      color: var(--text-soft);
+    }
+
+    .val i {
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      border: 1px solid var(--border-strong);
+      flex: none;
+    }
+
+    .val span {
+      color: var(--text-muted);
+      font-family: "Outfit", sans-serif;
+      width: 38px;
+    }
+
+    .val.on {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    /* Semantic badges */
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .badge {
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .b-success {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .b-warning {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+
+    .b-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .b-info {
+      background: var(--info-bg);
+      color: var(--info);
+    }
+
+    /* Buttons preview */
+    .btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .btn {
+      min-height: 44px;
+      padding: 10px 18px;
+      border-radius: 11px;
+      border: 1px solid transparent;
+      font: 600 1rem "Outfit", sans-serif;
+      cursor: default;
+    }
+
+    .btn-primary {
+      background: var(--brand-primary);
+      color: var(--on-primary);
+    }
+
+    .btn-accent {
+      background: var(--brand-accent);
+      color: #fff;
+    }
+
+    .btn-soft {
+      background: var(--brand-primary-light);
+      color: var(--brand-primary-dark);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    /* Typography */
+    .type-grid {
+      display: grid;
+      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+
+    .specimen {
+      padding: 24px;
+    }
+
+    .specimen .big {
+      font-size: 4.2rem;
+      line-height: 1;
+      color: var(--brand-primary);
+    }
+
+    .specimen .big.outfit {
+      font-family: "Outfit", sans-serif;
+      font-weight: 700;
+      color: var(--brand-accent);
+    }
+
+    .specimen h3 {
+      margin-top: 14px;
+      font-size: 1.4rem;
+    }
+
+    .specimen p {
+      color: var(--text-soft);
+      margin-top: 4px;
+    }
+
+    .glyphs {
+      margin-top: 14px;
+      color: var(--text-muted);
+      word-break: break-all;
+      font-size: 1.05rem;
+    }
+
+    .weights {
+      margin-top: 14px;
+      display: grid;
+      gap: 2px;
+      font-size: 1.15rem;
+    }
+
+    .scale {
+      margin-top: 16px;
+      padding: 8px 24px;
+    }
+
+    .scale-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .scale-row:last-child {
+      border-bottom: 0;
+    }
+
+    .scale-row .meta {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-family: ui-monospace, Menlo, monospace;
+    }
+
+    footer {
+      margin-top: 72px;
+      padding: 28px 0 40px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container bar">
+      <span class="logo">
+        <span class="logo-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 20.4s-7.3-4.7-9.2-9C1.2 7.9 3 4.8 6.4 4.2c2.1-.4 4.1.6 5.6 2.4 1.5-1.8 3.5-2.8 5.6-2.4 3.4.6 5.2 3.7 3.6 7.2-1.9 4.3-9.2 9-9.2 9Z"
+              fill="currentColor" />
+          </svg>
+        </span>
+        iCareDonate
+      </span>
+      <button class="toggle" id="toggle" type="button" aria-label="Toggle dark mode"></button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <div class="intro">
+      <h1>Brand palette</h1>
+      <p>Colors and typography for iCareDonate. Every color has a light and a dark value; switch themes to see them
+        change.</p>
+    </div>
+
+    <section>
+      <h2>Primary</h2>
+      <p class="lede">Teal carries trust and action: buttons, links, the logo.</p>
+      <div class="grid" id="g-primary"></div>
+    </section>
+
+    <section>
+      <h2>Accent</h2>
+      <p class="lede">Warm coral adds the human touch: highlights, focus rings, key calls to action.</p>
+      <div class="grid" id="g-accent"></div>
+    </section>
+
+    <section>
+      <h2>Neutrals</h2>
+      <p class="lede">Backgrounds, surfaces, text, and borders.</p>
+      <div class="grid" id="g-neutral"></div>
+    </section>
+
+    <section>
+      <h2>Semantic</h2>
+      <p class="lede">Status colors for success, warning, error, and information.</p>
+      <div class="grid" id="g-semantic"></div>
+      <div class="badges">
+        <span class="badge b-success">Approved</span>
+        <span class="badge b-warning">Pending</span>
+        <span class="badge b-danger">Rejected</span>
+        <span class="badge b-info">20 available</span>
+      </div>
+    </section>
+
+    <section>
+      <h2>In use</h2>
+      <p class="lede">The main button styles on the current theme.</p>
+      <div class="btns">
+        <button class="btn btn-primary" type="button">Save donation</button>
+        <button class="btn btn-accent" type="button">Donate a resource</button>
+        <button class="btn btn-soft" type="button">Preview</button>
+        <button class="btn btn-outline" type="button">Cancel</button>
+      </div>
+    </section>
+
+    <section>
+      <h2>Typography</h2>
+      <p class="lede">Lilita One gives headings a friendly voice. Outfit keeps everything else clean and readable.</p>
+
+      <div class="type-grid">
+        <div class="card specimen">
+          <div class="big display">Aa</div>
+          <h3>Lilita One</h3>
+          <p>Headings and the logo. Regular 400 only.</p>
+          <div class="glyphs display">ABCDEFGHIJKLMNOPQRSTUVWXYZ abcdefghijklmnopqrstuvwxyz 0123456789</div>
+        </div>
+
+        <div class="card specimen">
+          <div class="big outfit">Aa</div>
+          <h3 style="font-family:'Outfit',sans-serif;font-weight:600;">Outfit</h3>
+          <p>Body text, buttons, forms, and labels.</p>
+          <div class="weights">
+            <span style="font-weight:400">Regular 400: Give what you can.</span>
+            <span style="font-weight:500">Medium 500: Give what you can.</span>
+            <span style="font-weight:600">Semibold 600: Give what you can.</span>
+            <span style="font-weight:700">Bold 700: Give what you can.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card scale">
+        <div class="scale-row">
+          <h1 style="font-size:clamp(2.2rem,6vw,4rem);line-height:1.05;">Heading 1</h1>
+          <span class="meta">Lilita One · 2.8–5rem · 1.02</span>
+        </div>
+        <div class="scale-row">
+          <h2>Heading 2</h2>
+          <span class="meta">Lilita One · 2–3rem · 1.1</span>
+        </div>
+        <div class="scale-row">
+          <h3 style="font-size:1.35rem;">Heading 3</h3>
+          <span class="meta">Lilita One · 1.35rem · 1.2</span>
+        </div>
+        <div class="scale-row">
+          <p>Body text helps people find and share the resources they need.</p>
+          <span class="meta">Outfit 400 · 1rem · 1.6</span>
+        </div>
+        <div class="scale-row">
+          <p style="color:var(--text-muted);font-size:0.85rem;">Caption and helper text</p>
+          <span class="meta">Outfit 400 · 0.85rem · 1.6</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">iCareDonate · Give what you can. Help where it matters.</div>
+  </footer>
+
+  <script>
+    const GROUPS = {
+      'g-primary': [
+        ['Primary Teal', '--brand-primary', '#0D9488', '#2DD4BF'],
+        ['Primary Dark', '--brand-primary-dark', '#0F766E', '#5EEAD4'],
+        ['Soft Mint', '--brand-primary-light', '#D9F7F1', '#123430']
+      ],
+      'g-accent': [
+        ['Warm Coral', '--brand-accent', '#F2603F', '#FF7A5C'],
+        ['Coral Dark', '--brand-accent-dark', '#C94B32', '#FF9A84'],
+        ['Soft Coral', '--brand-accent-light', '#FFE8E0', '#3A1E18']
+      ],
+      'g-neutral': [
+        ['Background', '--bg', '#FFFEFC', '#0E1514'],
+        ['Surface', '--surface', '#FFFFFF', '#151E1D'],
+        ['Surface Soft', '--surface-soft', '#F0FAF8', '#1A2524'],
+        ['Text', '--text', '#17363A', '#F1F5F4'],
+        ['Text Soft', '--text-soft', '#46636A', '#CBD5D3'],
+        ['Text Muted', '--text-muted', '#5F7B80', '#93A5A2'],
+        ['Border', '--border', '#D9ECE8', '#263331'],
+        ['Border Strong', '--border-strong', '#B8D8D2', '#364744']
+      ],
+      'g-semantic': [
+        ['Success', '--success', '#1B9A5E', '#4ADE9A'],
+        ['Success Bg', '--success-bg', '#E3F8EC', '#12301F'],
+        ['Warning', '--warning', '#A15C00', '#FBBF24'],
+        ['Warning Bg', '--warning-bg', '#FFF1C7', '#33290D'],
+        ['Danger', '--danger', '#D92D20', '#F87171'],
+        ['Danger Bg', '--danger-bg', '#FFE9E6', '#3A1816'],
+        ['Info', '--info', '#2F6BFF', '#7AA7FF'],
+        ['Info Bg', '--info-bg', '#E6EEFF', '#172545']
+      ]
+    };
+
+    for (const [id, items] of Object.entries(GROUPS)) {
+      document.getElementById(id).innerHTML = items.map(([name, token, light, dark]) => `
+        <div class="card">
+          <div class="chip" style="background:var(${token})"></div>
+          <div class="info">
+            <strong>${name}</strong>
+            <span class="token">${token}</span>
+            <div class="values">
+              <div class="val" data-mode="light"><i style="background:${light}"></i><span>Light</span>${light}</div>
+              <div class="val" data-mode="dark"><i style="background:${dark}"></i><span>Dark</span>${dark}</div>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    const root = document.documentElement;
+    const btn = document.getElementById('toggle');
+    const meta = document.querySelector('meta[name="theme-color"]');
+
+    function apply(theme) {
+      root.setAttribute('data-theme', theme);
+      btn.textContent = theme === 'dark' ? '☀ Light mode' : '☾ Dark mode';
+      document.querySelectorAll('.val').forEach(v => v.classList.toggle('on', v.dataset.mode === theme));
+    }
+
+    let saved = null;
+    try { saved = localStorage.getItem('icd-theme'); } catch (e) { }
+    apply(saved || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'));
+
+    btn.addEventListener('click', () => {
+      const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      apply(next);
+      try { localStorage.setItem('icd-theme', next); } catch (e) { }
+    });
+  </script>
+</body>
+
+</html>

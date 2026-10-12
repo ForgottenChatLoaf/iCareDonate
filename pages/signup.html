@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — iCareDonate</title>
+  <meta name="description" content="Create an account on iCareDonate to donate physical resources or request assistance with dignity.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/CommunityDono/icaredonate-icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="/CommunityDono/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar" id="main-nav">
+    <div class="container nav-container">
+      <a href="/CommunityDono/index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Icon">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="/CommunityDono/pages/browse.php" class="nav-link">Browse</a>
+        <a href="/CommunityDono/pages/categories.php" class="nav-link">Categories</a>
+        <a href="/CommunityDono/pages/how-it-works.html" class="nav-link">How It Works</a>
+        <a href="/CommunityDono/pages/about.html" class="nav-link">About Us</a>
+        <a href="/CommunityDono/pages/faq.html" class="nav-link">FAQs</a>
+        <a href="/CommunityDono/pages/contact.html" class="nav-link">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/CommunityDono/pages/login.html" class="btn btn-outline btn-sm">Log in</a>
+        <a href="/CommunityDono/pages/signup.html" class="btn btn-donate btn-sm active">Sign Up</a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <nav class="mobile-nav-links">
+        <a href="/CommunityDono/pages/browse.php" class="mobile-nav-link">Browse</a>
+        <a href="/CommunityDono/pages/categories.php" class="mobile-nav-link">Categories</a>
+        <a href="/CommunityDono/pages/how-it-works.html" class="mobile-nav-link">How It Works</a>
+        <a href="/CommunityDono/pages/about.html" class="mobile-nav-link">About Us</a>
+        <a href="/CommunityDono/pages/faq.html" class="mobile-nav-link">FAQs</a>
+        <a href="/CommunityDono/pages/contact.html" class="mobile-nav-link">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Signup Main Container -->
+  <main class="auth-page">
+    <div style="width: min(540px, calc(100% - 32px)); margin: 20px auto;">
+
+      <div class="auth-card">
+        <div style="text-align: center; margin-bottom: 28px;">
+          <a href="/CommunityDono/index.html" class="logo" style="justify-content: center; margin-bottom: 14px;">
+            <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" width="42" height="42" alt="iCareDonate">
+            <span class="logo-wordmark" style="font-size: 1.6rem;">i<em>Care</em>Donate</span>
+          </a>
+          <h1 class="auth-card__title">Create Account</h1>
+          <p class="auth-card__sub">One account to donate and request help &mdash; all in one place.</p>
+        </div>
+
+        <form method="POST" action="/CommunityDono/api/auth/register.php" data-validate>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="auth-form-label" for="first_name">First Name <span style="color:var(--coral);">*</span></label>
+              <input type="text" id="first_name" name="first_name" class="form-input auth-form-input" required placeholder="Juan">
+            </div>
+            <div class="form-group">
+              <label class="auth-form-label" for="last_name">Last Name <span style="color:var(--coral);">*</span></label>
+              <input type="text" id="last_name" name="last_name" class="form-input auth-form-input" required placeholder="Dela Cruz">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="auth-form-label" for="reg-email">Email Address <span style="color:var(--coral);">*</span></label>
+            <input type="email" id="reg-email" name="email" class="form-input auth-form-input" required placeholder="juan@example.com">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 16px;">
+            <label class="auth-form-label" for="phone">Mobile Number</label>
+            <input type="tel" id="phone" name="phone" class="form-input auth-form-input" placeholder="09171234567">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px;">
+            <div class="form-group">
+              <label class="auth-form-label" for="city">City / Municipality</label>
+              <input type="text" id="city" name="city" class="form-input auth-form-input" placeholder="Quezon City">
+            </div>
+            <div class="form-group">
+              <label class="auth-form-label" for="barangay">Barangay</label>
+              <input type="text" id="barangay" name="barangay" class="form-input auth-form-input" placeholder="Brgy. Central">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 18px;">
+            <label class="auth-form-label" for="password">Password <span style="color:var(--coral);">*</span></label>
+            <input type="password" id="password" name="password" class="form-input auth-form-input" required minlength="8" placeholder="At least 8 characters">
+          </div>
+
+          <div class="form-group" style="margin-bottom: 24px;">
+            <label class="auth-form-label" for="password_confirmation">Confirm Password <span style="color:var(--coral);">*</span></label>
+            <input type="password" id="password_confirmation" name="password_confirmation" class="form-input auth-form-input" required minlength="8" placeholder="Repeat your password">
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 13px; font-size: 15px; border-radius: var(--radius-md); font-weight: 600; margin-bottom: 18px; box-shadow: 0 4px 14px rgba(31,79,163,0.28);">
+            Create My Account
+          </button>
+
+          <hr class="auth-sep">
+          <p class="auth-switch">Already have an account? <a href="/CommunityDono/pages/login.html">Sign In</a></p>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <div class="footer-public__col">
+          <a href="/CommunityDono/index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-theme-toggle-wrap">
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
+              <span class="theme-toggle-text">Dark mode</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/about.html">Our mission</a></li>
+            <li><a href="/CommunityDono/pages/careers.html">Careers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Support</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/how-it-works.html">Help center</a></li>
+            <li><a href="/CommunityDono/pages/faq.html">Guides and FAQs</a></li>
+            <li><a href="/CommunityDono/pages/contact.html">Contact support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Legal</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/legal/terms.html">Terms of service</a></li>
+            <li><a href="/CommunityDono/pages/legal/privacy.html">Privacy policy</a></li>
+            <li><a href="/CommunityDono/pages/login.html">Admin log in</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/CommunityDono/assets/js/main.js" defer></script>
+  <script src="/CommunityDono/js/script.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us — iCareDonate</title>
+  <meta name="description" content="Get in touch with iCareDonate. Send us an inquiry about donating, requesting aid, or community partnership.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="/CommunityDono/icaredonate-icon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="/CommunityDono/css/style.css">
+</head>
+<body>
+
+  <!-- Navbar -->
+  <header class="navbar" id="main-nav">
+    <div class="container nav-container">
+      <a href="/CommunityDono/index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Icon">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="/CommunityDono/pages/browse.php" class="nav-link">Browse</a>
+        <a href="/CommunityDono/pages/categories.php" class="nav-link">Categories</a>
+        <a href="/CommunityDono/pages/how-it-works.html" class="nav-link">How It Works</a>
+        <a href="/CommunityDono/pages/about.html" class="nav-link">About Us</a>
+        <a href="/CommunityDono/pages/faq.html" class="nav-link">FAQs</a>
+        <a href="/CommunityDono/pages/contact.html" class="nav-link active">Contact</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/CommunityDono/pages/login.php" class="btn btn-outline btn-sm">Log in</a>
+        <a href="/CommunityDono/pages/login.php" class="btn btn-donate btn-sm">
+          <i data-lucide="gift" style="width:16px;height:16px;"></i> Donate
+        </a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" hidden>
+      <nav class="mobile-nav-links">
+        <a href="/CommunityDono/pages/browse.php" class="mobile-nav-link">Browse</a>
+        <a href="/CommunityDono/pages/categories.php" class="mobile-nav-link">Categories</a>
+        <a href="/CommunityDono/pages/how-it-works.html" class="mobile-nav-link">How It Works</a>
+        <a href="/CommunityDono/pages/about.html" class="mobile-nav-link">About Us</a>
+        <a href="/CommunityDono/pages/faq.html" class="mobile-nav-link">FAQs</a>
+        <a href="/CommunityDono/pages/contact.html" class="mobile-nav-link">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="padding: 40px 0 80px;">
+    <div class="container" style="max-width: 960px; margin: 0 auto; padding: 0 20px;">
+      
+      <div style="margin-bottom: 28px;">
+        <h1 style="margin-bottom: 8px;">Contact us</h1>
+        <p class="lead" style="margin-bottom: 0;">Have a question or need assistance with donations or requests? Get in touch.</p>
+      </div>
+
+      <!-- Feedback Banner if redirected with parameters -->
+      <div id="contact-feedback"></div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px;">
+        
+        <!-- Left Column: Contact Information Cards -->
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+              <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+              <strong style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Phone number</strong>
+            </div>
+            <p style="font-size: 14px; color: var(--slate); margin: 0;">+63 (02) 8123-4567</p>
+          </div>
+
+          <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+              <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+              <strong style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Email support</strong>
+            </div>
+            <p style="font-size: 14px; color: var(--slate); margin: 0;">support@icaredonate.org</p>
+          </div>
+
+          <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+              <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+              <strong style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Coordination hub</strong>
+            </div>
+            <p style="font-size: 14px; color: var(--slate); margin: 0;">Metro Manila, Philippines</p>
+          </div>
+
+          <div class="card" style="padding: 22px 24px; border-radius: 20px; background: var(--sky); border: 1px solid var(--border); box-shadow: var(--shadow-sm);">
+            <h4 style="font-size: 14.5px; color: var(--cobalt); margin: 0 0 6px;">Need urgent support?</h4>
+            <p style="font-size: 13.5px; color: var(--slate); margin: 0 0 12px; line-height: 1.5;">Check our frequently asked questions for immediate answers regarding donation verification and claim steps.</p>
+            <a href="/CommunityDono/pages/faq.html" class="btn btn-outline btn-sm" style="background:#fff;">View FAQs &rarr;</a>
+          </div>
+        </div>
+
+        <!-- Right Column: Submission Form -->
+        <div class="card" style="padding: 36px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+          <h2 style="font-size: 20px; color: var(--cobalt); margin-bottom: 20px;">Send a message</h2>
+          
+          <form method="POST" action="/CommunityDono/php/contact.php" data-validate>
+            <div class="form-group" style="margin-bottom: 18px;">
+              <label class="form-label" for="c-name" style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Your Name <span style="color:var(--coral);">*</span></label>
+              <input type="text" id="c-name" name="name" class="form-input" required placeholder="Juan Dela Cruz" style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+              <label class="form-label" for="c-email" style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Email Address <span style="color:var(--coral);">*</span></label>
+              <input type="email" id="c-email" name="email" class="form-input" required placeholder="name@example.com" style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 18px;">
+              <label class="form-label" for="c-subject" style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Subject <span style="color:var(--coral);">*</span></label>
+              <input type="text" id="c-subject" name="subject" class="form-input" required placeholder="Question about donating or claiming" style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; box-sizing: border-box;">
+            </div>
+
+            <div class="form-group" style="margin-bottom: 24px;">
+              <label class="form-label" for="c-message" style="font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px;">Your Message <span style="color:var(--coral);">*</span></label>
+              <textarea id="c-message" name="message" class="form-textarea" required rows="5" placeholder="How can our community operations team assist you?" style="width: 100%; padding: 12px 14px; border-radius: 10px; border: 1px solid var(--border); font-size: 14px; box-sizing: border-box; font-family: inherit; resize: vertical;"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 12px; font-size: 15px; border-radius: 999px;">
+              Send Message
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <div class="footer-public__col">
+          <a href="/CommunityDono/index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-theme-toggle-wrap">
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
+              <span class="theme-toggle-text">Dark mode</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/about.html">Our mission</a></li>
+            <li><a href="/CommunityDono/pages/careers.html">Careers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Support</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/how-it-works.html">Help center</a></li>
+            <li><a href="/CommunityDono/pages/faq.html">Guides and FAQs</a></li>
+            <li><a href="/CommunityDono/pages/contact.html">Contact support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Legal</strong>
+          <ul class="footer-links">
+            <li><a href="/CommunityDono/pages/legal/terms.html">Terms of service</a></li>
+            <li><a href="/CommunityDono/pages/legal/privacy.html">Privacy policy</a></li>
+            <li><a href="/CommunityDono/pages/login.html">Admin log in</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/CommunityDono/assets/js/main.js" defer></script>
+  <script src="/CommunityDono/js/script.js" defer></script>
+  <script>
+    // Handle URL feedback flags (?success=1, ?error=...)
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var container = document.getElementById('contact-feedback');
+      if (params.get('success')) {
+        container.innerHTML = '<div class="alert alert-success" style="padding:14px 20px;border-radius:12px;margin-bottom:24px;background:#e8f6f3;color:#0f766e;border:1px solid #c2e8e2;display:flex;align-items:center;gap:10px;"><i data-lucide="check-circle" style="width:20px;height:20px;"></i> Thank you! We received your inquiry and our team coordinator will get back to you soon.</div>';
+      } else if (params.get('error')) {
+        container.innerHTML = '<div class="alert alert-error" style="padding:14px 20px;border-radius:12px;margin-bottom:24px;background:#fae9e7;color:#c0392b;border:1px solid #f3c2bc;display:flex;align-items:center;gap:10px;"><i data-lucide="alert-circle" style="width:20px;height:20px;"></i> Please check the required fields and submit again.</div>';
+      }
+    })();
+  </script>
+</body>
+</html>

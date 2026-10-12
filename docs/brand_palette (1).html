@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>iCareDonate Brand Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cobalt: #1F4FA3;
+            --coral: #E0553D;
+            --cream: #FBF7F2;
+            --sky: #E3EEFB;
+            --amber: #F2B84B;
+            --navy: #14213D;
+            --slate: #5A6781
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0
+        }
+
+        body {
+            font-family: Inter, system-ui, sans-serif;
+            background: var(--cream);
+            color: var(--navy);
+            line-height: 1.65
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: Poppins, system-ui, sans-serif;
+            color: var(--cobalt);
+            line-height: 1.2
+        }
+
+        .wrap {
+            max-width: 1040px;
+            margin: 0 auto;
+            padding: 0 24px
+        }
+
+        section {
+            padding: 60px 0;
+            border-top: 1px solid var(--sky)
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 10px
+        }
+
+        h3 {
+            font-size: 1.15rem;
+            margin: 30px 0 12px
+        }
+
+        p.lead {
+            color: var(--slate);
+            max-width: 62ch;
+            margin-bottom: 26px
+        }
+
+        :focus-visible {
+            outline: 3px solid var(--amber);
+            outline-offset: 3px
+        }
+
+        /* logo lockup */
+        .lockup {
+            display: inline-flex;
+            align-items: center;
+            gap: .3em;
+            max-width: 100%
+        }
+
+        .lockup svg {
+            height: 1.5em;
+            width: auto;
+            display: block
+        }
+
+        .word {
+            font-family: Poppins, sans-serif;
+            font-weight: 700;
+            color: var(--cobalt);
+            letter-spacing: -.01em;
+            line-height: 1
+        }
+
+        .word em {
+            font-style: normal;
+            color: var(--amber)
+        }
+
+        .dark .word {
+            color: #fff
+        }
+
+        .hero {
+            padding: 72px 0 56px
+        }
+
+        .hero .lockup {
+            font-size: 4rem
+        }
+
+        .hero p {
+            margin-top: 16px;
+            font-size: 1.2rem;
+            color: var(--slate)
+        }
+
+        .tiles {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 18px;
+            margin-top: 8px
+        }
+
+        .tile {
+            border-radius: 20px;
+            padding: 34px 24px;
+            display: grid;
+            place-items: center;
+            min-height: 170px;
+            gap: 10px;
+            text-align: center
+        }
+
+        .tile small {
+            font-size: .85rem;
+            opacity: .85
+        }
+
+        .t-cream {
+            background: #fff;
+            border: 1px solid var(--sky)
+        }
+
+        .t-navy {
+            background: var(--navy);
+            color: #fff
+        }
+
+        .t-sky {
+            background: var(--sky)
+        }
+
+        .icon-only {
+            width: 96px
+        }
+
+        .two {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid var(--sky);
+            border-radius: 20px;
+            padding: 24px
+        }
+
+        .card ul {
+            padding-left: 1.1em;
+            display: grid;
+            gap: 6px;
+            color: var(--slate)
+        }
+
+        .card h3 {
+            margin-top: 0
+        }
+
+        /* colors */
+        .group {
+            margin-top: 36px
+        }
+
+        .group-head {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 14px
+        }
+
+        .group-head h3 {
+            margin: 0
+        }
+
+        .group-head span {
+            font-size: .85rem;
+            color: var(--slate)
+        }
+
+        .grid {
+            display: grid;
+            gap: 18px;
+            grid-template-columns: repeat(4, 1fr)
+        }
+
+        .grid.three {
+            grid-template-columns: repeat(3, 1fr)
+        }
+
+        .sw {
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+            border: 1px solid var(--sky);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(20, 33, 61, .04), 0 6px 18px rgba(20, 33, 61, .05);
+            transition: transform .15s ease, box-shadow .15s ease
+        }
+
+        .sw:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(20, 33, 61, .06), 0 12px 26px rgba(20, 33, 61, .09)
+        }
+
+        .chip {
+            height: 110px;
+            padding: 16px 18px;
+            font: 600 1.1rem Poppins, sans-serif;
+            display: flex;
+            align-items: flex-end;
+            box-shadow: inset 0 -1px 0 rgba(20, 33, 61, .06)
+        }
+
+        .chip.light {
+            box-shadow: inset 0 -1px 0 var(--sky)
+        }
+
+        .meta {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding: 16px 18px 20px;
+            font-size: .88rem;
+            color: var(--slate)
+        }
+
+        .codes {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px
+        }
+
+        .code {
+            font: 600 .78rem Inter, sans-serif;
+            letter-spacing: .02em;
+            padding: 3px 10px;
+            border-radius: 999px;
+            background: var(--sky);
+            color: var(--navy);
+            white-space: nowrap
+        }
+
+        .code.hex {
+            font-family: Poppins, sans-serif;
+            background: var(--navy);
+            color: #fff
+        }
+
+        .meta p {
+            line-height: 1.5
+        }
+
+        .ratio {
+            background: #fff;
+            border: 1px solid var(--sky);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 1px 2px rgba(20, 33, 61, .04), 0 6px 18px rgba(20, 33, 61, .05)
+        }
+
+        .bar {
+            display: flex;
+            height: 56px;
+            border-radius: 14px;
+            overflow: hidden;
+            margin-bottom: 14px;
+            border: 1px solid var(--sky)
+        }
+
+        .bar div {
+            display: grid;
+            place-items: center;
+            font-size: .85rem;
+            font-weight: 600;
+            padding: 0 8px;
+            text-align: center
+        }
+
+        .ratio p {
+            color: var(--slate);
+            font-size: .92rem
+        }
+
+        /* type */
+        .fam {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px
+        }
+
+        .fam .big {
+            font-size: 4rem;
+            line-height: 1;
+            color: var(--cobalt);
+            margin-bottom: 8px
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid var(--sky)
+        }
+
+        td {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--sky);
+            vertical-align: middle
+        }
+
+        tr:last-child td {
+            border-bottom: 0
+        }
+
+        td.spec {
+            color: var(--slate);
+            font-size: .85rem;
+            width: 210px
+        }
+
+        /* components */
+        .btn {
+            text-decoration: none;
+            display: inline-block;
+            font: 700 1.15rem Poppins, sans-serif;
+            padding: 14px 28px;
+            border-radius: 999px;
+            border: 2px solid transparent
+        }
+
+        .b-donate {
+            background: var(--coral);
+            color: #fff
+        }
+
+        .b-request {
+            color: var(--cobalt);
+            border-color: var(--cobalt)
+        }
+
+        .badge {
+            font: 600 .8rem Inter, sans-serif;
+            padding: 4px 12px;
+            border-radius: 999px;
+            color: #fff;
+            margin-right: 8px
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            align-items: center
+        }
+
+        @media(max-width:960px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr)
+            }
+        }
+
+        @media(max-width:760px) {
+            .grid.three {
+                grid-template-columns: 1fr
+            }
+
+            .group-head {
+                flex-direction: column;
+                gap: 2px
+            }
+
+
+            .two,
+            .fam {
+                grid-template-columns: 1fr
+            }
+
+            .hero .lockup {
+                font-size: 2.6rem
+            }
+        }
+
+        @media(max-width:520px) {
+            .grid {
+                grid-template-columns: 1fr
+            }
+
+            td.spec {
+                width: auto
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+        <symbol id="logo" viewBox="20 44 472 424">
+            <title>iCareDonate logo</title>
+            <g fill-rule="evenodd" stroke="none">
+<path fill="#0A49AA" d="M 407.87,55.67 L 388.67,50.39 L 377.64,48.95 L 366.12,48.47 L 347.89,50.39 L 335.41,53.27 L 326.78,56.15 L 309.98,63.83 L 303.26,67.66 L 290.31,76.78 L 270.63,95.50 L 264.88,102.21 L 256.72,113.73 L 255.28,114.69 L 245.20,100.29 L 230.33,83.98 L 214.49,71.02 L 195.30,59.99 L 177.55,53.27 L 162.67,49.91 L 154.04,48.95 L 136.28,48.95 L 124.77,50.39 L 112.29,53.27 L 94.54,59.99 L 79.66,68.14 L 65.27,78.70 L 55.67,87.82 L 45.59,100.29 L 40.31,108.45 L 32.16,126.20 L 28.32,138.68 L 25.44,152.60 L 24.00,169.87 L 24.48,178.03 L 26.40,169.39 L 32.16,151.64 L 38.87,135.80 L 41.75,130.52 L 44.15,128.60 L 47.99,129.08 L 101.73,155.47 L 105.57,158.35 L 105.57,159.79 L 61.43,245.68 L 59.03,246.16 L 35.52,234.17 L 40.31,246.16 L 47.03,259.60 L 55.67,274.47 L 74.38,300.86 L 95.98,326.78 L 107.97,339.73 L 143.96,375.24 L 170.83,399.23 L 202.98,425.62 L 226.49,443.38 L 255.76,463.05 L 273.51,451.53 L 292.71,437.62 L 324.86,412.19 L 359.88,381.96 L 393.47,349.81 L 419.86,321.02 L 440.98,294.15 L 460.17,264.88 L 471.21,243.76 L 475.04,234.65 L 450.57,247.12 L 449.13,247.12 L 447.69,245.68 L 408.35,161.23 L 408.35,158.83 L 410.75,156.91 L 459.21,133.88 L 468.33,130.52 L 470.73,131.96 L 477.92,149.24 L 485.60,173.23 L 487.04,181.39 L 487.52,169.87 L 486.08,152.60 L 482.72,136.76 L 479.36,126.20 L 474.08,114.21 L 465.93,100.29 L 460.65,93.10 L 447.21,79.18 L 434.74,69.58 L 424.66,63.35 Z M 273.03,343.09 L 282.63,352.21 L 283.59,354.13 L 283.59,358.44 L 280.23,363.24 L 275.43,365.64 L 268.72,366.12 L 262.48,364.20 L 260.08,362.76 L 258.64,360.84 L 268.24,350.29 Z M 262.96,328.22 L 264.40,329.65 L 266.32,334.45 L 265.36,339.73 L 262.00,345.01 L 243.28,366.12 L 238.97,368.04 L 233.69,368.04 L 229.85,366.12 L 226.97,362.76 L 226.01,359.88 L 226.49,354.61 L 228.89,350.77 L 246.16,331.09 L 250.48,327.26 L 253.84,325.82 L 258.16,325.82 Z M 242.80,306.62 L 244.72,309.02 L 246.16,312.86 L 246.16,315.74 L 244.72,320.06 L 241.37,324.86 L 218.33,351.25 L 214.49,354.61 L 209.22,356.53 L 203.94,356.05 L 199.62,353.65 L 196.26,348.37 L 196.26,343.09 L 197.70,339.73 L 225.05,308.06 L 227.93,305.66 L 232.25,303.74 L 237.53,303.74 Z M 214.01,287.91 L 217.85,291.75 L 219.29,295.11 L 218.81,301.82 L 215.93,306.62 L 188.58,337.33 L 186.18,338.77 L 182.35,339.73 L 177.55,339.25 L 173.71,337.33 L 171.31,334.93 L 169.39,331.09 L 169.39,324.86 L 172.27,319.10 L 196.26,291.75 L 200.10,288.39 L 207.30,285.99 L 211.14,286.47 Z M 181.39,274.95 L 185.22,278.79 L 186.66,282.15 L 186.66,288.39 L 182.83,295.11 L 168.91,310.94 L 162.19,317.18 L 158.35,318.62 L 152.60,318.62 L 147.80,316.22 L 144.92,313.34 L 143.00,309.02 L 143.48,301.82 L 146.36,296.55 L 158.83,282.15 L 166.99,274.95 L 172.75,273.03 L 178.51,273.51 Z M 68.14,250.48 L 69.10,250.00 L 94.06,259.60 L 96.93,259.60 L 102.69,250.96 L 135.80,185.70 L 135.80,183.78 L 134.84,182.83 L 110.85,171.79 L 110.37,170.35 L 114.21,164.11 L 116.61,164.11 L 149.24,179.47 L 161.23,182.35 L 177.07,181.87 L 185.70,179.95 L 212.10,170.83 L 220.73,169.39 L 227.45,169.39 L 229.37,170.35 L 216.41,180.43 L 208.74,188.10 L 189.54,211.62 L 185.70,217.37 L 183.78,223.13 L 184.26,230.81 L 186.66,235.61 L 190.98,239.93 L 194.34,241.84 L 200.58,243.76 L 205.86,244.24 L 215.45,242.80 L 227.93,236.57 L 232.73,232.73 L 244.24,221.21 L 250.48,216.41 L 256.72,213.53 L 261.04,212.57 L 269.20,212.57 L 273.99,213.53 L 282.63,217.37 L 287.43,220.73 L 358.92,282.15 L 365.64,289.35 L 367.56,296.07 L 366.12,301.34 L 360.36,307.10 L 354.13,309.02 L 348.37,308.06 L 343.09,304.70 L 293.67,263.44 L 291.27,262.48 L 287.91,263.92 L 286.47,266.80 L 287.43,270.63 L 335.41,310.46 L 338.77,314.30 L 340.69,320.06 L 340.21,323.42 L 338.77,326.30 L 334.45,330.61 L 329.17,332.53 L 322.46,331.57 L 275.91,291.75 L 271.59,291.27 L 270.16,292.23 L 268.72,294.63 L 269.20,297.99 L 273.99,302.78 L 307.10,330.61 L 312.38,336.85 L 312.86,343.09 L 309.98,347.89 L 307.58,349.81 L 303.74,351.25 L 297.99,351.25 L 293.19,349.33 L 274.47,333.01 L 272.07,325.82 L 268.72,321.98 L 262.00,318.62 L 254.32,317.66 L 254.32,309.98 L 252.40,305.18 L 249.04,300.86 L 245.68,298.47 L 239.93,296.07 L 232.73,295.59 L 228.41,296.55 L 227.45,291.75 L 225.05,286.47 L 220.25,281.67 L 217.85,280.23 L 211.62,278.31 L 204.90,278.31 L 195.78,281.67 L 194.82,280.71 L 194.34,277.83 L 192.42,273.99 L 187.62,269.20 L 180.43,265.84 L 171.31,265.36 L 166.03,266.80 L 158.35,271.11 L 141.08,289.83 L 119.97,275.43 L 110.85,270.63 L 97.89,268.24 L 88.30,264.88 L 82.54,262.00 L 73.90,256.24 Z M 191.94,224.09 L 195.78,216.41 L 221.21,186.18 L 236.09,175.15 L 250.00,163.63 L 260.56,158.35 L 267.28,156.91 L 282.63,156.91 L 294.63,159.31 L 314.30,166.99 L 337.81,178.99 L 347.89,181.87 L 358.44,181.87 L 367.56,179.47 L 376.68,175.63 L 378.60,173.71 L 398.75,164.11 L 400.19,165.07 L 440.98,251.92 L 441.46,255.28 L 421.30,265.36 L 419.86,265.36 L 418.90,264.40 L 416.02,258.64 L 415.07,258.16 L 400.19,268.24 L 385.80,280.71 L 380.04,284.55 L 374.76,286.95 L 369.48,279.27 L 352.21,262.96 L 294.15,213.53 L 286.95,208.26 L 281.19,205.38 L 273.99,203.46 L 262.96,203.46 L 258.16,204.42 L 250.48,207.30 L 240.41,214.01 L 222.65,230.33 L 215.45,234.65 L 210.66,236.09 L 204.90,236.57 L 197.70,234.65 L 192.90,229.85 Z"/>
+<path fill="#FDFDFD" d="M 283.11,354.13 L 282.15,352.21 L 273.03,343.57 L 270.63,347.89 L 259.12,361.32 L 262.48,363.72 L 266.32,365.16 L 275.43,365.16 L 281.19,361.80 L 283.11,358.44 Z M 398.27,164.59 L 378.60,174.19 L 377.16,176.11 L 400.19,223.61 L 415.54,257.20 L 419.38,264.40 L 421.30,264.88 L 440.50,255.76 L 440.98,253.36 L 399.71,165.07 Z M 68.62,250.48 L 73.90,255.76 L 82.54,261.52 L 88.30,264.40 L 97.89,267.76 L 110.85,270.16 L 119.97,274.95 L 141.08,289.35 L 158.35,270.63 L 166.03,266.32 L 171.31,264.88 L 178.03,264.88 L 186.18,267.76 L 192.90,273.99 L 195.78,281.19 L 204.90,277.83 L 211.62,277.83 L 217.85,279.75 L 220.25,281.19 L 225.53,286.47 L 227.93,291.75 L 228.41,296.07 L 232.73,295.11 L 239.93,295.59 L 245.68,297.99 L 249.04,300.38 L 253.84,307.10 L 255.28,312.86 L 254.80,317.66 L 262.00,318.14 L 268.72,321.50 L 272.55,325.82 L 274.95,333.01 L 291.27,347.41 L 297.99,350.77 L 303.74,350.77 L 309.50,347.89 L 312.38,343.09 L 311.90,336.85 L 307.10,331.09 L 273.99,303.26 L 268.72,297.99 L 268.24,294.63 L 270.16,291.75 L 271.59,290.79 L 275.91,291.27 L 322.46,331.09 L 329.17,332.05 L 334.45,330.13 L 338.29,326.30 L 339.73,323.42 L 340.21,320.06 L 338.29,314.30 L 335.41,310.94 L 286.95,270.63 L 285.99,266.80 L 287.91,263.44 L 291.27,262.00 L 293.67,262.96 L 343.09,304.22 L 348.37,307.58 L 354.13,308.54 L 360.36,306.62 L 365.64,301.34 L 367.08,296.07 L 365.16,289.35 L 358.92,282.63 L 287.43,221.21 L 282.63,217.85 L 273.99,214.01 L 269.20,213.05 L 261.04,213.05 L 254.32,214.97 L 247.60,218.81 L 227.93,237.05 L 215.45,243.28 L 205.86,244.72 L 200.58,244.24 L 196.74,243.28 L 190.98,240.41 L 186.18,235.61 L 183.78,230.81 L 183.31,223.13 L 185.22,217.37 L 189.06,211.62 L 208.26,188.10 L 216.41,179.95 L 228.89,170.35 L 227.45,169.87 L 220.73,169.87 L 212.10,171.31 L 185.70,180.43 L 177.07,182.35 L 161.23,182.83 L 149.24,179.95 L 116.61,164.59 L 114.21,164.59 L 110.85,171.31 L 134.84,182.35 L 136.28,183.78 L 136.28,185.70 L 103.17,250.96 L 98.85,258.16 L 96.93,260.08 L 94.06,260.08 Z M 44.15,129.08 L 42.23,130.52 L 35.52,144.44 L 30.24,158.35 L 24.48,178.51 L 24.48,188.58 L 25.92,200.58 L 28.80,214.01 L 35.04,233.69 L 59.03,245.68 L 60.95,245.68 L 105.09,159.79 L 105.09,158.35 L 101.73,155.95 L 47.99,129.56 Z"/>
+<path fill="#F2B84B" d="M 262.96,328.69 L 258.16,326.30 L 253.84,326.30 L 250.48,327.74 L 246.64,331.09 L 229.37,350.77 L 226.97,354.61 L 226.97,361.80 L 229.85,365.64 L 233.69,367.56 L 238.97,367.56 L 243.28,365.64 L 261.52,345.01 L 264.88,339.73 L 265.84,334.45 Z M 242.80,307.10 L 237.53,304.22 L 232.25,304.22 L 225.53,308.06 L 198.18,339.73 L 196.74,343.09 L 196.74,348.37 L 199.62,353.17 L 203.94,355.57 L 209.22,356.05 L 214.49,354.13 L 217.85,351.25 L 240.89,324.86 L 244.24,320.06 L 245.68,315.74 L 245.68,312.86 Z M 214.01,288.39 L 211.14,286.95 L 207.30,286.47 L 200.10,288.87 L 196.74,291.75 L 172.75,319.10 L 169.87,324.86 L 169.87,331.09 L 170.83,333.49 L 173.71,336.85 L 179.47,339.25 L 184.74,338.77 L 188.58,336.85 L 215.45,306.62 L 218.33,301.82 L 218.81,295.11 L 217.37,291.75 Z M 181.39,275.43 L 176.11,273.51 L 170.35,273.99 L 166.99,275.43 L 159.31,282.15 L 145.88,297.99 L 143.48,303.74 L 143.96,310.46 L 145.40,313.34 L 147.80,315.74 L 152.60,318.14 L 158.35,318.14 L 162.19,316.70 L 168.43,310.94 L 182.35,295.11 L 186.18,288.39 L 186.18,282.15 L 184.74,278.79 Z M 192.42,224.09 L 193.38,229.85 L 197.70,234.17 L 204.90,236.09 L 210.66,235.61 L 215.45,234.17 L 222.65,229.85 L 240.41,213.53 L 250.48,206.82 L 258.16,203.94 L 262.96,202.98 L 273.99,202.98 L 281.19,204.90 L 286.95,207.78 L 294.15,213.05 L 352.21,262.48 L 369.96,279.27 L 374.76,286.47 L 382.44,282.63 L 400.19,267.76 L 411.71,259.60 L 415.54,257.68 L 376.68,176.11 L 367.56,179.95 L 358.44,182.35 L 345.01,181.87 L 337.81,179.47 L 305.66,163.63 L 294.63,159.79 L 285.99,157.87 L 264.40,157.87 L 255.76,160.75 L 250.00,164.11 L 219.77,188.10 L 207.30,203.94 L 196.26,216.41 Z M 468.33,131.00 L 459.21,134.36 L 433.30,146.36 L 408.83,158.83 L 408.83,161.23 L 447.69,244.72 L 449.13,246.64 L 450.57,246.64 L 475.04,234.17 L 480.80,218.81 L 486.08,195.78 L 487.04,181.87 L 485.12,173.23 L 474.56,141.56 L 470.25,131.96 Z"/>
+</g>
+        </symbol>
+    </svg>
+
+    <header class="hero">
+        <div class="wrap">
+            <div class="lockup"><svg viewBox="0 0 472 424">
+                    <use href="#logo" />
+                </svg><span class="word">i<em>Care</em>Donate</span></div>
+            <p>Brand guide: logo, color palette, and typography.</p>
+        </div>
+    </header>
+
+    <section>
+        <div class="wrap">
+            <h2>Logo</h2>
+            <p class="lead">A heart held by two hands shaking. The heart is the care, the handshake is giving and
+                receiving. One hand is cream and the other is amber, standing for the donor and the requester meeting in
+                the middle.</p>
+            <div class="tiles">
+                <div class="tile t-cream">
+                    <div class="lockup" style="font-size:1.7rem"><svg viewBox="0 0 472 424">
+                            <use href="#logo" />
+                        </svg><span class="word">i<em>Care</em>Donate</span></div><small
+                        style="color:var(--slate)">Primary lockup, on cream or white</small>
+                </div>
+                <div class="tile t-navy dark">
+                    <div class="lockup" style="font-size:1.7rem"><svg viewBox="0 0 472 424">
+                            <use href="#logo" />
+                        </svg><span class="word">i<em>Care</em>Donate</span></div><small>Reversed lockup, on deep
+                        navy</small>
+                </div>
+                <div class="tile t-sky"><svg class="icon-only" viewBox="0 0 472 424">
+                        <use href="#logo" />
+                    </svg><small style="color:var(--slate)">Icon only: favicon, app icon, social avatar</small></div>
+            </div>
+            <div class="two" style="margin-top:22px">
+                <div class="card">
+                    <h3>How to use it</h3>
+                    <ul>
+                        <li>The wordmark is Poppins Bold with only "Care" in amber <b>#F2B84B</b>.</li>
+                        <li>Leave clear space around the logo equal to the height of the heart's top lobe.</li>
+                        <li>Smallest sizes: icon 24 px wide, full lockup 120 px wide.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3>Please don't</h3>
+                    <ul>
+                        <li>Recolor the heart or hands, and never use green.</li>
+                        <li>Stretch, rotate, or add shadows to the logo.</li>
+                        <li>Change the amber in "Care" or swap it for another color.</li>
+                        <li>Place the logo on a busy photo without a solid backing.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="wrap">
+            <h2>Color palette</h2>
+            <p class="lead">Cobalt blue brings trust, coral draws the eye to action, and warm cream keeps the pages easy
+                on the eyes. There is no green anywhere in the system.</p>
+            <div class="group">
+                <div class="group-head"><h3>Brand colors</h3><span>Core identity</span></div>
+                <div class="grid three">
+                <article class="sw">
+                    <div class="chip" style="background:#1F4FA3;color:#fff">Cobalt</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#1F4FA3</span><span class="code">RGB 31, 79, 163</span></div>
+                        <p>Primary: navbar, headings, Request help button.</p>
+                    </div>
+                </article>
+                <article class="sw">
+                    <div class="chip" style="background:#E0553D;color:#fff">Coral</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#E0553D</span><span class="code">RGB 224, 85, 61</span></div>
+                        <p>Main call to action: Donate now button.</p>
+                    </div>
+                </article>
+                <article class="sw">
+                    <div class="chip" style="background:#F2B84B;color:#14213D">Amber</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#F2B84B</span><span class="code">RGB 242, 184, 75</span></div>
+                        <p>Highlight: stat numbers, badges, and "Care" in the logo.</p>
+                    </div>
+                </article>
+                </div>
+            </div>
+            <div class="group">
+                <div class="group-head"><h3>Neutrals</h3><span>Backgrounds and text</span></div>
+                <div class="grid">
+                <article class="sw">
+                    <div class="chip light" style="background:#FBF7F2;color:#14213D">Cream</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#FBF7F2</span><span class="code">RGB 251, 247, 242</span></div>
+                        <p>Main page background.</p>
+                    </div>
+                </article>
+                <article class="sw">
+                    <div class="chip light" style="background:#E3EEFB;color:#14213D">Sky tint</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#E3EEFB</span><span class="code">RGB 227, 238, 251</span></div>
+                        <p>Cards, section bands, dashboard panels.</p>
+                    </div>
+                </article>
+                <article class="sw">
+                    <div class="chip" style="background:#14213D;color:#fff">Deep navy</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#14213D</span><span class="code">RGB 20, 33, 61</span></div>
+                        <p>Body text, footer, dark backgrounds.</p>
+                    </div>
+                </article>
+                <article class="sw">
+                    <div class="chip" style="background:#5A6781;color:#fff">Slate blue</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#5A6781</span><span class="code">RGB 90, 103, 129</span></div>
+                        <p>Captions, helper text, placeholders.</p>
+                    </div>
+                </article>
+                </div>
+            </div>
+            <div class="group">
+                <div class="group-head"><h3>Status colors</h3><span>Admin workflow</span></div>
+                <div class="grid three">
+                <article class="sw">
+                    <div class="chip" style="background:#2E6FDB;color:#fff">Approved</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#2E6FDB</span><span class="code">RGB 46, 111, 219</span></div>
+                        <p>Admin approved. Always show the word too.</p>
+                    </div>
+                </article>
+                <article class="sw">
+                    <div class="chip" style="background:#E8A317;color:#14213D">Pending</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#E8A317</span><span class="code">RGB 232, 163, 23</span></div>
+                        <p>Waiting for admin review.</p>
+                    </div>
+                </article>
+                <article class="sw">
+                    <div class="chip" style="background:#C0392B;color:#fff">Rejected</div>
+                    <div class="meta">
+                        <div class="codes"><span class="code hex">#C0392B</span><span class="code">RGB 192, 57, 43</span></div>
+                        <p>Admin rejected, errors.</p>
+                    </div>
+                </article>
+                </div>
+            </div>
+            <div class="group">
+                <div class="group-head"><h3>How much of each to use</h3><span>60 / 30 / 10 rule</span></div>
+                <div class="ratio">
+                    <div class="bar" role="img"
+                        aria-label="60 percent cream and sky, 30 percent cobalt, 10 percent coral and amber">
+                        <div style="flex:60;background:var(--sky);color:var(--navy)">60% cream and sky tint</div>
+                        <div style="flex:30;background:var(--cobalt);color:#fff">30% cobalt</div>
+                        <div style="flex:10;background:var(--coral);color:#fff">10%</div>
+                    </div>
+                    <p>Coral is for the main action only. White text on coral should be bold and 18 px or larger so
+                        it stays readable.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="wrap">
+            <h2>Typography</h2>
+            <p class="lead">Two friendly, highly readable families, both free on Google Fonts.</p>
+            <div class="fam">
+                <div class="card">
+                    <div class="big" style="font-family:Poppins,sans-serif;font-weight:700">Aa</div>
+                    <h3 style="margin-top:0">Poppins</h3>
+                    <p style="color:var(--slate)">Headings, buttons, the wordmark, and big numbers. Weights: 500, 600,
+                        700.</p>
+                </div>
+                <div class="card">
+                    <div class="big" style="font-family:Inter,sans-serif;font-weight:500">Aa</div>
+                    <h3 style="margin-top:0">Inter</h3>
+                    <p style="color:var(--slate)">Body text, forms, captions, and tables. Weights: 400, 500, 600.</p>
+                </div>
+            </div>
+            <h3>Type scale</h3>
+            <table>
+                <tr>
+                    <td><span style="font:700 2.6rem/1.15 Poppins,sans-serif;color:var(--cobalt)">Give with care.</span>
+                    </td>
+                    <td class="spec">Heading 1<br>Poppins Bold, 42 px</td>
+                </tr>
+                <tr>
+                    <td><span style="font:600 2rem/1.2 Poppins,sans-serif;color:var(--cobalt)">How it works</span></td>
+                    <td class="spec">Heading 2<br>Poppins SemiBold, 32 px</td>
+                </tr>
+                <tr>
+                    <td><span style="font:600 1.25rem/1.3 Poppins,sans-serif;color:var(--cobalt)">Clothes and
+                            essentials</span></td>
+                    <td class="spec">Heading 3<br>Poppins SemiBold, 20 px</td>
+                </tr>
+                <tr>
+                    <td><span style="font:400 1rem/1.65 Inter,system-ui,sans-serif">Donors show their items are real,
+                            and requesters show their need is real.</span></td>
+                    <td class="spec">Body<br>Inter Regular, 16 px, line height 1.65</td>
+                </tr>
+                <tr>
+                    <td><span style="font:400 .875rem/1.5 Inter,system-ui,sans-serif;color:var(--slate)">Items only. We
+                            do not accept money.</span></td>
+                    <td class="spec">Caption<br>Inter Regular, 14 px, slate blue</td>
+                </tr>
+                <tr>
+                    <td><span class="btn b-donate" style="font-size:1.15rem">Donate now</span></td>
+                    <td class="spec">Button<br>Poppins Bold, 18 px</td>
+                </tr>
+            </table>
+        </div>
+    </section>
+
+    <section>
+        <div class="wrap">
+            <h2>In use</h2>
+            <p class="lead">The two homepage buttons and the admin status badges, using the palette above.</p>
+            <div class="row"><a class="btn b-donate" href="#">Donate now</a><a class="btn b-request" href="#">Request
+                    help</a></div>
+            <div class="row" style="margin-top:22px"><span><span class="badge"
+                        style="background:#2E6FDB">Approved</span><span class="badge"
+                        style="background:#E8A317;color:var(--navy)">Pending</span><span class="badge"
+                        style="background:#C0392B">Rejected</span></span></div>
+            <p style="margin-top:24px;font:600 1.4rem Poppins,sans-serif;color:var(--cobalt)">Give with care. Receive
+                with dignity.</p>
+            <p style="color:var(--slate);font-size:.92rem">Suggested slogan, still to be confirmed by the team.</p>
+        </div>
+    </section>
+</body>
+
+</html>
