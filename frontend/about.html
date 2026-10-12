@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us — iCareDonate</title>
-  <meta name="description" content="Learn about iCareDonate's mission, values, and community team dedicated to transparent resource donations.">
+  <meta name="description" content="Our mission, vision, and the community principles guiding iCareDonate.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,11 +13,23 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -26,238 +38,257 @@
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+
+      <!-- Logo -->
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
 
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <!-- Desktop nav -->
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="about.html" class="nav-link active">About us</a>
+        <a href="about.html" class="nav-link nav-link--active">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link">Donations</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
 
+      <!-- Actions -->
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
 
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <!-- Mobile hamburger -->
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
 
+    <!-- Mobile menu -->
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
-        <a href="about.html" class="mobile-link active">About us</a>
+        <a href="about.html" class="mobile-link mobile-link--active">About us</a>
         <a href="how-it-works.html" class="mobile-link">How it works</a>
         <a href="categories.html" class="mobile-link">Categories</a>
-        <a href="donations.html" class="mobile-link">Donations</a>
         <a href="contact.html" class="mobile-link">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">About us</li>
-        </ol>
-      </nav>
+  <main style="padding: 40px 0 80px;">
+    <div class="container" style="max-width: 960px; margin: 0 auto; padding: 0 20px;">
 
-      <!-- Page Header -->
-      <div class="page-header reveal-on-scroll">
-        <span class="badge badge-sky mb-2">Our Story &amp; Purpose</span>
-        <h1>About iCareDonate</h1>
-        <p class="lead">Bridging community abundance with genuine local needs through transparent, verified giving.</p>
+      <div style="margin-bottom: 28px;">
+        <h1 style="margin-bottom: 8px;">About us</h1>
+        <p class="lead" style="margin-bottom: 0;">Our mission, vision, and the community principles guiding iCareDonate.</p>
       </div>
 
-      <!-- Mission & Vision Cards -->
-      <section class="mission-vision-grid reveal-on-scroll">
-        <div class="mv-card">
-          <div class="mv-card-icon">🎯</div>
-          <h3>Our Mission</h3>
-          <p>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 16px; margin-bottom: 32px;">
+        <div class="card" style="padding: 28px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 10px;">Mission</h3>
+          <p style="font-size: 15px; color: var(--slate); line-height: 1.65; margin: 0;">
             To empower communities through direct, transparent, and verified sharing of essential material resources, bridging the gap between donors with surplus goods and families with genuine needs.
           </p>
         </div>
 
-        <div class="mv-card">
-          <div class="mv-card-icon">🌟</div>
-          <h3>Our Vision</h3>
-          <p>
-            A compassionate society where zero usable goods are wasted and every community member receives timely help and essential resources with dignity, transparency, and trust.
+        <div class="card" style="padding: 28px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm);">
+          <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 10px;">Vision</h3>
+          <p style="font-size: 15px; color: var(--slate); line-height: 1.65; margin: 0;">
+            A compassionate society where zero usable goods are wasted and every community member receives timely help and essential resources with dignity and trust.
           </p>
         </div>
-      </section>
+      </div>
 
-      <!-- Platform Milestones Band -->
-      <section class="impact-band reveal-on-scroll">
+      <!-- Stats Band -->
+      <div style="background: var(--navy); color: #fff; border-radius: 20px; padding: 36px 28px; display: grid; grid-template-columns: repeat(3, 1fr); text-align: center; margin-bottom: 48px; gap: 20px; box-shadow: var(--shadow-md);">
         <div>
-          <div class="impact-stat-number">24</div>
-          <div class="impact-stat-label">Finished Community Events</div>
-        </div>
-        <div>
-          <div class="impact-stat-number">58</div>
-          <div class="impact-stat-label">Active Volunteers</div>
+          <div style="font-family: var(--font-heading); font-size: 44px; line-height: 1; color: var(--amber); margin-bottom: 8px; font-weight: 700;">24</div>
+          <div style="font-size: 14.5px; color: var(--sky); font-weight: 500;">Finished events</div>
         </div>
         <div>
-          <div class="impact-stat-number">12</div>
-          <div class="impact-stat-label">Community Partners &amp; Sponsors</div>
+          <div style="font-family: var(--font-heading); font-size: 44px; line-height: 1; color: var(--amber); margin-bottom: 8px; font-weight: 700;">58</div>
+          <div style="font-size: 14.5px; color: var(--sky); font-weight: 500;">Volunteers</div>
         </div>
-      </section>
-
-      <!-- Guiding Values -->
-      <section class="reveal-on-scroll mb-6">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Core Principles</h2>
-            <p class="section-subtitle">The standards that guide every interaction on iCareDonate.</p>
-          </div>
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 44px; line-height: 1; color: var(--amber); margin-bottom: 8px; font-weight: 700;">12</div>
+          <div style="font-size: 14.5px; color: var(--sky); font-weight: 500;">Sponsors</div>
         </div>
+      </div>
 
-        <div class="values-grid">
-          <div class="value-card">
-            <h4>Dignified Giving</h4>
-            <p>Every person in need deserves respectful, non-judgmental assistance without unnecessary bureaucracy.</p>
+      <!-- ════════════════════════════════════════════════════════════════
+           Native Accessible Collapsible Meet the Team Section
+           ════════════════════════════════════════════════════════════════ -->
+      <details class="team-section" id="meet-the-team">
+        <summary class="team-summary" aria-label="Toggle Meet the Team Section">
+          <div class="team-summary-text">
+            <h2 class="team-summary-title">Meet the Team</h2>
+            <p class="team-summary-sub">Meet the people behind iCareDonate.</p>
           </div>
-          <div class="value-card">
-            <h4>Rigorous Verification</h4>
-            <p>Admin verification protects our donors and requesters from misinformation and fraud.</p>
+          <span class="team-chevron-wrap" aria-hidden="true">
+            <i data-lucide="chevron-down" class="team-chevron"></i>
+          </span>
+        </summary>
+
+        <div class="team-panel">
+
+          <!-- ── Team Leader Card (full-width featured) ──────────────── -->
+          <div class="team-leader-card">
+            <!-- Gradient accent bar -->
+            <div class="team-leader-accent-bar" aria-hidden="true"></div>
+
+            <div class="team-leader-inner">
+              <div class="team-avatar team-avatar--leader" role="img" aria-label="Avatar for Ethan McClarence P. Gacud">EG</div>
+              <span class="team-leader-badge">Team Leader</span>
+              <h3 class="team-leader-name">Ethan McClarence P. Gacud</h3>
+              <p class="team-role">Project Lead &amp; Project Manager</p>
+              <p class="team-desc">
+                Coordinates the team, oversees project progress, and ensures that the platform meets its goals.
+                Plans, assigns, and monitors team tasks based on the Scope of Work and deadlines.
+                Helps resolve project issues and ensures that the different parts of the system work together properly.
+              </p>
+            </div>
           </div>
-          <div class="value-card">
-            <h4>Zero Waste</h4>
-            <p>Re-routing surplus school items, food, and electronics directly into homes that put them to life-changing use.</p>
-          </div>
-          <div class="value-card">
-            <h4>Local Community Pick-up</h4>
-            <p>Direct local exchanges remove costly courier fees and build real neighbor-to-neighbor bonds.</p>
-          </div>
+
+          <!-- ── Standard Member Grid (Explicit 3-column responsive layout) ── -->
+          <div class="team-grid">
+
+            <!-- Jheus Jhunwary Porteo -->
+            <div class="team-card">
+              <div class="team-avatar" role="img" aria-label="Avatar for Jheus Jhunwary Porteo" style="background: linear-gradient(135deg, #1E40AF 0%, var(--cobalt) 100%);">JP</div>
+              <h3>Jheus Jhunwary Porteo</h3>
+              <p class="team-role">Information Architect</p>
+              <p class="team-desc">Organizes the website structure and navigation for all sections, ensuring pages and features are logically connected.</p>
+            </div>
+
+            <!-- Rosemarie Collado -->
+            <div class="team-card">
+              <div class="team-avatar" role="img" aria-label="Avatar for Rosemarie Collado" style="background: linear-gradient(135deg, #0284C7 0%, var(--cobalt) 100%);">RC</div>
+              <h3>Rosemarie Collado</h3>
+              <p class="team-role">UI/UX Designer</p>
+              <p class="team-desc">Designs the wireframes, layouts, visual style, and overall user experience. Maintains consistency in colors, typography, and responsive design.</p>
+            </div>
+
+            <!-- Mikylla Emberga -->
+            <div class="team-card">
+              <div class="team-avatar" role="img" aria-label="Avatar for Mikylla Emberga" style="background: linear-gradient(135deg, #0369A1 0%, var(--cobalt) 100%);">ME</div>
+              <h3>Mikylla Emberga</h3>
+              <p class="team-role">Content Manager</p>
+              <p class="team-desc">Creates and manages the website's written content, including mission, FAQs, guides, and legal pages. Ensures clarity, consistency, and accuracy.</p>
+            </div>
+
+            <!-- Charly Diaz -->
+            <div class="team-card">
+              <div class="team-avatar" role="img" aria-label="Avatar for Charly Diaz" style="background: linear-gradient(135deg, #1D4ED8 0%, var(--cobalt) 100%);">CD</div>
+              <h3>Charly Diaz</h3>
+              <p class="team-role">Front-End Developer</p>
+              <p class="team-desc">Develops the interface using HTML, CSS, and JavaScript. Implements responsive layouts, forms, and connects the interface with the backend.</p>
+            </div>
+
+            <!-- Kurt Saranillo -->
+            <div class="team-card">
+              <div class="team-avatar" role="img" aria-label="Avatar for Kurt Saranillo" style="background: linear-gradient(135deg, #1E293B 0%, var(--cobalt) 100%);">KS</div>
+              <h3>Kurt Saranillo</h3>
+              <p class="team-role">Back-End Developer &amp; Database Manager</p>
+              <p class="team-desc">Develops the PHP backend, handles authentication, user roles, and workflows. Designs and maintains the MySQL database.</p>
+            </div>
+
+            <!-- Lennie Cholin -->
+            <div class="team-card">
+              <div class="team-avatar" role="img" aria-label="Avatar for Lennie Cholin" style="background: linear-gradient(135deg, #4338CA 0%, var(--cobalt) 100%);">LC</div>
+              <h3>Lennie Cholin</h3>
+              <p class="team-role">Tester / Quality Assurance</p>
+              <p class="team-desc">Creates test cases, checks for functional and usability issues, reports bugs, and performs final testing before submission.</p>
+            </div>
+
+          </div><!-- /.team-grid -->
+        </div><!-- /.team-panel -->
+      </details><!-- /.team-section -->
+
+      <!-- CTA Card -->
+      <div class="card" style="padding: 36px 32px; text-align: center; background: var(--sky); border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow-sm);">
+        <h2 style="font-size: 26px; color: var(--cobalt); margin-bottom: 10px;">Ready to help or need assistance?</h2>
+        <p class="lead" style="margin: 0 auto 24px; font-size: 16px;">Join our community platform and start making a difference today.</p>
+        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+          <a href="signup.html" class="btn btn-donate" style="padding: 12px 28px;">Create account</a>
+          <a href="how-it-works.html" class="btn btn-request" style="padding: 12px 28px;">See how it works</a>
         </div>
-      </section>
-
-      <!-- Meet the Team -->
-      <section class="reveal-on-scroll">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Meet the Project Team</h2>
-            <p class="section-subtitle">Dedicated community volunteers driving transparent aid across neighborhoods.</p>
-          </div>
-        </div>
-
-        <div class="team-grid">
-          <div class="team-card">
-            <div class="team-avatar">ER</div>
-            <h3 class="team-name">Elena Ramos</h3>
-            <div class="team-role">Project Lead &amp; Operations</div>
-            <p class="team-bio">Coordinating community verification and relief initiatives across urban centers.</p>
-          </div>
-
-          <div class="team-card">
-            <div class="team-avatar">MD</div>
-            <h3 class="team-name">Mark David</h3>
-            <div class="team-role">Technical Coordinator</div>
-            <p class="team-bio">Ensuring platform accessibility and streamlined inventory matching for aid requests.</p>
-          </div>
-
-          <div class="team-card">
-            <div class="team-avatar">SL</div>
-            <h3 class="team-name">Sarah Lim</h3>
-            <div class="team-role">Community Outreach</div>
-            <p class="team-bio">Liaising with local barangay centers, day care facilities, and youth organizations.</p>
-          </div>
-
-          <div class="team-card">
-            <div class="team-avatar">JC</div>
-            <h3 class="team-name">Jose Cruz</h3>
-            <div class="team-role">Logistics &amp; Safety</div>
-            <p class="team-bio">Overseeing physical item pickup points and community distribution schedules.</p>
-          </div>
-        </div>
-      </section>
+      </div>
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
+
+        <!-- Col 1: Brand / Home -->
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
 
+        <!-- Col 2: About -->
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
 
+        <!-- Col 3: Support -->
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
 
+        <!-- Col 4: Legal -->
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
+
       </div>
 
+      <!-- Bottom Bar -->
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { if(window.lucide) lucide.createIcons(); });
+  </script>
 </body>
 </html>

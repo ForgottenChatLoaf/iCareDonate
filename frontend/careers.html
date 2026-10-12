@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Careers &amp; Volunteers — iCareDonate</title>
-  <meta name="description" content="Join our passionate community volunteer network and help coordinate local donation verification on iCareDonate.">
+  <title>Careers &amp; Volunteer Opportunities — iCareDonate</title>
+  <meta name="description" content="Help us build technology and grassroots logistics networks that make community mutual aid seamless and dignified.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,233 +13,148 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/about.css">
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
-
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link">Donations</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
-
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
-
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
-
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
         <a href="about.html" class="mobile-link">About us</a>
         <a href="how-it-works.html" class="mobile-link">How it works</a>
         <a href="categories.html" class="mobile-link">Categories</a>
-        <a href="donations.html" class="mobile-link">Donations</a>
         <a href="contact.html" class="mobile-link">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item"><a href="about.html" class="breadcrumb-link">About us</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Careers &amp; Volunteers</li>
-        </ol>
-      </nav>
+  <main style="padding: 60px 0 80px; background: var(--color-bg);">
+    <div class="container" style="max-width: 860px; margin: 0 auto; padding: 0 20px;">
 
-      <!-- Page Header -->
-      <div class="page-header reveal-on-scroll">
-        <span class="badge badge-sky mb-2">Join the Movement</span>
-        <h1>Careers &amp; Volunteer Opportunities</h1>
-        <p class="lead">Help build compassionate, resilient neighborhoods by joining our volunteer team.</p>
+      <div style="text-align: center; margin-bottom: 48px;">
+        <span class="badge badge-info" style="margin-bottom: 12px;">Join Our Mission</span>
+        <h1 style="font-family: var(--font-heading); font-size: 40px; color: var(--color-text); margin-bottom: 12px;">
+          Work &amp; Volunteer with iCareDonate
+        </h1>
+        <p style="font-size: 16px; color: var(--color-text-muted); max-width: 600px; margin: 0 auto; line-height: 1.6;">
+          Help us build technology and grassroots logistics networks that make community mutual aid seamless and dignified.
+        </p>
       </div>
 
-      <!-- Volunteer Intro Card -->
-      <section class="card card-cta-band mb-6 reveal-on-scroll">
-        <h3>Why Volunteer With iCareDonate?</h3>
-        <p>
-          iCareDonate is powered by neighbors, youth volunteers, and community leaders who donate their time to ensure supplies reach real hands safely.
+      <div class="card" style="padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 32px;">
+        <h2 style="font-size: 20px; font-weight: 700; color: var(--color-primary); margin: 0 0 12px;">
+          Volunteer Community Coordinators
+        </h2>
+        <p style="font-size: 14.5px; color: var(--color-text); line-height: 1.6; margin-bottom: 16px;">
+          We are actively seeking barangay coordinators across Metro Manila to assist in verifying proof documents, coordinating distribution days, and conducting occasional verification interviews.
         </p>
-        <p class="cta-muted-subtext">
-          Whether you can spare 3 hours on weekends or desire an active leadership role in your barangay, your involvement makes a tangible difference.
-        </p>
-      </section>
-
-      <!-- Roles List -->
-      <section class="reveal-on-scroll">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">Open Volunteer Roles</h2>
-            <p class="section-subtitle">Flexible community positions available across Metro Manila.</p>
-          </div>
+        <div style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap;">
+          <span class="badge badge-approved">Remote / Hybrid</span>
+          <span class="badge badge-neutral">Flexible Hours</span>
+          <span class="badge badge-info">Community Impact</span>
         </div>
+      </div>
 
-        <div class="jobs-list">
-          
-          <div class="job-card">
-            <div class="job-info">
-              <h3>Barangay Community Coordinator</h3>
-              <div class="job-meta">
-                <span>📍 Pasig &amp; Quezon City</span> &bull; 
-                <span>🤝 Volunteer / Part-Time</span> &bull; 
-                <span>⏱️ 4-6 hrs / week</span>
-              </div>
-              <p class="job-card-desc">
-                Act as the point-person for verified handovers at community halls, greeting donors and beneficiaries.
-              </p>
-            </div>
-            <a href="contact.html?role=coordinator" class="btn btn-primary">Apply Now</a>
-          </div>
-
-          <div class="job-card">
-            <div class="job-info">
-              <h3>Item Inspection Volunteer</h3>
-              <div class="job-meta">
-                <span>📍 Metro Manila (Remote / On-site)</span> &bull; 
-                <span>🤝 Flexible Volunteer</span> &bull; 
-                <span>⏱️ 2-4 hrs / week</span>
-              </div>
-              <p class="job-card-desc">
-                Review item photos, condition notes, and verification documents to uphold community safety standards.
-              </p>
-            </div>
-            <a href="contact.html?role=inspector" class="btn btn-primary">Apply Now</a>
-          </div>
-
-          <div class="job-card">
-            <div class="job-info">
-              <h3>Digital Literacy &amp; Laptop Specialist</h3>
-              <div class="job-meta">
-                <span>📍 Pasig Community Tech Lab</span> &bull; 
-                <span>🤝 Tech Volunteer</span> &bull; 
-                <span>⏱️ Weekends</span>
-              </div>
-              <p class="job-card-desc">
-                Assist students in setting up donated laptops, reinstalling educational software, and device diagnostics.
-              </p>
-            </div>
-            <a href="contact.html?role=tech-specialist" class="btn btn-primary">Apply Now</a>
-          </div>
-
-          <div class="job-card">
-            <div class="job-info">
-              <h3>Student Ambassador &amp; Campus Outreach</h3>
-              <div class="job-meta">
-                <span>📍 Partner High Schools &amp; Universities</span> &bull; 
-                <span>🤝 Student Initiative</span> &bull; 
-                <span>⏱️ Flexible</span>
-              </div>
-              <p class="job-card-desc">
-                Organize book drives and school supplies donation drop boxes within local schools and student clubs.
-              </p>
-            </div>
-            <a href="contact.html?role=ambassador" class="btn btn-primary">Apply Now</a>
-          </div>
-
-        </div>
-      </section>
+      <div class="card" style="padding: 32px; border-radius: var(--radius-lg); text-align: center; background: var(--color-tint-teal); border: 1px solid rgba(31, 79, 163, 0.12);">
+        <h3 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0 0 8px;">Want to collaborate or join?</h3>
+        <p style="font-size: 14px; color: var(--color-text-muted); margin-bottom: 20px;">Send our operations team a message with your background and area of interest.</p>
+        <a href="contact.html" class="btn btn-primary">Contact Operations Team</a>
+      </div>
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { if(window.lucide) lucide.createIcons(); });
+  </script>
 </body>
 </html>

@@ -114,7 +114,7 @@
         const authBtn = authActions.querySelector('.btn-pub-auth');
         if (authBtn) {
           const isStaff = user.role === 'admin' || user.role === 'superadmin';
-          authBtn.href = isStaff ? '/CommunityDono/admin/' : '/CommunityDono/user/dashboard.php';
+          authBtn.href = isStaff ? 'admin-dashboard.html' : 'user-dashboard.html';
           authBtn.textContent = isStaff ? 'Admin Panel' : 'Dashboard';
         }
 
@@ -134,7 +134,7 @@
         const authMobile = mobileLinks.querySelector('a[href="login.html"]');
         if (authMobile) {
           const isStaff = user.role === 'admin' || user.role === 'superadmin';
-          authMobile.href = isStaff ? '/CommunityDono/admin/' : '/CommunityDono/user/dashboard.php';
+          authMobile.href = isStaff ? 'admin-dashboard.html' : 'user-dashboard.html';
           authMobile.textContent = isStaff ? 'Admin Panel' : 'Dashboard';
         }
 

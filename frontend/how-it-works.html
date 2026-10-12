@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>How It Works — iCareDonate</title>
-  <meta name="description" content="Step-by-step guide to posting items, submitting verified requests, and safe community pick-ups on iCareDonate.">
+  <meta name="description" content="Everything you need to know about posting items, requesting aid, and safe handovers.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,238 +13,219 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/about.css">
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
-
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About us</a>
-        <a href="how-it-works.html" class="nav-link active">How it works</a>
+        <a href="how-it-works.html" class="nav-link nav-link--active">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link">Donations</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
-
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
-
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
-
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
         <a href="about.html" class="mobile-link">About us</a>
-        <a href="how-it-works.html" class="mobile-link active">How it works</a>
+        <a href="how-it-works.html" class="mobile-link mobile-link--active">How it works</a>
         <a href="categories.html" class="mobile-link">Categories</a>
-        <a href="donations.html" class="mobile-link">Donations</a>
         <a href="contact.html" class="mobile-link">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">How it works</li>
-        </ol>
-      </nav>
+  <main style="padding: 40px 0 80px;">
+    <div class="container" style="max-width: 960px; margin: 0 auto; padding: 0 20px;">
 
-      <!-- Page Header -->
-      <div class="page-header reveal-on-scroll">
-        <span class="badge badge-sky mb-2">Platform Guide</span>
-        <h1>How iCareDonate Works</h1>
-        <p class="lead">A step-by-step transparent process built to protect donors, empower requesters, and eliminate waste.</p>
+      <div style="margin-bottom: 32px;">
+        <h1 style="margin-bottom: 8px;">How it works</h1>
+        <p class="lead" style="margin-bottom: 0;">Everything you need to know about posting items, requesting aid, and safe handovers.</p>
       </div>
 
-      <!-- Who We Serve Card -->
-      <section class="card mb-6 reveal-on-scroll">
-        <div class="card-body grid-split-media">
-          <div class="media-frame-sm">
-            <img 
-              src="assets/images/who-we-serve.jpg" 
-              alt="Community distribution point" 
-              class="img-fit-full"
-            >
-          </div>
-          <div>
-            <h3 class="text-cobalt mb-2">Who We Serve</h3>
-            <p class="text-soft mb-2">
-              iCareDonate serves low-income families, students in need of academic tools, disaster-affected communities, and community day care centers.
-            </p>
-            <p class="text-muted mb-0">
-              By cutting out middlemen and shipping costs, we guarantee 100% of the donated value reaches recipients directly.
-            </p>
+      <!-- Who we serve -->
+      <div class="card" style="padding: 28px; border-radius: 20px; border: 1px solid var(--sky); margin-bottom: 24px; display: grid; grid-template-columns: 240px 1fr; gap: 28px; align-items: center; box-shadow: var(--shadow-sm);">
+        <!-- Real community photo -->
+        <div style="position: relative; border-radius: 16px; height: 180px; overflow: hidden; flex-shrink: 0;">
+          <img
+            src="assets/images/who-we-serve.jpg"
+            alt="Community families receiving donated supplies at a local distribution point"
+            style="width: 100%; height: 100%; object-fit: cover; display: block;"
+          >
+          <!-- Subtle overlay badge at bottom -->
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(20,33,61,0.72) 0%, transparent 100%); padding: 10px 12px;">
+            <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 0.04em; text-transform: uppercase;">
+              <i data-lucide="heart" style="width:11px;height:11px;color:var(--amber);"></i>
+              Community Families
+            </span>
           </div>
         </div>
-      </section>
+        <div>
+          <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 10px;">Who we serve</h3>
+          <p style="font-size: 15px; color: var(--slate); line-height: 1.65; margin-bottom: 8px;">
+            iCareDonate serves low-income households, disaster-affected communities, students requiring educational resources, and local charitable initiatives that require essential material aid.
+          </p>
+          <p style="font-size: 15px; color: var(--slate); line-height: 1.65; margin: 0;">
+            Our platform connects requesters directly with community members offering surplus items, eliminating intermediaries and ensuring dignified support.
+          </p>
+        </div>
+      </div>
 
-      <!-- Detailed 3-Step Walkthrough -->
-      <section class="mb-6 reveal-on-scroll">
-        <div class="section-header">
-          <div>
-            <h2 class="section-title">The Three-Step Journey</h2>
-            <p class="section-subtitle">From posting to safe community handovers.</p>
+      <!-- What we do (Reversed) -->
+      <div class="card" style="padding: 28px; border-radius: 20px; border: 1px solid var(--sky); margin-bottom: 40px; display: grid; grid-template-columns: 1fr 240px; gap: 28px; align-items: center; box-shadow: var(--shadow-sm);">
+        <div>
+          <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 10px;">What we do</h3>
+          <p style="font-size: 15px; color: var(--slate); line-height: 1.65; margin-bottom: 8px;">
+            We manage the end-to-end verification, matching, and monitoring of physical item donations and community requests.
+          </p>
+          <p style="font-size: 15px; color: var(--slate); line-height: 1.65; margin: 0;">
+            Every posted item and request is reviewed by administrators before going live, guaranteeing transparency, fair quantity allocation, and reliable pickup coordination.
+          </p>
+        </div>
+        <!-- Real community photo -->
+        <div style="position: relative; border-radius: 16px; height: 180px; overflow: hidden; flex-shrink: 0;">
+          <img
+            src="assets/images/what-we-do.jpg"
+            alt="Volunteers distributing donated supplies to a community member"
+            style="width: 100%; height: 100%; object-fit: cover; display: block;"
+          >
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(0deg, rgba(20,33,61,0.72) 0%, transparent 100%); padding: 10px 12px;">
+            <span style="display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: #fff; letter-spacing: 0.04em; text-transform: uppercase;">
+              <i data-lucide="shield-check" style="width:11px;height:11px;color:var(--amber);"></i>
+              Every Donation Counts
+            </span>
           </div>
         </div>
+      </div>
 
-        <div class="step-row-list">
-          
-          <div class="card card-body step-row-card">
-            <div class="step-row-flex">
-              <div class="step-badge-circle step-badge-circle--cobalt">1</div>
-              <div>
-                <h3 class="text-cobalt mb-2">Step 1: Listing or Requesting Items</h3>
-                <p class="text-soft mb-2">
-                  <strong>For Donors:</strong> Fill out a quick form describing your available physical items (quantity, condition, photos, and preferred pick-up barangay).
-                </p>
-                <p class="text-soft mb-0">
-                  <strong>For Requesters:</strong> Select needed items from our categories or browse active listings. Attach verifiable proof (such as student ID, barangay indigency certificate, or situational photos).
-                </p>
-              </div>
-            </div>
+      <!-- 3-Step Process -->
+      <div style="margin-bottom: 40px;">
+        <h2 style="font-size: 26px; color: var(--cobalt); margin-bottom: 20px;">The 3-Step Process</h2>
+
+        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;">
+          <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--cobalt); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 14px; font-family: var(--font-heading);">1</div>
+            <h3 style="font-size: 19px; color: var(--cobalt); margin-bottom: 8px;">Post</h3>
+            <p style="font-size: 14px; color: var(--slate); line-height: 1.6; margin: 0;">Donors list an item with photos and condition. Requesters post what they need, with proof of need.</p>
           </div>
 
-          <div class="card card-body step-row-card--amber">
-            <div class="step-row-flex">
-              <div class="step-badge-circle step-badge-circle--amber">2</div>
-              <div>
-                <h3 class="text-cobalt mb-2">Step 2: Admin Inspection &amp; Verification</h3>
-                <p class="text-soft mb-2">
-                  Our administrative team checks every item submission for safety, cleanliness, and completeness. Requesters are verified against legitimate local community needs to eliminate duplicates and abuse.
-                </p>
-                <p class="text-muted mb-0">
-                  Average verification turnaround is between 4 and 24 hours.
-                </p>
-              </div>
-            </div>
+          <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--cobalt); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 14px; font-family: var(--font-heading);">2</div>
+            <h3 style="font-size: 19px; color: var(--cobalt); margin-bottom: 8px;">Admin verifies</h3>
+            <p style="font-size: 14px; color: var(--slate); line-height: 1.6; margin: 0;">Every post and request is checked by the administration team before it goes live on the platform.</p>
           </div>
 
-          <div class="card card-body step-row-card--coral">
-            <div class="step-row-flex">
-              <div class="step-badge-circle step-badge-circle--coral">3</div>
-              <div>
-                <h3 class="text-cobalt mb-2">Step 3: Direct Community Pick-up &amp; Handover</h3>
-                <p class="text-soft mb-2">
-                  Once matched, the requester receives a pickup confirmation token and instructions. Both parties meet at designated public venues (barangay multi-purpose hall, community center, or school entrance) for safe handover.
-                </p>
-                <p class="text-soft mb-0">
-                  Status updates in real-time, closing the loop and recording community impact.
-                </p>
-              </div>
-            </div>
+          <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: var(--cobalt); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 15px; margin-bottom: 14px; font-family: var(--font-heading);">3</div>
+            <h3 style="font-size: 19px; color: var(--cobalt); margin-bottom: 8px;">Match and claim</h3>
+            <p style="font-size: 14px; color: var(--slate); line-height: 1.6; margin: 0;">Matched items are allocated and claimed securely through verified pick-up schedules and claim codes.</p>
           </div>
-
         </div>
-      </section>
+      </div>
 
-      <!-- Action Banner -->
-      <section class="card card-body text-center card-cta-band reveal-on-scroll">
-        <h2 class="text-cobalt mb-2">Ready to participate?</h2>
-        <p class="lead max-w-540 mb-4">Whether giving away surplus items or requesting relief for your community, start today.</p>
-        <div class="action-btn-group">
-          <a href="donate.html" class="btn btn-donate btn-lg">Post a donation</a>
-          <a href="request.html" class="btn btn-primary btn-lg">Submit a request</a>
-        </div>
-      </section>
+      <!-- Safety and Guidelines Note -->
+      <div class="card" style="padding: 28px; border-radius: 20px; background: var(--sky); border: 1px solid var(--border); margin-top: 32px; box-shadow: var(--shadow-sm);">
+        <h3 style="font-size: 18px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px; display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="shield-check" style="width:20px;height:20px;color:var(--cobalt);"></i>
+          <span>Safety &amp; Community Standards</span>
+        </h3>
+        <p style="font-size: 15px; color: var(--navy); line-height: 1.65; margin: 0;">
+          iCareDonate prohibits cash solicitations. All item listings and requests are 100% free of charge. Physical handovers are conducted at designated community centers or verified pickup venues.
+        </p>
+      </div>
+
+      <div style="text-align: center; margin-top: 40px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+        <a href="categories.html" class="btn btn-primary" style="padding: 12px 28px; border-radius: 999px;">Browse categories</a>
+        <a href="login.html" class="btn btn-donate" style="padding: 12px 28px;">Donate an item now</a>
+      </div>
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { if(window.lucide) lucide.createIcons(); });
+  </script>
 </body>
 </html>

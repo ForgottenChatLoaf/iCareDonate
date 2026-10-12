@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — iCareDonate Admin</title>
+  <meta name="description" content="iCareDonate Administrative Dashboard & Moderation Controls">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ══════════════════════════════════════════════════════════
+       ADMIN SIDEBAR — Verbatim matching admin/index.php & nav-admin.php
+       ══════════════════════════════════════════════════════════ -->
+  <aside class="admin-sidebar" role="complementary" aria-label="Admin navigation">
+
+    <!-- Brand logo & Admin badge -->
+    <div class="brand-sidebar-container" role="banner">
+      <a href="admin-dashboard.html" class="brand-sidebar-logo" aria-label="iCareDonate ADMIN">
+        <img src="assets/images/logo.svg" class="brand-sidebar-icon" alt="iCareDonate Logo" width="32" height="32">
+        <span class="brand-sidebar-wordmark">
+          <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
+        </span>
+      </a>
+      <span class="brand-sidebar-badge brand-sidebar-badge--admin" aria-label="ADMIN Portal">
+        ADMIN
+      </span>
+    </div>
+
+    <!-- Navigation links from wireframe & nav-admin.php -->
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <a href="admin-dashboard.html" class="sidebar-link sidebar-link--active">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="admin-dashboard.html#donations" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>Donation Review</span>
+      </a>
+
+      <a href="admin-dashboard.html#requests" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+        <span>Request &amp; Proof Review</span>
+      </a>
+
+      <a href="admin-dashboard.html#transactions" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transaction Monitoring</span>
+      </a>
+
+      <a href="admin-dashboard.html#interviews" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Interviews</span>
+      </a>
+
+      <a href="admin-dashboard.html#users" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Users &amp; Moderation</span>
+      </a>
+
+      <a href="admin-dashboard.html#support" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Message &amp; Support</span>
+      </a>
+
+      <a href="admin-dashboard.html#faqs" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>FAQ Content</span>
+      </a>
+
+      <a href="admin-dashboard.html#reports" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Reports</span>
+      </a>
+
+      <a href="admin-dashboard.html#categories" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+        <span>Categories</span>
+      </a>
+
+      <a href="admin-dashboard.html#statistics" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Statistics</span>
+      </a>
+
+      <a href="admin-dashboard.html#profile" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin Profile</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <span class="sidebar-user-name" id="admin-sidebar-name">Admin Tester</span>
+      <a href="#" id="admin-logout-btn" class="sidebar-link--muted" title="Log Out" style="text-decoration:none; display:flex; align-items:center; gap:4px;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════════════════
+       ADMIN MAIN CONTENT
+       ══════════════════════════════════════════════════════════ -->
+  <div class="admin-main">
+
+    <!-- Topbar -->
+    <header class="admin-topbar">
+      <h1 class="admin-topbar__title">Dashboard</h1>
+      <div style="position:relative;">
+        <button type="button" class="admin-user-btn" id="adminUserMenuBtn" aria-haspopup="true">
+          <span class="user-avatar-circle" id="admin-avatar-initials">AT</span>
+          <span id="admin-topbar-name">Admin Tester</span>
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div id="adminDropdownMenu" style="display:none; position:absolute; right:0; top:42px; background:#fff; border:1px solid #E2E8F0; border-radius:10px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:180px; z-index:100; padding:6px 0;">
+          <a href="admin-dashboard.html#profile" style="display:flex; align-items:center; gap:8px; padding:8px 16px; font-size:13px; color:#1E293B; text-decoration:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            Admin Profile
+          </a>
+          <a href="#" id="admin-dropdown-logout" style="display:flex; align-items:center; gap:8px; padding:8px 16px; font-size:13px; color:#DC2626; text-decoration:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            Log Out
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-content">
+
+      <!-- Welcome Banner -->
+      <div style="background:linear-gradient(135deg,#1F4FA3 0%,#14213D 100%);color:#fff;border-radius:16px;padding:24px 28px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+        <div>
+          <div style="font-weight:800;font-size:20px;margin-bottom:4px;">Admin Dashboard</div>
+          <div style="font-size:14px;opacity:0.85;">Overview &bull; Action queues &bull; Moderation controls</div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="admin-dashboard.html#donations" style="background:rgba(255,255,255,0.2);color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,0.3);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+            Review Donations (<span id="btn-count-donations">0</span>)
+          </a>
+          <a href="admin-dashboard.html#requests" style="background:rgba(255,255,255,0.1);color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:13px;font-weight:600;border:1px solid rgba(255,255,255,0.25);display:inline-flex;align-items:center;gap:6px;transition:all 0.15s;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+            Review Requests (<span id="btn-count-requests">2</span>)
+          </a>
+        </div>
+      </div>
+
+      <!-- 4 Stat Cards (Clickable Links) -->
+      <div class="admin-stats-row">
+
+        <a href="admin-dashboard.html#donations" class="admin-stat-card">
+          <div class="admin-stat-card__icon" style="background:var(--sky, #DCE8F7);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt, #1F4FA3)" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Pending Donations</div>
+          <div class="admin-stat-card__value" id="stat-pending-donations">0</div>
+        </a>
+
+        <a href="admin-dashboard.html#requests" class="admin-stat-card">
+          <div class="admin-stat-card__icon" style="background:#FAE9E7;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Pending Requests</div>
+          <div class="admin-stat-card__value" id="stat-pending-requests">2</div>
+        </a>
+
+        <a href="admin-dashboard.html#transactions" class="admin-stat-card">
+          <div class="admin-stat-card__icon" style="background:#FEF6E0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold, #F2B84B)" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Active Transactions</div>
+          <div class="admin-stat-card__value" id="stat-active-transactions">2</div>
+        </a>
+
+        <a href="admin-dashboard.html#support" class="admin-stat-card">
+          <div class="admin-stat-card__icon" style="background:#FAE9E7;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Open Concerns</div>
+          <div class="admin-stat-card__value" id="stat-open-concerns">1</div>
+        </a>
+
+      </div>
+
+      <!-- Dashboard Two-Column Grid -->
+      <div class="admin-dashboard-grid">
+
+        <!-- Left Column: Quick Actions + Recent Activity -->
+        <div>
+
+          <!-- Quick Actions -->
+          <div class="admin-section-title">Quick Actions</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:26px;">
+
+            <a href="admin-dashboard.html#donations" class="admin-action-card" style="border-color:var(--sky, #DCE8F7);">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--cobalt, #1F4FA3);display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              </div>
+              <span style="font-size:12.5px;">Review Donations</span>
+            </a>
+
+            <a href="admin-dashboard.html#requests" class="admin-action-card" style="border-color:#FAE9E7;">
+              <div style="width:40px;height:40px;border-radius:10px;background:var(--coral, #E0553D);display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              </div>
+              <span style="font-size:12.5px;">Review Requests</span>
+            </a>
+
+            <a href="admin-dashboard.html#users" class="admin-action-card" style="border-color:#F5F3FF;">
+              <div style="width:40px;height:40px;border-radius:10px;background:#7C3AED;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <span style="font-size:12.5px;">Manage Users</span>
+            </a>
+
+            <a href="admin-dashboard.html#transactions" class="admin-action-card" style="border-color:#FEF3C7;">
+              <div style="width:40px;height:40px;border-radius:10px;background:#D97706;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              </div>
+              <span style="font-size:12.5px;">Transactions</span>
+            </a>
+
+          </div>
+
+          <!-- Recent Activities Feed -->
+          <div class="admin-section-title">Recent Activities</div>
+          <div class="admin-activities-box" id="admin-activity-list">
+            <div class="admin-activity-row">
+              <div class="admin-activity-dot" style="background:var(--sky, #DCE8F7);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt, #1F4FA3)" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="admin-activity-title">Regular User submitted request R-99992</div>
+                <div class="admin-activity-meta">Oct 11, 9:11 PM</div>
+              </div>
+            </div>
+
+            <div class="admin-activity-row">
+              <div class="admin-activity-dot" style="background:#FFF0EC;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="admin-activity-title">Generous Donor submitted donation D-99998</div>
+                <div class="admin-activity-meta">Oct 11, 9:03 PM</div>
+              </div>
+            </div>
+
+            <div class="admin-activity-row">
+              <div class="admin-activity-dot" style="background:#FEF3C7;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="admin-activity-title">Generous Donor submitted donation D-7</div>
+                <div class="admin-activity-meta">Oct 04, 10:37 PM</div>
+              </div>
+            </div>
+
+            <div class="admin-activity-row">
+              <div class="admin-activity-dot" style="background:#F5F3FF;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7C3AED" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="admin-activity-title">Transaction T-2 is claimed</div>
+                <div class="admin-activity-meta">Oct 04, 4:15 PM</div>
+              </div>
+            </div>
+
+            <div class="admin-activity-row">
+              <div class="admin-activity-dot" style="background:#DCFCE7;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="admin-activity-title">Transaction T-3 is completed</div>
+                <div class="admin-activity-meta">Oct 04, 4:15 PM</div>
+              </div>
+            </div>
+
+            <div class="admin-activity-row">
+              <div class="admin-activity-dot" style="background:#FEE2E2;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="admin-activity-title">Transaction T-4 is pending claim</div>
+                <div class="admin-activity-meta">Oct 04, 4:15 PM</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Donation Review Panel & Pending Requests -->
+        <div>
+
+          <!-- Action Required: Pending Requests Card -->
+          <div class="admin-card" id="pending-requests-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border, #E2E8F0);">
+              <div>
+                <h2 style="font-size:15px;font-weight:700;margin:0 0 2px;color:var(--text, #1E293B);display:flex;align-items:center;gap:6px;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                  Action Required: Pending Requests
+                </h2>
+                <span style="font-size:11.5px;color:var(--text-muted, #64748B);">
+                  <span id="requests-awaiting-count">2</span> request(s) awaiting verification &amp; matching
+                </span>
+              </div>
+              <a href="admin-dashboard.html#requests" class="admin-btn admin-btn--outline admin-btn--sm">
+                View All (<span id="view-all-requests-count">2</span>) &rarr;
+              </a>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:12px;" id="pending-requests-container">
+              <!-- Request Item 1 -->
+              <div style="padding:14px;background:var(--surface-soft, #F8FAFC);border:1px solid var(--border, #E2E8F0);border-radius:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px;">
+                  <div>
+                    <span style="font-size:11px;font-weight:700;color:var(--cobalt, #1F4FA3);background:var(--sky, #DCE8F7);padding:2px 7px;border-radius:4px;">
+                      R-2041
+                    </span>
+                    <strong style="font-size:13.5px;color:var(--text, #1E293B);margin-left:5px;">Assorted Canned Goods and Rice Sacks</strong>
+                  </div>
+                  <span style="font-size:11px;background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:12px;font-weight:700;white-space:nowrap;">
+                    Qty: 10 packs
+                  </span>
+                </div>
+
+                <div style="font-size:12.5px;color:var(--text-muted, #64748B);margin-bottom:8px;">
+                  Requester: <strong style="color:var(--text, #1E293B);">Derk Cusi</strong> &bull; jdirk.qc@example.com
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed var(--border, #E2E8F0);font-size:12px;">
+                  <span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="vertical-align:middle;"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                    <strong style="color:#16A34A;">Proof Document Attached</strong>
+                  </span>
+                  <button type="button" class="admin-btn admin-btn--primary admin-btn--sm" style="padding:5px 12px;font-size:12px;" onclick="alert('Moderation interface: Request R-2041 selected for matching.');">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Review &amp; Match
+                  </button>
+                </div>
+              </div>
+
+              <!-- Request Item 2 -->
+              <div style="padding:14px;background:var(--surface-soft, #F8FAFC);border:1px solid var(--border, #E2E8F0);border-radius:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;gap:8px;">
+                  <div>
+                    <span style="font-size:11px;font-weight:700;color:var(--cobalt, #1F4FA3);background:var(--sky, #DCE8F7);padding:2px 7px;border-radius:4px;">
+                      R-2042
+                    </span>
+                    <strong style="font-size:13.5px;color:var(--text, #1E293B);margin-left:5px;">Elementary School Backpacks &amp; Notebooks Set</strong>
+                  </div>
+                  <span style="font-size:11px;background:#FEF3C7;color:#D97706;padding:2px 8px;border-radius:12px;font-weight:700;white-space:nowrap;">
+                    Qty: 5 sets
+                  </span>
+                </div>
+
+                <div style="font-size:12.5px;color:var(--text-muted, #64748B);margin-bottom:8px;">
+                  Requester: <strong style="color:var(--text, #1E293B);">Clara Mendoza</strong> &bull; clara.m@example.com
+                </div>
+
+                <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px dashed var(--border, #E2E8F0);font-size:12px;">
+                  <span>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="vertical-align:middle;"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+                    <strong style="color:#16A34A;">Proof Document Attached</strong>
+                  </span>
+                  <button type="button" class="admin-btn admin-btn--primary admin-btn--sm" style="padding:5px 12px;font-size:12px;" onclick="alert('Moderation interface: Request R-2042 selected for matching.');">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Review &amp; Match
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Footer matching PHP admin/index.php -->
+    <footer class="admin-footer">
+      <div>&copy; 2026 iCareDonate Community Platform. All rights reserved.</div>
+      <div class="admin-footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="faqs.html">Help Center</a>
+      </div>
+    </footer>
+
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Toggle admin user dropdown
+  var userMenuBtn = document.getElementById('adminUserMenuBtn');
+  var dropdownMenu = document.getElementById('adminDropdownMenu');
+  if (userMenuBtn && dropdownMenu) {
+    userMenuBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+    });
+    document.addEventListener('click', function(e) {
+      if (!userMenuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.style.display = 'none';
+      }
+    });
+  }
+
+  // Populate logged in admin data
+  var userStr = localStorage.getItem('icd_user');
+  var token = localStorage.getItem('icd_token');
+  if (userStr) {
+    try {
+      var user = JSON.parse(userStr);
+      var fullName = (user.first_name + ' ' + (user.last_name || '')).trim() || 'Admin Tester';
+      var initials = (user.first_name ? user.first_name[0] : 'A') + (user.last_name ? user.last_name[0] : 'T');
+      var topbarName = document.getElementById('admin-topbar-name');
+      var sidebarName = document.getElementById('admin-sidebar-name');
+      var avatarInit = document.getElementById('admin-avatar-initials');
+      if (topbarName) topbarName.textContent = fullName;
+      if (sidebarName) sidebarName.textContent = fullName;
+      if (avatarInit) avatarInit.textContent = initials.toUpperCase();
+    } catch(e) {}
+  }
+
+  // Logout handler
+  function handleLogout(e) {
+    if (e) e.preventDefault();
+    localStorage.removeItem('icd_token');
+    localStorage.removeItem('icd_user');
+    window.location.href = 'login.html';
+  }
+  var logoutSide = document.getElementById('admin-logout-btn');
+  var logoutDrop = document.getElementById('admin-dropdown-logout');
+  if (logoutSide) logoutSide.addEventListener('click', handleLogout);
+  if (logoutDrop) logoutDrop.addEventListener('click', handleLogout);
+
+  // Live API stats fetch
+  async function loadAdminData() {
+    if (!token) return;
+    try {
+      var res = await fetch('/CommunityDono/api/v1/admin/dashboard.php', {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+      });
+      if (!res.ok) return;
+      var data = await res.json();
+      if (data && data.stats) {
+        var s = data.stats;
+        var pDon = document.getElementById('stat-pending-donations');
+        var pReq = document.getElementById('stat-pending-requests');
+        var aTrx = document.getElementById('stat-active-transactions');
+        var oCon = document.getElementById('stat-open-concerns');
+        var bDon = document.getElementById('btn-count-donations');
+        var bReq = document.getElementById('btn-count-requests');
+        var reqCount = document.getElementById('requests-awaiting-count');
+        var viewAll = document.getElementById('view-all-requests-count');
+        if (pDon) pDon.textContent = s.pending_donations || 0;
+        if (pReq) pReq.textContent = s.pending_requests || 0;
+        if (aTrx) aTrx.textContent = s.active_matches || 0;
+        if (oCon) oCon.textContent = s.open_concerns || 0;
+        if (bDon) bDon.textContent = s.pending_donations || 0;
+        if (bReq) bReq.textContent = s.pending_requests || 0;
+        if (reqCount) reqCount.textContent = s.pending_requests || 0;
+        if (viewAll) viewAll.textContent = s.pending_requests || 0;
+      }
+    } catch(e) {
+      console.warn('Admin API fetch notice:', e);
+    }
+  }
+
+  loadAdminData();
+})();
+</script>
+</body>
+</html>

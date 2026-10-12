@@ -347,9 +347,9 @@
 
           setTimeout(() => {
             if (data.user.role === 'admin' || data.user.role === 'superadmin') {
-              window.location.href = '/CommunityDono/admin/';
+              window.location.href = 'admin-dashboard.html';
             } else {
-              window.location.href = 'index.html';
+              window.location.href = 'user-dashboard.html';
             }
           }, 1000);
         } catch (err) {

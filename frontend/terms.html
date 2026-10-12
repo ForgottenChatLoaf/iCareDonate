@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Terms of Service — iCareDonate</title>
-  <meta name="description" content="Community guidelines, terms of use, and policies governing item donations and claims on iCareDonate.">
+  <meta name="description" content="iCareDonate Terms of Service — the rules and responsibilities for using the iCareDonate platform.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,181 +13,262 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+
+  <style>
+    .legal-container { max-width: 780px; margin: 0 auto; padding: 0 20px; }
+    .legal-card {
+      padding: 40px;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      color: var(--color-text);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+    .legal-card h1 { font-family: var(--font-heading); font-size: 32px; color: var(--color-text); margin-top: 0; margin-bottom: 8px; line-height: 1.25; }
+    .legal-card h2 { font-family: var(--font-heading); font-size: 20px; font-weight: 700; color: var(--cobalt); margin-top: 36px; margin-bottom: 12px; scroll-margin-top: 90px; }
+    .legal-card p { margin-top: 0; margin-bottom: 14px; }
+    .legal-card ul { margin-top: 0; margin-bottom: 16px; padding-left: 24px; }
+    .legal-card li { margin-bottom: 6px; }
+    .legal-card a { color: var(--cobalt); text-decoration: underline; }
+    .legal-card a:hover { color: var(--navy); }
+    @media (max-width: 640px) {
+      .legal-card { padding: 24px 20px; }
+      .legal-card h1 { font-size: 26px; }
+      .legal-card h2 { font-size: 18px; }
+    }
+  </style>
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
-
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link">Donations</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
-
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
-
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
-
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
         <a href="about.html" class="mobile-link">About us</a>
         <a href="how-it-works.html" class="mobile-link">How it works</a>
         <a href="categories.html" class="mobile-link">Categories</a>
-        <a href="donations.html" class="mobile-link">Donations</a>
         <a href="contact.html" class="mobile-link">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container container-narrow">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Terms of Service</li>
-        </ol>
-      </nav>
+  <main style="padding: 48px 0 80px; background: var(--color-bg);">
+    <div class="container legal-container">
 
-      <!-- Page Header -->
-      <div class="page-header reveal-on-scroll">
-        <span class="badge badge-sky mb-2">Legal &amp; Guidelines</span>
-        <h1>Terms of Service</h1>
-        <p class="text-muted">Last updated: October 12, 2026</p>
-      </div>
+      <article class="legal-card">
+        <h1>iCareDonate — Terms of Service</h1>
 
-      <!-- Legal Content Card -->
-      <div class="card card-body card-legal-body reveal-on-scroll">
-        
-        <h3>1. Community Agreement</h3>
-        <p>
-          By accessing or using iCareDonate, you agree to comply with our community standard of dignified, non-monetary assistance. All participants must act with honesty, respect, and goodwill toward fellow community members.
-        </p>
+        <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 24px;">Last Updated: January 2026</p>
 
-        <h3>2. Strictly Non-Monetary Platform</h3>
-        <p>
-          iCareDonate is exclusively designed for the free sharing of physical resources. It is strictly prohibited to demand, offer, or negotiate monetary payment, handling fees, shipping charges, or any form of compensation for donated items.
-        </p>
+        <p>Welcome to <strong>iCareDonate</strong>, an item-based donation platform developed by <strong>Ambagan Inc.</strong> These Terms of Service explain the rules and responsibilities for using iCareDonate.</p>
 
-        <h3>3. Item Quality &amp; Safety Standards</h3>
-        <p>
-          Donors warrant that all items listed are safe, hygienic, and in functional condition. Broken electronics, hazardous materials, weapons, expired consumable goods, or unwashed garments are strictly prohibited and will be rejected during verification.
-        </p>
+        <p>By creating an account or using iCareDonate, you agree to follow these Terms. If you do not agree with these Terms, please do not use the platform.</p>
 
-        <h3>4. Verification &amp; Account Suspension</h3>
-        <p>
-          iCareDonate reserves the right to inspect listings, request identity verification documents, and reject submissions that do not meet community standards. Users found attempting to resell donated goods will face immediate account termination and reporting to local authorities.
-        </p>
+        <h2 id="terms-1">1. About iCareDonate</h2>
+        <p>iCareDonate is a community resource-donation platform designed to connect people who have useful physical items with individuals or communities who need support.</p>
+        <p>The platform focuses on <strong>physical or in-kind donations</strong>, such as food, school supplies, clothing, medical items, household goods, and other physical resources.</p>
+        <p>Cash or monetary donations, online payments, and digital goods are outside the scope of the current platform.</p>
 
-        <h3>5. Local Pick-up &amp; Safety</h3>
-        <p>
-          Item handovers must occur at designated public locations (such as barangay halls, community centers, or school administration offices). Users participate in item pick-ups at their own discretion and are advised to follow all public safety protocols.
-        </p>
+        <h2 id="terms-2">2. User Accounts</h2>
+        <p>Users must create an account to participate in donation and requesting activities.</p>
+        <p>All new accounts must complete email verification before they can perform actions on the platform. A user may register only one account using the same email address.</p>
+        <p>Users are responsible for providing accurate information and for keeping their account credentials secure.</p>
+        <p>Administrative accounts are not created through the public registration process.</p>
 
-        <h3>6. Contact &amp; Questions</h3>
-        <p>
-          For inquiries or clarifications regarding these terms, please contact our legal desk via <a href="contact.html">our contact form</a> or by writing to legal@icaredonate.org.
-        </p>
+        <h2 id="terms-3">3. User Roles</h2>
+        <p>Users may participate as donors, requesters, or both.</p>
+        <p><strong>Donors</strong> can post items for donation.</p>
+        <p><strong>Requesters</strong> can browse available donations and submit requests for items they need.</p>
+        <p>Users may act as both donors and requesters when their account allows it. Administrative accounts have separate access and responsibilities.</p>
 
-      </div>
+        <h2 id="terms-4">4. Donations</h2>
+        <p>Only active accounts may post donations.</p>
+        <p>When posting a donation, users must provide the required information, including:</p>
+        <ul>
+          <li>Item title</li>
+          <li>Category</li>
+          <li>Quantity</li>
+          <li>Condition</li>
+          <li>Pickup method</li>
+          <li>Pickup location</li>
+        </ul>
+        <p>Users may also provide photos, an expiration date, and a description.</p>
+        <p>A donation is initially saved as a draft and must be submitted for administrator verification.</p>
+        <p>Donations are <strong>not publicly available until approved by an administrator.</strong> An administrator may request additional information or reject a donation and provide a reason.</p>
+
+        <h2 id="terms-5">5. Requests for Donations</h2>
+        <p>Users may request an item only when the donation has been approved and has available quantity.</p>
+        <p>A request cannot exceed the available quantity of the donation. Users also cannot submit multiple active requests for the same donation. Suspended or banned accounts cannot submit requests.</p>
+        <p>Requesters must provide proof of need as part of their request. Administrators review this information before approving a request.</p>
+        <p>Proof-of-need documents are private and are not publicly accessible.</p>
+
+        <h2 id="terms-6">6. Matching and Transactions</h2>
+        <p>iCareDonate facilitates the connection between donors and requesters based on available donations and submitted requests. Matching may consider factors such as:</p>
+        <ul>
+          <li>Category or item type</li>
+          <li>Available quantity</li>
+          <li>Location proximity</li>
+          <li>Request urgency</li>
+          <li>Request date</li>
+          <li>Requester verification status</li>
+        </ul>
+        <p>A request may be matched with all or part of the available quantity of a donation. When a match is established, the corresponding donation quantity may be reserved for the requester.</p>
+
+        <h2 id="terms-7">7. Claiming and Completion</h2>
+        <p>Transactions have a claim deadline. The default claim period is <strong>7 days from transaction creation</strong>, although this may be configurable by an administrator.</p>
+        <p>If a transaction is cancelled or the claim deadline passes without a claim being recorded, the reserved quantity may be returned to the donation's available quantity.</p>
+        <p>A completed transaction is recorded in the history of the donor and requester.</p>
+
+        <h2 id="terms-8">8. User Responsibilities</h2>
+        <p>Users agree to:</p>
+        <ul>
+          <li>Provide truthful and accurate information.</li>
+          <li>Provide legitimate information when submitting donations or requests.</li>
+          <li>Use the platform only for its intended donation purposes.</li>
+          <li>Respect other users.</li>
+          <li>Provide valid proof of need when requesting donations.</li>
+          <li>Avoid submitting misleading, fraudulent, or inappropriate donation listings.</li>
+          <li>Keep their account credentials secure.</li>
+        </ul>
+        <p>Users should not misuse the platform or attempt to bypass its verification, moderation, or security processes.</p>
+
+        <h2 id="terms-9">9. Prohibited Activities</h2>
+        <p>Users must not use iCareDonate to:</p>
+        <ul>
+          <li>Submit fraudulent or misleading donation listings.</li>
+          <li>Provide false information in donation or request submissions.</li>
+          <li>Submit inappropriate content.</li>
+          <li>Abuse the donation or request system.</li>
+          <li>Attempt to access another user's account or private information.</li>
+          <li>Attempt to access private proof-of-need documents.</li>
+          <li>Circumvent account suspensions or bans.</li>
+          <li>Use the platform for purposes outside its intended donation activities.</li>
+        </ul>
+
+        <h2 id="terms-10">10. Reports and Moderation</h2>
+        <p>Active users may report donation listings they believe are inappropriate, fraudulent, or misleading.</p>
+        <p>Reports are reviewed by administrators. Depending on the situation, administrators may issue a warning, remove content, suspend an account, or ban an account. Moderation actions are recorded together with the reason for the action.</p>
+
+        <h2 id="terms-11">11. Account Suspension and Banning</h2>
+        <p>An account may be suspended or banned when necessary to enforce the platform's rules.</p>
+        <p>A <strong>suspended account</strong> may be restricted from posting, requesting, or accessing certain platform functions.</p>
+        <p>A <strong>banned account</strong> is blocked from logging in.</p>
+        <p>Administrators must record a reason for suspending or banning an account.</p>
+
+        <h2 id="terms-12">12. Privacy and Personal Information</h2>
+        <p>iCareDonate limits the visibility of users' personal information.</p>
+        <p>Personal contact information is not publicly displayed. Certain information may become available to matched parties only after a match has been confirmed and when necessary for the transaction.</p>
+        <p>Proof-of-need documents are kept private and are not publicly accessible.</p>
+        <p>For more information about how personal information is collected, used, protected, retained, and deleted, please refer to the <a href="privacy.html"><strong>iCareDonate Privacy Policy.</strong></a></p>
+
+        <h2 id="terms-13">13. Account Deletion</h2>
+        <p>Users may request deletion of their account.</p>
+        <p>When an account is deleted, personal information is anonymized while certain transaction records may be retained for accountability. Active transactions must be resolved or cancelled before account deletion can be processed.</p>
+
+        <h2 id="terms-14">14. Changes to These Terms</h2>
+        <p>iCareDonate may update these Terms of Service when necessary to reflect changes to the platform, its policies, or its operations.</p>
+        <p>Any updated version will include a <strong>revised Last Updated date</strong>.</p>
+
+        <h2 id="terms-15">15. Contact Us</h2>
+        <p>If you have questions or concerns about these Terms of Service, please contact iCareDonate through the <a href="contact.html">official contact information provided on the website</a>.</p>
+      </article>
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { if(window.lucide) lucide.createIcons(); });
+  </script>
 </body>
 </html>

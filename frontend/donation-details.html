@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donation Details — iCareDonate</title>
-  <meta name="description" content="View donation details, donor verification status, item specifications, and submit a pickup request.">
+  <meta name="description" content="View donation details and request this item on iCareDonate.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,166 +13,274 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/donations.css">
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
-
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link active">Donations</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
-
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
-
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
-
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
         <a href="about.html" class="mobile-link">About us</a>
         <a href="how-it-works.html" class="mobile-link">How it works</a>
         <a href="categories.html" class="mobile-link">Categories</a>
-        <a href="donations.html" class="mobile-link active">Donations</a>
         <a href="contact.html" class="mobile-link">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item"><a href="donations.html" class="breadcrumb-link">Donations</a></li>
-          <li class="breadcrumb-item active" id="breadcrumb-item-title" aria-current="page">Item Details</li>
-        </ol>
-      </nav>
+  <main id="donation-main" style="padding: 40px 0 60px; background: var(--color-bg); min-height: 80vh;">
+    <div class="container" style="max-width: 1040px; margin: 0 auto; padding: 0 20px;">
 
-      <!-- Dynamic Item Details Container -->
-      <section id="donation-details-view" class="reveal-on-scroll">
-        <!-- Rendered by donations.js reading ?id= from URL -->
-        <noscript>
-          <div class="card card-body text-center">
-            <h2>JavaScript Required</h2>
-            <p>Please enable JavaScript to view live donation listings and coordinates.</p>
-          </div>
-        </noscript>
-      </section>
+      <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="donations.html" style="color: var(--color-primary); font-size: 14px; text-decoration: none; font-weight: 500;">
+          &larr; Back to Browse Listings
+        </a>
+      </div>
 
-      <!-- Community Verification Notice -->
-      <section class="card card-body notice-card reveal-on-scroll mb-6">
-        <div class="notice-inner">
-          <div class="notice-icon">🛡️</div>
+      <!-- Loading State -->
+      <div id="detail-loading" style="text-align:center;padding:80px 20px;">
+        <i data-lucide="loader" style="width:48px;height:48px;color:var(--cobalt);"></i>
+        <p style="color:var(--slate);margin-top:12px;">Loading donation details...</p>
+      </div>
+
+      <!-- Not Found -->
+      <div id="detail-notfound" style="display:none;text-align:center;padding:80px 20px;">
+        <div style="font-size:72px;color:var(--cobalt);line-height:1;font-family:var(--font-heading);">404</div>
+        <h1 style="font-size:28px;color:var(--color-text);margin:16px 0 8px;">Donation Not Found</h1>
+        <p style="color:var(--color-text-muted);font-size:15px;margin-bottom:24px;">This donation may no longer be available.</p>
+        <a href="donations.html" class="btn btn-primary">Browse Available Items</a>
+      </div>
+
+      <!-- Donation Detail Content -->
+      <div id="detail-content" style="display:none;">
+        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 36px; align-items: start;">
+
+          <!-- Left: Images Gallery & Description -->
           <div>
-            <h4 class="text-cobalt mb-1">Admin Verified Community Listing</h4>
-            <p class="text-muted mb-0">
-              All items on iCareDonate are 100% free of charge. No payment or delivery courier fees are required. Handovers must take place at public barangay meeting points.
-            </p>
+            <div class="card" style="padding: 0; overflow: hidden; border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 24px;">
+              <div style="height: 360px; background: #F8FAFC; display: flex; align-items: center; justify-content: center; position: relative;">
+                <img id="main-image-view" src="assets/images/placeholder.svg" alt="Donation" style="width: 100%; height: 100%; object-fit: contain;">
+              </div>
+              <div id="thumbnail-strip" style="display:none;gap: 8px; padding: 12px; background: #FFFFFF; border-top: 1px solid var(--color-border); overflow-x: auto;"></div>
+            </div>
+
+            <div class="card" style="padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
+              <h2 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin-bottom: 14px;">Item Description</h2>
+              <div id="item-description" style="font-size: 15px; color: var(--color-text); line-height: 1.7; white-space: pre-line;">No detailed description provided.</div>
+            </div>
           </div>
+
+          <!-- Right: Summary & Request Box -->
+          <div>
+            <div class="card" style="padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-md); position: sticky; top: 90px;">
+
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                <span id="cat-badge" class="badge badge-info" style="font-size: 12px;"></span>
+                <span class="badge badge-approved" style="font-size: 12px;"><i data-lucide="check" style="width:11px;height:11px;"></i> Verified by Admin</span>
+              </div>
+
+              <h1 id="item-title" style="font-family: var(--font-heading); font-size: 28px; color: var(--color-text); line-height: 1.2; margin-bottom: 16px;"></h1>
+
+              <div style="background: var(--color-tint-teal); padding: 16px; border-radius: var(--radius-md); margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                  <div style="font-size: 12px; color: var(--color-text-muted); text-transform: uppercase; font-weight: 600;">Available Quantity</div>
+                  <div id="qty-display" style="font-size: 24px; font-weight: 700; color: var(--color-primary);"></div>
+                </div>
+                <div style="text-align: right;">
+                  <div style="font-size: 12px; color: var(--color-text-muted); text-transform: uppercase; font-weight: 600;">Condition</div>
+                  <div id="condition-display" style="font-size: 15px; font-weight: 600; color: var(--color-text);"></div>
+                </div>
+              </div>
+
+              <!-- Logistics -->
+              <div id="logistics" style="display: flex; flex-direction: column; gap: 12px; font-size: 14px; margin-bottom: 28px; color: var(--color-text);">
+                <div style="display: flex; gap: 10px;">
+                  <i data-lucide="map-pin" style="width:16px;height:16px;color:var(--color-primary);flex-shrink:0;"></i>
+                  <div><strong>Location:</strong> <span id="location-display"></span></div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <i data-lucide="truck" style="width:16px;height:16px;color:var(--color-primary);flex-shrink:0;"></i>
+                  <div><strong>Handover:</strong> <span id="handover-display"></span></div>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                  <i data-lucide="calendar" style="width:16px;height:16px;color:var(--color-primary);flex-shrink:0;"></i>
+                  <div><strong>Posted:</strong> <span id="posted-display"></span></div>
+                </div>
+              </div>
+
+              <!-- CTA -->
+              <div id="cta-wrap"></div>
+
+            </div>
+          </div>
+
         </div>
-      </section>
+      </div>
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/donations.js"></script>
+  <script>
+    function condLabel(c) {
+      const m = { new:'Brand New', like_new:'Like New', good:'Good Condition', fair:'Fair', poor:'Poor' };
+      return m[c] || c || '';
+    }
+    function formatDate(s) {
+      if (!s) return '';
+      const d = new Date(s);
+      return d.toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if(window.lucide) lucide.createIcons();
+
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      if (!id) { showNotFound(); return; }
+
+      fetch(`/CommunityDono/api/v1/public/donations.php?id=${id}`)
+        .then(r => r.json())
+        .then(data => {
+          const d = data.data || data;
+          if (!d || !d.id) { showNotFound(); return; }
+
+          document.title = `${d.title} — iCareDonate`;
+          document.getElementById('detail-loading').style.display = 'none';
+          document.getElementById('detail-content').style.display = 'block';
+
+          const available = (d.quantity_total || 0) - (d.quantity_reserved || 0) - (d.quantity_claimed || 0);
+
+          document.getElementById('item-title').textContent = d.title;
+          document.getElementById('cat-badge').textContent = d.category_name || '';
+          document.getElementById('qty-display').innerHTML = `${available} <span style="font-size:15px;font-weight:500;">${d.unit || ''}</span>`;
+          document.getElementById('condition-display').textContent = condLabel(d.condition_type);
+          document.getElementById('item-description').textContent = d.description || 'No detailed description provided.';
+          document.getElementById('location-display').textContent = (d.pickup_barangay ? d.pickup_barangay + ', ' : '') + (d.pickup_city || 'Metro Manila');
+          document.getElementById('handover-display').textContent = (d.pickup_method || '').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+          document.getElementById('posted-display').textContent = formatDate(d.created_at);
+
+          // Images
+          const mainImg = document.getElementById('main-image-view');
+          if (d.images && d.images.length > 0) {
+            mainImg.src = `/CommunityDono/${d.images[0].file_path}`;
+            if (d.images.length > 1) {
+              const strip = document.getElementById('thumbnail-strip');
+              strip.style.display = 'flex';
+              strip.innerHTML = d.images.map(img =>
+                `<img src="/CommunityDono/${img.file_path}" alt="Thumbnail" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;" onclick="document.getElementById('main-image-view').src=this.src;">`
+              ).join('');
+            }
+          }
+
+          // CTA
+          const cta = document.getElementById('cta-wrap');
+          if (available <= 0) {
+            cta.innerHTML = `<button disabled class="btn btn-outline" style="width:100%;justify-content:center;padding:14px;opacity:0.6;">Fully Allocated</button>`;
+          } else {
+            cta.innerHTML = `
+              <a href="/CommunityDono/user/request-donation.php?id=${d.id}" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;font-size:16px;display:flex;">Request This Item</a>
+              <div style="text-align:center;font-size:13px;color:var(--color-text-muted);margin-top:10px;">Need an account? <a href="signup.html" style="color:var(--color-primary);">Sign up free</a></div>`;
+          }
+
+          if(window.lucide) lucide.createIcons();
+        })
+        .catch(() => showNotFound());
+    });
+
+    function showNotFound() {
+      document.getElementById('detail-loading').style.display = 'none';
+      document.getElementById('detail-notfound').style.display = 'block';
+      if(window.lucide) lucide.createIcons();
+    }
+  </script>
 </body>
 </html>

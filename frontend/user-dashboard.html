@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — iCareDonate</title>
+  <meta name="description" content="Your iCareDonate community member dashboard and activity overview.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/user.css">
+</head>
+<body>
+
+<div class="user-layout">
+
+  <!-- ══════════════════════════════════════════════════════════
+       USER SIDEBAR — Verbatim matching user/dashboard.php & nav-user.php
+       ══════════════════════════════════════════════════════════ -->
+  <aside class="user-sidebar" role="complementary" aria-label="User navigation">
+
+    <!-- Brand logo & User badge -->
+    <div class="brand-sidebar-container" role="banner">
+      <a href="user-dashboard.html" class="brand-sidebar-logo" aria-label="iCareDonate USER">
+        <img src="assets/images/logo.svg" class="brand-sidebar-icon" alt="iCareDonate Logo" width="32" height="32">
+        <span class="brand-sidebar-wordmark">
+          <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
+        </span>
+      </a>
+      <span class="brand-sidebar-badge brand-sidebar-badge--user" aria-label="USER Portal">
+        USER
+      </span>
+    </div>
+
+    <!-- Navigation links from user/dashboard.php & nav-user.php -->
+    <nav class="sidebar-nav" aria-label="User dashboard navigation">
+      <a href="user-dashboard.html" class="sidebar-link sidebar-link--active">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="donate.html" class="sidebar-link sidebar-link--accent">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        <span>Post Donation</span>
+      </a>
+
+      <a href="donations.html" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <span>Browse Donations</span>
+      </a>
+
+      <a href="user-dashboard.html#donations" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>My Donations</span>
+      </a>
+
+      <a href="user-dashboard.html#requests" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <span>My Requests</span>
+      </a>
+
+      <a href="user-dashboard.html#transactions" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Claim &amp; Pick-up</span>
+      </a>
+
+      <a href="user-dashboard.html#history" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>History</span>
+      </a>
+
+      <a href="user-dashboard.html#notifications" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span>Notifications</span>
+      </a>
+
+      <a href="contact-support.html" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Messages &amp; Support</span>
+      </a>
+
+      <a href="user-dashboard.html#settings" class="sidebar-link">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Profile &amp; Settings</span>
+      </a>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <span class="sidebar-user-name" id="user-sidebar-name">Regular User</span>
+      <a href="#" id="user-logout-btn" class="sidebar-link--muted" title="Log Out">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Log out
+      </a>
+    </div>
+  </aside>
+
+  <!-- ══════════════════════════════════════════════════════════
+       USER MAIN CONTENT
+       ══════════════════════════════════════════════════════════ -->
+  <div class="user-main">
+
+    <!-- Topbar -->
+    <header class="user-topbar">
+      <div>
+        <h1 style="font-size:20px;font-weight:700;color:var(--text, #1E293B);margin:0;">Dashboard</h1>
+      </div>
+    </header>
+
+    <div class="user-content">
+
+      <!-- Welcome Banner -->
+      <div style="background: linear-gradient(135deg, #1F4FA3 0%, #14213D 100%); color: #fff; border-radius: 16px; padding: 24px 28px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; gap: 16px;">
+        <div>
+          <div style="font-weight: 700; font-size: 20px; margin-bottom: 4px; display:flex; align-items:center; gap:8px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="opacity:0.85; flex-shrink:0;"><path d="M12 3l1.912 5.885h6.19l-5.008 3.637 1.913 5.886L12 14.77l-5.007 3.638 1.913-5.886-5.008-3.637h6.19z"/></svg>
+            Welcome back, <span id="user-welcome-name">Regular User</span>!
+          </div>
+          <div style="font-size: 14px; opacity: 0.85;">Here is your donation activity overview &mdash; every share makes a difference.</div>
+        </div>
+        <div style="background: rgba(255,255,255,0.18); border-radius: 10px; padding: 12px 16px; text-align: center; flex-shrink: 0; min-width: 80px;">
+          <div id="banner-completed-count" style="font-size: 28px; font-weight: 800; line-height: 1;">0</div>
+          <div style="font-size: 11px; opacity: 0.85; margin-top: 2px;">Completed</div>
+        </div>
+      </div>
+
+      <!-- 4 Stat Cards -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:28px;" class="user-stats-grid">
+
+        <div style="background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; padding:18px 20px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:var(--sky, #DCE8F7); display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt, #1F4FA3)" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          </div>
+          <div id="user-stat-donations" style="font-size:26px; font-weight:800; color:var(--text, #1E293B); line-height:1; margin-bottom:4px;">0</div>
+          <div style="font-size:12px; color:var(--text-muted, #64748B);">My Donations</div>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; padding:18px 20px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:#FFF0EC; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+          </div>
+          <div id="user-stat-requests" style="font-size:26px; font-weight:800; color:var(--text, #1E293B); line-height:1; margin-bottom:4px;">1</div>
+          <div style="font-size:12px; color:var(--text-muted, #64748B);">My Requests</div>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; padding:18px 20px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:#FEF3C7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="4.93" y1="4.93" x2="7.76" y2="7.76"/><line x1="16.24" y1="16.24" x2="19.07" y2="19.07"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><line x1="4.93" y1="19.07" x2="7.76" y2="16.24"/><line x1="16.24" y1="7.76" x2="19.07" y2="4.93"/></svg>
+          </div>
+          <div id="user-stat-progress" style="font-size:26px; font-weight:800; color:var(--text, #1E293B); line-height:1; margin-bottom:4px;">0</div>
+          <div style="font-size:12px; color:var(--text-muted, #64748B);">In Progress</div>
+        </div>
+
+        <div style="background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; padding:18px 20px;">
+          <div style="width:38px; height:38px; border-radius:10px; background:#DCFCE7; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <div id="user-stat-completed" style="font-size:26px; font-weight:800; color:var(--text, #1E293B); line-height:1; margin-bottom:4px;">0</div>
+          <div style="font-size:12px; color:var(--text-muted, #64748B);">Completed</div>
+        </div>
+
+      </div>
+
+      <!-- Quick Actions (4 Columns) -->
+      <div style="margin-bottom:28px;">
+        <div style="font-size:15px; font-weight:700; color:var(--text, #1E293B); margin-bottom:14px;">Quick Actions</div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:12px;" class="user-quick-grid">
+
+          <a href="donate.html" style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:20px 12px; background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; text-decoration:none; color:var(--text, #1E293B); font-size:13px; font-weight:600; transition:all 0.15s ease;">
+            <div style="width:44px; height:44px; border-radius:10px; background:var(--cobalt, #1F4FA3); display:flex; align-items:center; justify-content:center;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 7.65l.77.77L12 20.67l7.65-7.67.77-.77a5.4 5.4 0 0 0 0-7.65z"/></svg>
+            </div>
+            Donate Now
+          </a>
+
+          <a href="donations.html" style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:20px 12px; background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; text-decoration:none; color:var(--text, #1E293B); font-size:13px; font-weight:600; transition:all 0.15s ease;">
+            <div style="width:44px; height:44px; border-radius:10px; background:#D97706; display:flex; align-items:center; justify-content:center;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            </div>
+            Browse Items
+          </a>
+
+          <a href="user-dashboard.html#requests" style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:20px 12px; background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; text-decoration:none; color:var(--text, #1E293B); font-size:13px; font-weight:600; transition:all 0.15s ease;">
+            <div style="width:44px; height:44px; border-radius:10px; background:#7C3AED; display:flex; align-items:center; justify-content:center;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+            </div>
+            My Requests
+          </a>
+
+          <a href="user-dashboard.html#notifications" style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:20px 12px; background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; text-decoration:none; color:var(--text, #1E293B); font-size:13px; font-weight:600; transition:all 0.15s ease;">
+            <div style="width:44px; height:44px; border-radius:10px; background:var(--coral, #E0553D); display:flex; align-items:center; justify-content:center;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            Notifications
+          </a>
+
+        </div>
+      </div>
+
+      <!-- Recent Activity -->
+      <div>
+        <div style="font-size:15px; font-weight:700; color:var(--text, #1E293B); margin-bottom:14px;">Recent Activity</div>
+        <div id="user-activity-container" style="background:#fff; border:1px solid var(--border, #E2E8F0); border-radius:16px; overflow:hidden;">
+          <div style="display:flex; align-items:center; justify-content:space-between; padding:14px 20px; gap:16px;">
+            <div style="display:flex; align-items:center; gap:14px;">
+              <div style="width:36px; height:36px; border-radius:50%; background:#FEF3C7; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+              </div>
+              <span style="font-size:13.5px; color:var(--text, #1E293B);">You placed a request for 'Dura ni Nica'</span>
+            </div>
+            <span style="font-size:12px; color:var(--text-muted, #64748B); white-space:nowrap; flex-shrink:0; background:var(--surface-soft, #F8FAFC); padding:3px 8px; border-radius:20px;">16 hours ago</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer matching PHP footer.php -->
+    <footer class="user-footer">
+      <div>&copy; 2026 iCareDonate Community Platform. All rights reserved.</div>
+      <div class="user-footer-links">
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="terms.html">Terms of Service</a>
+        <a href="faqs.html">Help Center</a>
+      </div>
+    </footer>
+
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // Populate user data from storage
+  var userStr = localStorage.getItem('icd_user');
+  var token = localStorage.getItem('icd_token');
+  if (userStr) {
+    try {
+      var user = JSON.parse(userStr);
+      var fullName = (user.first_name + ' ' + (user.last_name || '')).trim() || 'Regular User';
+      var sideName = document.getElementById('user-sidebar-name');
+      var welcName = document.getElementById('user-welcome-name');
+      if (sideName) sideName.textContent = fullName;
+      if (welcName) welcName.textContent = fullName;
+    } catch(e) {}
+  }
+
+  // Logout
+  var logoutBtn = document.getElementById('user-logout-btn');
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      localStorage.removeItem('icd_token');
+      localStorage.removeItem('icd_user');
+      window.location.href = 'login.html';
+    });
+  }
+
+  // Load live user stats from API
+  async function loadUserStats() {
+    if (!token) return;
+    try {
+      var res = await fetch('/CommunityDono/api/v1/user/dashboard.php', {
+        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+      });
+      if (!res.ok) return;
+      var data = await res.json();
+      if (data && data.stats) {
+        var s = data.stats;
+        var donEl = document.getElementById('user-stat-donations');
+        var reqEl = document.getElementById('user-stat-requests');
+        var prgEl = document.getElementById('user-stat-progress');
+        var cmpEl = document.getElementById('user-stat-completed');
+        var banEl = document.getElementById('banner-completed-count');
+        if (donEl) donEl.textContent = s.my_donations || 0;
+        if (reqEl) reqEl.textContent = s.my_requests || 0;
+        if (prgEl) prgEl.textContent = s.in_progress || 0;
+        if (cmpEl) cmpEl.textContent = s.completed || 0;
+        if (banEl) banEl.textContent = s.completed || 0;
+      }
+    } catch(e) {
+      console.warn('User dashboard API notice:', e);
+    }
+  }
+
+  loadUserStats();
+})();
+</script>
+</body>
+</html>

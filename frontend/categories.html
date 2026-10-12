@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Donation Categories — iCareDonate</title>
-  <meta name="description" content="Browse verified resource categories including food, school supplies, healthcare, and electronics on iCareDonate.">
+  <meta name="description" content="Discover available physical goods, equipment, and staples categorized for fast community assistance.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,11 +13,17 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -25,144 +31,278 @@
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
-
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
-        <a href="categories.html" class="nav-link active">Categories</a>
-        <a href="donations.html" class="nav-link">Donations</a>
+        <a href="categories.html" class="nav-link nav-link--active">Categories</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
-
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
-
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
-
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
         <a href="about.html" class="mobile-link">About us</a>
         <a href="how-it-works.html" class="mobile-link">How it works</a>
-        <a href="categories.html" class="mobile-link active">Categories</a>
-        <a href="donations.html" class="mobile-link">Donations</a>
+        <a href="categories.html" class="mobile-link mobile-link--active">Categories</a>
         <a href="contact.html" class="mobile-link">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Categories</li>
-        </ol>
-      </nav>
+  <main style="padding: 48px 0 80px; min-height: 80vh;">
+    <div class="container" style="max-width: 1040px; margin: 0 auto; padding: 0 20px;">
 
-      <!-- Page Header -->
-      <div class="text-center mb-6 reveal-on-scroll">
-        <span class="badge badge-sky mb-2">Resource Directory</span>
-        <h1>Community Giving Categories</h1>
-        <p class="lead lead-center">
-          Explore essential aid categories where you can offer surplus physical goods or request support for your family and school.
+      <div style="text-align: center; margin-bottom: 48px;">
+        <span class="badge" style="background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-size: 12px; font-weight: 600; padding: 4px 14px; border-radius: 999px; display: inline-block; margin-bottom: 12px;">Resource Directory</span>
+        <h1 style="font-size: clamp(2rem, 4vw, 42px); margin-bottom: 12px;">
+          Browse by Donation Category
+        </h1>
+        <p class="lead" style="max-width: 600px; margin: 0 auto; font-size: 16px;">
+          Discover available physical goods, equipment, and staples categorized for fast community assistance.
         </p>
       </div>
 
-      <!-- Categories Grid -->
-      <div class="category-home-grid mb-6" id="categories-grid">
-        <div id="categories-loading" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; color: var(--text-muted);">
-          <div style="font-size: 32px; margin-bottom: 8px;">⏳</div>
-          <p style="font-size: 15px; margin: 0;">Loading verified community categories...</p>
-        </div>
-      </div>
+      <!-- Categories Grid — live data fetched from API, static fallback below -->
+      <div id="categories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 24px;">
+
+        <!-- Category cards rendered statically matching DB data; JS will enrich with counts -->
+
+        <a href="/CommunityDono/pages/browse.php?category=1" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="1">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Food &amp; Groceries</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Canned goods, dry rations, packaged staples, baby food</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Food &amp; Groceries Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=2" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="2">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">School Supplies</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Notebooks, pens, backpacks, books, art materials</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View School Supplies Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=3" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="3">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Clothing &amp; Shoes</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Clean wearables, uniforms, shoes, jackets for all ages</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Clothing &amp; Shoes Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=4" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="4">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Medical &amp; First Aid</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Basic hygiene items, bandages, OTC medicines, medical aids</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Medical &amp; First Aid Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=5" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="5">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Household Goods</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Kitchenware, bedding, small appliances, organizers</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Household Goods Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=6" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="6">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Books &amp; Educational</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Textbooks, storybooks, reference materials</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Books &amp; Educational Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=7" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="7">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Toys &amp; Games</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Puzzles, board games, stuffed toys, outdoor gear</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Toys &amp; Games Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=8" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="8">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Electronics &amp; Gadgets</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Laptops, tablets, chargers, working electronics</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Electronics &amp; Gadgets Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+        <a href="/CommunityDono/pages/browse.php?category=9" class="card" style="padding: 28px; text-decoration: none; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.2s, box-shadow 0.2s; box-shadow: var(--shadow-sm);">
+          <div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" style="width:26px;height:26px;"></i>
+              </div>
+              <span class="badge" style="font-size: 11.5px; background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-weight: 600; padding: 3px 10px; border-radius: 999px;" data-cat-count="9">— available</span>
+            </div>
+            <h2 style="font-size: 20px; font-weight: 700; color: var(--cobalt); margin: 0 0 10px;">Other Essentials</h2>
+            <p style="font-size: 14.5px; color: var(--slate); line-height: 1.6; margin: 0 0 20px;">Miscellaneous essential goods and community necessities</p>
+          </div>
+          <div style="display: flex; align-items: center; justify-content: space-between; padding-top: 16px; border-top: 1px solid var(--sky); font-size: 14px; font-weight: 600; color: var(--cobalt);">
+            <span>View Other Essentials Listings</span><span>&rarr;</span>
+          </div>
+        </a>
+
+      </div><!-- /#categories-grid -->
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if(window.lucide) lucide.createIcons();
+
+      // Enrich category count badges from API
+      fetch('/CommunityDono/api/v1/public/categories.php')
+        .then(r => r.json())
+        .then(data => {
+          if (!data || !data.data) return;
+          data.data.forEach(cat => {
+            const badge = document.querySelector('[data-cat-count="' + cat.id + '"]');
+            if (badge) badge.textContent = (cat.active_items_count || 0) + ' available';
+          });
+        })
+        .catch(() => {
+          // Silently fail — static content still shows
+          document.querySelectorAll('[data-cat-count]').forEach(b => b.textContent = 'available');
+        });
+    });
+  </script>
 </body>
 </html>

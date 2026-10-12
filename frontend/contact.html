@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contact Us — iCareDonate</title>
-  <meta name="description" content="Reach out to the iCareDonate volunteer coordinators for assistance, partnership inquiries, or general support.">
+  <meta name="description" content="Have a question or need assistance with donations or requests? Get in touch.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,155 +13,147 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/forms.css">
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
-
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link">Donations</a>
-        <a href="contact.html" class="nav-link active">Contact us</a>
+        <a href="contact.html" class="nav-link nav-link--active">Contact us</a>
       </nav>
-
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
-
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
-
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
         <a href="about.html" class="mobile-link">About us</a>
         <a href="how-it-works.html" class="mobile-link">How it works</a>
         <a href="categories.html" class="mobile-link">Categories</a>
-        <a href="donations.html" class="mobile-link">Donations</a>
-        <a href="contact.html" class="mobile-link active">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
+        <a href="contact.html" class="mobile-link mobile-link--active">Contact us</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container form-page-container">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Contact us</li>
-        </ol>
-      </nav>
+  <main style="padding: 40px 0 80px;">
+    <div class="container" style="max-width: 960px; margin: 0 auto; padding: 0 20px;">
 
-      <!-- Page Header -->
-      <div class="text-center mb-6 reveal-on-scroll">
-        <span class="badge badge-sky mb-2">Get in Touch</span>
-        <h1>We're Here to Help</h1>
-        <p class="lead">Have a question about donating, requesting aid, or community partnership? Send us a message.</p>
+      <div style="margin-bottom: 28px;">
+        <h1 style="margin-bottom: 8px;">Contact us</h1>
+        <p class="lead" style="margin-bottom: 0;">Have a question or need assistance with donations or requests? Get in touch.</p>
       </div>
 
-      <!-- Info Cards Grid -->
-      <div class="contact-info-grid reveal-on-scroll">
-        <div class="contact-info-card">
-          <div class="contact-info-icon">✉️</div>
-          <h3 class="contact-info-title">Email Us</h3>
-          <p class="contact-info-text">support@icaredonate.org</p>
-        </div>
-        <div class="contact-info-card">
-          <div class="contact-info-icon">📍</div>
-          <h3 class="contact-info-title">Headquarters</h3>
-          <p class="contact-info-text">Pasig City, Metro Manila</p>
-        </div>
-        <div class="contact-info-card">
-          <div class="contact-info-icon">⏱️</div>
-          <h3 class="contact-info-title">Response Time</h3>
-          <p class="contact-info-text">Within 24 Hours</p>
-        </div>
+      <!-- Success Message (hidden by default, shown via JS after submit) -->
+      <div id="contact-success" class="card" style="padding: 48px; text-align: center; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm); display: none;">
+        <div style="color: var(--cobalt); margin-bottom: 16px;"><i data-lucide="circle-check-big" style="width:52px;height:52px;"></i></div>
+        <h2 style="font-size: 24px; color: var(--cobalt); margin-bottom: 10px;">Thanks. We received your inquiry.</h2>
+        <p style="color: var(--slate); font-size: 15.5px; margin-bottom: 24px;">
+          A team coordinator will review and respond to your message.
+        </p>
+        <a href="index.html" class="btn btn-primary" style="border-radius: 999px; padding: 12px 28px;">Return to Homepage</a>
       </div>
 
-      <!-- Contact Form Card -->
-      <div class="form-card reveal-on-scroll">
-        <form id="contact-form" novalidate>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="contact-name" class="form-label">Full Name <span class="required">*</span></label>
-              <input type="text" id="contact-name" name="name" class="form-control" placeholder="Your Name" required>
-              <div class="form-error"></div>
+      <!-- Contact Form -->
+      <div id="contact-form-wrap">
+        <div style="display: grid; grid-template-columns: 320px 1fr; gap: 24px;">
+          <!-- Left Column: Contact Cards -->
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+                <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+                <b style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Phone number</b>
+              </div>
+              <p style="font-size: 14px; color: var(--slate); margin: 0;">+63 (02) 8123-4567</p>
             </div>
 
-            <div class="form-group">
-              <label for="contact-email" class="form-label">Email Address <span class="required">*</span></label>
-              <input type="email" id="contact-email" name="email" class="form-control" placeholder="you@example.com" required>
-              <div class="form-error"></div>
-            </div>
-          </div>
-
-          <div class="form-row">
-            <div class="form-group">
-              <label for="contact-subject" class="form-label">Subject <span class="required">*</span></label>
-              <input type="text" id="contact-subject" name="subject" class="form-control" placeholder="How can we help?" required>
-              <div class="form-error"></div>
+            <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+                <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+                <b style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Address / location</b>
+              </div>
+              <p style="font-size: 14px; color: var(--slate); margin: 0;">Metro Manila, Philippines</p>
             </div>
 
-            <div class="form-group">
-              <label for="contact-topic" class="form-label">Topic <span class="required">*</span></label>
-              <select id="contact-topic" name="topic" class="form-control" required>
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Donation Question">Donation Verification Question</option>
-                <option value="Request Support">Aid Request Follow-up</option>
-                <option value="Partnership">Barangay or NGO Partnership</option>
-                <option value="Technical Issue">Website Feedback</option>
-              </select>
+            <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+                <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+                <b style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Email address</b>
+              </div>
+              <p style="font-size: 14px; color: var(--slate); margin: 0;">support@icaredonate.org</p>
             </div>
           </div>
 
-          <div class="form-group">
-            <label for="contact-msg" class="form-label">Message <span class="required">*</span></label>
-            <textarea id="contact-msg" name="message" class="form-control" rows="5" placeholder="Please describe your question or suggestion in detail..." required minlength="10"></textarea>
-            <div class="form-error"></div>
-          </div>
+          <!-- Right Column: Inquiry Form -->
+          <div class="card" style="padding: 32px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 20px;">Inquiry form</h3>
 
-          <div class="action-mt-md">
-            <button type="submit" class="btn btn-primary btn-lg btn-block">
-              Send Message &rarr;
-            </button>
-          </div>
+            <form id="contact-inquiry-form" method="POST" action="/CommunityDono/api/v1/contact.php">
 
-        </form>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div class="form-group">
+                  <label class="form-label" for="name">Name</label>
+                  <input type="text" id="name" name="name" class="form-input" required placeholder="Your full name">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="email">Email</label>
+                  <input type="email" id="email" name="email" class="form-input" required placeholder="you@example.com">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label class="form-label" for="subject">Type</label>
+                <select id="subject" name="subject" class="form-input" required>
+                  <option value="General">General</option>
+                  <option value="Partnership or sponsorship">Partnership or sponsorship</option>
+                  <option value="Volunteer">Volunteer</option>
+                  <option value="Media">Media</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label" for="message">Message</label>
+                <textarea id="message" name="message" class="form-input" rows="4" required placeholder="Write your inquiry message here..."></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="padding: 10px 24px; font-size: 14.5px;">
+                Send inquiry
+              </button>
+            </form>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -169,63 +161,75 @@
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/forms.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if(window.lucide) lucide.createIcons();
+
+      // Contact form: submit via fetch to PHP API
+      const form = document.getElementById('contact-inquiry-form');
+      if (form) {
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const data = new FormData(form);
+          try {
+            const resp = await fetch(form.action, { method: 'POST', body: data });
+            document.getElementById('contact-form-wrap').style.display = 'none';
+            document.getElementById('contact-success').style.display = 'block';
+            if(window.lucide) lucide.createIcons();
+          } catch(err) {
+            alert('Failed to send. Please try again later.');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

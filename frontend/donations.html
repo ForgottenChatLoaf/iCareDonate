@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Browse Approved Donations — iCareDonate</title>
-  <meta name="description" content="Browse verified and approved physical item donations available for free community claim on iCareDonate.">
+  <title>Browse Available Donations — iCareDonate</title>
+  <meta name="description" content="Discover verified resources offered by caring neighbors and community organizations.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -13,215 +13,298 @@
         var saved = localStorage.getItem('icd-theme');
         var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
         document.documentElement.setAttribute('data-theme', theme);
+        var meta = document.querySelector('meta[name="theme-color"]');
+        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
       } catch(e) {}
     })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/pages/donations.css">
 </head>
 <body>
 
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header -->
-  <header class="header-public" role="banner">
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
     <div class="container nav-public__inner">
-      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
-        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+      <a href="index.html" class="logo" aria-label="iCareDonate — Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
         <span class="logo-wordmark">i<em>Care</em>Donate</span>
       </a>
-
-      <nav class="nav-public__links" aria-label="Primary Navigation">
+      <nav class="nav-public__links" aria-label="Main navigation">
         <a href="index.html" class="nav-link">Home</a>
         <a href="about.html" class="nav-link">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link active">Donations</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
-
       <div class="nav-public__actions">
         <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true">
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-          </span>
+          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
-
-      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
       </button>
     </div>
-
     <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
-      <nav class="mobile-menu__links">
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
         <a href="index.html" class="mobile-link">Home</a>
         <a href="about.html" class="mobile-link">About us</a>
         <a href="how-it-works.html" class="mobile-link">How it works</a>
         <a href="categories.html" class="mobile-link">Categories</a>
-        <a href="donations.html" class="mobile-link active">Donations</a>
         <a href="contact.html" class="mobile-link">Contact us</a>
-        <a href="donate.html" class="mobile-link">Post a Donation</a>
         <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
       </nav>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main id="main-content" class="main-content">
-    <div class="container">
-      
-      <!-- Breadcrumbs -->
-      <nav class="breadcrumbs" aria-label="Breadcrumbs">
-        <ol class="breadcrumb-list">
-          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page">Donations</li>
-        </ol>
-      </nav>
+  <main style="padding: 40px 0 60px; min-height: 80vh;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
 
-      <!-- Page Header -->
-      <div class="section-header reveal-on-scroll">
-        <div>
-          <span class="badge badge-sky mb-2">Verified Goods Directory</span>
-          <h1>Available Donations</h1>
-          <p class="lead">Admin-verified supplies available for community request and direct local pick-up.</p>
-        </div>
-        <a href="donate.html" class="btn btn-donate">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
-          List an Item
-        </a>
+      <div style="margin-bottom: 32px;">
+        <h1 style="margin-bottom: 8px;">Browse Available Items</h1>
+        <p class="lead" style="margin-bottom: 0;">Discover verified resources offered by caring neighbors and community organizations.</p>
       </div>
 
-      <!-- Filter & Search Toolbar -->
-      <section class="donations-filter-bar reveal-on-scroll">
-        <div class="donations-filter-top">
-          <!-- Search Input -->
-          <div class="search-input-wrap">
-            <span class="search-icon">🔍</span>
-            <input 
-              type="search" 
-              id="donations-search" 
-              class="form-control" 
-              placeholder="Search items, keywords, or cities (e.g. backpacks, rice, Pasig)..."
-              aria-label="Search donations"
-            >
+      <!-- Search & Filters Card -->
+      <div class="card" style="padding: 26px; margin-bottom: 36px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+        <form id="browse-form" style="display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 14px; align-items: end;">
+
+          <div class="form-group">
+            <label class="form-label" for="search-input">Search Keywords</label>
+            <input type="text" id="search-input" name="q" class="form-input" placeholder="Search by item name, description, city...">
           </div>
 
-          <!-- Category Select Dropdown -->
-          <div>
-            <select id="donations-cat-select" class="form-control" aria-label="Filter by category">
-              <option value="all">All Categories</option>
+          <div class="form-group">
+            <label class="form-label" for="cat-select">Category</label>
+            <select id="cat-select" name="category" class="form-input">
+              <option value="">All Categories</option>
+              <option value="1">Food &amp; Groceries</option>
+              <option value="2">School Supplies</option>
+              <option value="3">Clothing &amp; Shoes</option>
+              <option value="4">Medical &amp; First Aid</option>
+              <option value="5">Household Goods</option>
+              <option value="6">Books &amp; Educational</option>
+              <option value="7">Toys &amp; Games</option>
+              <option value="8">Electronics &amp; Gadgets</option>
+              <option value="9">Other Essentials</option>
             </select>
           </div>
 
-          <!-- Sort Select -->
-          <div>
-            <select id="donations-sort" class="form-control" aria-label="Sort donations">
-              <option value="newest">Sort: Recently Added</option>
-              <option value="qty-desc">Sort: Highest Quantity</option>
-              <option value="title-asc">Sort: Name (A to Z)</option>
+          <div class="form-group">
+            <label class="form-label" for="cond-select">Condition</label>
+            <select id="cond-select" name="condition" class="form-input">
+              <option value="">Any Condition</option>
+              <option value="new">Brand New</option>
+              <option value="like_new">Like New</option>
+              <option value="good">Good Condition</option>
+              <option value="fair">Fair</option>
             </select>
           </div>
+
+          <div style="display: flex; gap: 8px;">
+            <button type="submit" class="btn btn-primary" style="height: 44px; padding: 0 22px; border-radius: 999px;">
+              Filter
+            </button>
+            <button type="reset" id="reset-btn" class="btn btn-outline" style="height: 44px; padding: 0 18px; display: none; border-radius: 999px;">
+              Reset
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Results Header -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
+        <div id="results-count" style="font-size: 14.5px; color: var(--slate);">Loading items...</div>
+      </div>
+
+      <!-- Items Grid -->
+      <div id="donations-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px;">
+        <!-- Populated by JS -->
+        <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+          <div style="color: var(--slate); margin-bottom: 14px;"><i data-lucide="loader" style="width:40px;height:40px;"></i></div>
+          <p style="color: var(--slate);">Loading available items...</p>
         </div>
-
-        <!-- Quick Filter Pills -->
-        <div class="category-pills-wrap" id="category-pills-wrap">
-          <button type="button" class="category-pill-btn active" data-cat="all">All</button>
-        </div>
-      </section>
-
-      <!-- Results Meta Information -->
-      <div class="donations-results-meta">
-        <span id="donations-count">Loading verified donations...</span>
-        <span>Verified for direct community pick-up</span>
       </div>
 
-      <!-- Donations Gallery Grid -->
-      <div id="donations-gallery" class="donations-gallery-grid">
-        <!-- Rendered by donations.js from ICD_DATA -->
-      </div>
-
-      <!-- Empty State (Shown when filters yield 0 items) -->
-      <div id="donations-empty" class="donations-empty-state">
-        <div class="donations-empty-icon">🔎</div>
-        <h3 class="donations-empty-title">No matching donations found</h3>
-        <p class="donations-empty-desc">
-          Try clearing your search query or choosing another category filter. You can also request specific supplies directly!
-        </p>
-        <a href="request.html" class="btn btn-primary">
-          Submit an Aid Request
-        </a>
-      </div>
+      <!-- Pagination -->
+      <div id="pagination" style="display: flex; justify-content: center; gap: 8px; margin-top: 40px;"></div>
 
     </div>
   </main>
 
   <!-- Footer -->
   <footer class="footer-public" role="contentinfo">
-    <div class="container">
+    <div class="container footer-public__container">
       <div class="footer-public__grid">
         <div class="footer-public__col">
-          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
-            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate — Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
           <div class="footer-theme-toggle-wrap">
-            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-              </span>
+            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
               <span class="theme-toggle-text">Dark mode</span>
             </button>
           </div>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
-            <li><a href="about.html">About us</a></li>
-            <li><a href="mission.html">Our mission</a></li>
-            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Support</strong>
           <ul class="footer-links">
             <li><a href="how-it-works.html">Help center</a></li>
             <li><a href="faqs.html">Guides and FAQs</a></li>
-            <li><a href="contact-support.html">Contact support</a></li>
+            <li><a href="contact.html">Contact support</a></li>
           </ul>
         </div>
-
         <div class="footer-public__col">
           <strong class="footer-heading">Legal</strong>
           <ul class="footer-links">
             <li><a href="terms.html">Terms of service</a></li>
             <li><a href="privacy.html">Privacy policy</a></li>
-            <li><a href="admin-login.html">Admin log in</a></li>
+            <li><a href="login.html">Admin log in</a></li>
           </ul>
         </div>
       </div>
-
       <div class="footer-public__bottom">
         <span>&copy; 2026 iCareDonate. All rights reserved.</span>
-        <span>A dignified community resource sharing initiative.</span>
       </div>
     </div>
   </footer>
 
-  <script src="js/data.js"></script>
   <script src="js/theme.js"></script>
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
-  <script src="js/donations.js"></script>
+  <script>
+    let currentPage = 1;
+    const PER_PAGE = 12;
+
+    function conditionLabel(c) {
+      const map = { new: 'Brand New', like_new: 'Like New', good: 'Good Condition', fair: 'Fair', poor: 'Poor' };
+      return map[c] || c || '';
+    }
+
+    function renderDonations(data) {
+      const grid = document.getElementById('donations-grid');
+      const countEl = document.getElementById('results-count');
+      const pagEl = document.getElementById('pagination');
+
+      if (!data || !data.data || data.data.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:60px 20px;border-radius:20px;border:1px solid var(--sky);">
+            <div style="margin-bottom:14px;color:var(--slate);"><i data-lucide="search-x" style="width:52px;height:52px;"></i></div>
+            <h3 style="font-size:22px;color:var(--cobalt);margin-bottom:8px;">No matches found</h3>
+            <p style="color:var(--slate);font-size:15px;margin-bottom:24px;">Try another keyword or adjust your category filter.</p>
+            <button onclick="document.getElementById('browse-form').reset();loadDonations()" class="btn btn-outline" style="border-radius:999px;padding:10px 24px;">Clear All Filters</button>
+          </div>`;
+        countEl.textContent = 'Showing 0 items';
+        pagEl.innerHTML = '';
+        if(window.lucide) lucide.createIcons();
+        return;
+      }
+
+      const total = data.total || data.data.length;
+      const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+      countEl.innerHTML = `Showing <strong>${data.data.length}</strong> of <strong>${total}</strong> available items`;
+
+      grid.innerHTML = data.data.map(d => {
+        const available = d.available_quantity ?? ((d.quantity_total || 0) - (d.quantity_reserved || 0) - (d.quantity_claimed || 0));
+        const img = d.primary_image ? `/CommunityDono/${d.primary_image}` : 'assets/images/placeholder.svg';
+        return `
+          <div class="card" style="border-radius:20px;border:1px solid var(--sky);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm);padding:0;transition:transform 0.2s,box-shadow 0.2s;">
+            <div style="height:190px;position:relative;overflow:hidden;background:var(--surface-soft);">
+              <img src="${img}" alt="${d.title}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='assets/images/placeholder.svg'">
+              <span style="position:absolute;top:12px;left:12px;background:rgba(20,33,61,0.82);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px);">${d.category_name || ''}</span>
+              <span style="position:absolute;bottom:12px;right:12px;background:var(--cobalt);color:#fff;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:999px;">${available} left</span>
+            </div>
+            <div style="padding:20px 22px 18px;flex:1;display:flex;flex-direction:column;">
+              <h3 style="font-size:17px;font-weight:700;color:var(--cobalt);margin-bottom:8px;line-height:1.35;">
+                <a href="donation-details.html?id=${d.id}" style="color:inherit;text-decoration:none;">${d.title}</a>
+              </h3>
+              <p style="font-size:13.5px;color:var(--slate);line-height:1.55;margin-bottom:16px;flex:1;">${(d.description || '').split(' ').slice(0, 14).join(' ')}${(d.description || '').split(' ').length > 14 ? '...' : ''}</p>
+              <div style="display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--slate);margin-bottom:16px;">
+                <i data-lucide="map-pin" style="width:14px;height:14px;color:var(--cobalt);flex-shrink:0;"></i>
+                ${d.pickup_city || 'Metro Manila'} &nbsp;·&nbsp; ${conditionLabel(d.condition_type)}
+              </div>
+              <a href="donation-details.html?id=${d.id}" class="btn btn-outline" style="width:100%;justify-content:center;padding:10px 16px;font-size:13.5px;border-radius:999px;">View &amp; Request</a>
+            </div>
+          </div>`;
+      }).join('');
+
+      // Pagination
+      if (totalPages > 1) {
+        pagEl.innerHTML = Array.from({length: totalPages}, (_, i) => i + 1).map(p =>
+          `<button onclick="currentPage=${p};loadDonations()" class="btn ${p === currentPage ? 'btn-primary' : 'btn-outline'}" style="width:40px;height:40px;padding:0;display:inline-flex;align-items:center;justify-content:center;font-weight:600;">${p}</button>`
+        ).join('');
+      } else {
+        pagEl.innerHTML = '';
+      }
+
+      if(window.lucide) lucide.createIcons();
+    }
+
+    function loadDonations() {
+      const q = document.getElementById('search-input').value;
+      const cat = document.getElementById('cat-select').value;
+      const cond = document.getElementById('cond-select').value;
+      const resetBtn = document.getElementById('reset-btn');
+      resetBtn.style.display = (q || cat || cond) ? 'inline-flex' : 'none';
+
+      const params = new URLSearchParams();
+      if (q) params.set('q', q);
+      if (cat) params.set('category', cat);
+      if (cond) params.set('condition', cond);
+      params.set('page', currentPage);
+      params.set('per_page', PER_PAGE);
+
+      document.getElementById('donations-grid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:40px;"><i data-lucide="loader" style="width:32px;height:32px;color:var(--cobalt);"></i></div>';
+      if(window.lucide) lucide.createIcons();
+
+      fetch(`/CommunityDono/api/v1/public/donations.php?${params}`)
+        .then(r => r.json())
+        .then(renderDonations)
+        .catch(() => {
+          document.getElementById('donations-grid').innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:60px 20px;">
+              <p style="color:var(--slate);">Unable to load donations. <a href="/CommunityDono/pages/browse.php" style="color:var(--cobalt);">View the full page instead</a>.</p>
+            </div>`;
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if(window.lucide) lucide.createIcons();
+      loadDonations();
+
+      document.getElementById('browse-form').addEventListener('submit', e => {
+        e.preventDefault();
+        currentPage = 1;
+        loadDonations();
+      });
+
+      document.getElementById('reset-btn').addEventListener('click', () => {
+        document.getElementById('browse-form').reset();
+        currentPage = 1;
+        loadDonations();
+      });
+    });
+  </script>
 </body>
 </html>
