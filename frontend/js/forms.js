@@ -6,9 +6,13 @@
 (function() {
   'use strict';
 
-  // Configurable backend API root
-  // TODO: connect to PHP endpoint (e.g. 'http://localhost/CommunityDono/api/' or '../api/')
-  const API_BASE_URL = 'http://localhost/CommunityDono/api';
+  const API_BASE_URL = (function() {
+    const origin = window.location.origin;
+    if (window.location.pathname.includes('/CommunityDono/')) {
+      return `${origin}/CommunityDono/api`;
+    }
+    return '/api';
+  })();
 
   // ============================================================
   // PREFILL FORM FROM URL PARAMETERS
@@ -306,22 +310,126 @@
 
     const loginForm = document.getElementById('user-login-form');
     if (loginForm) {
-      handleFormSubmit(
-        loginForm, 
-        'Welcome Back!', 
-        'You have successfully logged in to iCareDonate.',
-        'donations.html'
-      );
+      loginForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const emailInput = document.getElementById('login-email');
+        const passInput = document.getElementById('login-password');
+        if (!validateField(emailInput) || !validateField(passInput)) {
+          return;
+        }
+
+        const submitBtn = loginForm.querySelector('button[type="submit"]');
+        const origText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="btn-spinner"></span> Logging in...';
+
+        try {
+          const res = await fetch(`${API_BASE_URL}/v1/auth/login.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              email: emailInput.value.trim(),
+              password: passInput.value
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.message || 'Login failed. Please check your credentials.');
+          }
+
+          if (data.token) localStorage.setItem('icd_token', data.token);
+          if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
+
+          if (window.ICD_MAIN) {
+            window.ICD_MAIN.showToast('Welcome back!', `Logged in as ${data.user.first_name} ${data.user.last_name}`, 'success');
+          }
+
+          setTimeout(() => {
+            if (data.user.role === 'admin' || data.user.role === 'superadmin') {
+              window.location.href = '/CommunityDono/admin/';
+            } else {
+              window.location.href = 'index.html';
+            }
+          }, 1000);
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+          if (window.ICD_MAIN) {
+            window.ICD_MAIN.showToast('Login Failed', err.message, 'error');
+          } else {
+            alert(err.message);
+          }
+        }
+      });
     }
 
     const signupForm = document.getElementById('user-signup-form');
     if (signupForm) {
-      handleFormSubmit(
-        signupForm, 
-        'Account Created!', 
-        'Welcome to the iCareDonate community! You can now post and request items.',
-        'donations.html'
-      );
+      signupForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const nameInput = document.getElementById('signup-name');
+        const emailInput = document.getElementById('signup-email');
+        const phoneInput = document.getElementById('signup-phone');
+        const passInput = document.getElementById('signup-password');
+        const confirmInput = document.getElementById('signup-confirm-password');
+
+        let valid = true;
+        [nameInput, emailInput, phoneInput, passInput, confirmInput].forEach(inp => {
+          if (inp && !validateField(inp)) valid = false;
+        });
+        if (!valid) return;
+
+        const fullName = (nameInput ? nameInput.value : '').trim();
+        const parts = fullName.split(/\s+/);
+        const firstName = parts[0] || 'Community';
+        const lastName = parts.slice(1).join(' ') || 'Member';
+
+        const submitBtn = signupForm.querySelector('button[type="submit"]');
+        const origText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="btn-spinner"></span> Creating account...';
+
+        try {
+          const res = await fetch(`${API_BASE_URL}/v1/auth/register.php`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+            body: JSON.stringify({
+              first_name: firstName,
+              last_name: lastName,
+              email: emailInput.value.trim(),
+              phone: phoneInput ? phoneInput.value.trim() : '',
+              password: passInput.value,
+              confirm_password: confirmInput ? confirmInput.value : passInput.value
+            })
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            const msg = data.errors ? Object.values(data.errors).flat().join(' ') : (data.message || 'Registration failed.');
+            throw new Error(msg);
+          }
+
+          if (data.token) localStorage.setItem('icd_token', data.token);
+          if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
+
+          if (window.ICD_MAIN) {
+            window.ICD_MAIN.showToast('Account Created!', 'Welcome to iCareDonate community!', 'success');
+          }
+
+          setTimeout(() => {
+            window.location.href = 'index.html';
+          }, 1200);
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+          if (window.ICD_MAIN) {
+            window.ICD_MAIN.showToast('Registration Error', err.message, 'error');
+          } else {
+            alert(err.message);
+          }
+        }
+      });
     }
 
     const adminLoginForm = document.getElementById('admin-login-form');

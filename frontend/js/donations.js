@@ -8,37 +8,75 @@
 
   const FALLBACK_IMAGE = 'assets/images/placeholder.svg';
 
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function getAvailableQty(item) {
+    if (item.quantity_available !== undefined) {
+      return Number(item.quantity_available);
+    }
+    const total = Number(item.quantity_total || item.quantity || 0);
+    const reserved = Number(item.quantity_reserved || 0);
+    const claimed = Number(item.quantity_claimed || 0);
+    return Math.max(0, total - reserved - claimed);
+  }
+
+  /**
+   * Generates donation card HTML matching index.php & browse.php
+   */
   function createDonationCardHTML(item) {
+    const available = getAvailableQty(item);
+    const categoryName = item.category_name || item.categoryName || 'General Aid';
+    const city = item.pickup_city || item.location || 'Pasig City';
+    const img = item.image_url || item.image || FALLBACK_IMAGE;
+    const title = item.title || 'Donation Item';
+    const id = item.id;
+
     return `
-      <article class="donation-card reveal-on-scroll" data-id="${item.id}">
-        <div class="donation-card__media">
+      <div class="card reveal-on-scroll" data-id="${id}" style="border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow-sm); padding: 0; transition: transform 0.2s, box-shadow 0.2s;">
+        <div style="height: 170px; position: relative; overflow: hidden; background: var(--surface-soft);">
           <img 
-            src="${item.image}" 
-            alt="${item.title}" 
-            class="donation-card__img" 
+            src="${img}" 
+            alt="${escapeHtml(title)}" 
+            style="width: 100%; height: 100%; object-fit: cover; display: block;" 
             loading="lazy" 
             onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';"
           >
-          <span class="donation-card__cat-pill">${item.categoryName}</span>
-          <span class="donation-card__qty-pill">${item.quantity} available</span>
+          <span style="position: absolute; top: 12px; left: 12px; background: rgba(20, 33, 61, 0.82); color: #fff; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px; backdrop-filter: blur(4px);">
+            ${escapeHtml(categoryName)}
+          </span>
+          <span style="position: absolute; bottom: 12px; right: 12px; background: var(--cobalt); color: #fff; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px; box-shadow: 0 2px 6px rgba(0,0,0,0.2);">
+            ${available} left
+          </span>
         </div>
-        <div class="donation-card__body">
+        <div style="padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
           <div>
-            <h3 class="donation-card__title">${item.title}</h3>
-            <p class="donation-card__meta">
-              <span>📍 ${item.location}</span> &bull; 
-              <span>${item.pickupType}</span>
+            <h3 style="font-size: 18px; margin: 0 0 8px; color: var(--cobalt); font-weight: 700;">
+              ${escapeHtml(title)}
+            </h3>
+            <p class="sm mut" style="font-size: 13.5px; color: var(--slate); margin: 0 0 16px;">
+              ${escapeHtml(categoryName)} &bull; Pick-up only &bull; ${escapeHtml(city)}
             </p>
           </div>
-          <a href="donation-details.html?id=${item.id}" class="btn btn-outline btn-block">
+          <a href="donation-details.html?id=${id}" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; text-decoration: none; display: inline-flex; border-radius: 999px;">
             View details &amp; request
           </a>
         </div>
-      </article>
+      </div>
     `;
   }
 
-  function initDonationsPage() {
+  /**
+   * Initializes donations browsing & filtering on donations.html
+   */
+  async function initDonationsPage() {
     const gallery = document.getElementById('donations-gallery');
     if (!gallery) return;
 
@@ -52,7 +90,28 @@
     const urlParams = new URLSearchParams(window.location.search);
     let selectedCategory = urlParams.get('category') || 'all';
 
-    // If query string has category, activate matching pill / select
+    gallery.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; color: var(--text-muted);">
+        <div style="font-size: 32px; margin-bottom: 8px;">⏳</div>
+        <p>Loading verified community donations...</p>
+      </div>
+    `;
+
+    // Fetch live donations from MySQL API
+    let allDonations = [];
+    try {
+      if (window.ICD_API && typeof window.ICD_API.fetchDonations === 'function') {
+        allDonations = await window.ICD_API.fetchDonations();
+      }
+    } catch (err) {
+      console.warn('Live donations fetch failed, falling back to local store:', err);
+    }
+
+    if (!allDonations || allDonations.length === 0) {
+      allDonations = (window.ICD_DATA && window.ICD_DATA.donations) ? window.ICD_DATA.donations : [];
+    }
+
+    // Synchronize initial category selection
     if (categorySelect && selectedCategory !== 'all') {
       categorySelect.value = selectedCategory;
     }
@@ -66,28 +125,38 @@
       const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
       const sort = sortSelect ? sortSelect.value : 'newest';
 
-      let filtered = ICD_DATA.donations.filter(item => {
+      let filtered = allDonations.filter(item => {
+        const catSlug = item.category_slug || item.categorySlug || (item.category_name ? item.category_name.toLowerCase().replace(/[^a-z0-9]+/g, '-') : '');
+        const catId = String(item.category_id || item.categoryId || '');
+
         const matchesCat = (selectedCategory === 'all' || 
-                            item.categorySlug === selectedCategory || 
-                            item.categoryId.toString() === selectedCategory);
+                            catSlug === selectedCategory || 
+                            catId === selectedCategory);
         
+        const title = (item.title || '').toLowerCase();
+        const desc = (item.description || '').toLowerCase();
+        const location = (item.pickup_city || item.location || '').toLowerCase();
+        const catName = (item.category_name || item.categoryName || '').toLowerCase();
+        const donor = (item.donor_name || item.donorName || '').toLowerCase();
+
         const matchesQuery = !query || 
-                             item.title.toLowerCase().includes(query) ||
-                             item.location.toLowerCase().includes(query) ||
-                             item.categoryName.toLowerCase().includes(query) ||
-                             item.description.toLowerCase().includes(query);
+                             title.includes(query) ||
+                             desc.includes(query) ||
+                             location.includes(query) ||
+                             catName.includes(query) ||
+                             donor.includes(query);
 
         return matchesCat && matchesQuery;
       });
 
       // Sorting
       if (sort === 'qty-desc') {
-        filtered.sort((a, b) => b.quantity - a.quantity);
+        filtered.sort((a, b) => getAvailableQty(b) - getAvailableQty(a));
       } else if (sort === 'title-asc') {
-        filtered.sort((a, b) => a.title.localeCompare(b.title));
+        filtered.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
       } else {
         // default newest (by ID desc)
-        filtered.sort((a, b) => b.id - a.id);
+        filtered.sort((a, b) => Number(b.id) - Number(a.id));
       }
 
       if (resultsCount) {
@@ -156,20 +225,59 @@
     render();
   }
 
-  function initDonationDetailsPage() {
+  /**
+   * Initializes donation details view on donation-details.html
+   */
+  async function initDonationDetailsPage() {
     const detailsContainer = document.getElementById('donation-details-view');
     if (!detailsContainer) return;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const id = parseInt(urlParams.get('id'), 10) || 1;
-    const item = ICD_DATA.donations.find(d => d.id === id);
+    const rawId = urlParams.get('id');
+    const id = parseInt(rawId, 10);
+
+    // Validate ID strictly: must be present and a positive integer
+    if (!rawId || isNaN(id) || id <= 0) {
+      detailsContainer.innerHTML = `
+        <div class="donations-empty-state is-active">
+          <div class="donations-empty-icon">⚠️</div>
+          <h2 class="donations-empty-title">Invalid or Missing Donation ID</h2>
+          <p class="donations-empty-desc">Please choose a valid item listing from our community donations directory.</p>
+          <a href="donations.html" class="btn btn-primary">Browse Available Donations</a>
+        </div>
+      `;
+      return;
+    }
+
+    detailsContainer.innerHTML = `
+      <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+        <div style="font-size: 36px; margin-bottom: 12px;">⏳</div>
+        <p>Loading donation details...</p>
+      </div>
+    `;
+
+    let item = null;
+    let fetchError = false;
+    try {
+      if (window.ICD_API && typeof window.ICD_API.fetchDonationById === 'function') {
+        item = await window.ICD_API.fetchDonationById(id);
+      }
+    } catch (err) {
+      console.warn('API fetch by ID failed:', err);
+      fetchError = true;
+    }
 
     if (!item) {
+      const errorTitle = fetchError ? 'Unable to Load Donation' : 'Donation Not Found';
+      const errorDesc = fetchError
+        ? 'Could not connect to the donation server. Please check your network and try again.'
+        : 'The item you are searching for may have already been claimed, expired, or does not exist.';
+
       detailsContainer.innerHTML = `
-        <div class="donations-empty-state">
+        <div class="donations-empty-state is-active">
           <div class="donations-empty-icon">⚠️</div>
-          <h2 class="donations-empty-title">Donation Not Found</h2>
-          <p class="donations-empty-desc">The item you are searching for may have already been claimed or does not exist.</p>
+          <h2 class="donations-empty-title">${errorTitle}</h2>
+          <p class="donations-empty-desc">${errorDesc}</p>
           <a href="donations.html" class="btn btn-primary">Browse Available Donations</a>
         </div>
       `;
@@ -182,46 +290,69 @@
     const breadcrumbCurrent = document.getElementById('breadcrumb-item-title');
     if (breadcrumbCurrent) breadcrumbCurrent.textContent = item.title;
 
+    const available = getAvailableQty(item);
+    const categoryName = item.category_name || item.categoryName || 'General Aid';
+    const categorySlug = item.category_slug || item.categorySlug || 'all';
+    const donorName = item.donor_name || item.donorName || 'Verified Community Donor';
+    const verifiedDate = item.created_at ? new Date(item.created_at).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : (item.verifiedDate || 'Recently Verified');
+    const location = (item.pickup_barangay ? item.pickup_barangay + ', ' : '') + (item.pickup_city || item.location || 'Metro Manila');
+    const pickupType = item.pickup_method === 'delivery' ? 'Direct Delivery' : (item.pickup_method === 'both' ? 'Pick-up or Delivery' : 'Direct Local Pick-up');
+    const condition = item.condition_type === 'new' ? 'Brand New & Sealed' : (item.condition_type === 'like_new' ? 'Like New' : (item.condition_type === 'good' ? 'Good Condition' : (item.condition_type === 'fair' ? 'Fair Condition' : 'Clean & Verified')));
+    const img = item.image_url || item.image || FALLBACK_IMAGE;
+    const instructions = item.instructions || `Pick-up arrangement will be coordinated at the designated public barangay hall in ${escapeHtml(item.pickup_city || 'the locality')} once request is verified.`;
+
+    const hasMultipleImages = Array.isArray(item.images) && item.images.length > 1;
+    const galleryThumbsHtml = hasMultipleImages ? `
+      <div class="details-gallery-thumbs" style="display: flex; gap: 8px; padding: 12px; background: var(--surface-soft); overflow-x: auto; border-top: 1px solid var(--border);">
+        ${item.images.map((gImg, idx) => `
+          <button type="button" class="details-thumb-btn ${idx === 0 ? 'active' : ''}" data-src="${escapeHtml(gImg.url)}" style="border: 2px solid ${idx === 0 ? 'var(--cobalt)' : 'var(--border)'}; border-radius: 8px; overflow: hidden; padding: 0; background: none; cursor: pointer; width: 60px; height: 60px; flex-shrink: 0; transition: border-color 0.2s;">
+            <img src="${escapeHtml(gImg.url)}" alt="Thumbnail ${idx + 1}" style="width: 100%; height: 100%; object-fit: cover; display: block;" onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';">
+          </button>
+        `).join('')}
+      </div>
+    ` : '';
+
     detailsContainer.innerHTML = `
       <div class="details-layout">
         <div class="details-media">
           <img 
-            src="${item.image}" 
-            alt="${item.title}" 
+            src="${img}" 
+            alt="${escapeHtml(item.title)}" 
             class="details-img-main"
             onerror="this.onerror=null; this.src='${FALLBACK_IMAGE}';"
           >
+          ${galleryThumbsHtml}
         </div>
 
         <div class="details-content">
           <div class="details-tags">
-            <span class="badge badge-sky">${item.categoryName}</span>
+            <span class="badge badge-sky">${escapeHtml(categoryName)}</span>
             <span class="badge badge-success">Admin Verified</span>
-            <span class="badge badge-amber">${item.quantity} available</span>
+            <span class="badge badge-amber">${available} ${escapeHtml(item.unit || 'items')} available</span>
           </div>
 
-          <h1 class="details-title">${item.title}</h1>
+          <h1 class="details-title">${escapeHtml(item.title)}</h1>
 
           <div class="details-meta-row">
-            <span><strong>Donor:</strong> ${item.donorName} (${item.donorRole})</span>
-            <span><strong>Verified:</strong> ${item.verifiedDate}</span>
+            <span><strong>Donor:</strong> ${escapeHtml(donorName)}</span>
+            <span><strong>Verified:</strong> ${escapeHtml(verifiedDate)}</span>
           </div>
 
           <h3 class="details-desc-title">Item Description</h3>
-          <p class="details-desc">${item.description}</p>
+          <p class="details-desc">${escapeHtml(item.description || 'No detailed description provided.')}</p>
 
           <div class="details-specs">
             <div class="spec-item">
               <span class="spec-label">Location</span>
-              <span class="spec-val">${item.location}</span>
+              <span class="spec-val">${escapeHtml(location)}</span>
             </div>
             <div class="spec-item">
               <span class="spec-label">Fulfillment</span>
-              <span class="spec-val">${item.pickupType}</span>
+              <span class="spec-val">${escapeHtml(pickupType)}</span>
             </div>
             <div class="spec-item">
               <span class="spec-label">Condition</span>
-              <span class="spec-val">Clean &amp; Verified</span>
+              <span class="spec-val">${escapeHtml(condition)}</span>
             </div>
             <div class="spec-item">
               <span class="spec-label">Cost</span>
@@ -231,11 +362,11 @@
 
           <div style="background:var(--surface-soft); border-left:4px solid var(--cobalt); padding:14px 16px; border-radius:var(--radius-sm); margin-bottom:24px;">
             <strong style="color:var(--cobalt); font-size:14px; display:block; margin-bottom:4px;">Pick-up Instructions:</strong>
-            <p style="font-size:13px; color:var(--text-muted); margin:0;">${item.instructions}</p>
+            <p style="font-size:13px; color:var(--text-muted); margin:0;">${escapeHtml(instructions)}</p>
           </div>
 
           <div class="details-actions">
-            <a href="request.html?donation_id=${item.id}&category=${item.categorySlug}" class="btn btn-donate btn-lg">
+            <a href="request.html?donation_id=${item.id}&category=${encodeURIComponent(categorySlug)}" class="btn btn-donate btn-lg">
               Request this item &rarr;
             </a>
             <a href="donations.html" class="btn btn-outline">
@@ -245,15 +376,61 @@
         </div>
       </div>
     `;
+
+    if (hasMultipleImages) {
+      const thumbBtns = detailsContainer.querySelectorAll('.details-thumb-btn');
+      const mainImg = detailsContainer.querySelector('.details-img-main');
+      thumbBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          thumbBtns.forEach(b => b.style.borderColor = 'var(--border)');
+          this.style.borderColor = 'var(--cobalt)';
+          const src = this.getAttribute('data-src');
+          if (mainImg && src) mainImg.src = src;
+        });
+      });
+    }
   }
 
-  function initHomePreviewDonations() {
+  /**
+   * Initializes featured donations preview on index.html
+   */
+  async function initHomePreviewDonations() {
     const previewGrid = document.getElementById('home-donations-preview');
     if (!previewGrid) return;
 
-    // Show first 3 donations
-    const previewItems = ICD_DATA.donations.slice(0, 3);
-    previewGrid.innerHTML = previewItems.map(createDonationCardHTML).join('');
+    previewGrid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 36px 20px; color: var(--text-muted);">
+        <p>Loading recently approved donations...</p>
+      </div>
+    `;
+
+    let items = [];
+    try {
+      if (window.ICD_API && typeof window.ICD_API.fetchDonations === 'function') {
+        items = await window.ICD_API.fetchDonations({ limit: 6 });
+      }
+    } catch (err) {
+      console.warn('Live preview fetch failed, using fallback:', err);
+    }
+
+    if (!items || items.length === 0) {
+      items = (window.ICD_DATA && window.ICD_DATA.donations) ? window.ICD_DATA.donations.slice(0, 6) : [];
+    }
+
+    if (items.length === 0) {
+      previewGrid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
+          <p>No recently approved donations available at this time.</p>
+        </div>
+      `;
+      return;
+    }
+
+    previewGrid.innerHTML = items.map(createDonationCardHTML).join('');
+
+    if (window.ICD_MAIN && typeof window.ICD_MAIN.refreshScrollReveal === 'function') {
+      window.ICD_MAIN.refreshScrollReveal();
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {

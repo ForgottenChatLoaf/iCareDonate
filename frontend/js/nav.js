@@ -97,9 +97,83 @@
     });
   }
 
+  function initAuthNav() {
+    const token = localStorage.getItem('icd_token');
+    const userStr = localStorage.getItem('icd_user');
+    let user = null;
+    try {
+      if (userStr) user = JSON.parse(userStr);
+    } catch (e) {}
+
+    const authActions = document.querySelector('.nav-public__actions');
+    const mobileLinks = document.querySelector('.mobile-menu__links');
+
+    if (token && user) {
+      // Desktop navbar update
+      if (authActions) {
+        const authBtn = authActions.querySelector('.btn-pub-auth');
+        if (authBtn) {
+          const isStaff = user.role === 'admin' || user.role === 'superadmin';
+          authBtn.href = isStaff ? '/CommunityDono/admin/' : '/CommunityDono/user/dashboard.php';
+          authBtn.textContent = isStaff ? 'Admin Panel' : 'Dashboard';
+        }
+
+        if (!authActions.querySelector('.btn-nav-logout')) {
+          const logoutBtn = document.createElement('button');
+          logoutBtn.type = 'button';
+          logoutBtn.className = 'nav-link btn-nav-logout';
+          logoutBtn.style.cssText = 'background:none; border:none; cursor:pointer; font-size:13.5px; color:var(--text-muted); font-family:inherit; padding:8px 12px;';
+          logoutBtn.textContent = 'Log out';
+          logoutBtn.addEventListener('click', handleLogout);
+          authActions.appendChild(logoutBtn);
+        }
+      }
+
+      // Mobile drawer update
+      if (mobileLinks) {
+        const authMobile = mobileLinks.querySelector('a[href="login.html"]');
+        if (authMobile) {
+          const isStaff = user.role === 'admin' || user.role === 'superadmin';
+          authMobile.href = isStaff ? '/CommunityDono/admin/' : '/CommunityDono/user/dashboard.php';
+          authMobile.textContent = isStaff ? 'Admin Panel' : 'Dashboard';
+        }
+
+        if (!mobileLinks.querySelector('.btn-mobile-logout')) {
+          const mobileLogout = document.createElement('a');
+          mobileLogout.href = '#';
+          mobileLogout.className = 'mobile-link mobile-link--muted btn-mobile-logout';
+          mobileLogout.textContent = 'Log out';
+          mobileLogout.addEventListener('click', function(e) {
+            e.preventDefault();
+            handleLogout();
+          });
+          mobileLinks.appendChild(mobileLogout);
+        }
+      }
+    }
+  }
+
+  async function handleLogout() {
+    const token = localStorage.getItem('icd_token');
+    try {
+      if (token) {
+        await fetch('/CommunityDono/api/v1/auth/logout.php', {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+      }
+    } catch (e) {
+      console.warn('Logout API call error:', e);
+    }
+    localStorage.removeItem('icd_token');
+    localStorage.removeItem('icd_user');
+    window.location.reload();
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     initHeaderScroll();
     initMobileMenu();
     highlightActiveLink();
+    initAuthNav();
   });
 })();

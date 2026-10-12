@@ -10,20 +10,66 @@ require_once __DIR__ . '/bootstrap.php';
 $method = $_SERVER['REQUEST_METHOD'];
 
 if ($method === 'GET') {
+    $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+    $limit = isset($_GET['limit']) ? max(1, (int)$_GET['limit']) : 0;
+
     try {
-        $sql = "SELECT d.id, d.title, d.description, d.donor_id, d.category_id, 
-                       c.name AS category_name, d.quantity_total, d.quantity_reserved, 
-                       d.quantity_claimed, d.unit, d.condition_type, d.pickup_city, 
-                       d.pickup_barangay, d.pickup_method, d.status, d.created_at,
-                       CONCAT(u.first_name, ' ', u.last_name) AS donor_name
-                FROM donations d
-                LEFT JOIN categories c ON d.category_id = c.id
-                LEFT JOIN users u ON d.donor_id = u.id
-                WHERE " . publicDonationWhereClause('d') . "
-                ORDER BY d.created_at DESC";
-        $stmt = $pdo->query($sql);
-        $donations = $stmt->fetchAll();
-        jsonOk(['data' => $donations]);
+        if ($id > 0) {
+            $sql = "SELECT d.id, d.title, d.description, d.donor_id, d.category_id, 
+                           c.name AS category_name, c.slug AS category_slug, d.quantity_total, d.quantity_reserved, 
+                           d.quantity_claimed, d.unit, d.condition_type, d.pickup_city, 
+                           d.pickup_barangay, d.pickup_method, d.status, d.created_at,
+                           CONCAT(u.first_name, ' ', u.last_name) AS donor_name,
+                           (SELECT file_path FROM donation_images WHERE donation_id = d.id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS primary_image
+                    FROM donations d
+                    LEFT JOIN categories c ON d.category_id = c.id
+                    LEFT JOIN users u ON d.donor_id = u.id
+                    WHERE " . publicDonationWhereClause('d') . " AND d.id = ?
+                    LIMIT 1";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$id]);
+            $donation = $stmt->fetch();
+            if (!$donation) {
+                jsonError('Donation not found or not available.', 404);
+            }
+            $donation['image_url'] = getDonationImage($donation['primary_image'] ?? null, $donation['category_name'] ?? '', (int)$donation['id']);
+            $donation['quantity_available'] = max(0, (int)$donation['quantity_total'] - (int)$donation['quantity_reserved'] - (int)$donation['quantity_claimed']);
+
+            // Fetch any gallery images
+            $imgStmt = $pdo->prepare("SELECT file_path, is_primary FROM donation_images WHERE donation_id = ? ORDER BY is_primary DESC, sort_order ASC");
+            $imgStmt->execute([$id]);
+            $rawImgs = $imgStmt->fetchAll();
+            $donation['images'] = array_map(function($img) use ($donation) {
+                return [
+                    'url' => getDonationImage($img['file_path'] ?? null, $donation['category_name'] ?? '', (int)$donation['id']),
+                    'file_path' => $img['file_path'] ?? '',
+                    'is_primary' => (bool)($img['is_primary'] ?? false)
+                ];
+            }, $rawImgs);
+
+            jsonOk(['data' => $donation]);
+        } else {
+            $limitClause = $limit > 0 ? " LIMIT {$limit}" : "";
+            $sql = "SELECT d.id, d.title, d.description, d.donor_id, d.category_id, 
+                           c.name AS category_name, c.slug AS category_slug, d.quantity_total, d.quantity_reserved, 
+                           d.quantity_claimed, d.unit, d.condition_type, d.pickup_city, 
+                           d.pickup_barangay, d.pickup_method, d.status, d.created_at,
+                           CONCAT(u.first_name, ' ', u.last_name) AS donor_name,
+                           (SELECT file_path FROM donation_images WHERE donation_id = d.id ORDER BY is_primary DESC, sort_order ASC LIMIT 1) AS primary_image
+                    FROM donations d
+                    LEFT JOIN categories c ON d.category_id = c.id
+                    LEFT JOIN users u ON d.donor_id = u.id
+                    WHERE " . publicDonationWhereClause('d') . "
+                    ORDER BY d.created_at DESC" . $limitClause;
+            $stmt = $pdo->query($sql);
+            $donations = $stmt->fetchAll();
+            $enriched = array_map(function($d) {
+                $d['image_url'] = getDonationImage($d['primary_image'] ?? null, $d['category_name'] ?? '', (int)$d['id']);
+                $d['quantity_available'] = max(0, (int)$d['quantity_total'] - (int)$d['quantity_reserved'] - (int)$d['quantity_claimed']);
+                return $d;
+            }, $donations);
+            jsonOk(['data' => $enriched]);
+        }
     } catch (Exception $e) {
         jsonError('Failed to fetch donations: ' . $e->getMessage(), 500);
     }

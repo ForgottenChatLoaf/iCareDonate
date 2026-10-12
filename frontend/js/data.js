@@ -324,6 +324,85 @@ window.ICD_API = {
       console.error('Failed to load categories from API:', err);
       throw err;
     }
+  },
+
+  /**
+   * Fetches platform impact statistics from MySQL
+   * @returns {Promise<Object>}
+   */
+  async fetchStats() {
+    try {
+      const response = await fetch(`${ICD_API_BASE}/stats.php`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      const json = await response.json();
+      if (json && json.data) {
+        ICD_DATA.stats = {
+          approvedDonations: `${json.data.donations_count}+`,
+          itemsClaimed: `${json.data.claimed_items}+`,
+          communityUsers: `${json.data.community_users}+`
+        };
+        return json.data;
+      }
+      return { donations_count: 7, claimed_items: 0, community_users: 10 };
+    } catch (err) {
+      console.warn('Failed to fetch platform stats from API:', err);
+      return { donations_count: 7, claimed_items: 0, community_users: 10 };
+    }
+  },
+
+  /**
+   * Fetches donations from MySQL API
+   * @param {Object} params - Query parameters (e.g. { limit: 6 })
+   * @returns {Promise<Array>}
+   */
+  async fetchDonations(params = {}) {
+    try {
+      const url = new URL(`${ICD_API_BASE}/donations.php`, window.location.origin);
+      if (params.limit) url.searchParams.set('limit', params.limit);
+      if (params.id) url.searchParams.set('id', params.id);
+
+      const response = await fetch(url.toString(), {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      const json = await response.json();
+      const list = json && Array.isArray(json.data) ? json.data : [];
+      if (!params.limit && !params.id && list.length > 0) {
+        ICD_DATA.donations = list;
+      }
+      return list;
+    } catch (err) {
+      console.error('Failed to load donations from API:', err);
+      throw err;
+    }
+  },
+
+  /**
+   * Fetches single donation by ID from MySQL API
+   * @param {number|string} id - Donation ID
+   * @returns {Promise<Object|null>}
+   */
+  async fetchDonationById(id) {
+    try {
+      const response = await fetch(`${ICD_API_BASE}/donations.php?id=${encodeURIComponent(id)}`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!response.ok) {
+        if (response.status === 404) return null;
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      const json = await response.json();
+      return json && json.data ? json.data : null;
+    } catch (err) {
+      console.error(`Failed to load donation ${id} from API:`, err);
+      throw err;
+    }
   }
 };
 
@@ -440,12 +519,88 @@ async function renderDonationsCategoryFilters() {
   }
 }
 
+/**
+ * Populates real impact statistics from MySQL into .impact-band on index.html
+ */
+async function renderHomepageStats() {
+  const statDonations = document.getElementById('stat-donations');
+  const statClaimed = document.getElementById('stat-claimed');
+  const statUsers = document.getElementById('stat-users');
+
+  if (!statDonations && !document.querySelector('.impact-band')) return;
+
+  try {
+    const stats = await window.ICD_API.fetchStats();
+    if (statDonations) statDonations.textContent = `${stats.donations_count}+`;
+    if (statClaimed) statClaimed.textContent = `${stats.claimed_items}+`;
+    if (statUsers) statUsers.textContent = `${stats.community_users}+`;
+
+    const numEls = document.querySelectorAll('.impact-band .impact-stat-number');
+    if (numEls.length >= 3) {
+      numEls[0].textContent = `${stats.donations_count}+`;
+      numEls[1].textContent = `${stats.claimed_items}+`;
+      numEls[2].textContent = `${stats.community_users}+`;
+    }
+  } catch (err) {
+    console.error('Failed to render homepage impact stats:', err);
+  }
+}
+
+/**
+ * Renders homepage featured categories from live categories API
+ */
+async function renderHomepageCategories() {
+  const grid = document.getElementById('home-categories-grid') || document.querySelector('.category-home-grid');
+  if (!grid) return;
+
+  try {
+    const categories = await window.ICD_API.fetchCategories();
+    if (!categories || categories.length === 0) return;
+
+    // Display up to 3 categories on homepage preview
+    const previewCats = categories.slice(0, 3);
+    grid.innerHTML = previewCats.map(cat => `
+      <article class="category-card reveal-on-scroll">
+        <div class="category-card__header ${cat.headerClass}">
+          <div>
+            <div class="category-card__tag">Category</div>
+            <h3 class="category-card__title">${formatCategoryTitle(cat.name)}</h3>
+          </div>
+          <div class="category-card__icon">${cat.iconEmoji}</div>
+        </div>
+        <div class="category-card__body">
+          <h4 class="category-card__name">${escapeHtml(cat.name)}</h4>
+          <p class="category-card__desc">${escapeHtml(cat.description)}</p>
+          <div class="category-card__accepted">
+            <strong>Accepted:</strong> ${escapeHtml(cat.accepted)}
+          </div>
+          <a href="donations.html?category=${encodeURIComponent(cat.slug)}" class="btn btn-primary btn-block">
+            Donate / Request
+          </a>
+        </div>
+      </article>
+    `).join('');
+
+    if (window.ICD_MAIN && typeof window.ICD_MAIN.refreshScrollReveal === 'function') {
+      window.ICD_MAIN.refreshScrollReveal();
+    }
+  } catch (err) {
+    console.warn('Failed to render homepage categories from API:', err);
+  }
+}
+
 // Auto-initialize components on page load
 document.addEventListener('DOMContentLoaded', function() {
   if (document.getElementById('categories-grid')) {
     renderCategoriesPage();
   }
+  if (document.getElementById('home-categories-grid') || document.querySelector('.category-home-grid')) {
+    renderHomepageCategories();
+  }
   if (document.getElementById('category-pills-wrap') || document.getElementById('donations-cat-select')) {
     renderDonationsCategoryFilters();
+  }
+  if (document.querySelector('.impact-band')) {
+    renderHomepageStats();
   }
 });

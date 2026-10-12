@@ -51,7 +51,6 @@
         <a href="about.html" class="nav-link">About us</a>
         <a href="how-it-works.html" class="nav-link">How it works</a>
         <a href="categories.html" class="nav-link">Categories</a>
-        <a href="donations.html" class="nav-link">Donations</a>
         <a href="contact.html" class="nav-link">Contact us</a>
       </nav>
 
@@ -63,7 +62,6 @@
           </span>
         </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
-        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
       </div>
 
       <!-- Mobile Hamburger Button -->
@@ -143,9 +141,10 @@
         <!-- Hero Graphic -->
         <div class="hero-frame">
           <img 
-            src="assets/images/who-we-serve.jpg" 
+            src="https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=800&q=80" 
             alt="Community members sharing donated goods at a local center" 
             class="hero-frame-img"
+            onerror="this.onerror=null; this.src='assets/images/who-we-serve.jpg';"
           >
           <div class="hero-frame-overlay">
             <div class="hero-frame-badge">
@@ -188,15 +187,15 @@
       <!-- Platform Impact Statistics -->
       <section class="impact-band reveal-on-scroll">
         <div>
-          <div class="impact-stat-number">24+</div>
+          <div class="impact-stat-number" id="stat-donations">7+</div>
           <div class="impact-stat-label">Approved Donations</div>
         </div>
         <div>
-          <div class="impact-stat-number">58+</div>
+          <div class="impact-stat-number" id="stat-claimed">0+</div>
           <div class="impact-stat-label">Items Claimed &amp; Received</div>
         </div>
         <div>
-          <div class="impact-stat-number">100+</div>
+          <div class="impact-stat-number" id="stat-users">10+</div>
           <div class="impact-stat-label">Active Community Members</div>
         </div>
       </section>
@@ -211,7 +210,7 @@
           <a href="categories.html" class="btn btn-outline">View all &rarr;</a>
         </div>
 
-        <div class="category-home-grid">
+        <div class="category-home-grid" id="home-categories-grid">
           
           <!-- Category 1: Emergency -->
           <article class="category-card">
