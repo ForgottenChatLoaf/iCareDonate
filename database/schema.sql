@@ -356,51 +356,10 @@ CREATE TABLE IF NOT EXISTS `faqs` (
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- 17. Seed Categories
-INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `icon`, `sort_order`, `is_active`) VALUES
-(1, 'Food & Groceries', 'food-groceries', 'Canned goods, dry rations, packaged staples, baby food', 'utensils', 1, 1),
-(2, 'School Supplies', 'school-supplies', 'Notebooks, pens, backpacks, books, art materials', 'book-open', 2, 1),
-(3, 'Clothing & Shoes', 'clothing-shoes', 'Clean wearables, uniforms, shoes, jackets for all ages', 'shirt', 3, 1),
-(4, 'Medical & First Aid', 'medical-first-aid', 'Basic hygiene items, bandages, OTC medicines, medical aids', 'heart-pulse', 4, 1),
-(5, 'Household Goods', 'household-goods', 'Kitchenware, bedding, small appliances, organizers', 'home', 5, 1),
-(6, 'Books & Educational', 'books-educational', 'Textbooks, storybooks, reference materials', 'book', 6, 1),
-(7, 'Toys & Games', 'toys-games', 'Puzzles, board games, stuffed toys, outdoor gear', 'smile', 7, 1),
-(8, 'Electronics & Gadgets', 'electronics-gadgets', 'Laptops, tablets, chargers, working electronics', 'laptop', 8, 1),
-(9, 'Other Essentials', 'other-essentials', 'Miscellaneous essential goods and community necessities', 'box', 9, 1)
-ON DUPLICATE KEY UPDATE `name` = VALUES(`name`);
-
--- 18. Seed Default Users (Password: Password123!)
--- Password hash generated with password_hash('Password123!', PASSWORD_BCRYPT)
-INSERT INTO `users` (`id`, `email`, `password_hash`, `first_name`, `last_name`, `phone`, `barangay`, `city`, `province`, `role`, `status`, `email_verified_at`) VALUES
-(1, 'admin@icaredonate.org', '$2y$10$ElABAam1kfmFsz4Nadbg0OzCyQIav2ap0L4LE6BNcRejen3mAgjDW', 'System', 'Admin', '09171234567', 'Central', 'Quezon City', 'Metro Manila', 'superadmin', 'active', NOW()),
-(2, 'donor@icaredonate.org', '$2y$10$ElABAam1kfmFsz4Nadbg0OzCyQIav2ap0L4LE6BNcRejen3mAgjDW', 'Maria', 'Santos', '09189876543', 'San Antonio', 'Pasig City', 'Metro Manila', 'user', 'active', NOW()),
-(3, 'requester@icaredonate.org', '$2y$10$ElABAam1kfmFsz4Nadbg0OzCyQIav2ap0L4LE6BNcRejen3mAgjDW', 'Juan', 'Dela Cruz', '09195554321', 'Poblacion', 'Makati City', 'Metro Manila', 'user', 'active', NOW())
-ON DUPLICATE KEY UPDATE `email` = VALUES(`email`), `password_hash` = VALUES(`password_hash`);
-
--- Sample Donations for demo
-INSERT INTO `donations` (`id`, `donor_id`, `category_id`, `title`, `description`, `quantity_total`, `quantity_reserved`, `quantity_claimed`, `unit`, `condition_type`, `pickup_method`, `pickup_barangay`, `pickup_city`, `pickup_province`, `status`, `approved_at`, `approved_by`) VALUES
-(1, 2, 2, 'Elementary School Backpacks & Notebooks Set', 'Brand new backpacks filled with notebooks, pens, pencils, rulers, and coloring sets suitable for Grade 1-6 students.', 25, 0, 0, 'sets', 'new', 'both', 'San Antonio', 'Pasig City', 'Metro Manila', 'approved', NOW(), 1),
-(2, 2, 1, 'Assorted Canned Goods and Rice Sacks', 'Nutritious canned vegetables, tuna, sardines, and 5kg rice packs sealed and safe for family consumption.', 40, 5, 0, 'packs', 'new', 'pickup', 'San Antonio', 'Pasig City', 'Metro Manila', 'approved', NOW(), 1),
-(3, 2, 8, 'Working Lenovo Student Laptops with Chargers', 'Gently used Lenovo ThinkPad laptops, re-imaged with Windows 10 and educational tools. Perfect for distance learning or college students.', 5, 0, 0, 'units', 'good', 'pickup', 'San Antonio', 'Pasig City', 'Metro Manila', 'approved', NOW(), 1),
-(4, 2, 4, 'Community First Aid Kits & Hygiene Packs', 'Complete first aid boxes containing antiseptic, bandages, thermometers, face masks, and antibacterial soap.', 30, 0, 0, 'kits', 'new', 'delivery', 'San Antonio', 'Pasig City', 'Metro Manila', 'approved', NOW(), 1)
-ON DUPLICATE KEY UPDATE `title` = VALUES(`title`);
-
--- Official FAQs (16 Items)
-INSERT INTO `faqs` (`id`, `question`, `answer`, `category`, `sort_order`, `is_active`) VALUES
-(1, '1. What is iCareDonate?', 'iCareDonate is an item-based donation platform that connects people who want to donate useful items with individuals or communities who need support.', 'General', 1, 1),
-(2, '2. Who can use iCareDonate?', 'iCareDonate is for people who want to donate useful items and individuals who need assistance. Users must have an active account to participate in donations and requests.', 'General', 2, 1),
-(3, '3. How can I donate an item?', 'After creating and verifying your account, you can post a donation by providing the required information about the item, including its title, category, quantity, condition, pickup method, and pickup location. You can also provide photos, an expiration date, and a description.', 'Donating', 3, 1),
-(4, '4. Are donations immediately visible on the website?', 'No. Submitted donations are reviewed by an administrator first. A donation becomes available for others to browse only after it has been approved.', 'Donating', 4, 1),
-(5, '5. How can I request a donated item?', 'You can request an approved donation that has available quantity. You must provide the required request information and upload proof of need for administrator review.', 'Requesting', 5, 1),
-(6, '6. Why do I need to provide proof of need?', 'Proof of need allows administrators to review requests and help ensure that support is provided appropriately. Proof documents are kept private and are not publicly displayed.', 'Requesting', 6, 1),
-(7, '7. Can I request more items than what is available?', 'No. A request cannot exceed the available quantity of the donation.', 'Requesting', 7, 1),
-(8, '8. Can I request the same donation more than once?', 'You cannot have multiple active requests for the same donation.', 'Requesting', 8, 1),
-(9, '9. What happens after I submit a request?', 'Your request is reviewed by an administrator. If it is approved and a match is made, the donation quantity is reserved and the donation process can proceed toward claiming and completion.', 'Requesting', 9, 1),
-(10, '10. How does iCareDonate protect my personal information?', 'iCareDonate limits the visibility of personal information. For example, contact information is not publicly displayed and is only shared with matched parties when the match has been confirmed and the information is needed.', 'Privacy & Safety', 10, 1),
-(11, '11. Can I edit my donation?', 'You can edit a donation while it is in draft or when additional information has been requested. A donation cannot be edited while it is pending verification.', 'Donating', 11, 1),
-(12, '12. What happens if my donation is rejected?', 'If an administrator rejects a donation, the donor is notified and the reason for the rejection is provided.', 'Donating', 12, 1),
-(13, '13. Can I report a donation?', 'Yes. Active users can report donations that they believe are inappropriate, fraudulent, or misleading. Administrators review reported content and may take appropriate moderation action.', 'Moderation', 13, 1),
-(14, '14. Can my account be suspended or banned?', 'Yes. Administrators may issue warnings, remove content, suspend accounts, or ban users when moderation rules are violated.', 'Moderation', 14, 1),
-(15, '15. Can I delete my account?', 'Yes. Users can request account deletion. Personal information is anonymized while necessary transaction records may be preserved for accountability. Any active transactions must be resolved or cancelled before account deletion.', 'Account', 15, 1),
-(16, '16. What should I do if I need help?', 'You can contact iCareDonate through the available contact or support channels provided on the website.', 'Support', 16, 1)
-ON DUPLICATE KEY UPDATE `question` = VALUES(`question`), `answer` = VALUES(`answer`), `category` = VALUES(`category`), `sort_order` = VALUES(`sort_order`), `is_active` = VALUES(`is_active`);
+-- ============================================================
+-- IMPORTANT: schema.sql creates TABLE STRUCTURES ONLY.
+-- No user accounts, passwords, sample donations, or demo data
+-- are included here. For data seeding, use:
+--   database/seed_production.sql  -- safe for production
+--   database/seed_dev.sql         -- local development only
+-- ============================================================

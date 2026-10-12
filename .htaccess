@@ -22,10 +22,32 @@ DirectoryIndex index.php index.html
     Deny from all
 </FilesMatch>
 
+# Block direct web access to CLI-only utility scripts
+<IfModule mod_authz_core.c>
+    <Directory "scripts">
+        Require all denied
+    </Directory>
+</IfModule>
+<IfModule !mod_authz_core.c>
+    <Location "/scripts">
+        Order allow,deny
+        Deny from all
+    </Location>
+</IfModule>
+
 # Enable UTF-8 encoding
 AddDefaultCharset UTF-8
 
 # Custom error pages (PHP application)
+# NOTE FOR LOCAL XAMPP: If running under /CommunityDono/ subfolder, Apache's
+# ErrorDocument requires a server-absolute path. Uncomment the LOCAL lines and
+# comment out the PRODUCTION lines below before local testing.
+#
+# LOCAL (XAMPP subfolder):
+# ErrorDocument 404 /CommunityDono/pages/404.php
+# ErrorDocument 403 /CommunityDono/pages/403.php
+#
+# PRODUCTION (domain root — use these on shared hosting):
 ErrorDocument 404 /pages/404.php
 ErrorDocument 403 /pages/403.php
 
