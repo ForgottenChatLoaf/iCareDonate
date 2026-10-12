@@ -126,19 +126,22 @@ FLUSH PRIVILEGES;
 ```
 
 ### Step 2: Import Schema
-Import `database/schema.sql`. This initializes all 18 clean application tables with foreign keys and indexes:
-```bash
-mysql -u icaredonate_user -p icare_donate_prod < database/schema.sql
-```
+In phpMyAdmin (or via MySQL CLI):
+1. Select your newly created database in the left sidebar.
+2. Click the **Import** tab.
+3. Choose `database/schema.sql` and click **Go / Import**.
+This creates all 18 clean application tables, foreign keys, and indexes.
 
 ### Step 3: Import Safe Production Seed
-Import `database/seed_production.sql`. This inserts:
-- 9 official platform categories (`food-groceries`, `school-supplies`, etc.)
-- 16 official platform FAQs
-- **Zero demo users, zero dummy donations, and zero local upload references.**
-```bash
-mysql -u icaredonate_user -p icare_donate_prod < database/seed_production.sql
-```
+In phpMyAdmin:
+1. Select your database.
+2. Click the **Import** tab.
+3. Choose `database/seed_production.sql` and click **Go / Import**.
+
+> **Note on SQL Seed Files:**
+> - `database/seed_production.sql` contains **both** the 9 essential categories and the 16 platform FAQs.
+> - `database/seed_faqs.sql` contains only the FAQs. Since `seed_production.sql` already includes the FAQs, you only need to import `seed_production.sql`.
+> - Both files are completely safe for production (zero demo users, zero dummy donations, and zero local upload references).
 
 ### Step 4: Configure Database Connection
 Copy `config/database.example.php` to `config/database.php` (or edit `config/database.php` directly on the server):
@@ -148,10 +151,12 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/app.php';
 
-$host    = getenv('DB_HOST') ?: '127.0.0.1';
-$db      = getenv('DB_NAME') ?: 'icare_donate_prod';
-$user    = getenv('DB_USER') ?: 'icaredonate_user';
-$pass    = getenv('DB_PASS') !== false ? (string)getenv('DB_PASS') : 'StrongRandomPassword!2026';
+// NOTE: On free hosting like InfinityFree, $host is NOT 'localhost'.
+// Use the MySQL Hostname displayed in your hosting control panel (e.g., sql100.infinityfree.com).
+$host    = getenv('DB_HOST') ?: 'sql100.yourhost.com';
+$db      = getenv('DB_NAME') ?: 'epiz_12345678_icaredonate';
+$user    = getenv('DB_USER') ?: 'epiz_12345678';
+$pass    = getenv('DB_PASS') !== false ? (string)getenv('DB_PASS') : 'YourHostingDatabasePassword';
 $charset = getenv('DB_CHARSET') ?: 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
@@ -174,10 +179,24 @@ try {
 
 ## 6. Creating the Initial Production Administrator Account
 
-Do **NOT** use demo accounts or hardcoded credentials. Use the secure CLI tool:
+Do **NOT** use demo accounts or hardcoded credentials.
 
+### Method A: Shared Hosting / phpMyAdmin (No SSH, e.g. InfinityFree)
+Because free hosts like InfinityFree do not provide SSH terminal access, generate a ready-to-run SQL `INSERT` statement locally:
+
+1. Run this command in your local PowerShell / terminal:
+   ```bash
+   C:\xampp\php\php.exe scripts/generate_admin_sql.php "admin@yourdomain.com" "YourSecurePassword123!" "Firstname" "Lastname"
+   ```
+2. The script prints a complete SQL `INSERT` query containing a genuine bcrypt hash.
+3. Open your hosting control panel's **phpMyAdmin**, select your database, click the **SQL** tab.
+4. Paste the query and click **Go**.
+5. Your superadmin account is created immediately.
+
+### Method B: VPS / Dedicated Server (With SSH)
+If you have SSH access to your server:
 ```bash
-php scripts/create_admin.php "admin@yourdomain.com" "YourSecureAdminPassword123!" "Firstname" "Lastname"
+php scripts/create_admin.php "admin@yourdomain.com" "YourSecurePassword123!" "Firstname" "Lastname"
 ```
 
 **Security Safeguards**:

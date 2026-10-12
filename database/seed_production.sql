@@ -12,7 +12,7 @@
 -- - Local uploaded file paths
 -- ============================================================
 
-USE `icare_donate`;
+-- USE `icare_donate`;
 
 -- 1. Essential Categories
 INSERT INTO `categories` (`id`, `name`, `slug`, `description`, `icon`, `sort_order`, `is_active`, `created_at`, `updated_at`) VALUES

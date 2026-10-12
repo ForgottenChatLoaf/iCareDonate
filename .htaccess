@@ -13,15 +13,19 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule ^ - [E=REDIRECT_HTTP_AUTHORIZATION:%1]
 
-# Directory Index: prefer index.html, then index.php
-DirectoryIndex index.html index.php
+# Directory Index: prefer index.php, then index.html
+DirectoryIndex index.php index.html
 
-# Deny access to sensitive files
-<FilesMatch "^(\.env|\.git|composer\.json|package\.json|schema\.sql|database\.sql)$">
+# Deny access to sensitive files and all SQL scripts
+<FilesMatch "^(\.env|\.git|composer\.json|package\.json|.*\.sql)$">
     Order allow,deny
     Deny from all
 </FilesMatch>
 
 # Enable UTF-8 encoding
 AddDefaultCharset UTF-8
+
+# Custom error pages (PHP application)
+ErrorDocument 404 /pages/404.php
+ErrorDocument 403 /pages/403.php
 

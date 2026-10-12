@@ -1,5 +1,6 @@
-CREATE DATABASE IF NOT EXISTS `icare_donate` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE `icare_donate`;
+-- Optional: Uncomment if running on a local server with root privileges
+-- CREATE DATABASE IF NOT EXISTS `icare_donate` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+-- USE `icare_donate`;
 
 -- 1. categories
 CREATE TABLE IF NOT EXISTS `categories` (
