@@ -258,6 +258,8 @@
 .category-card__header--tech      { background: var(--grad-tech); }
 .category-card__header--household { background: var(--grad-household); }
 .category-card__header--toys      { background: var(--grad-toys); }
+.category-card__header--books     { background: var(--grad-education); }
+.category-card__header--essentials{ background: var(--grad-emergency); }
 
 .category-card__icon {
   width: 52px;

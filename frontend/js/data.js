@@ -1,91 +1,97 @@
 /**
- * iCareDonate — Mock Data Store
+ * iCareDonate — Data Layer & Live API Connector
  * frontend/js/data.js
  */
 
+const ICD_API_BASE = (function() {
+  const origin = window.location.origin;
+  if (window.location.pathname.includes('/CommunityDono/')) {
+    return `${origin}/CommunityDono/api/v1`;
+  }
+  return '/api/v1';
+})();
+
+// UI presentation metadata for categories
+const CATEGORY_META = {
+  'food-groceries': {
+    headerClass: 'category-card__header--food',
+    iconEmoji: '🥫',
+    accepted: 'Canned goods, rice sacks, powdered milk, instant oatmeal',
+    image: 'assets/images/categories/food-groceries.jpg'
+  },
+  'school-supplies': {
+    headerClass: 'category-card__header--education',
+    iconEmoji: '📚',
+    accepted: 'School bags, notebooks, crayons, calculators',
+    image: 'assets/images/categories/school-supplies.jpg'
+  },
+  'clothing-shoes': {
+    headerClass: 'category-card__header--clothing',
+    iconEmoji: '👕',
+    accepted: 'School uniforms, jackets, sneakers, baby clothes',
+    image: 'assets/images/categories/clothing-shoes.avif'
+  },
+  'medical-first-aid': {
+    headerClass: 'category-card__header--medical',
+    iconEmoji: '🩺',
+    accepted: 'Basic hygiene kits, bandages, OTC medicines, vitamins',
+    image: 'assets/images/categories/medical-first-aid.jpg'
+  },
+  'household-goods': {
+    headerClass: 'category-card__header--household',
+    iconEmoji: '🏠',
+    accepted: 'Cookware, thermal blankets, electric fans, utensils',
+    image: 'assets/images/categories/other-essentials.jpg'
+  },
+  'books-educational': {
+    headerClass: 'category-card__header--books',
+    iconEmoji: '📖',
+    accepted: 'Textbooks, storybooks, reference materials, dictionaries',
+    image: 'assets/images/categories/school-supplies-alt.avif'
+  },
+  'toys-games': {
+    headerClass: 'category-card__header--toys',
+    iconEmoji: '🧩',
+    accepted: 'Educational puzzles, building blocks, children storybooks',
+    image: 'assets/images/categories/toys-games.avif'
+  },
+  'electronics-gadgets': {
+    headerClass: 'category-card__header--tech',
+    iconEmoji: '💻',
+    accepted: 'Working laptops, tablets, chargers, power banks',
+    image: 'assets/images/categories/electronics-gadgets.avif'
+  },
+  'other-essentials': {
+    headerClass: 'category-card__header--essentials',
+    iconEmoji: '📦',
+    accepted: 'Emergency supplies, flashlights, batteries, basic needs',
+    image: 'assets/images/categories/emergency-disaster-relief.jpg'
+  }
+};
+
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatCategoryTitle(name) {
+  const words = String(name).trim().split(/\s+/);
+  if (words.length <= 1) return escapeHtml(name);
+  if (words.length === 2) return `${escapeHtml(words[0])}<br>${escapeHtml(words[1])}`;
+  if (words.length === 3 && words[1] === '&') {
+    return `${escapeHtml(words[0])} &amp;<br>${escapeHtml(words[2])}`;
+  }
+  return `${escapeHtml(words.slice(0, 2).join(' '))}<br>${escapeHtml(words.slice(2).join(' '))}`;
+}
+
 const ICD_DATA = {
-  categories: [
-    {
-      id: 1,
-      slug: 'emergency',
-      name: 'Emergency & Disaster Relief',
-      icon: 'flame',
-      gradient: 'linear-gradient(135deg, #BC4E2B 0%, #E0553D 50%, #F2904A 100%)',
-      desc: 'Essential immediate sustenance, clean water, and shelter supplies for urgent relief.',
-      accepted: 'Food packs, canned goods, blankets, flashlights',
-      image: 'assets/images/categories/emergency-disaster-relief.jpg'
-    },
-    {
-      id: 2,
-      slug: 'school-supplies',
-      name: 'School Supplies',
-      icon: 'book-open',
-      gradient: 'linear-gradient(135deg, #0E3D8A 0%, #1F4FA3 50%, #4278D1 100%)',
-      desc: 'Learning materials, notebooks, bags, and supplies empowering young students in local schools.',
-      accepted: 'School bags, notebooks, pens, crayons, calculators',
-      image: 'assets/images/categories/school-supplies.jpg'
-    },
-    {
-      id: 3,
-      slug: 'food-groceries',
-      name: 'Food & Groceries',
-      icon: 'utensils',
-      gradient: 'linear-gradient(135deg, #1C6339 0%, #2F9452 50%, #58C67F 100%)',
-      desc: 'Canned goods, dry rations, packaged staples, baby food, and sealed meal kits.',
-      accepted: 'Canned goods, rice sacks, powdered milk, instant oatmeal',
-      image: 'assets/images/categories/food-groceries.jpg'
-    },
-    {
-      id: 4,
-      slug: 'medical-hygiene',
-      name: 'Healthcare & Hygiene',
-      icon: 'heart-pulse',
-      gradient: 'linear-gradient(135deg, #A0244E 0%, #D4456B 50%, #E87A8C 100%)',
-      desc: 'Hygiene and basic wellness kits supporting vulnerable community members and seniors.',
-      accepted: 'Soap, toothbrushes, sanitary napkins, first-aid, vitamins',
-      image: 'assets/images/categories/medical-first-aid.jpg'
-    },
-    {
-      id: 5,
-      slug: 'clothing-shoes',
-      name: 'Clothing & Shoes',
-      icon: 'shirt',
-      gradient: 'linear-gradient(135deg, #3D2B8A 0%, #6345D4 50%, #8E7AE8 100%)',
-      desc: 'Clean wearables, uniforms, shoes, jackets, and everyday garments for all ages.',
-      accepted: 'School uniforms, rubber shoes, jackets, baby clothes',
-      image: 'assets/images/categories/clothing-shoes.avif'
-    },
-    {
-      id: 6,
-      slug: 'electronics-gadgets',
-      name: 'Electronics & Gadgets',
-      icon: 'laptop',
-      gradient: 'linear-gradient(135deg, #094769 0%, #1274A5 50%, #3AB4E8 100%)',
-      desc: 'Student laptops, tablets, chargers, mobile devices, and educational tech accessories.',
-      accepted: 'Working laptops, Android tablets, power banks, chargers',
-      image: 'assets/images/categories/electronics-gadgets.avif'
-    },
-    {
-      id: 7,
-      slug: 'household-goods',
-      name: 'Household Goods',
-      icon: 'home',
-      gradient: 'linear-gradient(135deg, #7A4B1A 0%, #B8732A 50%, #E4A252 100%)',
-      desc: 'Kitchenware, bedding, small appliances, organizers, and home necessities.',
-      accepted: 'Electric fans, rice cookers, thermal blankets, kitchen utensils',
-      image: 'assets/images/categories/other-essentials.jpg'
-    },
-    {
-      id: 8,
-      slug: 'toys-games',
-      name: 'Toys & Games',
-      icon: 'smile',
-      gradient: 'linear-gradient(135deg, #8A1A6C 0%, #BA2892 50%, #E85CC3 100%)',
-      desc: 'Educational toys, puzzles, books, and recreational materials for community children.',
-      accepted: 'Educational puzzles, building blocks, children storybooks',
-      image: 'assets/images/categories/toys-games.avif'
-    }
-  ],
+  // Populated live from MySQL via api/v1/categories.php
+  categories: [],
 
   donations: [
     {
@@ -261,3 +267,185 @@ const ICD_DATA = {
     sponsors: '12'
   }
 };
+
+/**
+ * iCareDonate — API Connector Module
+ */
+window.ICD_API = {
+  baseUrl: ICD_API_BASE,
+
+  /**
+   * Fetches active categories from MySQL API
+   * @param {boolean} force - Force cache bypass
+   * @returns {Promise<Array>}
+   */
+  async fetchCategories(force = false) {
+    if (!force && Array.isArray(ICD_DATA.categories) && ICD_DATA.categories.length > 0) {
+      return ICD_DATA.categories;
+    }
+
+    try {
+      const response = await fetch(`${ICD_API_BASE}/categories.php`, {
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!response.ok) {
+        throw new Error(`Server returned HTTP ${response.status} (${response.statusText})`);
+      }
+      const result = await response.json();
+      if (!result || !Array.isArray(result.data)) {
+        throw new Error('Invalid JSON format: missing data array');
+      }
+
+      const enriched = result.data.map(item => {
+        const meta = CATEGORY_META[item.slug] || {
+          headerClass: 'category-card__header--education',
+          iconEmoji: '📦',
+          accepted: 'Clean, verified essential items in usable condition',
+          image: 'assets/images/placeholder.svg'
+        };
+        return {
+          id: Number(item.id),
+          name: item.name,
+          slug: item.slug,
+          description: item.description || '',
+          icon: item.icon || 'tag',
+          sort_order: Number(item.sort_order || 0),
+          is_active: Number(item.is_active !== undefined ? item.is_active : 1),
+          headerClass: meta.headerClass,
+          iconEmoji: meta.iconEmoji,
+          accepted: meta.accepted,
+          image: meta.image
+        };
+      });
+
+      ICD_DATA.categories = enriched;
+      return enriched;
+    } catch (err) {
+      console.error('Failed to load categories from API:', err);
+      throw err;
+    }
+  }
+};
+
+/**
+ * Renders categories dynamically into #categories-grid on categories.html
+ */
+async function renderCategoriesPage() {
+  const grid = document.getElementById('categories-grid');
+  if (!grid) return;
+
+  grid.innerHTML = `
+    <div id="categories-loading" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px; color: var(--text-muted);">
+      <div style="font-size: 32px; margin-bottom: 8px;">⏳</div>
+      <p style="font-size: 15px; margin: 0;">Loading verified community categories...</p>
+    </div>
+  `;
+
+  try {
+    const categories = await window.ICD_API.fetchCategories();
+    if (!categories || categories.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px;">
+          <div style="font-size: 40px; margin-bottom: 12px;">📂</div>
+          <h3 style="margin-bottom: 8px;">No categories available</h3>
+          <p style="color: var(--text-muted); margin: 0;">Categories have not been added to the system yet.</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = categories.map(cat => `
+      <article class="category-card reveal-on-scroll">
+        <div class="category-card__header ${cat.headerClass}">
+          <div>
+            <div class="category-card__tag">Category</div>
+            <h3 class="category-card__title">${formatCategoryTitle(cat.name)}</h3>
+          </div>
+          <div class="category-card__icon">${cat.iconEmoji}</div>
+        </div>
+        <div class="category-card__body">
+          <h4 class="category-card__name">${escapeHtml(cat.name)}</h4>
+          <p class="category-card__desc">${escapeHtml(cat.description)}</p>
+          <div class="category-card__accepted">
+            <strong>Accepted:</strong> ${escapeHtml(cat.accepted)}
+          </div>
+          <div class="btn-row">
+            <a href="donations.html?category=${encodeURIComponent(cat.slug)}" class="btn btn-outline btn-block">
+              Browse items
+            </a>
+            <a href="donate.html?category=${encodeURIComponent(cat.slug)}" class="btn btn-primary btn-block">
+              Donate
+            </a>
+          </div>
+        </div>
+      </article>
+    `).join('');
+
+    if (window.ICD_MAIN && typeof window.ICD_MAIN.refreshScrollReveal === 'function') {
+      window.ICD_MAIN.refreshScrollReveal();
+    }
+  } catch (err) {
+    grid.innerHTML = `
+      <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px;">
+        <div style="font-size: 40px; margin-bottom: 12px;">⚠️</div>
+        <h3 style="margin-bottom: 8px;">Unable to load categories</h3>
+        <p style="color: var(--text-muted); margin-bottom: 20px;">
+          Failed to fetch live categories from the server (${escapeHtml(err.message)}).
+        </p>
+        <button type="button" class="btn btn-primary" id="retry-categories-btn">Retry</button>
+      </div>
+    `;
+    document.getElementById('retry-categories-btn')?.addEventListener('click', () => {
+      renderCategoriesPage();
+    });
+  }
+}
+
+/**
+ * Populates category filter pills and select dropdown on donations.html
+ */
+async function renderDonationsCategoryFilters() {
+  const select = document.getElementById('donations-cat-select');
+  const pillsWrap = document.getElementById('category-pills-wrap') || document.querySelector('.category-pills-wrap');
+  if (!select && !pillsWrap) return;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const activeCategory = urlParams.get('category') || 'all';
+
+  try {
+    const categories = await window.ICD_API.fetchCategories();
+
+    if (select) {
+      select.innerHTML = '<option value="all">All Categories</option>' +
+        categories.map(cat => `
+          <option value="${escapeHtml(cat.slug)}" ${activeCategory === cat.slug ? 'selected' : ''}>
+            ${escapeHtml(cat.name)}
+          </option>
+        `).join('');
+    }
+
+    if (pillsWrap) {
+      pillsWrap.innerHTML = `
+        <button type="button" class="category-pill-btn ${activeCategory === 'all' ? 'active' : ''}" data-cat="all">All</button>
+      ` + categories.map(cat => `
+        <button type="button" class="category-pill-btn ${activeCategory === cat.slug ? 'active' : ''}" data-cat="${escapeHtml(cat.slug)}">
+          ${escapeHtml(cat.name)}
+        </button>
+      `).join('');
+    }
+
+    window.dispatchEvent(new CustomEvent('icd:categories-loaded', { detail: categories }));
+  } catch (err) {
+    console.error('Failed to populate donation category filters:', err);
+  }
+}
+
+// Auto-initialize components on page load
+document.addEventListener('DOMContentLoaded', function() {
+  if (document.getElementById('categories-grid')) {
+    renderCategoriesPage();
+  }
+  if (document.getElementById('category-pills-wrap') || document.getElementById('donations-cat-select')) {
+    renderDonationsCategoryFilters();
+  }
+});

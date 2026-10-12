@@ -45,7 +45,7 @@
     const searchInput = document.getElementById('donations-search');
     const sortSelect = document.getElementById('donations-sort');
     const categorySelect = document.getElementById('donations-cat-select');
-    const pillButtons = document.querySelectorAll('.category-pill-btn');
+    const pillsWrap = document.getElementById('category-pills-wrap') || document.querySelector('.category-pills-wrap');
     const resultsCount = document.getElementById('donations-count');
     const emptyState = document.getElementById('donations-empty');
 
@@ -56,13 +56,11 @@
     if (categorySelect && selectedCategory !== 'all') {
       categorySelect.value = selectedCategory;
     }
-    pillButtons.forEach(btn => {
-      if (btn.getAttribute('data-cat') === selectedCategory) {
-        btn.classList.add('active');
-      } else {
-        btn.classList.remove('active');
-      }
-    });
+    if (pillsWrap) {
+      pillsWrap.querySelectorAll('.category-pill-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-cat') === selectedCategory);
+      });
+    }
 
     function render() {
       const query = (searchInput ? searchInput.value : '').toLowerCase().trim();
@@ -121,21 +119,38 @@
     if (categorySelect) {
       categorySelect.addEventListener('change', function() {
         selectedCategory = this.value;
-        pillButtons.forEach(btn => {
-          btn.classList.toggle('active', btn.getAttribute('data-cat') === selectedCategory);
-        });
+        if (pillsWrap) {
+          pillsWrap.querySelectorAll('.category-pill-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-cat') === selectedCategory);
+          });
+        }
         render();
       });
     }
 
-    pillButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
-        pillButtons.forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-        selectedCategory = this.getAttribute('data-cat') || 'all';
+    if (pillsWrap) {
+      pillsWrap.addEventListener('click', function(e) {
+        const btn = e.target.closest('.category-pill-btn');
+        if (!btn) return;
+        pillsWrap.querySelectorAll('.category-pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedCategory = btn.getAttribute('data-cat') || 'all';
         if (categorySelect) categorySelect.value = selectedCategory;
         render();
       });
+    }
+
+    // When live categories finish loading into the DOM
+    window.addEventListener('icd:categories-loaded', function() {
+      if (categorySelect && selectedCategory !== 'all') {
+        categorySelect.value = selectedCategory;
+      }
+      if (pillsWrap) {
+        pillsWrap.querySelectorAll('.category-pill-btn').forEach(btn => {
+          btn.classList.toggle('active', btn.getAttribute('data-cat') === selectedCategory);
+        });
+      }
+      render();
     });
 
     render();
