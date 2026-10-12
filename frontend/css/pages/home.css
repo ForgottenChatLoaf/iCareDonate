@@ -3,13 +3,20 @@
    frontend/css/pages/home.css
    ============================================================ */
 
-/* Hero Section */
+/* Hero Section (Contained Card matching index.php & Design System) */
 .hero {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg, 20px);
+  background: var(--surface-soft, #F8FAFC);
+  border: 1px solid var(--sky, #DCE8F7);
+  padding: 36px 40px;
   display: grid;
   grid-template-columns: 1.15fr 0.85fr;
-  gap: 48px;
+  gap: 36px;
   align-items: center;
-  margin-bottom: 56px;
+  margin-bottom: 48px;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(0, 0, 0, 0.04));
 }
 
 .hero-badge-wrap {

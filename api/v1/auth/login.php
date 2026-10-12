@@ -44,6 +44,18 @@ match ($user['status']) {
     default                => null,
 };
 
+// Establish secure server-side PHP session
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+session_regenerate_id(true);
+
+$_SESSION['user_id']    = (int)$user['id'];
+$_SESSION['role']       = $user['role'];
+$_SESSION['status']     = $user['status'];
+$_SESSION['user_name']  = $user['first_name'] . ' ' . $user['last_name'];
+$_SESSION['user_email'] = $user['email'];
+
 // Generate token
 $rawToken   = bin2hex(random_bytes(40));
 $tokenHash  = hash('sha256', $rawToken);

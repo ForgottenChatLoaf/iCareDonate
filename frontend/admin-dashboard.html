@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +8,8 @@
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('icd-theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch(e) {}
-    })();
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
@@ -429,12 +424,66 @@
     });
   }
 
-  // Populate logged in admin data
-  var userStr = localStorage.getItem('icd_user');
-  var token = localStorage.getItem('icd_token');
-  if (userStr) {
+  var API_ROOT = (window.location.protocol === 'file:' || (window.location.port && window.location.port !== '80')) ? 'http://localhost/CommunityDono/api' : '/CommunityDono/api';
+
+  // Logout handler
+  async function handleLogout(e) {
+    if (e) e.preventDefault();
+    var token = localStorage.getItem('icd_token');
+    var headers = { 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
     try {
-      var user = JSON.parse(userStr);
+      await fetch(API_ROOT + '/v1/auth/logout.php', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: headers
+      });
+    } catch(err) {}
+
+    localStorage.removeItem('icd_token');
+    localStorage.removeItem('icd_user');
+    window.location.href = 'login.html';
+  }
+
+  var logoutSide = document.getElementById('admin-logout-btn');
+  var logoutDrop = document.getElementById('admin-dropdown-logout');
+  if (logoutSide) logoutSide.addEventListener('click', handleLogout);
+  if (logoutDrop) logoutDrop.addEventListener('click', handleLogout);
+
+  // Authenticate session & enforce Admin role
+  async function verifyAdminAuth() {
+    var token = localStorage.getItem('icd_token');
+    var headers = { 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    try {
+      var res = await fetch(API_ROOT + '/v1/auth/me.php', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: headers
+      });
+
+      if (!res.ok) {
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      var data = await res.json();
+      var user = data.user;
+      if (!user) {
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      // Role check: redirect regular users to user dashboard
+      if (user.role !== 'admin' && user.role !== 'superadmin') {
+        window.location.href = 'user-dashboard.html';
+        return false;
+      }
+
+      // Populate verified user details
+      localStorage.setItem('icd_user', JSON.stringify(user));
       var fullName = (user.first_name + ' ' + (user.last_name || '')).trim() || 'Admin Tester';
       var initials = (user.first_name ? user.first_name[0] : 'A') + (user.last_name ? user.last_name[0] : 'T');
       var topbarName = document.getElementById('admin-topbar-name');
@@ -443,27 +492,26 @@
       if (topbarName) topbarName.textContent = fullName;
       if (sidebarName) sidebarName.textContent = fullName;
       if (avatarInit) avatarInit.textContent = initials.toUpperCase();
-    } catch(e) {}
-  }
 
-  // Logout handler
-  function handleLogout(e) {
-    if (e) e.preventDefault();
-    localStorage.removeItem('icd_token');
-    localStorage.removeItem('icd_user');
-    window.location.href = 'login.html';
+      return true;
+    } catch(err) {
+      console.warn('Admin auth verification error:', err);
+      window.location.href = 'login.html';
+      return false;
+    }
   }
-  var logoutSide = document.getElementById('admin-logout-btn');
-  var logoutDrop = document.getElementById('admin-dropdown-logout');
-  if (logoutSide) logoutSide.addEventListener('click', handleLogout);
-  if (logoutDrop) logoutDrop.addEventListener('click', handleLogout);
 
   // Live API stats fetch
   async function loadAdminData() {
-    if (!token) return;
+    var token = localStorage.getItem('icd_token');
+    var headers = { 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
     try {
-      var res = await fetch('/CommunityDono/api/v1/admin/dashboard.php', {
-        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+      var res = await fetch(API_ROOT + '/v1/admin/dashboard.php', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: headers
       });
       if (!res.ok) return;
       var data = await res.json();
@@ -491,7 +539,12 @@
     }
   }
 
-  loadAdminData();
+  // Initialize
+  verifyAdminAuth().then(function(isAuthed) {
+    if (isAuthed) {
+      loadAdminData();
+    }
+  });
 })();
 </script>
 </body>

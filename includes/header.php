@@ -12,7 +12,7 @@ $bodyClass ??= '';
 $base = '/CommunityDono';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -20,15 +20,8 @@ $base = '/CommunityDono';
   <meta name="description" content="<?= e($metaDesc ?? 'Give what you can. Help where it matters. iCareDonate connects donors with communities that need them.') ?>">
   <meta name="theme-color" content="#1F4FA3">
   <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('icd-theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
-      } catch(e) {}
-    })();
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
   </script>
 
   <!-- Favicon -->

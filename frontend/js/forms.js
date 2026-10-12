@@ -7,11 +7,19 @@
   'use strict';
 
   const API_BASE_URL = (function() {
-    const origin = window.location.origin;
-    if (window.location.pathname.includes('/CommunityDono/')) {
-      return `${origin}/CommunityDono/api`;
+    if (window.location.protocol === 'file:') {
+      return 'http://localhost/CommunityDono/api';
     }
-    return '/api';
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      if (window.location.port && window.location.port !== '80') {
+        return 'http://localhost/CommunityDono/api';
+      }
+      return `${window.location.origin}/CommunityDono/api`;
+    }
+    if (window.location.pathname.includes('/CommunityDono/')) {
+      return `${window.location.origin}/CommunityDono/api`;
+    }
+    return '/CommunityDono/api';
   })();
 
   // ============================================================
@@ -326,6 +334,7 @@
         try {
           const res = await fetch(`${API_BASE_URL}/v1/auth/login.php`, {
             method: 'POST',
+            credentials: 'same-origin',
             headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
             body: JSON.stringify({
               email: emailInput.value.trim(),
@@ -355,10 +364,14 @@
         } catch (err) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = origText;
+          var msg = err.message || 'Login failed.';
+          if (msg === 'Failed to fetch' || msg.includes('fetch')) {
+            msg = 'Unable to reach backend API. Ensure Apache & MySQL are started in XAMPP, and access the site via http://localhost/CommunityDono/frontend/login.html';
+          }
           if (window.ICD_MAIN) {
-            window.ICD_MAIN.showToast('Login Failed', err.message, 'error');
+            window.ICD_MAIN.showToast('Login Failed', msg, 'error');
           } else {
-            alert(err.message);
+            alert(msg);
           }
         }
       });

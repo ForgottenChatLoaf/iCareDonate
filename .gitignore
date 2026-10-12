@@ -1,17 +1,46 @@
-# Local scratch and test scripts
+# =============================================================
+# iCareDonate - .gitignore
+# =============================================================
+
+# ----- Local scratch and temporary scripts -------------------
 scratch/
 
-# Environment and secrets
+# ----- Environment files and secrets -------------------------
 .env
 *.local
+*.env.local
+*.env.*.local
 
-# Dependencies and uploads
-vendor/
+# ----- Local uploads (user-submitted files) ------------------
+# Keeps the folder tracked so clones can receive uploads.
 uploads/*
 !uploads/.gitkeep
 
-# IDE and OS files
+# ----- Logs and debug output ---------------------------------
+*.log
+logs/
+php_errors.log
+
+# ----- Composer / vendor dependencies ------------------------
+vendor/
+composer.lock
+
+# ----- OS-generated files ------------------------------------
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# ----- Editor and IDE files ----------------------------------
 .vscode/
 .idea/
+*.swp
+*.swo
+*.kate-swp
+
+# ----- Windows line-ending artefacts -------------------------
+*.orig
+
+# ----- Local backup archives (never commit) ------------------
+backend-archive/
+*-backup/
+*-bak/

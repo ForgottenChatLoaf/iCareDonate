@@ -16,12 +16,6 @@ $isPublic = !str_contains($_SERVER['PHP_SELF'], '/admin/') && !str_contains($_SE
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
-          <div class="footer-theme-toggle-wrap">
-            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
-              <span class="theme-toggle-text">Dark mode</span>
-            </button>
-          </div>
         </div>
 
         <!-- Col 2: About -->

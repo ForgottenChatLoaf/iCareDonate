@@ -20,52 +20,12 @@
     }
   }
 
-  /* ── 2. Theme Toggle (Light / Dark Mode) ───────────────── */
+  /* ── 2. Theme (Light Mode Enforced) ───────────────────── */
   function initTheme() {
-    var toggleButtons = document.querySelectorAll('[data-theme-toggle]');
-    if (!toggleButtons.length) return;
-
-    function applyTheme(theme) {
-      document.documentElement.setAttribute('data-theme', theme);
-      try {
-        localStorage.setItem('icd-theme', theme);
-      } catch (e) {}
-
-      var metaTheme = document.querySelector('meta[name="theme-color"]');
-      if (metaTheme) {
-        metaTheme.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
-      }
-
-      // Update button labels/icons if needed
-      toggleButtons.forEach(function (btn) {
-        var textSpan = btn.querySelector('.theme-toggle-text');
-        var iconSpan = btn.querySelector('.theme-icon');
-        if (theme === 'dark') {
-          if (textSpan) textSpan.textContent = 'Light mode';
-          if (iconSpan) iconSpan.innerHTML = '<i data-lucide="sun"></i>';
-        } else {
-          if (textSpan) textSpan.textContent = 'Dark mode';
-          if (iconSpan) iconSpan.innerHTML = '<i data-lucide="moon"></i>';
-        }
-      });
-      initIcons();
-    }
-
-    var savedTheme = 'light';
-    try {
-      savedTheme = localStorage.getItem('icd-theme') ||
-        (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    } catch (e) {}
-    applyTheme(savedTheme);
-
-    toggleButtons.forEach(function (btn) {
-      btn.addEventListener('click', function (e) {
-        e.preventDefault();
-        var current = document.documentElement.getAttribute('data-theme') || 'light';
-        var next = current === 'dark' ? 'light' : 'dark';
-        applyTheme(next);
-      });
-    });
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch (e) {}
+    var metaTheme = document.querySelector('meta[name="theme-color"]');
+    if (metaTheme) metaTheme.setAttribute('content', '#1F4FA3');
   }
 
   /* ── 3. Responsive Mobile Navigation ───────────────────── */

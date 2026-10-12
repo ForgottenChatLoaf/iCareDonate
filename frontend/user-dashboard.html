@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,13 +8,8 @@
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('icd-theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-      } catch(e) {}
-    })();
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
@@ -247,37 +242,83 @@
 (function() {
   'use strict';
 
-  // Populate user data from storage
-  var userStr = localStorage.getItem('icd_user');
-  var token = localStorage.getItem('icd_token');
-  if (userStr) {
-    try {
-      var user = JSON.parse(userStr);
-      var fullName = (user.first_name + ' ' + (user.last_name || '')).trim() || 'Regular User';
-      var sideName = document.getElementById('user-sidebar-name');
-      var welcName = document.getElementById('user-welcome-name');
-      if (sideName) sideName.textContent = fullName;
-      if (welcName) welcName.textContent = fullName;
-    } catch(e) {}
-  }
+  var API_ROOT = (window.location.protocol === 'file:' || (window.location.port && window.location.port !== '80')) ? 'http://localhost/CommunityDono/api' : '/CommunityDono/api';
 
-  // Logout
+  // Logout handler
   var logoutBtn = document.getElementById('user-logout-btn');
   if (logoutBtn) {
-    logoutBtn.addEventListener('click', function(e) {
+    logoutBtn.addEventListener('click', async function(e) {
       e.preventDefault();
+      var token = localStorage.getItem('icd_token');
+      var headers = { 'Accept': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+
+      try {
+        await fetch(API_ROOT + '/v1/auth/logout.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: headers
+        });
+      } catch(err) {}
+
       localStorage.removeItem('icd_token');
       localStorage.removeItem('icd_user');
       window.location.href = 'login.html';
     });
   }
 
+  // Authenticate session & enforce User access
+  async function verifyUserAuth() {
+    var token = localStorage.getItem('icd_token');
+    var headers = { 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    try {
+      var res = await fetch(API_ROOT + '/v1/auth/me.php', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: headers
+      });
+
+      if (!res.ok) {
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      var data = await res.json();
+      var user = data.user;
+      if (!user) {
+        window.location.href = 'login.html';
+        return false;
+      }
+
+      // Populate verified user details
+      localStorage.setItem('icd_user', JSON.stringify(user));
+      var fullName = (user.first_name + ' ' + (user.last_name || '')).trim() || 'Regular User';
+      var sideName = document.getElementById('user-sidebar-name');
+      var welcName = document.getElementById('user-welcome-name');
+      if (sideName) sideName.textContent = fullName;
+      if (welcName) welcName.textContent = fullName;
+
+      return true;
+    } catch(err) {
+      console.warn('User auth verification error:', err);
+      window.location.href = 'login.html';
+      return false;
+    }
+  }
+
   // Load live user stats from API
   async function loadUserStats() {
-    if (!token) return;
+    var token = localStorage.getItem('icd_token');
+    var headers = { 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
     try {
-      var res = await fetch('/CommunityDono/api/v1/user/dashboard.php', {
-        headers: { 'Authorization': 'Bearer ' + token, 'Accept': 'application/json' }
+      var res = await fetch(API_ROOT + '/v1/user/dashboard.php', {
+        method: 'GET',
+        credentials: 'same-origin',
+        headers: headers
       });
       if (!res.ok) return;
       var data = await res.json();
@@ -299,7 +340,12 @@
     }
   }
 
-  loadUserStats();
+  // Initialize
+  verifyUserAuth().then(function(isAuthed) {
+    if (isAuthed) {
+      loadUserStats();
+    }
+  });
 })();
 </script>
 </body>

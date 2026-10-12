@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,15 +8,8 @@
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
-    (function() {
-      try {
-        var saved = localStorage.getItem('icd-theme');
-        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-        document.documentElement.setAttribute('data-theme', theme);
-        var meta = document.querySelector('meta[name="theme-color"]');
-        if (meta) meta.setAttribute('content', theme === 'dark' ? '#5B8DE8' : '#1F4FA3');
-      } catch(e) {}
-    })();
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
   </script>
 
   <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
@@ -46,9 +39,6 @@
         <a href="contact.html" class="nav-link nav-link--active">Contact us</a>
       </nav>
       <div class="nav-public__actions">
-        <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-          <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
-        </button>
         <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
       </div>
       <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
@@ -169,13 +159,7 @@
             <span class="logo-wordmark">i<em>Care</em>Donate</span>
           </a>
           <p class="footer-tagline">Give what you can. Help where it matters.</p>
-          <div class="footer-theme-toggle-wrap">
-            <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode">
-              <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
-              <span class="theme-toggle-text">Dark mode</span>
-            </button>
           </div>
-        </div>
         <div class="footer-public__col">
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
@@ -218,14 +202,52 @@
       if (form) {
         form.addEventListener('submit', async function(e) {
           e.preventDefault();
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const origText = submitBtn ? submitBtn.innerHTML : 'Send inquiry';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Sending...';
+          }
+
           const data = new FormData(form);
+          const submittedEmail = form.email ? form.email.value.trim() : '';
+          const targetUrl = (window.location.protocol === 'file:' || (window.location.port && window.location.port !== '80')) 
+            ? 'http://localhost/CommunityDono/api/v1/contact.php' 
+            : (form.action || '/CommunityDono/api/v1/contact.php');
+
           try {
-            const resp = await fetch(form.action, { method: 'POST', body: data });
-            document.getElementById('contact-form-wrap').style.display = 'none';
-            document.getElementById('contact-success').style.display = 'block';
-            if(window.lucide) lucide.createIcons();
+            const resp = await fetch(targetUrl, {
+              method: 'POST',
+              body: data,
+              headers: { 'Accept': 'application/json' }
+            });
+            const result = await resp.json().catch(() => ({}));
+
+            if (resp.ok) {
+              const formWrap = document.getElementById('contact-form-wrap');
+              const successBox = document.getElementById('contact-success');
+              if (formWrap) formWrap.style.display = 'none';
+              if (successBox) {
+                const emailTarget = successBox.querySelector('strong');
+                if (emailTarget && submittedEmail) {
+                  emailTarget.textContent = submittedEmail;
+                }
+                successBox.style.display = 'block';
+              }
+              if(window.lucide) lucide.createIcons();
+            } else {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origText;
+              }
+              alert(result.message || 'Failed to submit inquiry. Please complete all fields.');
+            }
           } catch(err) {
-            alert('Failed to send. Please try again later.');
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = origText;
+            }
+            alert('Network error. Failed to send inquiry. Please try again.');
           }
         });
       }

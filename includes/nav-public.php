@@ -25,10 +25,6 @@ $isHome   = ($current === 'index.php' || $current === '' || $_SERVER['REQUEST_UR
 
     <!-- Actions / Auth Button -->
     <div class="nav-public__actions">
-      <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
-        <span class="theme-icon" aria-hidden="true"><i data-lucide="moon"></i></span>
-      </button>
-
       <?php if ($loggedIn): ?>
         <?php if (isAdmin()): ?>
           <a href="<?= $base ?>/admin/" class="btn-pub-auth">Admin Panel</a>

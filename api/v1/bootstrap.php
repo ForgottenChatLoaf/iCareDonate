@@ -7,7 +7,15 @@ declare(strict_types=1);
  */
 
 // ── CORS ────────────────────────────────────────────────────────────────────
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if (empty($origin) || $origin === '*') {
+    if (!empty($_SERVER['HTTP_REFERER'])) {
+        $p = parse_url($_SERVER['HTTP_REFERER']);
+        $origin = ($p['scheme'] ?? 'http') . '://' . ($p['host'] ?? 'localhost') . (!empty($p['port']) ? ':' . $p['port'] : '');
+    } else {
+        $origin = 'http://localhost';
+    }
+}
 header('Access-Control-Allow-Origin: ' . $origin);
 header('Access-Control-Allow-Methods: GET, POST, PUT, PATCH, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
@@ -87,24 +95,47 @@ function getBearerToken(): ?string {
  * Calls jsonError(401) on failure; returns user row on success.
  */
 function requireAuth(PDO $pdo): array {
+    // 1. Check PHP server session first (supports fetch credentials: "same-origin")
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+    }
+    if (!empty($_SESSION['user_id'])) {
+        $stmt = $pdo->prepare(
+            'SELECT u.id, u.email, u.first_name, u.last_name, u.role, u.status, u.profile_photo
+               FROM users u
+              WHERE u.id = ?
+              LIMIT 1'
+        );
+        $stmt->execute([(int)$_SESSION['user_id']]);
+        $user = $stmt->fetch();
+        if ($user) {
+            if ($user['status'] === 'suspended') jsonError('Your account has been suspended.', 403);
+            if ($user['status'] === 'banned')    jsonError('Your account has been banned.', 403);
+            return $user;
+        }
+    }
+
+    // 2. Check Bearer token in header
     $token = getBearerToken();
-    if (!$token) jsonError('Unauthenticated.', 401);
+    if ($token) {
+        $stmt = $pdo->prepare(
+            'SELECT u.id, u.email, u.first_name, u.last_name, u.role, u.status, u.profile_photo
+               FROM user_sessions s
+               JOIN users u ON u.id = s.user_id
+              WHERE s.id = ? AND s.expires_at > NOW()
+              LIMIT 1'
+        );
+        $stmt->execute([hash('sha256', $token)]);
+        $user = $stmt->fetch();
 
-    $stmt = $pdo->prepare(
-        'SELECT u.id, u.email, u.first_name, u.last_name, u.role, u.status, u.profile_photo
-           FROM user_sessions s
-           JOIN users u ON u.id = s.user_id
-          WHERE s.id = ? AND s.expires_at > NOW()
-          LIMIT 1'
-    );
-    $stmt->execute([hash('sha256', $token)]);
-    $user = $stmt->fetch();
+        if (!$user) jsonError('Token expired or invalid.', 401);
+        if ($user['status'] === 'suspended') jsonError('Your account has been suspended.', 403);
+        if ($user['status'] === 'banned')    jsonError('Your account has been banned.', 403);
 
-    if (!$user) jsonError('Token expired or invalid.', 401);
-    if ($user['status'] === 'suspended') jsonError('Your account has been suspended.', 403);
-    if ($user['status'] === 'banned')    jsonError('Your account has been banned.', 403);
+        return $user;
+    }
 
-    return $user;
+    jsonError('Unauthenticated.', 401);
 }
 
 /**
