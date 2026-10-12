@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iCareDonate — Give what you can. Help where it matters.</title>
+  <meta name="description" content="iCareDonate connects verified donors with individuals and communities who need essential physical resources with dignity and care.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <!-- Immediate Theme Initializer to prevent flash of wrong theme -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/home.css">
+</head>
+<body>
+
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ============================================================
+       PUBLIC NAVIGATION BAR
+       ============================================================ -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+
+      <!-- Brand Logo -->
+      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="categories.html" class="nav-link">Categories</a>
+        <a href="donations.html" class="nav-link">Donations</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="nav-public__actions">
+        <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
+          <span class="theme-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </span>
+        </button>
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link active">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="categories.html" class="mobile-link">Categories</a>
+        <a href="donations.html" class="mobile-link">Donations</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="donate.html" class="mobile-link">Post a Donation</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main id="main-content" class="main-content">
+    <div class="container">
+
+      <!-- Hero Section -->
+      <section class="hero reveal-on-scroll">
+        <div>
+          <div class="hero-badge-wrap">
+            <span class="logo">
+              <img src="assets/images/logo.svg" class="logo-icon" width="32" height="32" alt="iCareDonate">
+              <span class="logo-wordmark">i<em>Care</em>Donate</span>
+            </span>
+            <span class="badge badge-sky">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Verified Giving
+            </span>
+          </div>
+
+          <h1 class="hero-title">Give with care. Receive with dignity.</h1>
+          <p class="hero-lead">
+            iCareDonate connects people who have surplus items to share with individuals and local communities who need them. Every donation and request is verified by an admin.
+          </p>
+
+          <div class="hero-actions">
+            <a href="donate.html" class="btn btn-donate btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              Donate now
+            </a>
+            <a href="request.html" class="btn btn-primary btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+              Request help
+            </a>
+          </div>
+
+          <div class="hero-trust">
+            <span class="hero-trust-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              Verified requests
+            </span>
+            <span class="hero-trust-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--coral)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              100% Free platform
+            </span>
+            <span class="hero-trust-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Direct local pick-up
+            </span>
+          </div>
+        </div>
+
+        <!-- Hero Graphic -->
+        <div class="hero-frame">
+          <img 
+            src="assets/images/who-we-serve.jpg" 
+            alt="Community members sharing donated goods at a local center" 
+            class="hero-frame-img"
+          >
+          <div class="hero-frame-overlay">
+            <div class="hero-frame-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+              DIRECT COMMUNITY IMPACT
+            </div>
+            <p class="hero-frame-desc">
+              Bringing neighbors together through transparent, dignified giving across local communities.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3-Step Process -->
+      <section class="steps-section reveal-on-scroll">
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <h3>Post</h3>
+            <p>Donors list items they wish to share. Requesters post what they need with verifiable proof.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <h3>Admin verifies</h3>
+            <p>Every post and request is thoroughly inspected and verified before becoming publicly visible.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <h3>Match and claim</h3>
+            <p>Matched community members coordinate dignified item handovers via safe local pick-ups.</p>
+          </div>
+        </div>
+        <div class="text-center">
+          <a href="how-it-works.html" class="btn btn-outline">
+            See how it works &rarr;
+          </a>
+        </div>
+      </section>
+
+      <!-- Platform Impact Statistics -->
+      <section class="impact-band reveal-on-scroll">
+        <div>
+          <div class="impact-stat-number">24+</div>
+          <div class="impact-stat-label">Approved Donations</div>
+        </div>
+        <div>
+          <div class="impact-stat-number">58+</div>
+          <div class="impact-stat-label">Items Claimed &amp; Received</div>
+        </div>
+        <div>
+          <div class="impact-stat-number">100+</div>
+          <div class="impact-stat-label">Active Community Members</div>
+        </div>
+      </section>
+
+      <!-- Giving Categories Preview -->
+      <section class="reveal-on-scroll">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Community Giving Categories</h2>
+            <p class="section-subtitle">Essential aid areas where your contribution directly changes lives.</p>
+          </div>
+          <a href="categories.html" class="btn btn-outline">View all &rarr;</a>
+        </div>
+
+        <div class="category-home-grid">
+          
+          <!-- Category 1: Emergency -->
+          <article class="category-card">
+            <div class="category-card__header category-card__header--emergency">
+              <div>
+                <div class="category-card__tag">Category</div>
+                <h3 class="category-card__title">Emergency<br>&amp; Relief</h3>
+              </div>
+              <div class="category-card__icon">🔥</div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Emergency &amp; Disaster Relief</h4>
+              <p class="category-card__desc">Essential immediate sustenance, clean water, and shelter supplies for urgent disaster relief.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> Food packs, canned goods, blankets
+              </div>
+              <a href="donate.html?category=emergency" class="btn btn-primary btn-block">
+                Donate / Request
+              </a>
+            </div>
+          </article>
+
+          <!-- Category 2: Healthcare -->
+          <article class="category-card">
+            <div class="category-card__header category-card__header--medical">
+              <div>
+                <div class="category-card__tag">Category</div>
+                <h3 class="category-card__title">Healthcare<br>&amp; Hygiene</h3>
+              </div>
+              <div class="category-card__icon">🩺</div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Healthcare &amp; Hygiene Kits</h4>
+              <p class="category-card__desc">Hygiene and basic wellness kits supporting vulnerable community members and seniors.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> Hygiene packs, first-aid, vitamins
+              </div>
+              <a href="donate.html?category=medical-hygiene" class="btn btn-primary btn-block">
+                Donate / Request
+              </a>
+            </div>
+          </article>
+
+          <!-- Category 3: Education -->
+          <article class="category-card">
+            <div class="category-card__header category-card__header--education">
+              <div>
+                <div class="category-card__tag">Category</div>
+                <h3 class="category-card__title">Education<br>&amp; Youth</h3>
+              </div>
+              <div class="category-card__icon">📚</div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Education &amp; Youth Support</h4>
+              <p class="category-card__desc">Learning materials, books, and backpacks empowering young students in local schools.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> School bags, notebooks, tablets
+              </div>
+              <a href="donate.html?category=school-supplies" class="btn btn-primary btn-block">
+                Donate / Request
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Recently Approved Donations Preview -->
+      <section class="reveal-on-scroll">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Recently Approved Donations</h2>
+            <p class="section-subtitle">Verified supplies available for community request and claim.</p>
+          </div>
+          <a href="donations.html" class="btn btn-outline">Browse all &rarr;</a>
+        </div>
+
+        <div id="home-donations-preview" class="donations-home-grid">
+          <!-- Dynamically populated by donations.js from ICD_DATA -->
+        </div>
+      </section>
+
+      <!-- Ready to Make a Difference CTA Banner -->
+      <section class="cta-banner reveal-on-scroll">
+        <div class="cta-banner-content">
+          <div class="cta-banner-tag">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            Join the Community
+          </div>
+          <h2 class="cta-banner-title">Ready to make a difference?</h2>
+          <p class="cta-banner-desc">Whether you have something to share or something your family needs — iCareDonate connects you directly with your community.</p>
+          <div class="cta-banner-actions">
+            <a href="donate.html" class="btn btn-donate btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+              Start donating
+            </a>
+            <a href="donations.html" class="btn btn-outline-white btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+              Browse donations
+            </a>
+          </div>
+          <p class="cta-banner-footnote">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            100% free &bull; Admin-verified &bull; Direct local pick-ups
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       PUBLIC FOOTER
+       ============================================================ -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container">
+      <div class="footer-public__grid">
+        
+        <!-- Col 1: Brand & Dark Mode -->
+        <div class="footer-public__col">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
+            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-theme-toggle-wrap">
+            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              </span>
+              <span class="theme-toggle-text">Dark mode</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Col 2: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">About us</a></li>
+            <li><a href="mission.html">Our mission</a></li>
+            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Support -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Support</strong>
+          <ul class="footer-links">
+            <li><a href="how-it-works.html">Help center</a></li>
+            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="contact-support.html">Contact support</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Legal</strong>
+          <ul class="footer-links">
+            <li><a href="terms.html">Terms of service</a></li>
+            <li><a href="privacy.html">Privacy policy</a></li>
+            <li><a href="admin-login.html">Admin log in</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+        <span>A dignified community resource sharing initiative.</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/donations.js"></script>
+</body>
+</html>

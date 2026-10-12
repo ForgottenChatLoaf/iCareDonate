@@ -1,0 +1,140 @@
+/* ============================================================
+   iCareDonate — Authentication (Login, Signup, Admin) Styles
+   frontend/css/pages/auth.css
+   ============================================================ */
+
+.auth-wrapper {
+  max-width: 480px;
+  margin: 20px auto 48px;
+  width: 100%;
+}
+
+.auth-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  box-shadow: var(--shadow-md);
+}
+
+.auth-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-logo {
+  display: inline-flex;
+  margin-bottom: 16px;
+}
+
+.auth-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--cobalt);
+  margin-bottom: 6px;
+}
+
+.auth-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.auth-pass-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.auth-pass-label {
+  margin-bottom: 0;
+}
+
+.auth-pass-forgot {
+  font-size: 0.8125rem;
+}
+
+.auth-remember-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.auth-submit-wrap {
+  margin-top: 24px;
+}
+
+.auth-terms-wrap {
+  margin-top: 18px;
+}
+
+.auth-terms-label {
+  display: flex;
+  gap: 8px;
+  font-size: 0.8125rem;
+  color: var(--text-soft);
+  cursor: pointer;
+}
+
+.auth-terms-checkbox {
+  margin-top: 3px;
+}
+
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.auth-divider span {
+  padding: 0 12px;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.auth-footer a {
+  color: var(--cobalt);
+  font-weight: 600;
+}
+
+/* Admin Login Badge */
+.admin-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(224, 85, 61, 0.12);
+  color: var(--coral);
+  border: 1px solid rgba(224, 85, 61, 0.3);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: 12px;
+}
+
+@media (max-width: 480px) {
+  .auth-card {
+    padding: 28px 20px;
+  }
+}

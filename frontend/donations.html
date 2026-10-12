@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Approved Donations — iCareDonate</title>
+  <meta name="description" content="Browse verified and approved physical item donations available for free community claim on iCareDonate.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/donations.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="categories.html" class="nav-link">Categories</a>
+        <a href="donations.html" class="nav-link active">Donations</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+
+      <div class="nav-public__actions">
+        <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
+          <span class="theme-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </span>
+        </button>
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="categories.html" class="mobile-link">Categories</a>
+        <a href="donations.html" class="mobile-link active">Donations</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="donate.html" class="mobile-link">Post a Donation</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <div class="container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Donations</li>
+        </ol>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="section-header reveal-on-scroll">
+        <div>
+          <span class="badge badge-sky mb-2">Verified Goods Directory</span>
+          <h1>Available Donations</h1>
+          <p class="lead">Admin-verified supplies available for community request and direct local pick-up.</p>
+        </div>
+        <a href="donate.html" class="btn btn-donate">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+          List an Item
+        </a>
+      </div>
+
+      <!-- Filter & Search Toolbar -->
+      <section class="donations-filter-bar reveal-on-scroll">
+        <div class="donations-filter-top">
+          <!-- Search Input -->
+          <div class="search-input-wrap">
+            <span class="search-icon">🔍</span>
+            <input 
+              type="search" 
+              id="donations-search" 
+              class="form-control" 
+              placeholder="Search items, keywords, or cities (e.g. backpacks, rice, Pasig)..."
+              aria-label="Search donations"
+            >
+          </div>
+
+          <!-- Category Select Dropdown -->
+          <div>
+            <select id="donations-cat-select" class="form-control" aria-label="Filter by category">
+              <option value="all">All Categories</option>
+              <option value="school-supplies">School Supplies</option>
+              <option value="food-groceries">Food &amp; Groceries</option>
+              <option value="electronics-gadgets">Electronics &amp; Gadgets</option>
+              <option value="medical-hygiene">Healthcare &amp; Hygiene</option>
+              <option value="clothing-shoes">Clothing &amp; Shoes</option>
+              <option value="emergency">Emergency Relief</option>
+              <option value="household-goods">Household Goods</option>
+              <option value="toys-games">Toys &amp; Games</option>
+            </select>
+          </div>
+
+          <!-- Sort Select -->
+          <div>
+            <select id="donations-sort" class="form-control" aria-label="Sort donations">
+              <option value="newest">Sort: Recently Added</option>
+              <option value="qty-desc">Sort: Highest Quantity</option>
+              <option value="title-asc">Sort: Name (A to Z)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Quick Filter Pills -->
+        <div class="category-pills-wrap">
+          <button type="button" class="category-pill-btn active" data-cat="all">All</button>
+          <button type="button" class="category-pill-btn" data-cat="school-supplies">School Supplies</button>
+          <button type="button" class="category-pill-btn" data-cat="food-groceries">Food &amp; Groceries</button>
+          <button type="button" class="category-pill-btn" data-cat="electronics-gadgets">Electronics</button>
+          <button type="button" class="category-pill-btn" data-cat="medical-hygiene">Healthcare</button>
+          <button type="button" class="category-pill-btn" data-cat="clothing-shoes">Clothing</button>
+          <button type="button" class="category-pill-btn" data-cat="emergency">Emergency</button>
+          <button type="button" class="category-pill-btn" data-cat="household-goods">Household</button>
+          <button type="button" class="category-pill-btn" data-cat="toys-games">Toys</button>
+        </div>
+      </section>
+
+      <!-- Results Meta Information -->
+      <div class="donations-results-meta">
+        <span id="donations-count">Loading verified donations...</span>
+        <span>Verified for direct community pick-up</span>
+      </div>
+
+      <!-- Donations Gallery Grid -->
+      <div id="donations-gallery" class="donations-gallery-grid">
+        <!-- Rendered by donations.js from ICD_DATA -->
+      </div>
+
+      <!-- Empty State (Shown when filters yield 0 items) -->
+      <div id="donations-empty" class="donations-empty-state">
+        <div class="donations-empty-icon">🔎</div>
+        <h3 class="donations-empty-title">No matching donations found</h3>
+        <p class="donations-empty-desc">
+          Try clearing your search query or choosing another category filter. You can also request specific supplies directly!
+        </p>
+        <a href="request.html" class="btn btn-primary">
+          Submit an Aid Request
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container">
+      <div class="footer-public__grid">
+        <div class="footer-public__col">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
+            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-theme-toggle-wrap">
+            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              </span>
+              <span class="theme-toggle-text">Dark mode</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">About us</a></li>
+            <li><a href="mission.html">Our mission</a></li>
+            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Support</strong>
+          <ul class="footer-links">
+            <li><a href="how-it-works.html">Help center</a></li>
+            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="contact-support.html">Contact support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Legal</strong>
+          <ul class="footer-links">
+            <li><a href="terms.html">Terms of service</a></li>
+            <li><a href="privacy.html">Privacy policy</a></li>
+            <li><a href="admin-login.html">Admin log in</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+        <span>A dignified community resource sharing initiative.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/donations.js"></script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+/* ============================================================
+   iCareDonate — Design System Variables & Tokens
+   frontend/css/variables.css
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Poppins:wght@500;600;700;800&display=swap');
+
+:root {
+  /* Brand Palette */
+  --cobalt:           #1F4FA3;   /* Primary: navbar, headings, brand heart, links */
+  --cobalt-dark:      #163A7A;   /* Primary hover */
+  --cobalt-light:     #3B6BC2;   /* Lighter blue accent */
+  --coral:            #E0553D;   /* Main CTA only: "Donate now" button */
+  --coral-dark:       #C4412A;   /* Coral hover */
+  --coral-light:      #FAECE8;   /* Coral tint */
+  --amber:            #F2B84B;   /* Stat numbers, badges, highlights */
+  --amber-dark:       #D99B26;   /* Amber hover/dark */
+  --gold:             #BC7F08;   /* Wordmark 'Care' on light */
+
+  /* Neutrals */
+  --cream:            #FBF7F2;   /* Default page background */
+  --sky:              #E3EEFB;   /* Card borders, soft tinted panels */
+  --navy:             #14213D;   /* Dark navy headings, text, footer */
+  --slate:            #5A6781;   /* Muted captions, helper text */
+
+  /* Light Theme Surfaces & Text */
+  --bg:               var(--cream);
+  --surface:          #FFFFFF;
+  --surface-soft:     var(--sky);
+  --surface-alt:      #F4F8FD;
+  --text:             var(--navy);
+  --text-soft:        #2E3F5C;
+  --text-muted:       var(--slate);
+  --text-inverse:     #FFFFFF;
+  --border:           #C8D9F0;
+  --border-strong:    #9CBCE5;
+  --focus-ring:       rgba(31, 79, 163, 0.4);
+
+  /* Status Colors */
+  --approved:         #2E6FDB;
+  --approved-bg:      #EBF1FB;
+  --pending:          #E8A317;
+  --pending-bg:       #FEF6E0;
+  --rejected:         #C0392B;
+  --rejected-bg:      #FAE9E7;
+  --success:          #16A34A;
+  --success-bg:       #DCFCE7;
+
+  /* Category Gradient Presets */
+  --grad-emergency:   linear-gradient(135deg, #BC4E2B 0%, #E0553D 50%, #F2904A 100%);
+  --grad-medical:     linear-gradient(135deg, #A0244E 0%, #D4456B 50%, #E87A8C 100%);
+  --grad-education:   linear-gradient(135deg, #0E3D8A 0%, #1F4FA3 50%, #4278D1 100%);
+  --grad-clothing:    linear-gradient(135deg, #3D2B8A 0%, #6345D4 50%, #8E7AE8 100%);
+  --grad-food:        linear-gradient(135deg, #1C6339 0%, #2F9452 50%, #58C67F 100%);
+  --grad-tech:        linear-gradient(135deg, #094769 0%, #1274A5 50%, #3AB4E8 100%);
+  --grad-household:   linear-gradient(135deg, #7A4B1A 0%, #B8732A 50%, #E4A252 100%);
+  --grad-toys:        linear-gradient(135deg, #8A1A6C 0%, #BA2892 50%, #E85CC3 100%);
+  --grad-cta:         linear-gradient(135deg, #0E1A33 0%, #14213D 40%, #1F4FA3 100%);
+
+  /* Typography */
+  --font-brand:       'Poppins', system-ui, -apple-system, sans-serif;
+  --font-serif:       'Playfair Display', Georgia, serif;
+  --font-heading:     'Poppins', system-ui, -apple-system, sans-serif;
+  --font-body:        'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Spacing */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  24px;
+  --space-6:  32px;
+  --space-7:  48px;
+  --space-8:  64px;
+  --space-9:  80px;
+
+  /* Radius */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   14px;
+  --radius-lg:   20px;
+  --radius-xl:   28px;
+  --radius-full: 999px;
+
+  /* Shadows */
+  --shadow-xs:  0 1px 3px rgba(20, 33, 61, 0.05);
+  --shadow-sm:  0 3px 8px rgba(31, 79, 163, 0.08);
+  --shadow-md:  0 8px 24px rgba(31, 79, 163, 0.12);
+  --shadow-lg:  0 16px 36px rgba(31, 79, 163, 0.16);
+  --shadow-xl:  0 24px 56px rgba(20, 33, 61, 0.20);
+
+  /* Transitions */
+  --transition-fast:   150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow:   350ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Layout */
+  --container-max:    1140px;
+  --container-narrow: 840px;
+  --header-height:    76px;
+}
+
+/* ============================================================
+   DARK THEME TOKENS
+   ============================================================ */
+:root[data-theme="dark"] {
+  --bg:               #0B1324;
+  --surface:          #131F38;
+  --surface-soft:     #1B2B4E;
+  --surface-alt:      #172543;
+  --text:             #F1F5F9;
+  --text-soft:        #CBD5E1;
+  --text-muted:       #94A3B8;
+  --border:           #243761;
+  --border-strong:    #39538C;
+  --focus-ring:       rgba(242, 184, 75, 0.45);
+
+  --cobalt:           #437AE0;
+  --cobalt-dark:      #2A62C8;
+  --cobalt-light:     #6D9CF0;
+  --sky:              #1C2E52;
+  --navy:             #F8FAFC;
+  --slate:            #94A3B8;
+  --gold:             var(--amber);
+
+  --shadow-xs:  0 1px 3px rgba(0, 0, 0, 0.35);
+  --shadow-sm:  0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-md:  0 8px 26px rgba(0, 0, 0, 0.48);
+  --shadow-lg:  0 16px 40px rgba(0, 0, 0, 0.55);
+  --shadow-xl:  0 24px 60px rgba(0, 0, 0, 0.65);
+
+  --approved-bg:      rgba(46, 111, 219, 0.18);
+  --pending-bg:       rgba(232, 163, 23, 0.18);
+  --rejected-bg:      rgba(192, 57, 43, 0.22);
+  --success-bg:       rgba(22, 163, 74, 0.2);
+}

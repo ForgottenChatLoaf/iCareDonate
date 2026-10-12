@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Our Mission &amp; Impact — iCareDonate</title>
+  <meta name="description" content="Discover the mission, philosophy, and community principles powering iCareDonate.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('icd-theme');
+        var theme = saved || (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch(e) {}
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/about.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="categories.html" class="nav-link">Categories</a>
+        <a href="donations.html" class="nav-link">Donations</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+
+      <div class="nav-public__actions">
+        <button type="button" class="btn-theme-toggle" data-theme-toggle aria-label="Toggle dark mode" title="Switch theme">
+          <span class="theme-icon" aria-hidden="true">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+          </span>
+        </button>
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+        <a href="donate.html" class="btn btn-donate btn-sm">Donate</a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="categories.html" class="mobile-link">Categories</a>
+        <a href="donations.html" class="mobile-link">Donations</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="donate.html" class="mobile-link">Post a Donation</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <div class="container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
+          <li class="breadcrumb-item"><a href="about.html" class="breadcrumb-link">About us</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Our Mission</li>
+        </ol>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="page-header reveal-on-scroll">
+        <span class="badge badge-sky mb-2">Philosophy &amp; Commitment</span>
+        <h1>Our Mission &amp; Purpose</h1>
+        <p class="lead">Connecting neighbors with transparency, eliminating waste, and upholding human dignity.</p>
+      </div>
+
+      <!-- Extended Mission Section -->
+      <section class="card card-body card-legal-body mb-6 reveal-on-scroll">
+        <h2 class="text-cobalt mb-3">The Challenge We Tackle</h2>
+        <p class="lead mb-4">
+          Across communities, millions of pesos worth of fully functioning school backpacks, electronic gadgets, books, and household staples sit unused in closets. Concurrently, families and students in neighboring barangays face immense hurdles acquiring basic tools for learning and nutrition.
+        </p>
+        <p class="lead mb-0">
+          iCareDonate was created to eliminate the barrier of financial overhead and complex bureaucracy. We believe in direct physical donation where surplus directly fulfills tangible need.
+        </p>
+      </section>
+
+      <!-- 3 Strategic Pillars -->
+      <section class="reveal-on-scroll mb-6">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Three Strategic Pillars</h2>
+            <p class="section-subtitle">How our model achieves lasting community impact.</p>
+          </div>
+        </div>
+
+        <div class="values-grid">
+          <div class="value-card">
+            <h4>1. Dignity in Receiving</h4>
+            <p>Every person requesting aid is treated with honor and privacy. We verify quietly without public embarrassment.</p>
+          </div>
+          <div class="value-card">
+            <h4>2. Zero Exploitation</h4>
+            <p>No selling or commercial re-distribution. All goods remain 100% free for families in need.</p>
+          </div>
+          <div class="value-card">
+            <h4>3. Community Accountability</h4>
+            <p>Open logs of verified donations ensure trust between local donors, volunteers, and beneficiaries.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="card card-body text-center card-cta-band reveal-on-scroll">
+        <h3 class="text-cobalt mb-2">Support Our Mission</h3>
+        <p class="lead max-w-540 mb-4">Contribute surplus items or volunteer your time with our local barangay coordinators.</p>
+        <div class="action-btn-group">
+          <a href="donate.html" class="btn btn-donate">Donate items now</a>
+          <a href="careers.html" class="btn btn-primary">Join as volunteer</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container">
+      <div class="footer-public__grid">
+        <div class="footer-public__col">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate Home">
+            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-theme-toggle-wrap">
+            <button type="button" class="footer-theme-btn" data-theme-toggle aria-label="Toggle dark mode">
+              <span class="theme-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
+              </span>
+              <span class="theme-toggle-text">Dark mode</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">About us</a></li>
+            <li><a href="mission.html">Our mission</a></li>
+            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Support</strong>
+          <ul class="footer-links">
+            <li><a href="how-it-works.html">Help center</a></li>
+            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="contact-support.html">Contact support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-public__col">
+          <strong class="footer-heading">Legal</strong>
+          <ul class="footer-links">
+            <li><a href="terms.html">Terms of service</a></li>
+            <li><a href="privacy.html">Privacy policy</a></li>
+            <li><a href="admin-login.html">Admin log in</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+        <span>A dignified community resource sharing initiative.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
