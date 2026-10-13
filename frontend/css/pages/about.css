@@ -100,7 +100,7 @@ details[open] > .team-summary .team-chevron {
 
 .team-leader-accent-bar {
   height: 5px;
-  background: linear-gradient(90deg, var(--cobalt) 0%, var(--gold, #F59E0B) 100%);
+  background: linear-gradient(90deg, var(--cobalt) 0%, var(--amber) 100%);
 }
 
 .team-leader-inner {

@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Beneficiary Request &amp; Proof Inspection — iCareDonate Admin</title>
+  <meta name="description" content="Detailed verification of beneficiary request details, indigency certificates, and approval actions.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ADMIN SIDEBAR -->
+  <aside class="user-sidebar admin-sidebar" role="complementary" aria-label="Admin navigation">
+    <div class="brand-sidebar-container" role="banner">
+      <a href="index.html" class="brand-sidebar-logo" aria-label="iCareDonate ADMIN">
+        <img src="../assets/images/logo.svg" class="brand-sidebar-icon" alt="iCareDonate Logo" width="32" height="32">
+        <span class="brand-sidebar-wordmark">
+          <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
+        </span>
+      </a>
+      <span class="brand-sidebar-badge brand-sidebar-badge--admin" aria-label="ADMIN Portal">ADMIN</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <a href="index.html" class="sidebar-link" data-nav="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="donations.html" class="sidebar-link" data-nav="donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>Donation Review</span>
+      </a>
+      <a href="requests.html" class="sidebar-link sidebar-link--active" data-nav="requests">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+        <span>Request &amp; Proof Review</span>
+      </a>
+      <a href="transactions.html" class="sidebar-link" data-nav="transactions">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transaction Monitoring</span>
+      </a>
+      <a href="interviews.html" class="sidebar-link" data-nav="interviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+        <span>Interviews</span>
+      </a>
+      <a href="users.html" class="sidebar-link" data-nav="users">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Users &amp; Moderation</span>
+      </a>
+      <a href="support.html" class="sidebar-link" data-nav="support">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Message &amp; Support</span>
+      </a>
+      <a href="faqs.html" class="sidebar-link" data-nav="faqs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+        <span>FAQ Content</span>
+      </a>
+      <a href="reports.html" class="sidebar-link" data-nav="reports">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        <span>Reports</span>
+      </a>
+      <a href="categories.html" class="sidebar-link" data-nav="categories">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" x2="7.01" y1="7" y2="7"/></svg>
+        <span>Categories</span>
+      </a>
+      <a href="statistics.html" class="sidebar-link" data-nav="statistics">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Statistics</span>
+      </a>
+      <a href="profile.html" class="sidebar-link" data-nav="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin Profile</span>
+      </a>
+
+      <hr style="border:none;border-top:1px solid var(--border, #E2E8F0);margin:8px 0;">
+
+      <a href="admins.html" class="sidebar-link" data-nav="admins" style="color:var(--amber-dark, #D99B26);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Admin Management</span>
+      </a>
+      <a href="logs.html" class="sidebar-link" data-nav="logs" style="color:var(--amber-dark, #D99B26);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+        <span>Audit Logs</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="profile.html" class="sidebar-user-name" style="text-decoration:none;color:inherit;">Head Admin</a>
+      <a href="login.html" class="sidebar-link--muted" title="Log Out" style="text-decoration:none;display:flex;align-items:center;gap:4px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Log Out</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ADMIN MAIN -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:14px;">
+        <a href="requests.html" class="btn btn-outline" style="font-size:12.5px;padding:5px 12px;display:inline-flex;align-items:center;gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          <span>Back to Requests</span>
+        </a>
+        <h1 class="admin-topbar__title" style="margin:0;font-size:20px;font-weight:700;">
+          Assistance Request Review #501
+        </h1>
+      </div>
+      <div>
+        <span class="badge badge-warning" id="req-status-badge">Proof Review</span>
+      </div>
+    </header>
+
+    <div class="admin-content" style="padding:28px 32px;">
+
+      <div class="grid grid--2col" style="gap:24px;align-items:start;">
+
+        <!-- Left: Statement of Need, Item Target, Supporting Proof Document -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          
+          <div class="card" style="padding:24px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#fff;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
+              <span class="badge badge-danger">Urgency: High</span>
+              <span style="font-size:12.5px;color:var(--color-text-muted);">Filed: Oct 11, 2026</span>
+            </div>
+
+            <h2 style="font-size:18px;font-weight:700;color:var(--color-text);margin:0 0 6px;">
+              Target: Elementary Backpacks &amp; Notebook Bundle
+            </h2>
+            <div style="font-size:13px;color:var(--color-text-muted);margin-bottom:16px;">
+              Requested: <strong>2 sets</strong> &bull; Total Available in Donation: <strong>4 sets</strong>
+            </div>
+
+            <div style="background:#F8FAFC;padding:16px;border-radius:var(--radius-md);border:1px solid var(--color-border-light);font-size:14px;line-height:1.6;margin-bottom:16px;">
+              <strong style="color:var(--color-primary);display:block;margin-bottom:4px;">Beneficiary Statement of Need:</strong>
+              "We have two young siblings entering Grade 3 and Grade 5 whose parents are displaced tricycle drivers currently without daily income following the recent storm. They lack school supplies and bags."
+            </div>
+
+            <div style="font-size:13px;color:var(--color-text);">
+              <div>Fulfillment Address: <strong>Block 12 Lot 4, Barangay Central, Quezon City</strong></div>
+            </div>
+          </div>
+
+          <!-- Proof Document Card -->
+          <div class="card" style="padding:24px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#fff;">
+            <h3 style="font-size:16px;font-weight:700;margin:0 0 12px;color:var(--color-text);">Supporting Proof Document</h3>
+            
+            <div style="display:flex;align-items:center;justify-content:space-between;background:#F0F7FF;padding:16px;border-radius:var(--radius-md);border:1px solid #C8E1FF;margin-bottom:16px;">
+              <div style="display:flex;align-items:center;gap:12px;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+                <div>
+                  <div style="font-weight:700;font-size:14px;color:var(--color-primary);">Barangay_Indigency_Certificate_Mendoza.pdf</div>
+                  <div style="font-size:12px;color:var(--color-text-muted);">Uploaded Oct 11, 2026 &bull; Signed by Barangay Captain</div>
+                </div>
+              </div>
+              <button type="button" class="btn btn-outline" style="font-size:12px;padding:6px 12px;background:#fff;" onclick="alert('Viewing document preview modal.')">
+                Inspect Document
+              </button>
+            </div>
+
+            <div style="font-size:12.5px;color:var(--color-text-muted);line-height:1.5;">
+              Proof documents are strictly accessible to authorized administrators and kept confidential in compliance with privacy guidelines.
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right: Requester Profile & Verification Decisions -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          
+          <!-- Beneficiary Details -->
+          <div class="card" style="padding:22px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#fff;">
+            <h3 style="font-size:15px;font-weight:700;margin:0 0 14px;color:var(--color-text);">Beneficiary Profile</h3>
+            <div style="font-size:13.5px;display:flex;flex-direction:column;gap:8px;">
+              <div>Name: <strong>Carlos Mendoza</strong></div>
+              <div>Phone: <strong>0918-223-1122</strong></div>
+              <div>Location: <strong>Quezon City, Metro Manila</strong></div>
+              <div>Previous Claims Completed: <strong>0</strong></div>
+            </div>
+            <a href="user-detail.html?id=14" class="btn btn-outline" style="font-size:12px;padding:6px 12px;margin-top:14px;width:100%;text-align:center;">
+              View Beneficiary Account History
+            </a>
+          </div>
+
+          <!-- Moderation Decision Box -->
+          <div class="card" style="padding:24px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#F8FAFC;">
+            <h3 style="font-size:16px;font-weight:700;margin:0 0 12px;color:var(--color-text);">Proof Verification Decision</h3>
+            <p style="font-size:13px;color:var(--color-text-muted);margin:0 0 18px;">
+              Verify that the submitted documentation establishes legitimate community need.
+            </p>
+
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <button type="button" class="btn btn-primary" style="font-size:13px;padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:8px;" onclick="approveRequestProof()">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Verify Proof &amp; Match to Donation</span>
+              </button>
+
+              <button type="button" class="btn btn-outline" style="font-size:13px;padding:8px 16px;" onclick="scheduleInterview()">
+                Schedule Verification Interview
+              </button>
+
+              <button type="button" class="btn btn-outline" style="font-size:13px;padding:8px 16px;color:#DC2626;border-color:#FCA5A5;" onclick="rejectRequestProof()">
+                Reject Request &bull; Insufficient Proof
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/mock-data.js"></script>
+<script src="../js/admin-portal.js"></script>
+<script>
+  function approveRequestProof() {
+    const badge = document.getElementById('req-status-badge');
+    badge.className = 'badge badge-success';
+    badge.textContent = 'Matched & Approved';
+    window.showAdminFlash('success', 'Request #501 proof verified successfully. Stock allocated and matching transaction created.');
+  }
+
+  function scheduleInterview() {
+    window.location.href = 'interviews.html?request_id=501&user_id=14';
+  }
+
+  function rejectRequestProof() {
+    const badge = document.getElementById('req-status-badge');
+    badge.className = 'badge badge-danger';
+    badge.textContent = 'Rejected';
+    window.showAdminFlash('error', 'Request #501 has been rejected. Notification sent to beneficiary.');
+  }
+</script>
+
+</body>
+</html>

@@ -1,7 +1,6 @@
-# uploads/private/.htaccess
-# CRITICAL: Block all direct HTTP access to private uploaded files.
-# Proof documents and sensitive user attachments must never be
-# downloadable directly by URL. All access must go through an
-# authenticated PHP controller that checks session permissions.
-Order allow,deny
-Deny from all
+
+# Block all direct HTTP access to private uploaded files.
+# Private proofs must not be downloadable directly by URL.
+# Future access must use an authenticated PHP controller.
+
+Require all denied

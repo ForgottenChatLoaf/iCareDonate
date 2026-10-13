@@ -322,7 +322,7 @@
 }
 .qt-btn--admin:hover {
   background: #FDF4E1;
-  border-color: var(--gold);
+  border-color: var(--amber-dark);
 }
 .qt-badge {
   font-size: 0.6875rem;
@@ -335,7 +335,7 @@
 }
 .qt-btn--admin .qt-badge {
   background: #FDF4E1;
-  color: #BC7F08;
+  color: var(--amber-dark);
 }
 
 .auth-form-label {

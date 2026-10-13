@@ -240,7 +240,9 @@
     if (!rawId || isNaN(id) || id <= 0) {
       detailsContainer.innerHTML = `
         <div class="donations-empty-state is-active">
-          <div class="donations-empty-icon">⚠️</div>
+          <div class="donations-empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
           <h2 class="donations-empty-title">Invalid or Missing Donation ID</h2>
           <p class="donations-empty-desc">Please choose a valid item listing from our community donations directory.</p>
           <a href="donations.html" class="btn btn-primary">Browse Available Donations</a>
@@ -251,7 +253,9 @@
 
     detailsContainer.innerHTML = `
       <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
-        <div style="font-size: 36px; margin-bottom: 12px;">⏳</div>
+        <div style="margin-bottom: 12px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary, #1F4FA3)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
         <p>Loading donation details...</p>
       </div>
     `;
@@ -275,7 +279,9 @@
 
       detailsContainer.innerHTML = `
         <div class="donations-empty-state is-active">
-          <div class="donations-empty-icon">⚠️</div>
+          <div class="donations-empty-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto 12px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
           <h2 class="donations-empty-title">${errorTitle}</h2>
           <p class="donations-empty-desc">${errorDesc}</p>
           <a href="donations.html" class="btn btn-primary">Browse Available Donations</a>

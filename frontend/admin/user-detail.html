@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Moderation &amp; Detail — iCareDonate Admin</title>
+  <meta name="description" content="View user profile, audit trail, warnings, account suspension, and donation cascade moderation.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ADMIN SIDEBAR -->
+  <aside class="user-sidebar admin-sidebar" role="complementary" aria-label="Admin navigation">
+    <div class="brand-sidebar-container" role="banner">
+      <a href="index.html" class="brand-sidebar-logo" aria-label="iCareDonate ADMIN">
+        <img src="../assets/images/logo.svg" class="brand-sidebar-icon" alt="iCareDonate Logo" width="32" height="32">
+        <span class="brand-sidebar-wordmark">
+          <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
+        </span>
+      </a>
+      <span class="brand-sidebar-badge brand-sidebar-badge--admin" aria-label="ADMIN Portal">ADMIN</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <a href="index.html" class="sidebar-link" data-nav="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="donations.html" class="sidebar-link" data-nav="donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>Donation Review</span>
+      </a>
+      <a href="requests.html" class="sidebar-link" data-nav="requests">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+        <span>Request &amp; Proof Review</span>
+      </a>
+      <a href="transactions.html" class="sidebar-link" data-nav="transactions">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transaction Monitoring</span>
+      </a>
+      <a href="interviews.html" class="sidebar-link" data-nav="interviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+        <span>Interviews</span>
+      </a>
+      <a href="users.html" class="sidebar-link sidebar-link--active" data-nav="users">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Users &amp; Moderation</span>
+      </a>
+      <a href="support.html" class="sidebar-link" data-nav="support">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Message &amp; Support</span>
+      </a>
+      <a href="faqs.html" class="sidebar-link" data-nav="faqs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+        <span>FAQ Content</span>
+      </a>
+      <a href="reports.html" class="sidebar-link" data-nav="reports">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        <span>Reports</span>
+      </a>
+      <a href="categories.html" class="sidebar-link" data-nav="categories">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" x2="7.01" y1="7" y2="7"/></svg>
+        <span>Categories</span>
+      </a>
+      <a href="statistics.html" class="sidebar-link" data-nav="statistics">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Statistics</span>
+      </a>
+      <a href="profile.html" class="sidebar-link" data-nav="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin Profile</span>
+      </a>
+
+      <hr style="border:none;border-top:1px solid var(--border, #E2E8F0);margin:8px 0;">
+
+      <a href="admins.html" class="sidebar-link" data-nav="admins" style="color:var(--amber-dark, #D99B26);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Admin Management</span>
+      </a>
+      <a href="logs.html" class="sidebar-link" data-nav="logs" style="color:var(--amber-dark, #D99B26);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+        <span>Audit Logs</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="profile.html" class="sidebar-user-name" style="text-decoration:none;color:inherit;">Head Admin</a>
+      <a href="login.html" class="sidebar-link--muted" title="Log Out" style="text-decoration:none;display:flex;align-items:center;gap:4px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Log Out</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ADMIN MAIN -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="users.html" class="btn btn-outline" style="font-size:12.5px;padding:5px 12px;display:inline-flex;align-items:center;gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+          <span>Users List</span>
+        </a>
+        <h1 class="admin-topbar__title" style="margin:0;font-size:20px;font-weight:700;">
+          User Profile: <span id="user-header-name">Maria Santos</span> (#<span id="user-header-id">12</span>)
+        </h1>
+      </div>
+      <div>
+        <span id="user-status-badge" class="badge">Active</span>
+      </div>
+    </header>
+
+    <div class="admin-content" style="padding:28px 32px;">
+
+      <!-- Account Moderation Cascade Policy Alert -->
+      <div class="alert alert-info" style="display:flex;gap:12px;align-items:center;padding:12px 18px;border-radius:8px;font-size:13px;margin-bottom:24px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+        <span>
+          <strong>Moderation Cascade Architecture:</strong> Suspending or banning an account triggers an automated cascade that archives all of their active donation offers. Reactivating this account later does <em>not</em> automatically republish archived donations.
+        </span>
+      </div>
+
+      <!-- Upper Grid: Account Details & Moderation Actions -->
+      <div class="grid grid--2col" style="gap:24px;margin-bottom:28px;align-items:start;">
+
+        <!-- Left: Account Information -->
+        <div class="card" style="padding:24px;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#fff;">
+          <h2 style="font-size:16px;font-weight:700;margin:0 0 16px;color:var(--color-primary);">Account Information</h2>
+
+          <table style="width:100%;font-size:13.5px;border-collapse:collapse;">
+            <tr style="border-bottom:1px solid var(--color-border-light);">
+              <td style="padding:8px 0;color:var(--color-text-muted);width:140px;">Full Name</td>
+              <td id="u-name" style="padding:8px 0;font-weight:700;">Maria Santos</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--color-border-light);">
+              <td style="padding:8px 0;color:var(--color-text-muted);">Email Address</td>
+              <td id="u-email" style="padding:8px 0;">maria.santos@example.com</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--color-border-light);">
+              <td style="padding:8px 0;color:var(--color-text-muted);">Phone Number</td>
+              <td id="u-phone" style="padding:8px 0;">0917-555-0192</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--color-border-light);">
+              <td style="padding:8px 0;color:var(--color-text-muted);">Location</td>
+              <td id="u-location" style="padding:8px 0;">Barangay Central, Quezon City</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--color-border-light);">
+              <td style="padding:8px 0;color:var(--color-text-muted);">System Role</td>
+              <td id="u-role" style="padding:8px 0;"><span class="badge badge-info">Community User</span></td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--color-border-light);">
+              <td style="padding:8px 0;color:var(--color-text-muted);">Joined Date</td>
+              <td id="u-joined" style="padding:8px 0;">Jan 15, 2026</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;color:var(--color-text-muted);">Verification Status</td>
+              <td style="padding:8px 0;"><span class="badge badge-success">Email Verified</span></td>
+            </tr>
+          </table>
+
+          <!-- Status note if suspended -->
+          <div id="u-moderation-note-box" style="display:none;margin-top:16px;padding:12px;background:#FEF2F2;border:1px solid #FCA5A5;border-radius:var(--radius-sm);font-size:12.5px;color:#991B1B;">
+            <strong>Moderation Note:</strong> <span id="u-moderation-note-text"></span>
+          </div>
+        </div>
+
+        <!-- Right: Moderation Actions & Stats -->
+        <div style="display:flex;flex-direction:column;gap:20px;">
+          
+          <!-- Summary Counters -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+            <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
+              <div id="cnt-donations" style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">2</div>
+              <div style="font-size:11.5px;color:var(--color-text-muted);">Donations</div>
+            </div>
+            <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
+              <div style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">1</div>
+              <div style="font-size:11.5px;color:var(--color-text-muted);">Requests</div>
+            </div>
+            <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
+              <div style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">3</div>
+              <div style="font-size:11.5px;color:var(--color-text-muted);">Transactions</div>
+            </div>
+            <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
+              <div style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:#DC2626;">0</div>
+              <div style="font-size:11.5px;color:var(--color-text-muted);">Reports</div>
+            </div>
+          </div>
+
+          <!-- Moderation Controls Card -->
+          <div class="card" style="padding:24px;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#F8FAFC;">
+            <h2 style="font-size:16px;font-weight:700;margin:0 0 8px;color:var(--color-text);">Account Moderation Actions</h2>
+            <p style="font-size:13px;color:var(--color-text-muted);margin:0 0 16px;">
+              Apply administrative enforcement, warnings, suspension, or reactivation.
+            </p>
+
+            <!-- Warning Form -->
+            <form onsubmit="handleIssueWarning(event)" style="margin-bottom:18px;">
+              <div style="display:flex;gap:8px;">
+                <input type="text" id="warning-input" placeholder="Issue formal warning message..." class="form-input" style="font-size:12.5px;height:36px;" required>
+                <button type="submit" class="btn btn-outline" style="font-size:12px;padding:0 14px;color:#92400E;border-color:#FCD34D;white-space:nowrap;">
+                  Issue Warning
+                </button>
+              </div>
+            </form>
+
+            <!-- Status Buttons -->
+            <div id="active-moderation-actions" style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-outline" style="font-size:12.5px;padding:7px 16px;color:#DC2626;border-color:#FCA5A5;" onclick="openSuspendModal()">
+                Suspend Account
+              </button>
+              <button type="button" class="btn btn-outline" style="font-size:12.5px;padding:7px 16px;background:#1E293B;color:#fff;border-color:#1E293B;" onclick="openBanModal()">
+                Permanent Ban
+              </button>
+              <a href="interviews.html?user_id=12" class="btn btn-outline" style="font-size:12.5px;padding:7px 16px;">
+                Schedule Interview
+              </a>
+            </div>
+
+            <!-- Reactivation action (visible when suspended or banned) -->
+            <div id="reactivate-moderation-actions" style="display:none;margin-top:10px;">
+              <button type="button" class="btn btn-primary" style="font-size:13px;padding:8px 20px;background:#15803D;color:#fff;" onclick="handleReactivateUser()">
+                Reactivate / Unban Account
+              </button>
+              <p style="font-size:12px;color:var(--color-text-muted);margin:8px 0 0;">
+                Note: Reactivation restores user login capabilities. Associated donations remain archived and require separate manual review.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Lower Section: User's Associated Donations & Cascade Status -->
+      <div class="card" style="padding:24px;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#fff;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div>
+            <h2 style="font-size:16px;font-weight:700;margin:0 0 4px;color:var(--color-text);">Associated Donations by This User</h2>
+            <p style="font-size:13px;color:var(--color-text-muted);margin:0;">
+              Examine live status. Notice how suspending the user will immediately change active listings to <strong>Archived</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div id="user-donations-container" style="display:flex;flex-direction:column;gap:12px;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- SUSPEND MODAL -->
+<dialog id="suspend-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:480px;width:92%;">
+  <div class="card" style="padding:32px;border-radius:var(--radius-lg);background:#FFFFFF;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border:1px solid var(--color-border);">
+    <h2 style="font-size:18px;font-weight:700;margin:0 0 8px;color:#DC2626;">Suspend User Account</h2>
+    
+    <div class="alert alert-warning" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+      <span><strong>Cascade Notice:</strong> Suspending this account will automatically archive all of their currently active donation offers to safeguard the community.</span>
+    </div>
+
+    <form onsubmit="handleSuspendSubmit(event)">
+      <div style="margin-bottom:20px;">
+        <label for="suspend-reason" style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Reason for Suspension <span style="color:#DC2626;">*</span></label>
+        <textarea id="suspend-reason" class="form-input" rows="3" placeholder="Provide policy grounds or misconduct details..." style="width:100%;font-size:13px;" required></textarea>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('suspend-dialog').close()" style="font-size:13px;padding:8px 18px;">Cancel</button>
+        <button type="submit" class="btn btn-danger" style="font-size:13px;padding:8px 20px;background:#DC2626;color:#fff;">Confirm Suspension</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- BAN MODAL -->
+<dialog id="ban-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:480px;width:92%;">
+  <div class="card" style="padding:32px;border-radius:var(--radius-lg);background:#FFFFFF;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border:1px solid var(--color-border);">
+    <h2 style="font-size:18px;font-weight:700;margin:0 0 8px;color:#111827;">Permanent Account Ban</h2>
+    
+    <div class="alert alert-warning" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
+      <span><strong>Cascade Notice:</strong> Banning this account permanently archives all associated donations immediately.</span>
+    </div>
+
+    <form onsubmit="handleBanSubmit(event)">
+      <div style="margin-bottom:20px;">
+        <label for="ban-reason" style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;">Reason for Ban <span style="color:#DC2626;">*</span></label>
+        <textarea id="ban-reason" class="form-input" rows="3" placeholder="State violation of community terms..." style="width:100%;font-size:13px;" required></textarea>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('ban-dialog').close()" style="font-size:13px;padding:8px 18px;">Cancel</button>
+        <button type="submit" class="btn" style="font-size:13px;padding:8px 20px;background:#111827;color:#fff;">Confirm Permanent Ban</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script src="../js/mock-data.js"></script>
+<script src="../js/admin-portal.js"></script>
+<script>
+  let targetUser = null;
+
+  function loadUserProfile() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const userId = Number(urlParams.get('id') || 12);
+
+    targetUser = window.MockStore ? window.MockStore.getUserById(userId) : null;
+    if (!targetUser && window.MockStore) {
+      targetUser = window.MockStore.getUsers('all', '')[0];
+    }
+    if (!targetUser) return;
+
+    document.getElementById('user-header-name').textContent = `${targetUser.firstName} ${targetUser.lastName}`;
+    document.getElementById('user-header-id').textContent = targetUser.id;
+    document.getElementById('u-name').textContent = `${targetUser.firstName} ${targetUser.lastName}`;
+    document.getElementById('u-email').textContent = targetUser.email;
+    document.getElementById('u-phone').textContent = targetUser.phone || 'None provided';
+    document.getElementById('u-location').textContent = `${targetUser.barangay || ''}, ${targetUser.city || ''}`;
+    document.getElementById('u-joined').textContent = targetUser.joined;
+
+    renderUserStatus();
+    renderUserDonations();
+  }
+
+  function renderUserStatus() {
+    const badge = document.getElementById('user-status-badge');
+    const noteBox = document.getElementById('u-moderation-note-box');
+    const noteText = document.getElementById('u-moderation-note-text');
+    const activeActions = document.getElementById('active-moderation-actions');
+    const reactivateActions = document.getElementById('reactivate-moderation-actions');
+
+    if (targetUser.status === 'active') {
+      badge.className = 'badge badge-success';
+      badge.textContent = 'Active';
+      noteBox.style.display = 'none';
+      activeActions.style.display = 'flex';
+      reactivateActions.style.display = 'none';
+    } else if (targetUser.status === 'suspended') {
+      badge.className = 'badge badge-warning';
+      badge.textContent = 'Suspended';
+      noteBox.style.display = 'block';
+      noteText.textContent = targetUser.moderation_note || 'Account suspended for policy evaluation.';
+      activeActions.style.display = 'none';
+      reactivateActions.style.display = 'block';
+    } else if (targetUser.status === 'banned') {
+      badge.className = 'badge badge-danger';
+      badge.textContent = 'Banned';
+      noteBox.style.display = 'block';
+      noteText.textContent = targetUser.moderation_note || 'Permanently banned from iCareDonate.';
+      activeActions.style.display = 'none';
+      reactivateActions.style.display = 'block';
+    }
+  }
+
+  function renderUserDonations() {
+    const container = document.getElementById('user-donations-container');
+    if (!container || !window.MockStore) return;
+
+    // Filter donations owned by this user
+    const donations = window.MockStore.getDonations('archived', '').concat(window.MockStore.getDonations('all', ''))
+      .filter(d => d.donor_id === targetUser.id);
+
+    // Remove duplicates if any
+    const unique = [];
+    const seen = new Set();
+    donations.forEach(d => {
+      if (!seen.has(d.id)) {
+        seen.add(d.id);
+        unique.push(d);
+      }
+    });
+
+    document.getElementById('cnt-donations').textContent = unique.length;
+
+    if (unique.length === 0) {
+      container.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px;margin:0;">No donations created by this account.</p>';
+      return;
+    }
+
+    container.innerHTML = unique.map(d => {
+      const isArchived = d.status === 'archived';
+      const badgeClass = d.status === 'approved' ? 'badge-success' : isArchived ? 'badge-danger' : 'badge-warning';
+      const label = d.status === 'approved' ? 'Approved' : isArchived ? 'Archived' : 'Pending Verification';
+
+      return `
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:${isArchived ? '#FEF2F2' : '#F8FAFC'};border:1px solid ${isArchived ? '#FCA5A5' : 'var(--color-border)'};border-radius:8px;">
+          <div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:3px;">
+              <span style="font-weight:700;font-size:14px;color:var(--color-text);">#${d.id} &mdash; ${d.title}</span>
+              <span class="badge ${badgeClass}" style="font-size:11px;">${label}</span>
+            </div>
+            <div style="font-size:12.5px;color:var(--color-text-muted);">
+              Category: ${d.category_name} &bull; Qty: ${d.quantity_total} ${d.unit}
+              ${isArchived ? ` &bull; <span style="color:#DC2626;font-weight:600;">Reason: ${d.archive_reason}</span>` : ''}
+            </div>
+          </div>
+          <div>
+            <a href="donation-review.html?id=${d.id}" class="btn btn-outline" style="font-size:12px;padding:4px 10px;">Review</a>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  function handleIssueWarning(e) {
+    e.preventDefault();
+    const reason = document.getElementById('warning-input').value.trim();
+    if (!reason) return;
+    document.getElementById('warning-input').value = '';
+    window.showAdminFlash('info', `Official warning issued to ${targetUser.firstName} ${targetUser.lastName}: "${reason}"`);
+  }
+
+  function openSuspendModal() {
+    document.getElementById('suspend-dialog').showModal();
+  }
+
+  function handleSuspendSubmit(e) {
+    e.preventDefault();
+    const reason = document.getElementById('suspend-reason').value.trim();
+    const res = window.MockStore.moderateUser(targetUser.id, 'suspend', reason);
+    document.getElementById('suspend-dialog').close();
+    if (res.success) {
+      window.showAdminFlash('success', res.message);
+      renderUserStatus();
+      renderUserDonations();
+    }
+  }
+
+  function openBanModal() {
+    document.getElementById('ban-dialog').showModal();
+  }
+
+  function handleBanSubmit(e) {
+    e.preventDefault();
+    const reason = document.getElementById('ban-reason').value.trim();
+    const res = window.MockStore.moderateUser(targetUser.id, 'ban', reason);
+    document.getElementById('ban-dialog').close();
+    if (res.success) {
+      window.showAdminFlash('success', res.message);
+      renderUserStatus();
+      renderUserDonations();
+    }
+  }
+
+  function handleReactivateUser() {
+    const res = window.MockStore.moderateUser(targetUser.id, 'activate', '');
+    if (res.success) {
+      window.showAdminFlash('success', res.message);
+      renderUserStatus();
+      renderUserDonations();
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadUserProfile);
+</script>
+
+</body>
+</html>

@@ -15,55 +15,55 @@ const ICD_API_BASE = (function() {
 const CATEGORY_META = {
   'food-groceries': {
     headerClass: 'category-card__header--food',
-    iconEmoji: '🥫',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
     accepted: 'Canned goods, rice sacks, powdered milk, instant oatmeal',
     image: 'assets/images/categories/food-groceries.jpg'
   },
   'school-supplies': {
     headerClass: 'category-card__header--education',
-    iconEmoji: '📚',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>',
     accepted: 'School bags, notebooks, crayons, calculators',
     image: 'assets/images/categories/school-supplies.jpg'
   },
   'clothing-shoes': {
     headerClass: 'category-card__header--clothing',
-    iconEmoji: '👕',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>',
     accepted: 'School uniforms, jackets, sneakers, baby clothes',
     image: 'assets/images/categories/clothing-shoes.avif'
   },
   'medical-first-aid': {
     headerClass: 'category-card__header--medical',
-    iconEmoji: '🩺',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>',
     accepted: 'Basic hygiene kits, bandages, OTC medicines, vitamins',
     image: 'assets/images/categories/medical-first-aid.jpg'
   },
   'household-goods': {
     headerClass: 'category-card__header--household',
-    iconEmoji: '🏠',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
     accepted: 'Cookware, thermal blankets, electric fans, utensils',
     image: 'assets/images/categories/other-essentials.jpg'
   },
   'books-educational': {
     headerClass: 'category-card__header--books',
-    iconEmoji: '📖',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>',
     accepted: 'Textbooks, storybooks, reference materials, dictionaries',
     image: 'assets/images/categories/school-supplies-alt.avif'
   },
   'toys-games': {
     headerClass: 'category-card__header--toys',
-    iconEmoji: '🧩',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="8" cy="12" r="2"/><path d="M14 12h4"/><path d="M16 10v4"/></svg>',
     accepted: 'Educational puzzles, building blocks, children storybooks',
     image: 'assets/images/categories/toys-games.avif'
   },
   'electronics-gadgets': {
     headerClass: 'category-card__header--tech',
-    iconEmoji: '💻',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>',
     accepted: 'Working laptops, tablets, chargers, power banks',
     image: 'assets/images/categories/electronics-gadgets.avif'
   },
   'other-essentials': {
     headerClass: 'category-card__header--essentials',
-    iconEmoji: '📦',
+    iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
     accepted: 'Emergency supplies, flashlights, batteries, basic needs',
     image: 'assets/images/categories/emergency-disaster-relief.jpg'
   }
@@ -299,7 +299,7 @@ window.ICD_API = {
       const enriched = result.data.map(item => {
         const meta = CATEGORY_META[item.slug] || {
           headerClass: 'category-card__header--education',
-          iconEmoji: '📦',
+          iconSvg: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>',
           accepted: 'Clean, verified essential items in usable condition',
           image: 'assets/images/placeholder.svg'
         };
@@ -312,7 +312,7 @@ window.ICD_API = {
           sort_order: Number(item.sort_order || 0),
           is_active: Number(item.is_active !== undefined ? item.is_active : 1),
           headerClass: meta.headerClass,
-          iconEmoji: meta.iconEmoji,
+          iconSvg: meta.iconSvg,
           accepted: meta.accepted,
           image: meta.image
         };
@@ -425,7 +425,9 @@ async function renderCategoriesPage() {
     if (!categories || categories.length === 0) {
       grid.innerHTML = `
         <div style="grid-column: 1 / -1; text-align: center; padding: 48px 20px;">
-          <div style="font-size: 40px; margin-bottom: 12px;">📂</div>
+          <div style="margin-bottom: 12px;">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto;"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+          </div>
           <h3 style="margin-bottom: 8px;">No categories available</h3>
           <p style="color: var(--text-muted); margin: 0;">Categories have not been added to the system yet.</p>
         </div>
@@ -440,7 +442,7 @@ async function renderCategoriesPage() {
             <div class="category-card__tag">Category</div>
             <h3 class="category-card__title">${formatCategoryTitle(cat.name)}</h3>
           </div>
-          <div class="category-card__icon">${cat.iconEmoji}</div>
+          <div class="category-card__icon">${cat.iconSvg}</div>
         </div>
         <div class="category-card__body">
           <h4 class="category-card__name">${escapeHtml(cat.name)}</h4>
@@ -466,7 +468,9 @@ async function renderCategoriesPage() {
   } catch (err) {
     grid.innerHTML = `
       <div class="empty-state" style="grid-column: 1 / -1; text-align: center; padding: 48px 20px;">
-        <div style="font-size: 40px; margin-bottom: 12px;">⚠️</div>
+        <div style="margin-bottom: 12px;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
         <h3 style="margin-bottom: 8px;">Unable to load categories</h3>
         <p style="color: var(--text-muted); margin-bottom: 20px;">
           Failed to fetch live categories from the server (${escapeHtml(err.message)}).
