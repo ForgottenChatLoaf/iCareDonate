@@ -7,7 +7,7 @@ require_once __DIR__ . '/../includes/auth.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 if (isLoggedIn()) {
-    header('Location: /CommunityDono/user/dashboard.php');
+    header('Location: ' . APP_BASE . '/user/dashboard.php');
     exit;
 }
 
@@ -531,7 +531,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <p class="login-form-subtitle">One account to donate and request help &mdash; all in one place.</p>
       </div>
 
-      <form action="/CommunityDono/api/auth/register.php" method="POST" data-validate id="signup-form">
+      <form action="<?= $base ?>/api/auth/register.php" method="POST" data-validate id="signup-form">
         <?= csrfField() ?>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 14px;">
@@ -593,7 +593,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         </button>
 
         <hr class="auth-sep">
-        <p class="auth-switch">Already have an account? <a href="/CommunityDono/pages/login.php">Log in</a></p>
+        <p class="auth-switch">Already have an account? <a href="<?= $base ?>/pages/login.php">Log in</a></p>
       </form>
 
       <!-- Trust note -->

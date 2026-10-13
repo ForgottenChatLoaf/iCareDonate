@@ -10,8 +10,9 @@
  * - $brandLink  : URL string (default: '/CommunityDono/admin/' or '/CommunityDono/user/dashboard.php')
  */
 declare(strict_types=1);
+require_once __DIR__ . '/../config/app.php';
 
-$base = $base ?? '/CommunityDono';
+$base = $base ?? APP_BASE;
 $brandRole = $brandRole ?? 'ADMIN';
 $brandAlign = $brandAlign ?? 'left';
 $brandLink = $brandLink ?? ($brandRole === 'ADMIN' ? $base . '/admin/' : $base . '/user/dashboard.php');

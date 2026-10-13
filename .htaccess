@@ -1,27 +1,33 @@
+
 # Apache configuration for iCareDonate
 Options -Indexes
 ServerSignature Off
 
-# ── CRITICAL: Pass Authorization header to PHP (Bearer token auth) ──────────
-# Apache strips Authorization by default. This rule forwards it so that
-# $_SERVER['HTTP_AUTHORIZATION'] is populated in all PHP API endpoints.
+# Pass the Authorization header to PHP for Bearer token authentication
 RewriteEngine On
-RewriteCond %{HTTP:Authorization} ^(.*)
+
+RewriteCond %{HTTP:Authorization} ^(.*)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%1]
 
-# Also set REDIRECT_HTTP_AUTHORIZATION for some PHP-CGI setups
+# Support some PHP-CGI setups
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule ^ - [E=REDIRECT_HTTP_AUTHORIZATION:%1]
 
-# Directory Index: prefer index.html, then index.php
-DirectoryIndex index.html index.php
+# Default page
+DirectoryIndex index.php index.html
 
-# Deny access to sensitive files
-<FilesMatch "^(\.env|\.git|composer\.json|package\.json|schema\.sql|database\.sql)$">
-    Order allow,deny
-    Deny from all
+# Deny access to sensitive files and SQL scripts
+<FilesMatch "(?i)^(\.env|composer\.json|package\.json|.*\.sql)$">
+    Require all denied
 </FilesMatch>
 
-# Enable UTF-8 encoding
+# Block requests to Git metadata and environment files
+RewriteRule (^|/)\.git(?:/|$) - [F,L,NC]
+RewriteRule (^|/)\.env$ - [F,L,NC]
+
+# UTF-8 encoding
 AddDefaultCharset UTF-8
 
+# Custom error pages for local XAMPP
+ErrorDocument 404 /CommunityDono/pages/404.php
+ErrorDocument 403 /CommunityDono/pages/403.php

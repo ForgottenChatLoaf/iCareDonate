@@ -1,0 +1,43 @@
+<!-- frontend/includes/public-header.html
+     Public Navigation Header Component
+-->
+<header class="nav-public" role="banner">
+  <div class="container nav-public__inner">
+    <!-- Logo -->
+    <a href="../index.html" class="logo" aria-label="iCareDonate — Home">
+      <img src="../assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+      <span class="logo-wordmark">i<em>Care</em>Donate</span>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <nav class="nav-public__links" aria-label="Main navigation">
+      <a href="../index.html" class="nav-link">Home</a>
+      <a href="../pages/about.html" class="nav-link">About us</a>
+      <a href="../pages/how-it-works.html" class="nav-link">How it works</a>
+      <a href="../pages/categories.html" class="nav-link">Categories</a>
+      <a href="../pages/contact.html" class="nav-link">Contact us</a>
+    </nav>
+
+    <!-- Actions / Auth Button -->
+    <div class="nav-public__actions">
+      <a href="../auth/login.html" class="btn-pub-auth">Log in / Sign up</a>
+    </div>
+
+    <!-- Mobile Hamburger -->
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+    </button>
+  </div>
+
+  <!-- Mobile menu -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+    <nav class="mobile-menu__links" aria-label="Mobile navigation">
+      <a href="../index.html" class="mobile-link">Home</a>
+      <a href="../pages/about.html" class="mobile-link">About us</a>
+      <a href="../pages/how-it-works.html" class="mobile-link">How it works</a>
+      <a href="../pages/categories.html" class="mobile-link">Categories</a>
+      <a href="../pages/contact.html" class="mobile-link">Contact us</a>
+      <a href="../auth/login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+    </nav>
+  </div>
+</header>

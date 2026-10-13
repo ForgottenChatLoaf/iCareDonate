@@ -38,7 +38,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0;">Matched Handover Transactions</h1>
       </div>
       <div>
-        <a href="/CommunityDono/admin/requests.php" class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
+        <a href="<?= $base ?>/admin/requests.php" class="btn btn-primary" style="font-size: 12px; padding: 6px 12px;">
           + Match Pending Request
         </a>
       </div>

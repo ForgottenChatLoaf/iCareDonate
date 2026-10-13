@@ -53,7 +53,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0;">User Accounts Management</h1>
       </div>
       <div>
-        <form method="GET" action="/CommunityDono/admin/users.php" style="display: flex; gap: 8px;">
+        <form method="GET" action="<?= $base ?>/admin/users.php" style="display: flex; gap: 8px;">
           <?php if ($statusFilter !== 'all'): ?>
             <input type="hidden" name="status" value="<?= e($statusFilter) ?>">
           <?php endif; ?>
@@ -68,19 +68,19 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- Filter tabs -->
       <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-        <a href="/CommunityDono/admin/users.php?status=all<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/users.php?status=all<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           All Users (<?= $counts['all'] ?>)
         </a>
-        <a href="/CommunityDono/admin/users.php?status=active<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'active' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/users.php?status=active<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'active' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Active (<?= $counts['active'] ?>)
         </a>
-        <a href="/CommunityDono/admin/users.php?status=pending_verification<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'pending_verification' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/users.php?status=pending_verification<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'pending_verification' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Pending (<?= $counts['pending_verification'] ?>)
         </a>
-        <a href="/CommunityDono/admin/users.php?status=suspended<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'suspended' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/users.php?status=suspended<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'suspended' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Suspended (<?= $counts['suspended'] ?>)
         </a>
-        <a href="/CommunityDono/admin/users.php?status=banned<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'banned' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/users.php?status=banned<?= $search ? '&q='.urlencode($search) : '' ?>" class="btn <?= $statusFilter === 'banned' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Banned (<?= $counts['banned'] ?>)
         </a>
       </div>
@@ -109,7 +109,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <tr>
                   <td>#<?= (int)$u['id'] ?></td>
                   <td>
-                    <a href="/CommunityDono/admin/user-detail.php?id=<?= (int)$u['id'] ?>" style="font-weight: 600; color: var(--color-primary); text-decoration: none;">
+                    <a href="<?= $base ?>/admin/user-detail.php?id=<?= (int)$u['id'] ?>" style="font-weight: 600; color: var(--color-primary); text-decoration: none;">
                       <?= e($u['first_name'] . ' ' . $u['last_name']) ?>
                     </a>
                   </td>
@@ -119,12 +119,12 @@ require_once __DIR__ . '/../includes/header.php';
                   <td><?= renderBadge($u['status']) ?></td>
                   <td><?= date('M d, Y', strtotime($u['created_at'])) ?></td>
                   <td style="white-space: nowrap;">
-                    <a href="/CommunityDono/admin/user-detail.php?id=<?= (int)$u['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 4px 8px;">
+                    <a href="<?= $base ?>/admin/user-detail.php?id=<?= (int)$u['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 4px 8px;">
                       View Details
                     </a>
                     <?php if ($u['role'] !== 'superadmin' && (int)$u['id'] !== (int)$_SESSION['user_id']): ?>
                       <?php if ($u['status'] === 'active'): ?>
-                        <form action="/CommunityDono/api/admin/user-action.php" method="POST" style="display: inline;" onsubmit="return confirm('Suspend this user account?');">
+                        <form action="<?= $base ?>/api/admin/user-action.php" method="POST" style="display: inline;" onsubmit="return confirm('Suspend this user account?');">
                           <?= csrfField() ?>
                           <input type="hidden" name="user_id" value="<?= (int)$u['id'] ?>">
                           <input type="hidden" name="action" value="suspend">
@@ -133,7 +133,7 @@ require_once __DIR__ . '/../includes/header.php';
                           </button>
                         </form>
                       <?php elseif ($u['status'] === 'suspended' || $u['status'] === 'banned'): ?>
-                        <form action="/CommunityDono/api/admin/user-action.php" method="POST" style="display: inline;">
+                        <form action="<?= $base ?>/api/admin/user-action.php" method="POST" style="display: inline;">
                           <?= csrfField() ?>
                           <input type="hidden" name="user_id" value="<?= (int)$u['id'] ?>">
                           <input type="hidden" name="action" value="activate">

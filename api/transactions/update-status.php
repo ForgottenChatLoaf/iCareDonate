@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/transactions.php');
+    header('Location: ' . APP_BASE . '/user/transactions.php');
     exit;
 }
 
@@ -20,7 +20,7 @@ $action = trim($_POST['action'] ?? '');
 
 if ($txId <= 0 || !in_array($action, ['claim', 'complete'], true)) {
     setFlash('error', 'Invalid request.');
-    header('Location: /CommunityDono/user/transactions.php');
+    header('Location: ' . APP_BASE . '/user/transactions.php');
     exit;
 }
 
@@ -31,7 +31,7 @@ $tx = $stmt->fetch();
 
 if (!$tx || ((int)$tx['donor_id'] !== $userId && (int)$tx['requester_id'] !== $userId && !isAdmin())) {
     setFlash('error', 'Transaction not found or access denied.');
-    header('Location: /CommunityDono/user/transactions.php');
+    header('Location: ' . APP_BASE . '/user/transactions.php');
     exit;
 }
 
@@ -76,7 +76,7 @@ try {
     }
 
     $pdo->commit();
-    header('Location: /CommunityDono/user/transactions.php');
+    header('Location: ' . APP_BASE . '/user/transactions.php');
     exit;
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
@@ -84,6 +84,6 @@ try {
     }
     error_log($e->getMessage());
     setFlash('error', 'Failed to update transaction.');
-    header('Location: /CommunityDono/user/transactions.php');
+    header('Location: ' . APP_BASE . '/user/transactions.php');
     exit;
 }

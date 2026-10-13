@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         setFlash('error', 'An error occurred while saving the FAQ.');
     }
 
-    header('Location: /CommunityDono/admin/faqs.php');
+    header('Location: ' . APP_BASE . '/admin/faqs.php');
     exit;
 }
 
@@ -125,7 +125,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <button type="button" onclick='openEditFaq(<?= json_encode($f) ?>)' class="btn btn-outline" style="font-size: 11px; padding: 4px 8px;">
                       Edit
                     </button>
-                    <form action="/CommunityDono/admin/faqs.php" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this FAQ?');">
+                    <form action="<?= $base ?>/admin/faqs.php" method="POST" style="display: inline;" onsubmit="return confirm('Are you sure you want to delete this FAQ?');">
                       <?= csrfField() ?>
                       <input type="hidden" name="action" value="delete">
                       <input type="hidden" name="faq_id" value="<?= (int)$f['id'] ?>">
@@ -150,7 +150,7 @@ require_once __DIR__ . '/../includes/header.php';
   <div class="modal__overlay" onclick="document.getElementById('add-faq-modal').style.display='none'"></div>
   <div class="modal__card" style="max-width: 540px; padding: 24px;">
     <h2 style="font-size: 17px; font-weight: 700; margin-bottom: 16px;">Add New FAQ</h2>
-    <form action="/CommunityDono/admin/faqs.php" method="POST">
+    <form action="<?= $base ?>/admin/faqs.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="action" value="add">
 
@@ -193,7 +193,7 @@ require_once __DIR__ . '/../includes/header.php';
   <div class="modal__overlay" onclick="document.getElementById('edit-faq-modal').style.display='none'"></div>
   <div class="modal__card" style="max-width: 540px; padding: 24px;">
     <h2 style="font-size: 17px; font-weight: 700; margin-bottom: 16px;">Edit FAQ</h2>
-    <form action="/CommunityDono/admin/faqs.php" method="POST">
+    <form action="<?= $base ?>/admin/faqs.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="action" value="edit">
       <input type="hidden" name="faq_id" id="edit-faq-id">

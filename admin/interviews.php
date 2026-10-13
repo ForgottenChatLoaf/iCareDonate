@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             setFlash('error', 'Failed to schedule interview.');
         }
     }
-    header('Location: /CommunityDono/admin/interviews.php');
+    header('Location: ' . APP_BASE . '/admin/interviews.php');
     exit;
 }
 
@@ -77,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             setFlash('error', 'Failed to update result.');
         }
     }
-    header('Location: /CommunityDono/admin/interviews.php');
+    header('Location: ' . APP_BASE . '/admin/interviews.php');
     exit;
 }
 
@@ -197,7 +197,7 @@ require_once __DIR__ . '/../includes/header.php';
           <div class="card" style="padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 24px; box-shadow: var(--shadow-sm);">
             <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text); margin: 0 0 16px;"><i data-lucide="calendar-plus" style="width:16px;height:16px;vertical-align:middle;margin-right:6px;"></i> Schedule Verification Interview</h2>
 
-            <form action="/CommunityDono/admin/interviews.php" method="POST" data-validate>
+            <form action="<?= $base ?>/admin/interviews.php" method="POST" data-validate>
               <?= csrfField() ?>
               <input type="hidden" name="action" value="schedule">
 
@@ -287,7 +287,7 @@ require_once __DIR__ . '/../includes/header.php';
       <button type="button" onclick="document.getElementById('result-modal').style.display='none';" style="background: none; border: none; font-size: 20px; cursor: pointer;">&times;</button>
     </div>
 
-    <form action="/CommunityDono/admin/interviews.php" method="POST">
+    <form action="<?= $base ?>/admin/interviews.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="action" value="update_result">
       <input type="hidden" id="modal-interview-id" name="interview_id" value="">
@@ -315,7 +315,7 @@ require_once __DIR__ . '/../includes/header.php';
   </div>
 </div>
 
-<script src="/CommunityDono/assets/js/date-time-picker.js"></script>
+<script src="<?= $base ?>/assets/js/date-time-picker.js"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
   if (window.lucide) { lucide.createIcons(); }

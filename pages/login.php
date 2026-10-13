@@ -8,9 +8,9 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 if (isLoggedIn()) {
     if (isAdmin()) {
-        header('Location: /CommunityDono/admin/index.php');
+        header('Location: ' . APP_BASE . '/admin/index.php');
     } else {
-        header('Location: /CommunityDono/user/dashboard.php');
+        header('Location: ' . APP_BASE . '/user/dashboard.php');
     }
     exit;
 }
@@ -721,7 +721,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
       <?php endif; ?>
       <!-- ─────────────────────────────────────────────────── -->
 
-      <form action="/CommunityDono/api/auth/login.php" method="POST" id="login-form">
+      <form action="<?= $base ?>/api/auth/login.php" method="POST" id="login-form">
         <?= csrfField() ?>
         <input type="hidden" name="redirect" value="<?= e($redirectParam) ?>">
 
@@ -763,7 +763,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         </div>
 
         <div class="auth-forgot-wrap" style="margin-bottom: 20px;">
-          <a href="/CommunityDono/pages/forgot-password.php" class="auth-forgot">Forgot password?</a>
+          <a href="<?= $base ?>/pages/forgot-password.php" class="auth-forgot">Forgot password?</a>
         </div>
 
         <button type="submit" class="btn btn-primary btn-block"
@@ -773,7 +773,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         </button>
 
         <hr class="auth-sep">
-        <p class="auth-switch">Don't have an account? <a href="/CommunityDono/pages/signup.php">Sign Up</a></p>
+        <p class="auth-switch">Don't have an account? <a href="<?= $base ?>/pages/signup.php">Sign Up</a></p>
       </form>
 
       <!-- Trust note -->

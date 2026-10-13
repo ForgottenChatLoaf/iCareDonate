@@ -133,7 +133,8 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. Real-time Unread Notification Poller (every 30 seconds)
   const notificationBadge = document.querySelector('.sidebar-badge, [data-notification-badge]');
   function pollNotifications() {
-    fetch('/CommunityDono/api/notifications/unread-count.php')
+    const appBase = window.APP_BASE !== undefined ? window.APP_BASE : (window.location.pathname.startsWith('/CommunityDono') ? '/CommunityDono' : '');
+    fetch(appBase + '/api/notifications/unread-count.php')
       .then(res => res.json())
       .then(data => {
         if (data && typeof data.count === 'number') {

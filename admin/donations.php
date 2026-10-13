@@ -104,7 +104,7 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- ── Search & Filter Bar ─────────────────────────────────────────── -->
       <div class="card" style="padding: 16px 20px; margin-bottom: 20px; border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
-        <form method="GET" action="/CommunityDono/admin/donations.php" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+        <form method="GET" action="<?= $base ?>/admin/donations.php" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
           <input type="hidden" name="status" value="<?= e($filter) ?>">
 
           <div style="flex: 1; min-width: 200px;">
@@ -170,7 +170,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <!-- Image -->
                 <div style="width: 120px; height: 100px; background: #F1F5F9; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center;">
                   <?php if (!empty($d['primary_image'])): ?>
-                    <img src="/CommunityDono/<?= e($d['primary_image']) ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="<?= $base ?>/<?= e($d['primary_image']) ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                   <?php else: ?>
                     <div style="color: #94A3B8;"><i data-lucide="gift" style="width:32px;height:32px;"></i></div>
                   <?php endif; ?>
@@ -218,7 +218,7 @@ require_once __DIR__ . '/../includes/header.php';
 
                 <!-- Status / Quick Link -->
                 <div style="text-align: right; white-space: nowrap;">
-                  <a href="/CommunityDono/admin/donation-review.php?id=<?= (int)$d['id'] ?>"
+                  <a href="<?= $base ?>/admin/donation-review.php?id=<?= (int)$d['id'] ?>"
                      class="btn btn-outline" style="font-size: 12px; padding: 5px 12px; display: inline-flex; align-items: center; gap: 5px;">
                     <i data-lucide="eye" style="width:12px;height:12px;"></i> Review
                   </a>
@@ -245,7 +245,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <div style="margin-top: 16px; padding-top: 16px; border-top: 1px solid var(--color-border); display: flex; justify-content: flex-end; gap: 10px; flex-wrap: wrap;">
 
                   <!-- Approve -->
-                  <form action="/CommunityDono/api/admin/approve-donation.php" method="POST" style="display: inline;">
+                  <form action="<?= $base ?>/api/admin/approve-donation.php" method="POST" style="display: inline;">
                     <?= csrfField() ?>
                     <input type="hidden" name="donation_id" value="<?= (int)$d['id'] ?>">
                     <button type="submit" class="btn btn-primary" style="font-size: 13px; padding: 6px 16px;">
@@ -254,7 +254,7 @@ require_once __DIR__ . '/../includes/header.php';
                   </form>
 
                   <!-- Reject -->
-                  <form action="/CommunityDono/api/admin/reject-donation.php" method="POST" style="display: inline; display: flex; gap: 6px;">
+                  <form action="<?= $base ?>/api/admin/reject-donation.php" method="POST" style="display: inline; display: flex; gap: 6px;">
                     <?= csrfField() ?>
                     <input type="hidden" name="donation_id" value="<?= (int)$d['id'] ?>">
                     <input type="text" name="reason" placeholder="Rejection reason..." required class="form-input" style="height: 34px; font-size: 12px; width: 220px;">
@@ -332,7 +332,7 @@ require_once __DIR__ . '/../includes/header.php';
     </div>
 
     <!-- Archive reason form -->
-    <form id="archive-dialog-form" action="/CommunityDono/api/admin/delete-donation.php" method="POST">
+    <form id="archive-dialog-form" action="<?= $base ?>/api/admin/delete-donation.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="donation_id" id="archive-dialog-donation-id" value="">
 
@@ -404,7 +404,7 @@ require_once __DIR__ . '/../includes/header.php';
             If approved, it will become publicly visible again subject to availability and expiration rules.</span>
     </div>
 
-    <form id="restore-dialog-form" action="/CommunityDono/api/admin/restore-donation.php" method="POST">
+    <form id="restore-dialog-form" action="<?= $base ?>/api/admin/restore-donation.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="donation_id" id="restore-dialog-donation-id" value="">
 

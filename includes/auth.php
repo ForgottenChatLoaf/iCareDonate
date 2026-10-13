@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 //  includes/auth.php
+require_once __DIR__ . '/../config/app.php';
 
 /**
  * Redirect unauthenticated users to login.
@@ -9,8 +10,7 @@ declare(strict_types=1);
 function requireLogin(): void
 {
     if (empty($_SESSION['user_id'])) {
-        header('Location: /CommunityDono/pages/login.php');
-        exit;
+        appRedirect('/pages/login.php');
     }
 
     $status = $_SESSION['status'] ?? '';
@@ -18,8 +18,7 @@ function requireLogin(): void
         session_unset();
         session_destroy();
         $msg = ($status === 'suspended') ? 'suspended' : 'banned';
-        header("Location: /CommunityDono/pages/login.php?e={$msg}");
-        exit;
+        appRedirect('/pages/login.php?e=' . urlencode($msg));
     }
 }
 

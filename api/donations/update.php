@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/donations.php');
+    header('Location: ' . APP_BASE . '/user/donations.php');
     exit;
 }
 
@@ -27,7 +27,7 @@ $pickupBarangay = trim($_POST['pickup_barangay'] ?? '');
 
 if ($donationId <= 0 || empty($title) || $categoryId <= 0) {
     setFlash('error', 'Please fill in all required fields.');
-    header('Location: /CommunityDono/user/edit-donation.php?id=' . $donationId);
+    header('Location: ' . APP_BASE . '/user/edit-donation.php?id=' . $donationId);
     exit;
 }
 
@@ -38,7 +38,7 @@ try {
 
     if (!$donation || in_array($donation['status'], ['approved', 'fully_allocated', 'archived', 'cancelled', 'expired'], true)) {
         setFlash('error', 'This donation cannot be updated.');
-        header('Location: /CommunityDono/user/donations.php');
+        header('Location: ' . APP_BASE . '/user/donations.php');
         exit;
     }
 
@@ -57,11 +57,11 @@ try {
     logAudit($pdo, $userId, 'user', 'DONATION_EDITED', 'donation', $donationId, null, ['title' => $title], 'Updated and resubmitted donation listing');
 
     setFlash('success', 'Donation updated and resubmitted for admin verification.');
-    header('Location: /CommunityDono/user/donations.php');
+    header('Location: ' . APP_BASE . '/user/donations.php');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to update donation.');
-    header('Location: /CommunityDono/user/edit-donation.php?id=' . $donationId);
+    header('Location: ' . APP_BASE . '/user/edit-donation.php?id=' . $donationId);
     exit;
 }

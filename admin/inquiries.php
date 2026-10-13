@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         setFlash('error', 'Failed to update inquiry: ' . $e->getMessage());
     }
 
-    header('Location: /CommunityDono/admin/inquiries.php');
+    header('Location: ' . APP_BASE . '/admin/inquiries.php');
     exit;
 }
 
@@ -89,16 +89,16 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- Filter tabs -->
       <div style="display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;">
-        <a href="/CommunityDono/admin/inquiries.php?status=all" class="btn <?= $statusFilter === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/inquiries.php?status=all" class="btn <?= $statusFilter === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           All Messages (<?= $counts['all'] ?>)
         </a>
-        <a href="/CommunityDono/admin/inquiries.php?status=open" class="btn <?= $statusFilter === 'open' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/inquiries.php?status=open" class="btn <?= $statusFilter === 'open' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           New / Open (<?= $counts['open'] ?>)
         </a>
-        <a href="/CommunityDono/admin/inquiries.php?status=in_progress" class="btn <?= $statusFilter === 'in_progress' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/inquiries.php?status=in_progress" class="btn <?= $statusFilter === 'in_progress' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           In Progress (<?= $counts['in_progress'] ?>)
         </a>
-        <a href="/CommunityDono/admin/inquiries.php?status=resolved" class="btn <?= $statusFilter === 'resolved' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
+        <a href="<?= $base ?>/admin/inquiries.php?status=resolved" class="btn <?= $statusFilter === 'resolved' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12px; padding: 5px 12px; border-radius: 99px;">
           Resolved (<?= $counts['resolved'] ?>)
         </a>
       </div>
@@ -165,7 +165,7 @@ require_once __DIR__ . '/../includes/header.php';
       <div id="modal-message" style="background: #fff; border: 1px solid var(--color-border); padding: 12px; border-radius: var(--radius-sm); font-size: 13px; line-height: 1.5; white-space: pre-wrap;"></div>
     </div>
 
-    <form action="/CommunityDono/admin/inquiries.php" method="POST">
+    <form action="<?= $base ?>/admin/inquiries.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="action" value="reply">
       <input type="hidden" name="inquiry_id" id="modal-id">

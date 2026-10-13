@@ -6,10 +6,11 @@ declare(strict_types=1);
 // $extraCss    — additional CSS file name (without path) e.g. 'public.css'
 // $bodyClass   — optional body class
 
+require_once __DIR__ . '/../config/app.php';
 $pageTitle ??= 'iCareDonate';
 $extraCss  ??= '';
 $bodyClass ??= '';
-$base = '/CommunityDono';
+$base = APP_BASE;
 ?>
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
@@ -22,6 +23,7 @@ $base = '/CommunityDono';
   <script>
     document.documentElement.setAttribute('data-theme', 'light');
     try { localStorage.removeItem('icd-theme'); } catch(e) {}
+    window.APP_BASE = <?= json_encode(APP_BASE) ?>;
   </script>
 
   <!-- Favicon -->

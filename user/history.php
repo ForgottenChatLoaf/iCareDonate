@@ -62,7 +62,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">Activity History</h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/dashboard.php" class="btn btn-outline" style="font-size: 13px; padding: 5px 12px;">
+        <a href="<?= $base ?>/user/dashboard.php" class="btn btn-outline" style="font-size: 13px; padding: 5px 12px;">
           &larr; Dashboard
         </a>
       </div>
@@ -73,16 +73,16 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- Filter tabs -->
       <div style="display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap;">
-        <a href="/CommunityDono/user/history.php?tab=all" class="btn <?= $tab === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
+        <a href="<?= $base ?>/user/history.php?tab=all" class="btn <?= $tab === 'all' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
           All History
         </a>
-        <a href="/CommunityDono/user/history.php?tab=donations" class="btn <?= $tab === 'donations' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
+        <a href="<?= $base ?>/user/history.php?tab=donations" class="btn <?= $tab === 'donations' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
           Donations History (<?= count($pastDonations) ?>)
         </a>
-        <a href="/CommunityDono/user/history.php?tab=requests" class="btn <?= $tab === 'requests' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
+        <a href="<?= $base ?>/user/history.php?tab=requests" class="btn <?= $tab === 'requests' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
           Requests History (<?= count($pastRequests) ?>)
         </a>
-        <a href="/CommunityDono/user/history.php?tab=transactions" class="btn <?= $tab === 'transactions' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
+        <a href="<?= $base ?>/user/history.php?tab=transactions" class="btn <?= $tab === 'transactions' ? 'btn-primary' : 'btn-outline' ?>" style="font-size: 12.5px; padding: 6px 16px; border-radius: 99px;">
           Transactions & Claims (<?= count($pastTransactions) ?>)
         </a>
       </div>
@@ -195,7 +195,7 @@ require_once __DIR__ . '/../includes/header.php';
                       <td><?= renderBadge($t['status']) ?></td>
                       <td><?= date('M d, Y', strtotime($t['created_at'])) ?></td>
                       <td>
-                        <a href="/CommunityDono/user/transactions.php?id=<?= (int)$t['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 3px 8px;">
+                        <a href="<?= $base ?>/user/transactions.php?id=<?= (int)$t['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 3px 8px;">
                           View Details
                         </a>
                       </td>

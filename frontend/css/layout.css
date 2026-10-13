@@ -86,10 +86,6 @@
 
 .logo-wordmark em {
   font-style: normal;
-  color: var(--gold);
-}
-
-:root[data-theme="dark"] .logo-wordmark em {
   color: var(--amber);
 }
 

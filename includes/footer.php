@@ -1,6 +1,7 @@
 <?php
 // includes/footer.php
-$base = '/CommunityDono';
+require_once __DIR__ . '/../config/app.php';
+$base = APP_BASE;
 $isPublic = !str_contains($_SERVER['PHP_SELF'], '/admin/') && !str_contains($_SERVER['PHP_SELF'], '/user/');
 ?>
 

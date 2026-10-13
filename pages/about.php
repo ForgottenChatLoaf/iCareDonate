@@ -145,8 +145,8 @@ require_once __DIR__ . '/../includes/nav-public.php';
       <h2 style="font-size: 26px; color: var(--cobalt); margin-bottom: 10px;">Ready to help or need assistance?</h2>
       <p class="lead" style="margin: 0 auto 24px; font-size: 16px;">Join our community platform and start making a difference today.</p>
       <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-        <a href="/CommunityDono/pages/signup.php" class="btn btn-donate" style="padding: 12px 28px;">Create account</a>
-        <a href="/CommunityDono/pages/how-it-works.php" class="btn btn-request" style="padding: 12px 28px;">See how it works</a>
+        <a href="<?= $base ?>/pages/signup.php" class="btn btn-donate" style="padding: 12px 28px;">Create account</a>
+        <a href="<?= $base ?>/pages/how-it-works.php" class="btn btn-request" style="padding: 12px 28px;">See how it works</a>
       </div>
     </div>
 

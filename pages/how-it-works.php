@@ -25,7 +25,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
       <!-- Real community photo replacing icon panel -->
       <div style="position: relative; border-radius: 16px; height: 180px; overflow: hidden; flex-shrink: 0;">
         <img
-          src="/CommunityDono/assets/images/who-we-serve.jpg"
+          src="<?= $base ?>/assets/images/who-we-serve.jpg"
           alt="Community families receiving donated supplies at a local distribution point"
           style="width: 100%; height: 100%; object-fit: cover; display: block;"
         >
@@ -62,7 +62,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
       <!-- Real community photo replacing coral handshake icon -->
       <div style="position: relative; border-radius: 16px; height: 180px; overflow: hidden; flex-shrink: 0;">
         <img
-          src="/CommunityDono/assets/images/what-we-do.jpg"
+          src="<?= $base ?>/assets/images/what-we-do.jpg"
           alt="Volunteers distributing donated supplies to a community member"
           style="width: 100%; height: 100%; object-fit: cover; display: block;"
         >
@@ -113,8 +113,8 @@ require_once __DIR__ . '/../includes/nav-public.php';
     </div>
 
     <div style="text-align: center; margin-top: 40px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
-      <a href="/CommunityDono/pages/categories.php" class="btn btn-primary" style="padding: 12px 28px; border-radius: 999px;">Browse categories</a>
-      <a href="/CommunityDono/user/offer-donation.php" class="btn btn-donate" style="padding: 12px 28px;">Donate an item now</a>
+      <a href="<?= $base ?>/pages/categories.php" class="btn btn-primary" style="padding: 12px 28px; border-radius: 999px;">Browse categories</a>
+      <a href="<?= $base ?>/user/offer-donation.php" class="btn btn-donate" style="padding: 12px 28px;">Donate an item now</a>
     </div>
 
   </div>

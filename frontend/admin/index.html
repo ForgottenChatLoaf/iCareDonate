@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — iCareDonate</title>
+  <meta name="description" content="iCareDonate administrator dashboard, moderation queues, and operational overview.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body>
+
+<div class="admin-layout">
+
+  <!-- ADMIN SIDEBAR -->
+  <aside class="user-sidebar admin-sidebar" role="complementary" aria-label="Admin navigation">
+    <div class="brand-sidebar-container" role="banner">
+      <a href="index.html" class="brand-sidebar-logo" aria-label="iCareDonate ADMIN">
+        <img src="../assets/images/logo.svg" class="brand-sidebar-icon" alt="iCareDonate Logo" width="32" height="32">
+        <span class="brand-sidebar-wordmark">
+          <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
+        </span>
+      </a>
+      <span class="brand-sidebar-badge brand-sidebar-badge--admin" aria-label="ADMIN Portal">ADMIN</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <a href="index.html" class="sidebar-link sidebar-link--active" data-nav="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="donations.html" class="sidebar-link" data-nav="donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>Donation Review</span>
+      </a>
+      <a href="requests.html" class="sidebar-link" data-nav="requests">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+        <span>Request &amp; Proof Review</span>
+      </a>
+      <a href="transactions.html" class="sidebar-link" data-nav="transactions">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transaction Monitoring</span>
+      </a>
+      <a href="interviews.html" class="sidebar-link" data-nav="interviews">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+        <span>Interviews</span>
+      </a>
+      <a href="users.html" class="sidebar-link" data-nav="users">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <span>Users &amp; Moderation</span>
+      </a>
+      <a href="support.html" class="sidebar-link" data-nav="support">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Message &amp; Support</span>
+      </a>
+      <a href="faqs.html" class="sidebar-link" data-nav="faqs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
+        <span>FAQ Content</span>
+      </a>
+      <a href="reports.html" class="sidebar-link" data-nav="reports">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+        <span>Reports</span>
+      </a>
+      <a href="categories.html" class="sidebar-link" data-nav="categories">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" x2="7.01" y1="7" y2="7"/></svg>
+        <span>Categories</span>
+      </a>
+      <a href="statistics.html" class="sidebar-link" data-nav="statistics">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        <span>Statistics</span>
+      </a>
+      <a href="profile.html" class="sidebar-link" data-nav="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Admin Profile</span>
+      </a>
+
+      <hr style="border:none;border-top:1px solid var(--border, #E2E8F0);margin:8px 0;">
+
+      <a href="admins.html" class="sidebar-link" data-nav="admins" style="color:var(--amber-dark, #D99B26);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span>Admin Management</span>
+      </a>
+      <a href="logs.html" class="sidebar-link" data-nav="logs" style="color:var(--amber-dark, #D99B26);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+        <span>Audit Logs</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <a href="profile.html" class="sidebar-user-name" style="text-decoration:none;color:inherit;">Head Admin</a>
+      <a href="login.html" class="sidebar-link--muted" title="Log Out" style="text-decoration:none;display:flex;align-items:center;gap:4px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        <span>Log Out</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ADMIN MAIN -->
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div>
+        <h1 class="admin-topbar__title" style="margin:0;font-size:20px;font-weight:700;">Dashboard</h1>
+      </div>
+      <div style="position:relative;">
+        <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
+          <span class="user-avatar-circle">HA</span>
+          <span>Head Admin</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="topbar-chevron"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="topbar-dropdown" id="topbarDropdownMenu" role="menu">
+          <a href="profile.html" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span>Admin Profile</span>
+          </a>
+          <a href="login.html" class="dropdown-danger" role="menuitem">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Log Out</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <div class="admin-content" style="padding:28px 32px;">
+
+      <!-- Welcome Banner -->
+      <div style="background:linear-gradient(135deg,var(--color-primary, #1F4FA3) 0%,#163A7A 100%);color:#fff;border-radius:14px;padding:24px 28px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:center;gap:16px;box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+        <div>
+          <div style="font-weight:800;font-size:20px;margin-bottom:4px;">iCareDonate Admin Portal</div>
+          <div style="font-size:14px;opacity:0.85;">Overview &bull; Moderation Queues &bull; Operations &bull; Audit Logging</div>
+        </div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;">
+          <a href="donations.html?status=pending_verification" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.4);font-size:13px;padding:8px 16px;">
+            Review Donations (2)
+          </a>
+          <a href="requests.html?status=pending" class="btn btn-outline" style="color:#fff;border-color:rgba(255,255,255,0.4);font-size:13px;padding:8px 16px;">
+            Review Requests (1)
+          </a>
+        </div>
+      </div>
+
+      <!-- 4 Stat Cards -->
+      <div class="admin-stats-row" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
+
+        <a href="donations.html?status=pending_verification" class="admin-stat-card" style="text-decoration:none;color:inherit;">
+          <div class="admin-stat-card__icon" style="background:var(--sky, #E0F2FE);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt, #1F4FA3)" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Pending Donations</div>
+          <div class="admin-stat-card__value">2</div>
+          <div class="admin-stat-card__sub">Needs verification</div>
+        </a>
+
+        <a href="requests.html" class="admin-stat-card" style="text-decoration:none;color:inherit;">
+          <div class="admin-stat-card__icon" style="background:#FFF0EC;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--coral, #E0553D)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Pending Requests</div>
+          <div class="admin-stat-card__value">1</div>
+          <div class="admin-stat-card__sub">Proof review queue</div>
+        </a>
+
+        <a href="transactions.html" class="admin-stat-card" style="text-decoration:none;color:inherit;">
+          <div class="admin-stat-card__icon" style="background:#FEF6E0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--amber, #F2B84B)" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Active Transactions</div>
+          <div class="admin-stat-card__value">2</div>
+          <div class="admin-stat-card__sub">In coordination</div>
+        </a>
+
+        <a href="support.html" class="admin-stat-card" style="text-decoration:none;color:inherit;">
+          <div class="admin-stat-card__icon" style="background:#DCFCE7;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="admin-stat-card__label">Open Inquiries</div>
+          <div class="admin-stat-card__value">1</div>
+          <div class="admin-stat-card__sub">Support tickets</div>
+        </a>
+
+      </div>
+
+      <!-- Action Center: Recent Activities & Quick Navigation -->
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:24px;">
+
+        <!-- Recent System Activities -->
+        <div class="card" style="padding:24px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;">
+          <h3 style="font-size:16px;font-weight:700;margin:0 0 16px;color:var(--text, #1E293B);">Recent System Operations</h3>
+          
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            <div style="padding:12px 14px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-size:13.5px;font-weight:600;color:var(--text, #1E293B);">David Tan submitted Family Rice Care Packs</span>
+                <div style="font-size:11.5px;color:#64748B;">Donation #102 &middot; Status: Approved</div>
+              </div>
+              <span style="font-size:11.5px;color:#64748B;">Yesterday</span>
+            </div>
+
+            <div style="padding:12px 14px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-size:13.5px;font-weight:600;color:var(--text, #1E293B);">Maria Santos submitted Backpacks &amp; Notebooks</span>
+                <div style="font-size:11.5px;color:#64748B;">Donation #101 &middot; Matched with Carlos M.</div>
+              </div>
+              <span style="font-size:11.5px;color:#64748B;">2 hours ago</span>
+            </div>
+
+            <div style="padding:12px 14px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <span style="font-size:13.5px;font-weight:600;color:var(--text, #1E293B);">Archived near-expiry surplus food batch</span>
+                <div style="font-size:11.5px;color:#64748B;">Donation #106 &middot; Archived by Eleanor Vance</div>
+              </div>
+              <span style="font-size:11.5px;color:#64748B;">3 days ago</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Admin Links -->
+        <div class="card" style="padding:24px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;">
+          <h3 style="font-size:16px;font-weight:700;margin:0 0 16px;color:var(--text, #1E293B);">Moderation Navigation</h3>
+          
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <a href="donations.html" class="btn btn-outline" style="justify-content:flex-start;padding:10px 14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>
+              Donation Moderation &amp; Archival
+            </a>
+            <a href="users.html" class="btn btn-outline" style="justify-content:flex-start;padding:10px 14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              User Account Moderation &amp; Bans
+            </a>
+            <a href="reports.html" class="btn btn-outline" style="justify-content:flex-start;padding:10px 14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
+              System Statistics &amp; Community Reports
+            </a>
+            <a href="logs.html" class="btn btn-outline" style="justify-content:flex-start;padding:10px 14px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right:8px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              Audit Trail &amp; Ledger
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/mock-data.js"></script>
+<script src="../js/admin-portal.js"></script>
+</body>
+</html>

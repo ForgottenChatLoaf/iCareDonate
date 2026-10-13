@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ticket_id'])) {
         error_log($e->getMessage());
         setFlash('error', 'Failed to update ticket.');
     }
-    header('Location: /CommunityDono/admin/support.php');
+    header('Location: ' . APP_BASE . '/admin/support.php');
     exit;
 }
 
@@ -123,7 +123,7 @@ require_once __DIR__ . '/../includes/header.php';
               <?php endif; ?>
 
               <!-- Reply & Status Form -->
-              <form action="/CommunityDono/admin/support.php" method="POST" style="padding-top: 14px; border-top: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 10px;">
+              <form action="<?= $base ?>/admin/support.php" method="POST" style="padding-top: 14px; border-top: 1px solid var(--color-border); display: flex; flex-direction: column; gap: 10px;">
                 <?= csrfField() ?>
                 <input type="hidden" name="ticket_id" value="<?= (int)$t['id'] ?>">
 

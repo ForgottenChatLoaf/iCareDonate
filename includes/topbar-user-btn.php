@@ -1,9 +1,11 @@
 <?php
 // includes/topbar-user-btn.php
 // Usage: $topbarBtnId = 'myBtnId'; $profileUrl = '/...'; $isAdmin = true; require_once ...;
+require_once __DIR__ . '/../config/app.php';
+$base = $base ?? APP_BASE;
 $_topbarBtnId = $topbarBtnId ?? 'adminUserMenuBtn';
 $_dropdownId  = 'dd_' . $_topbarBtnId;
-$_profileUrl  = $profileUrl  ?? '/CommunityDono/admin/profile.php';
+$_profileUrl  = $profileUrl  ?? ($base . '/admin/profile.php');
 $_isAdmin     = $isAdmin     ?? false;
 $_userName    = e($_SESSION['user_name'] ?? ($_isAdmin ? 'Admin' : 'User'));
 $_nameParts   = explode(' ', trim($_SESSION['user_name'] ?? 'AU'));
@@ -22,15 +24,15 @@ $_initials    = strtoupper(substr($_nameParts[0] ?? 'A', 0, 1) . substr($_namePa
       <?= $_isAdmin ? 'Admin Profile' : 'My Profile' ?>
     </a>
     <?php if ($_isAdmin): ?>
-    <a href="/CommunityDono/admin/profile.php" role="menuitem">
+    <a href="<?= $base ?>/admin/profile.php" role="menuitem">
       <i data-lucide="settings" style="width:15px;height:15px;opacity:0.7;"></i> Account Settings
     </a>
     <?php else: ?>
-    <a href="/CommunityDono/user/settings.php" role="menuitem">
+    <a href="<?= $base ?>/user/settings.php" role="menuitem">
       <i data-lucide="settings" style="width:15px;height:15px;opacity:0.7;"></i> Settings
     </a>
     <?php endif; ?>
-    <a href="/CommunityDono/api/auth/logout.php" class="dropdown-danger" role="menuitem">
+    <a href="<?= $base ?>/api/auth/logout.php" class="dropdown-danger" role="menuitem">
       <i data-lucide="log-out" style="width:15px;height:15px;"></i> Log Out
     </a>
   </div>

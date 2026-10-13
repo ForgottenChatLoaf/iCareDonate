@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireSuperAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/admin/admins.php');
+    header('Location: ' . APP_BASE . '/admin/admins.php');
     exit;
 }
 verifyCsrf();
@@ -28,13 +28,13 @@ switch ($action) {
 
         if (empty($firstName) || empty($lastName) || empty($email)) {
             setFlash('error', 'All fields are required.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             setFlash('error', 'Invalid email address.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -43,7 +43,7 @@ switch ($action) {
         $exists->execute([$email]);
         if ($exists->fetch()) {
             setFlash('error', 'This email already has an admin account.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -67,7 +67,7 @@ switch ($action) {
         );
 
         setFlash('success', "Invitation created for {$firstName} {$lastName} ({$email}). Copy the link below and share it with them.");
-        header('Location: /CommunityDono/admin/admins.php');
+        header('Location: ' . APP_BASE . '/admin/admins.php');
         exit;
     }
 
@@ -76,7 +76,7 @@ switch ($action) {
         $inviteId = (int)($_POST['invite_id'] ?? 0);
         if ($inviteId <= 0) {
             setFlash('error', 'Invalid invitation.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -87,7 +87,7 @@ switch ($action) {
             'ADMIN_INVITE_REVOKED', 'admin_invitations', $inviteId, null, null, 'Invitation revoked');
 
         setFlash('success', 'Invitation has been revoked.');
-        header('Location: /CommunityDono/admin/admins.php');
+        header('Location: ' . APP_BASE . '/admin/admins.php');
         exit;
     }
 
@@ -96,7 +96,7 @@ switch ($action) {
         $adminId = (int)($_POST['admin_id'] ?? 0);
         if ($adminId <= 0 || $adminId === (int)$_SESSION['user_id']) {
             setFlash('error', 'Invalid action.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -106,7 +106,7 @@ switch ($action) {
         $targetUser = $target->fetch();
         if (!$targetUser || $targetUser['role'] === 'superadmin') {
             setFlash('error', 'Cannot suspend a superadmin account.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -115,7 +115,7 @@ switch ($action) {
             'ADMIN_SUSPENDED', 'users', $adminId, null, null, 'Admin account suspended by superadmin');
 
         setFlash('success', 'Admin account has been suspended.');
-        header('Location: /CommunityDono/admin/admins.php');
+        header('Location: ' . APP_BASE . '/admin/admins.php');
         exit;
     }
 
@@ -124,7 +124,7 @@ switch ($action) {
         $adminId = (int)($_POST['admin_id'] ?? 0);
         if ($adminId <= 0) {
             setFlash('error', 'Invalid action.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -135,7 +135,7 @@ switch ($action) {
             'ADMIN_REACTIVATED', 'users', $adminId, null, null, 'Admin account reactivated by superadmin');
 
         setFlash('success', 'Admin account has been reactivated.');
-        header('Location: /CommunityDono/admin/admins.php');
+        header('Location: ' . APP_BASE . '/admin/admins.php');
         exit;
     }
 
@@ -144,7 +144,7 @@ switch ($action) {
         $adminId = (int)($_POST['admin_id'] ?? 0);
         if ($adminId <= 0 || $adminId === (int)$_SESSION['user_id']) {
             setFlash('error', 'Invalid action.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -153,7 +153,7 @@ switch ($action) {
         $targetUser = $target->fetch();
         if (!$targetUser || $targetUser['role'] === 'superadmin') {
             setFlash('error', 'Cannot demote a superadmin account.');
-            header('Location: /CommunityDono/admin/admins.php');
+            header('Location: ' . APP_BASE . '/admin/admins.php');
             exit;
         }
 
@@ -162,12 +162,12 @@ switch ($action) {
             'ADMIN_DEMOTED', 'users', $adminId, null, null, 'Admin demoted to user by superadmin');
 
         setFlash('success', 'Admin has been demoted to a regular user.');
-        header('Location: /CommunityDono/admin/admins.php');
+        header('Location: ' . APP_BASE . '/admin/admins.php');
         exit;
     }
 
     default:
         setFlash('error', 'Unknown action.');
-        header('Location: /CommunityDono/admin/admins.php');
+        header('Location: ' . APP_BASE . '/admin/admins.php');
         exit;
 }

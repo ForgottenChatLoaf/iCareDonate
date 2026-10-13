@@ -40,7 +40,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin: 0;">My Offered Donations</h1>
       </div>
       <div>
-        <a href="/CommunityDono/user/offer-donation.php" class="btn btn-primary" style="font-size: 13.5px; padding: 8px 16px;">
+        <a href="<?= $base ?>/user/offer-donation.php" class="btn btn-primary" style="font-size: 13.5px; padding: 8px 16px;">
           + Offer New Donation
         </a>
       </div>
@@ -56,7 +56,7 @@ require_once __DIR__ . '/../includes/header.php';
           <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 24px;">
             Have clothes, school supplies, or household items you no longer use? Share them with a family in need.
           </p>
-          <a href="/CommunityDono/user/offer-donation.php" class="btn btn-primary">Offer a Donation</a>
+          <a href="<?= $base ?>/user/offer-donation.php" class="btn btn-primary">Offer a Donation</a>
         </div>
       <?php else: ?>
         <div style="display: flex; flex-direction: column; gap: 16px;">
@@ -69,7 +69,7 @@ require_once __DIR__ . '/../includes/header.php';
               <!-- Thumbnail -->
               <div style="width: 100px; height: 80px; background: #F1F5F9; border-radius: var(--radius-md); overflow: hidden; display: flex; align-items: center; justify-content: center;">
                 <?php if (!empty($d['primary_image'])): ?>
-                  <img src="/CommunityDono/<?= e($d['primary_image']) ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
+                  <img src="<?= $base ?>/<?= e($d['primary_image']) ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                 <?php else: ?>
                   <div style="color: #94A3B8;"><i data-lucide="gift" style="width:28px;height:28px;"></i></div>
                 <?php endif; ?>
@@ -115,7 +115,7 @@ require_once __DIR__ . '/../includes/header.php';
                 </div>
 
                 <?php if ($d['status'] === 'approved'): ?>
-                  <a href="/CommunityDono/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;" target="_blank">
+                  <a href="<?= $base ?>/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;" target="_blank">
                     Public View ↗
                   </a>
                 <?php endif; ?>

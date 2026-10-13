@@ -64,7 +64,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0;">Platform Statistics & Analytics</h1>
       </div>
       <div>
-        <a href="/CommunityDono/admin/reports.php" class="btn btn-primary" style="font-size: 12px; padding: 5px 12px;">
+        <a href="<?= $base ?>/admin/reports.php" class="btn btn-primary" style="font-size: 12px; padding: 5px 12px;">
           Generate Detailed Reports &rarr;
         </a>
       </div>
@@ -162,7 +162,7 @@ require_once __DIR__ . '/../includes/header.php';
       <div class="card" style="padding: 24px; border: 1px solid var(--color-border); border-radius: var(--radius-md);">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
           <h2 style="font-size: 15px; font-weight: 700; color: var(--color-text); margin: 0;">Recent Activity Log</h2>
-          <a href="/CommunityDono/admin/logs.php" style="font-size: 12px; color: var(--color-primary); text-decoration: none;">View Full Audit Log &rarr;</a>
+          <a href="<?= $base ?>/admin/logs.php" style="font-size: 12px; color: var(--color-primary); text-decoration: none;">View Full Audit Log &rarr;</a>
         </div>
         <div class="admin-table-container">
           <table class="admin-table">

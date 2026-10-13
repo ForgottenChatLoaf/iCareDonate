@@ -10,7 +10,7 @@ requireAdmin();
 $userId = (int)($_GET['id'] ?? 0);
 if ($userId <= 0) {
     setFlash('error', 'User not specified.');
-    header('Location: /CommunityDono/admin/users.php');
+    header('Location: ' . APP_BASE . '/admin/users.php');
     exit;
 }
 
@@ -20,7 +20,7 @@ $user = $stmt->fetch();
 
 if (!$user) {
     setFlash('error', 'User not found.');
-    header('Location: /CommunityDono/admin/users.php');
+    header('Location: ' . APP_BASE . '/admin/users.php');
     exit;
 }
 
@@ -89,7 +89,7 @@ require_once __DIR__ . '/../includes/header.php';
   <div class="admin-main">
     <header class="admin-topbar">
       <div style="display: flex; align-items: center; gap: 12px;">
-        <a href="/CommunityDono/admin/users.php" class="btn btn-outline" style="font-size: 12px; padding: 4px 10px;">&larr; Users List</a>
+        <a href="<?= $base ?>/admin/users.php" class="btn btn-outline" style="font-size: 12px; padding: 4px 10px;">&larr; Users List</a>
         <h1 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0;">
           User Profile: <?= e($user['first_name'] . ' ' . $user['last_name']) ?> (#<?= (int)$user['id'] ?>)
         </h1>
@@ -189,11 +189,11 @@ require_once __DIR__ . '/../includes/header.php';
               </p>
 
               <!-- Warning Form -->
-              <form action="/CommunityDono/api/admin/user-action.php" method="POST" style="margin-bottom: 16px;">
+              <form action="<?= $base ?>/api/admin/user-action.php" method="POST" style="margin-bottom: 16px;">
                 <?= csrfField() ?>
                 <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
                 <input type="hidden" name="action" value="warn">
-                <input type="hidden" name="redirect" value="/CommunityDono/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
+                <input type="hidden" name="redirect" value="<?= $base ?>/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
                 <div style="display: flex; gap: 8px;">
                   <input type="text" name="reason" placeholder="Warning reason / message to user..." class="form-input" style="font-size: 12px; height: 34px;" required>
                   <button type="submit" class="btn btn-warning" style="font-size: 12px; padding: 6px 14px; white-space: nowrap;">
@@ -214,29 +214,29 @@ require_once __DIR__ . '/../includes/header.php';
                     Permanent Ban
                   </button>
                 <?php else: ?>
-                  <form action="/CommunityDono/api/admin/user-action.php" method="POST" style="display: inline;">
+                  <form action="<?= $base ?>/api/admin/user-action.php" method="POST" style="display: inline;">
                     <?= csrfField() ?>
                     <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
                     <input type="hidden" name="action" value="activate">
-                    <input type="hidden" name="redirect" value="/CommunityDono/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
+                    <input type="hidden" name="redirect" value="<?= $base ?>/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
                     <button type="submit" class="btn btn-success" style="font-size: 12px; padding: 6px 16px;">
                       Reactivate / Unban Account
                     </button>
                   </form>
                 <?php endif; ?>
                 
-                <a href="/CommunityDono/admin/interviews.php?user_id=<?= (int)$user['id'] ?>" class="btn btn-outline" style="font-size: 12px; padding: 6px 14px;">
+                <a href="<?= $base ?>/admin/interviews.php?user_id=<?= (int)$user['id'] ?>" class="btn btn-outline" style="font-size: 12px; padding: 6px 14px;">
                   Schedule Interview
                 </a>
               </div>
 
               <!-- Collapsible Suspend Box -->
               <div id="suspend-box" style="display: none; margin-top: 14px; padding: 14px; background: #fff; border: 1px solid var(--color-border); border-radius: var(--radius-sm);">
-                <form action="/CommunityDono/api/admin/user-action.php" method="POST">
+                <form action="<?= $base ?>/api/admin/user-action.php" method="POST">
                   <?= csrfField() ?>
                   <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
                   <input type="hidden" name="action" value="suspend">
-                  <input type="hidden" name="redirect" value="/CommunityDono/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
+                  <input type="hidden" name="redirect" value="<?= $base ?>/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
                   <label style="display: block; font-size: 12px; font-weight: 600; margin-bottom: 4px;">Reason for Suspension (required):</label>
                   <textarea name="reason" rows="2" class="form-input" style="font-size: 12px; margin-bottom: 8px;" placeholder="e.g. Unverified donation listings or fake requests..." required></textarea>
                   <div style="display: flex; justify-content: flex-end; gap: 8px;">
@@ -248,11 +248,11 @@ require_once __DIR__ . '/../includes/header.php';
 
               <!-- Collapsible Ban Box -->
               <div id="ban-box" style="display: none; margin-top: 14px; padding: 14px; background: #FEF2F2; border: 1px solid #FCA5A5; border-radius: var(--radius-sm);">
-                <form action="/CommunityDono/api/admin/user-action.php" method="POST">
+                <form action="<?= $base ?>/api/admin/user-action.php" method="POST">
                   <?= csrfField() ?>
                   <input type="hidden" name="user_id" value="<?= (int)$user['id'] ?>">
                   <input type="hidden" name="action" value="ban">
-                  <input type="hidden" name="redirect" value="/CommunityDono/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
+                  <input type="hidden" name="redirect" value="<?= $base ?>/admin/user-detail.php?id=<?= (int)$user['id'] ?>">
                   <label style="display: block; font-size: 12px; font-weight: 600; color: #991B1B; margin-bottom: 4px;">Reason for Permanent Ban (required):</label>
                   <textarea name="reason" rows="2" class="form-input" style="font-size: 12px; margin-bottom: 8px;" placeholder="e.g. Repeated Terms of Service violations, harassment..." required></textarea>
                   <div style="display: flex; justify-content: flex-end; gap: 8px;">
@@ -297,7 +297,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <td><?= renderBadge($d['status']) ?></td>
                     <td><?= date('M d, Y', strtotime($d['created_at'])) ?></td>
                     <td>
-                      <a href="/CommunityDono/admin/donation-review.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 3px 8px;">
+                      <a href="<?= $base ?>/admin/donation-review.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 3px 8px;">
                         Review
                       </a>
                     </td>
@@ -340,7 +340,7 @@ require_once __DIR__ . '/../includes/header.php';
                     <td><?= renderBadge($r['status']) ?></td>
                     <td><?= date('M d, Y', strtotime($r['created_at'])) ?></td>
                     <td>
-                      <a href="/CommunityDono/admin/request-review.php?id=<?= (int)$r['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 3px 8px;">
+                      <a href="<?= $base ?>/admin/request-review.php?id=<?= (int)$r['id'] ?>" class="btn btn-outline" style="font-size: 11px; padding: 3px 8px;">
                         Review
                       </a>
                     </td>

@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/profile.php');
+    header('Location: ' . APP_BASE . '/user/profile.php');
     exit;
 }
 
@@ -23,7 +23,7 @@ $city = trim($_POST['city'] ?? '');
 
 if (empty($firstName) || empty($lastName)) {
     setFlash('error', 'First name and last name are required.');
-    header('Location: /CommunityDono/user/profile.php');
+    header('Location: ' . APP_BASE . '/user/profile.php');
     exit;
 }
 
@@ -40,11 +40,11 @@ try {
     logAudit($pdo, $userId, 'user', 'USER_PROFILE_UPDATED', 'user', $userId, null, ['name' => $firstName . ' ' . $lastName], 'Updated profile details');
 
     setFlash('success', 'Profile updated successfully.');
-    header('Location: /CommunityDono/user/profile.php');
+    header('Location: ' . APP_BASE . '/user/profile.php');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to update profile. Please try again.');
-    header('Location: /CommunityDono/user/profile.php');
+    header('Location: ' . APP_BASE . '/user/profile.php');
     exit;
 }

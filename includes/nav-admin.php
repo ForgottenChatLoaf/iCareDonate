@@ -1,6 +1,7 @@
 <?php
 // includes/nav-admin.php
-$base    = '/CommunityDono';
+require_once __DIR__ . '/../config/app.php';
+$base    = APP_BASE;
 $current = basename($_SERVER['PHP_SELF']);
 ?>
 <aside class="user-sidebar admin-sidebar" role="complementary" aria-label="Admin navigation">

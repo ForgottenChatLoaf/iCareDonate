@@ -45,11 +45,11 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <div class="alert alert-error" style="margin-bottom: 20px;">
           This password reset token is invalid or has expired. Please request a new link.
         </div>
-        <a href="/CommunityDono/pages/forgot-password.php" class="btn btn-primary" style="width: 100%; justify-content: center;">
+        <a href="<?= $base ?>/pages/forgot-password.php" class="btn btn-primary" style="width: 100%; justify-content: center;">
           Request New Link
         </a>
       <?php else: ?>
-        <form action="/CommunityDono/api/auth/reset-password.php" method="POST" data-validate>
+        <form action="<?= $base ?>/api/auth/reset-password.php" method="POST" data-validate>
           <?= csrfField() ?>
           <input type="hidden" name="token" value="<?= e($token) ?>">
 

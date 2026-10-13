@@ -58,7 +58,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <p style="color: var(--slate); font-size: 15.5px; margin-bottom: 24px;">
           A team coordinator will review and respond to <strong><?= e($email) ?></strong>.
         </p>
-        <a href="/CommunityDono/" class="btn btn-primary" style="border-radius: 999px; padding: 12px 28px;">Return to Homepage</a>
+        <a href="<?= $base ?>/" class="btn btn-primary" style="border-radius: 999px; padding: 12px 28px;">Return to Homepage</a>
       </div>
     <?php else: ?>
       
@@ -100,7 +100,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <div class="card" style="padding: 32px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
           <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 20px;">Inquiry form</h3>
           
-          <form method="POST" action="/CommunityDono/pages/contact.php" data-validate>
+          <form method="POST" action="<?= $base ?>/pages/contact.php" data-validate>
             <?= csrfField() ?>
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">

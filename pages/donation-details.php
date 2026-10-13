@@ -51,7 +51,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
   <div class="container" style="max-width: 1040px; margin: 0 auto; padding: 0 20px;">
     
     <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
-      <a href="/CommunityDono/pages/browse.php" style="color: var(--color-primary); font-size: 14px; text-decoration: none; font-weight: 500;">
+      <a href="<?= $base ?>/pages/browse.php" style="color: var(--color-primary); font-size: 14px; text-decoration: none; font-weight: 500;">
         &larr; Back to Browse Listings
       </a>
       
@@ -71,7 +71,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <div class="card" style="padding: 0; overflow: hidden; border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 24px;">
           <div style="height: 360px; background: #F8FAFC; display: flex; align-items: center; justify-content: center; position: relative;">
             <?php if (!empty($images)): ?>
-              <img id="main-image-view" src="/CommunityDono/<?= e($images[0]['file_path']) ?>" alt="<?= e($donation['title']) ?>" style="width: 100%; height: 100%; object-fit: contain;">
+              <img id="main-image-view" src="<?= $base ?>/<?= e($images[0]['file_path']) ?>" alt="<?= e($donation['title']) ?>" style="width: 100%; height: 100%; object-fit: contain;">
             <?php else: ?>
               <div style="color:#CBD5E1;"><i data-lucide="gift" style="width:64px;height:64px;"></i></div>
             <?php endif; ?>
@@ -80,7 +80,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
           <?php if (count($images) > 1): ?>
             <div style="display: flex; gap: 8px; padding: 12px; background: #FFFFFF; border-top: 1px solid var(--color-border); overflow-x: auto;">
               <?php foreach ($images as $img): ?>
-                <img src="/CommunityDono/<?= e($img['file_path']) ?>" alt="Thumbnail"
+                <img src="<?= $base ?>/<?= e($img['file_path']) ?>" alt="Thumbnail"
                      style="width: 60px; height: 60px; object-fit: cover; border-radius: 6px; cursor: pointer; border: 2px solid transparent;"
                      onclick="document.getElementById('main-image-view').src=this.src;">
               <?php endforeach; ?>
@@ -154,15 +154,15 @@ require_once __DIR__ . '/../includes/nav-public.php';
               Fully Allocated
             </button>
           <?php elseif (isLoggedIn()): ?>
-            <a href="/CommunityDono/user/request-donation.php?id=<?= (int)$donation['id'] ?>" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+            <a href="<?= $base ?>/user/request-donation.php?id=<?= (int)$donation['id'] ?>" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
               Request This Item
             </a>
           <?php else: ?>
-            <a href="/CommunityDono/pages/login.php?redirect=<?= urlencode('/CommunityDono/user/request-donation.php?id=' . $donation['id']) ?>" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
+            <a href="<?= $base ?>/pages/login.php?redirect=<?= urlencode($base . '/user/request-donation.php?id=' . $donation['id']) ?>" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 14px; font-size: 16px;">
               Log In to Request Item
             </a>
             <div style="text-align: center; font-size: 13px; color: var(--color-text-muted); margin-top: 10px;">
-              Need an account? <a href="/CommunityDono/pages/signup.php" style="color: var(--color-primary);">Sign up free</a>
+              Need an account? <a href="<?= $base ?>/pages/signup.php" style="color: var(--color-primary);">Sign up free</a>
             </div>
           <?php endif; ?>
 
@@ -182,7 +182,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <button type="button" data-modal-close style="background: none; border: none; font-size: 20px; cursor: pointer; color: var(--color-text-muted);">&times;</button>
       </div>
 
-      <form action="/CommunityDono/api/reports/create.php" method="POST">
+      <form action="<?= $base ?>/api/reports/create.php" method="POST">
         <?= csrfField() ?>
         <input type="hidden" name="target_type" value="donation">
         <input type="hidden" name="target_id" value="<?= (int)$donation['id'] ?>">

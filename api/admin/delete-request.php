@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireAdmin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -19,7 +19,7 @@ $requestId = (int)($_POST['request_id'] ?? 0);
 
 if ($requestId <= 0) {
     setFlash('error', 'Invalid request ID.');
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -30,11 +30,11 @@ try {
     logAudit($pdo, $adminId, 'admin', 'REQUEST_DELETED', 'request', $requestId, null, null, 'Administrator deleted request record');
 
     setFlash('success', 'Request record deleted.');
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Cannot delete request: Active matches or transactions are linked.');
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }

@@ -1,0 +1,6 @@
+
+# Block all direct HTTP access to private uploaded files.
+# Private proofs must not be downloadable directly by URL.
+# Future access must use an authenticated PHP controller.
+
+Require all denied

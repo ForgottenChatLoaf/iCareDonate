@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['report_id'], $_POST['
         error_log($e->getMessage());
         setFlash('error', 'Failed to update report.');
     }
-    header('Location: /CommunityDono/admin/moderation.php');
+    header('Location: ' . APP_BASE . '/admin/moderation.php');
     exit;
 }
 
@@ -98,7 +98,7 @@ require_once __DIR__ . '/../includes/header.php';
                       <?php endif; ?>
                     <?php endif; ?>
                     <?php if ($rep['target_type'] === 'donation'): ?>
-                      <a href="/CommunityDono/admin/donation-review.php?id=<?= (int)$rep['target_id'] ?>" style="font-size: 13px; color: var(--color-primary); font-weight: normal; margin-left: 8px;">
+                      <a href="<?= $base ?>/admin/donation-review.php?id=<?= (int)$rep['target_id'] ?>" style="font-size: 13px; color: var(--color-primary); font-weight: normal; margin-left: 8px;">
                         Review Item ↗
                       </a>
                     <?php endif; ?>
@@ -120,7 +120,7 @@ require_once __DIR__ . '/../includes/header.php';
                 <div style="display: flex; justify-content: flex-end; gap: 10px; padding-top: 14px; border-top: 1px solid var(--color-border); flex-wrap: wrap;">
                   
                   <!-- Dismiss Form -->
-                  <form action="/CommunityDono/admin/moderation.php" method="POST" style="display: inline;">
+                  <form action="<?= $base ?>/admin/moderation.php" method="POST" style="display: inline;">
                     <?= csrfField() ?>
                     <input type="hidden" name="report_id" value="<?= (int)$rep['id'] ?>">
                     <input type="hidden" name="action" value="dismiss">
@@ -130,7 +130,7 @@ require_once __DIR__ . '/../includes/header.php';
                   </form>
 
                   <!-- Resolve Form -->
-                  <form action="/CommunityDono/admin/moderation.php" method="POST" style="display: inline;">
+                  <form action="<?= $base ?>/admin/moderation.php" method="POST" style="display: inline;">
                     <?= csrfField() ?>
                     <input type="hidden" name="report_id" value="<?= (int)$rep['id'] ?>">
                     <input type="hidden" name="action" value="resolve">
@@ -194,7 +194,7 @@ require_once __DIR__ . '/../includes/header.php';
       <span>Archiving will remove this listing from public search and mark this problem report as <strong>resolved</strong>. Historical records are preserved.</span>
     </div>
 
-    <form id="mod-archive-form" action="/CommunityDono/api/admin/delete-donation.php" method="POST">
+    <form id="mod-archive-form" action="<?= $base ?>/api/admin/delete-donation.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="donation_id" id="mod-archive-donation-id" value="">
       <input type="hidden" name="report_id" id="mod-archive-report-id" value="">

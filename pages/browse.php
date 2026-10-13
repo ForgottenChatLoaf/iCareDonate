@@ -79,7 +79,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
 
     <!-- Search & Filters Card -->
     <div class="card" style="padding: 26px; margin-bottom: 36px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
-      <form method="GET" action="/CommunityDono/pages/browse.php" style="display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 14px; align-items: end;">
+      <form method="GET" action="<?= $base ?>/pages/browse.php" style="display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 14px; align-items: end;">
         
         <div class="form-group">
           <label class="form-label" for="search-input">Search Keywords</label>
@@ -114,7 +114,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
             Filter
           </button>
           <?php if (!empty($search) || $category || !empty($cond)): ?>
-            <a href="/CommunityDono/pages/browse.php" class="btn btn-outline" style="height: 44px; padding: 0 18px; display: inline-flex; align-items: center; border-radius: 999px;">
+            <a href="<?= $base ?>/pages/browse.php" class="btn btn-outline" style="height: 44px; padding: 0 18px; display: inline-flex; align-items: center; border-radius: 999px;">
               Reset
             </a>
           <?php endif; ?>
@@ -136,7 +136,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
         <div style="margin-bottom: 14px; color: var(--slate);"><i data-lucide="search-x" style="width:52px;height:52px;"></i></div>
         <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 8px;">No matches found</h3>
         <p style="color: var(--slate); font-size: 15px; margin-bottom: 24px;">Try another keyword or adjust your category filter.</p>
-        <a href="/CommunityDono/pages/browse.php" class="btn btn-outline" style="border-radius: 999px; padding: 10px 24px;">Clear All Filters</a>
+        <a href="<?= $base ?>/pages/browse.php" class="btn btn-outline" style="border-radius: 999px; padding: 10px 24px;">Clear All Filters</a>
       </div>
     <?php else: ?>
       <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px;">
@@ -158,7 +158,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
 
             <div style="padding: 20px 22px 18px; flex: 1; display: flex; flex-direction: column;">
               <h3 style="font-size: 17px; font-weight: 700; color: var(--cobalt); margin-bottom: 8px; line-height: 1.35;">
-                <a href="/CommunityDono/pages/donation-details.php?id=<?= (int)$d['id'] ?>" style="color: inherit; text-decoration: none;">
+                <a href="<?= $base ?>/pages/donation-details.php?id=<?= (int)$d['id'] ?>" style="color: inherit; text-decoration: none;">
                   <?= e($d['title']) ?>
                 </a>
               </h3>
@@ -174,7 +174,7 @@ require_once __DIR__ . '/../includes/nav-public.php';
                 <?= e(ucwords(str_replace('_', ' ', $d['condition_type'] ?? ''))) ?>
               </div>
 
-              <a href="/CommunityDono/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="width: 100%; justify-content: center; padding: 10px 16px; font-size: 13.5px; border-radius: 999px;">
+              <a href="<?= $base ?>/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="width: 100%; justify-content: center; padding: 10px 16px; font-size: 13.5px; border-radius: 999px;">
                 View &amp; Request
               </a>
             </div>

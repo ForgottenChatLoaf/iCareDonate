@@ -136,7 +136,7 @@ require_once __DIR__ . '/../includes/header.php';
         <p style="font-size:14px;color:var(--color-text-muted);margin:0 0 28px;">
           Your admin account for <strong><?= e($invitation['email']) ?></strong> is ready.
         </p>
-        <a href="/CommunityDono/admin/index.php" class="btn btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:12px;">
+        <a href="<?= $base ?>/admin/index.php" class="btn btn-primary" style="width:100%;justify-content:center;font-size:15px;padding:12px;">
           Go to Admin Dashboard
           <i data-lucide="arrow-right" style="width:16px;height:16px;margin-left:6px;"></i>
         </a>
@@ -150,7 +150,7 @@ require_once __DIR__ . '/../includes/header.php';
         </div>
         <h1 style="font-size:22px;font-weight:700;color:var(--color-text);margin:0 0 8px;">Invalid Invitation</h1>
         <p style="font-size:14px;color:var(--color-text-muted);margin:0 0 28px;"><?= e($error) ?></p>
-        <a href="/CommunityDono/pages/login.php" class="btn btn-outline" style="width:100%;justify-content:center;">
+        <a href="<?= $base ?>/pages/login.php" class="btn btn-outline" style="width:100%;justify-content:center;">
           Back to Login
         </a>
       </div>

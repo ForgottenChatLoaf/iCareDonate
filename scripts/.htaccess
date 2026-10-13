@@ -1,0 +1,6 @@
+# scripts/.htaccess
+# Block all direct web access to this directory.
+# All scripts here are CLI-only utilities and must never be
+# executed via a web browser or HTTP request.
+Order allow,deny
+Deny from all

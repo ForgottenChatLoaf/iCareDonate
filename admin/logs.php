@@ -138,7 +138,7 @@ require_once __DIR__ . '/../includes/header.php';
 
       <!-- ── Filters ─────────────────────────────────────────────────────── -->
       <div class="card" style="padding: 16px 20px; margin-bottom: 20px; border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
-        <form method="GET" action="/CommunityDono/admin/logs.php" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+        <form method="GET" action="<?= $base ?>/admin/logs.php" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
 
           <div style="min-width: 220px; flex: 1;">
             <label style="font-size: 11px; font-weight: 600; color: var(--color-text-muted); display: block; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.04em;">Action Type</label>
@@ -163,9 +163,9 @@ require_once __DIR__ . '/../includes/header.php';
           <div style="display: flex; gap: 8px; align-items: flex-end;">
             <button type="submit" class="btn btn-primary" style="height: 36px; font-size: 13px; padding: 0 16px;">Filter</button>
             <?php if (!empty($filterAction) || !empty($filterFrom) || !empty($filterTo)): ?>
-              <a href="/CommunityDono/admin/logs.php" class="btn btn-outline" style="height: 36px; font-size: 13px; padding: 0 14px;">Clear</a>
+              <a href="<?= $base ?>/admin/logs.php" class="btn btn-outline" style="height: 36px; font-size: 13px; padding: 0 14px;">Clear</a>
             <?php endif; ?>
-            <a href="/CommunityDono/admin/logs.php?export=csv&action=<?= urlencode($filterAction) ?>&from=<?= urlencode($filterFrom) ?>&to=<?= urlencode($filterTo) ?>"
+            <a href="<?= $base ?>/admin/logs.php?export=csv&action=<?= urlencode($filterAction) ?>&from=<?= urlencode($filterFrom) ?>&to=<?= urlencode($filterTo) ?>"
                class="btn btn-outline"
                style="height: 36px; font-size: 13px; padding: 0 14px; display: inline-flex; align-items: center; gap: 6px;">
               <i data-lucide="download" style="width:13px;height:13px;"></i> Export CSV

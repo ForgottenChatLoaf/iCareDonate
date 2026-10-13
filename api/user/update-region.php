@@ -8,7 +8,7 @@ if (session_status() === PHP_SESSION_NONE) { session_start(); }
 requireLogin();
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/user/settings.php?tab=region');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=region');
     exit;
 }
 
@@ -31,11 +31,11 @@ try {
     logAudit($pdo, $userId, 'user', 'USER_PREFERENCES_UPDATED', 'user', $userId, null, null, 'Updated language and regional preferences');
 
     setFlash('success', 'Regional and display preferences updated.');
-    header('Location: /CommunityDono/user/settings.php?tab=region');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=region');
     exit;
 } catch (Exception $e) {
     error_log($e->getMessage());
     setFlash('error', 'Failed to update regional settings.');
-    header('Location: /CommunityDono/user/settings.php?tab=region');
+    header('Location: ' . APP_BASE . '/user/settings.php?tab=region');
     exit;
 }

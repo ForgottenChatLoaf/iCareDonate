@@ -108,21 +108,21 @@ require_once __DIR__ . '/../includes/header.php';
                       <?php if ((int)$a['id'] !== (int)$_SESSION['user_id'] && $a['role'] !== 'superadmin'): ?>
                         <div style="display:flex;gap:6px;align-items:center;">
                           <?php if ($a['status'] === 'active'): ?>
-                            <form action="/CommunityDono/api/admin/admin-action.php" method="POST" style="display:inline;" onsubmit="return confirm('Suspend this admin account? They will lose access immediately.');">
+                            <form action="<?= $base ?>/api/admin/admin-action.php" method="POST" style="display:inline;" onsubmit="return confirm('Suspend this admin account? They will lose access immediately.');">
                               <?= csrfField() ?>
                               <input type="hidden" name="admin_id" value="<?= (int)$a['id'] ?>">
                               <input type="hidden" name="action" value="suspend">
                               <button type="submit" class="btn btn-danger" style="font-size:11px;padding:4px 10px;">Suspend</button>
                             </form>
                           <?php elseif ($a['status'] === 'suspended'): ?>
-                            <form action="/CommunityDono/api/admin/admin-action.php" method="POST" style="display:inline;">
+                            <form action="<?= $base ?>/api/admin/admin-action.php" method="POST" style="display:inline;">
                               <?= csrfField() ?>
                               <input type="hidden" name="admin_id" value="<?= (int)$a['id'] ?>">
                               <input type="hidden" name="action" value="reactivate">
                               <button type="submit" class="btn btn-success" style="font-size:11px;padding:4px 10px;">Reactivate</button>
                             </form>
                           <?php endif; ?>
-                          <form action="/CommunityDono/api/admin/admin-action.php" method="POST" style="display:inline;" onsubmit="return confirm('Demote this admin to a regular user? This will remove all admin access.');">
+                          <form action="<?= $base ?>/api/admin/admin-action.php" method="POST" style="display:inline;" onsubmit="return confirm('Demote this admin to a regular user? This will remove all admin access.');">
                             <?= csrfField() ?>
                             <input type="hidden" name="admin_id" value="<?= (int)$a['id'] ?>">
                             <input type="hidden" name="action" value="demote">
@@ -199,7 +199,7 @@ require_once __DIR__ . '/../includes/header.php';
                           <i data-lucide="copy" style="width:11px;height:11px;vertical-align:-1px;margin-right:3px;"></i>
                           Copy Link
                         </button>
-                        <form action="/CommunityDono/api/admin/admin-action.php" method="POST" style="display:inline;" onsubmit="return confirm('Revoke this invitation?');">
+                        <form action="<?= $base ?>/api/admin/admin-action.php" method="POST" style="display:inline;" onsubmit="return confirm('Revoke this invitation?');">
                           <?= csrfField() ?>
                           <input type="hidden" name="invite_id" value="<?= (int)$inv['id'] ?>">
                           <input type="hidden" name="action" value="revoke_invite">
@@ -228,7 +228,7 @@ require_once __DIR__ . '/../includes/header.php';
       </h2>
       <button class="modal-close" onclick="closeInviteModal()" aria-label="Close">&times;</button>
     </div>
-    <form action="/CommunityDono/api/admin/admin-action.php" method="POST">
+    <form action="<?= $base ?>/api/admin/admin-action.php" method="POST">
       <?= csrfField() ?>
       <input type="hidden" name="action" value="invite">
       <div class="modal-body" style="display:flex;flex-direction:column;gap:16px;">
@@ -283,7 +283,7 @@ document.getElementById('inviteModal').addEventListener('click', function(e) {
 });
 
 function copyInviteLink(token) {
-  const url = `${location.origin}/CommunityDono/pages/accept-invitation.php?token=${token}`;
+  const url = `${location.origin}<?= $base ?>/pages/accept-invitation.php?token=${token}`;
   navigator.clipboard.writeText(url).then(() => {
     // Temporary toast
     const toast = document.createElement('div');
@@ -296,7 +296,7 @@ function copyInviteLink(token) {
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 2500);
   }).catch(() => {
-    prompt('Copy this invitation link:', `${location.origin}/CommunityDono/pages/accept-invitation.php?token=${token}`);
+    prompt('Copy this invitation link:', `${location.origin}<?= $base ?>/pages/accept-invitation.php?token=${token}`);
   });
 }
 </script>

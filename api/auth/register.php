@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../includes/functions.php';
 if (session_status() === PHP_SESSION_NONE) { session_start(); }
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: /CommunityDono/pages/signup.php');
+    header('Location: ' . APP_BASE . '/pages/signup.php');
     exit;
 }
 
@@ -23,25 +23,25 @@ $confirm   = $_POST['confirm_password'] ?? '';
 
 if (empty($firstName) || empty($lastName) || empty($email) || empty($password)) {
     setFlash('error', 'Please fill in all required fields.');
-    header('Location: /CommunityDono/pages/signup.php');
+    header('Location: ' . APP_BASE . '/pages/signup.php');
     exit;
 }
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     setFlash('error', 'Please enter a valid email address.');
-    header('Location: /CommunityDono/pages/signup.php');
+    header('Location: ' . APP_BASE . '/pages/signup.php');
     exit;
 }
 
 if (strlen($password) < 8) {
     setFlash('error', 'Password must be at least 8 characters long.');
-    header('Location: /CommunityDono/pages/signup.php');
+    header('Location: ' . APP_BASE . '/pages/signup.php');
     exit;
 }
 
 if ($password !== $confirm) {
     setFlash('error', 'Passwords do not match. Please re-enter.');
-    header('Location: /CommunityDono/pages/signup.php');
+    header('Location: ' . APP_BASE . '/pages/signup.php');
     exit;
 }
 
@@ -50,7 +50,7 @@ $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ? LIMIT 1');
 $stmt->execute([$email]);
 if ($stmt->fetch()) {
     setFlash('error', 'An account with this email address already exists. Please log in.');
-    header('Location: /CommunityDono/pages/login.php');
+    header('Location: ' . APP_BASE . '/pages/login.php');
     exit;
 }
 
@@ -80,5 +80,5 @@ $_SESSION['user_email'] = $email;
 createNotification($pdo, $userId, 'ACCOUNT_CREATED', 'Welcome to iCareDonate!', 'Thank you for joining our community. You can now browse donations, offer items, or submit assistance requests.');
 
 setFlash('success', 'Account created successfully! Welcome to iCareDonate.');
-header('Location: /CommunityDono/user/dashboard.php');
+header('Location: ' . APP_BASE . '/user/dashboard.php');
 exit;

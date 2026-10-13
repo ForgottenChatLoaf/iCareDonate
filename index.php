@@ -65,7 +65,7 @@ require_once __DIR__ . '/includes/nav-public.php';
         <div>
           <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap;">
             <span class="logo" style="display: inline-flex; align-items: center; gap: 8px;">
-              <img src="/CommunityDono/icaredonate-icon.svg" class="logo-icon" width="34" height="34" alt="iCareDonate">
+              <img src="<?= $base ?>/icaredonate-icon.svg" class="logo-icon" width="34" height="34" alt="iCareDonate">
               <span class="logo-wordmark" style="font-size: 1.45rem;">i<em>Care</em>Donate</span>
             </span>
             <span class="badge" style="background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 999px; display: inline-flex; align-items: center; gap: 5px;">
@@ -80,11 +80,11 @@ require_once __DIR__ . '/includes/nav-public.php';
 
           <div class="btns">
             <?php if (isLoggedIn()): ?>
-              <a href="/CommunityDono/user/offer-donation.php" class="btn-donate"><i data-lucide="gift" style="width:18px;height:18px;"></i> Donate now</a>
-              <a href="/CommunityDono/pages/browse.php" class="btn-request"><i data-lucide="search" style="width:18px;height:18px;"></i> Request help</a>
+              <a href="<?= $base ?>/user/offer-donation.php" class="btn-donate"><i data-lucide="gift" style="width:18px;height:18px;"></i> Donate now</a>
+              <a href="<?= $base ?>/pages/browse.php" class="btn-request"><i data-lucide="search" style="width:18px;height:18px;"></i> Request help</a>
             <?php else: ?>
-              <a href="/CommunityDono/pages/login.php" class="btn-donate"><i data-lucide="gift" style="width:18px;height:18px;"></i> Donate now</a>
-              <a href="/CommunityDono/pages/login.php" class="btn-request"><i data-lucide="search" style="width:18px;height:18px;"></i> Request help</a>
+              <a href="<?= $base ?>/pages/login.php" class="btn-donate"><i data-lucide="gift" style="width:18px;height:18px;"></i> Donate now</a>
+              <a href="<?= $base ?>/pages/login.php" class="btn-request"><i data-lucide="search" style="width:18px;height:18px;"></i> Request help</a>
             <?php endif; ?>
           </div>
 
@@ -134,7 +134,7 @@ require_once __DIR__ . '/includes/nav-public.php';
           </div>
         </div>
         <p style="margin-top: 18px; text-align: center;">
-          <a href="/CommunityDono/pages/how-it-works.php" class="btn btn-outline" style="font-size: 14px; padding: 10px 24px; border-radius: 999px;">
+          <a href="<?= $base ?>/pages/how-it-works.php" class="btn btn-outline" style="font-size: 14px; padding: 10px 24px; border-radius: 999px;">
             See how it works &rarr;
           </a>
         </p>
@@ -148,7 +148,7 @@ require_once __DIR__ . '/includes/nav-public.php';
           <h2 style="margin: 0 0 6px;">Community Giving Categories</h2>
           <p class="lead" style="margin: 0; font-size: 14.5px;">Essential aid areas where your contribution directly changes lives.</p>
         </div>
-        <a href="/CommunityDono/pages/categories.php" class="btn btn-outline" style="font-size: 13.5px; padding: 8px 18px; border-radius: 999px;">View all &rarr;</a>
+        <a href="<?= $base ?>/pages/categories.php" class="btn btn-outline" style="font-size: 13.5px; padding: 8px 18px; border-radius: 999px;">View all &rarr;</a>
       </div>
 
       <div class="g" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 48px; align-items: stretch;">
@@ -159,7 +159,7 @@ require_once __DIR__ . '/includes/nav-public.php';
           <h3 style="margin: 0 0 8px; font-size: 19px;">Emergency &amp; Disaster Relief</h3>
           <p class="sm mut" style="font-size: 13.5px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; min-height: 42px;">Essential immediate sustenance, clean water, and shelter supplies for urgent relief.</p>
           <p style="font-size: 12.5px; color: var(--navy); margin-bottom: 20px;"><strong style="color: var(--cobalt);">Accepted:</strong> Food packs, canned goods, blankets</p>
-          <a href="/CommunityDono/pages/browse.php?category=1" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+          <a href="<?= $base ?>/pages/browse.php?category=1" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
         </div>
 
         <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; height: 100%;">
@@ -169,7 +169,7 @@ require_once __DIR__ . '/includes/nav-public.php';
           <h3 style="margin: 0 0 8px; font-size: 19px;">Healthcare &amp; Hygiene Kits</h3>
           <p class="sm mut" style="font-size: 13.5px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; min-height: 42px;">Hygiene and basic wellness kits supporting vulnerable community members and seniors.</p>
           <p style="font-size: 12.5px; color: var(--navy); margin-bottom: 20px;"><strong style="color: var(--cobalt);">Accepted:</strong> Hygiene packs, first-aid, vitamins</p>
-          <a href="/CommunityDono/pages/browse.php?category=4" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+          <a href="<?= $base ?>/pages/browse.php?category=4" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
         </div>
 
         <div class="card" style="padding: 24px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); box-shadow: var(--shadow-sm); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; height: 100%;">
@@ -179,7 +179,7 @@ require_once __DIR__ . '/includes/nav-public.php';
           <h3 style="margin: 0 0 8px; font-size: 19px;">Education &amp; Youth Support</h3>
           <p class="sm mut" style="font-size: 13.5px; color: var(--slate); margin-bottom: 12px; line-height: 1.55; min-height: 42px;">Learning materials, books, and backpacks empowering young students in local schools.</p>
           <p style="font-size: 12.5px; color: var(--navy); margin-bottom: 20px;"><strong style="color: var(--cobalt);">Accepted:</strong> School bags, notebooks, tablets</p>
-          <a href="/CommunityDono/pages/browse.php?category=2" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
+          <a href="<?= $base ?>/pages/browse.php?category=2" class="btn btn-primary" style="margin-top: auto; width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; border-radius: 999px; text-decoration: none;">Donate / Request</a>
         </div>
       </div>
     </section>
@@ -208,7 +208,7 @@ require_once __DIR__ . '/includes/nav-public.php';
             <h2 style="margin: 0 0 6px;">Recently Approved Donations</h2>
             <p class="lead" style="margin: 0; font-size: 14.5px;">Verified supplies available for community request and claim.</p>
           </div>
-          <a href="/CommunityDono/pages/browse.php" class="btn btn-outline" style="font-size: 13.5px; padding: 8px 18px; border-radius: 999px;">Browse all &rarr;</a>
+          <a href="<?= $base ?>/pages/browse.php" class="btn btn-outline" style="font-size: 13.5px; padding: 8px 18px; border-radius: 999px;">Browse all &rarr;</a>
         </div>
 
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 22px; margin-bottom: 48px;">
@@ -236,7 +236,7 @@ require_once __DIR__ . '/includes/nav-public.php';
                     <?= e($d['category_name']) ?> &bull; Pick-up only &bull; <?= e($d['pickup_city'] ?? 'Metro Manila') ?>
                   </p>
                 </div>
-                <a href="/CommunityDono/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; text-decoration: none; display: inline-flex; border-radius: 999px;">
+                <a href="<?= $base ?>/pages/donation-details.php?id=<?= (int)$d['id'] ?>" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; text-decoration: none; display: inline-flex; border-radius: 999px;">
                   View details &amp; request
                 </a>
               </div>

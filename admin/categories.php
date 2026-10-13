@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             setFlash('error', 'Category name or slug already exists.');
         }
     }
-    header('Location: /CommunityDono/admin/categories.php');
+    header('Location: ' . APP_BASE . '/admin/categories.php');
     exit;
 }
 
@@ -84,7 +84,7 @@ require_once __DIR__ . '/../includes/header.php';
         <div class="card" style="padding: 24px; border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
           <h2 style="font-size: 16px; font-weight: 700; color: var(--color-text); margin-bottom: 16px;">+ Add New Category</h2>
           
-          <form action="/CommunityDono/admin/categories.php" method="POST" data-validate>
+          <form action="<?= $base ?>/admin/categories.php" method="POST" data-validate>
             <?= csrfField() ?>
             <input type="hidden" name="action" value="add">
 

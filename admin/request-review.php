@@ -10,7 +10,7 @@ requireAdmin();
 $id = isset($_GET['id']) && is_numeric($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($id <= 0) {
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -30,7 +30,7 @@ $request = $stmt->fetch();
 
 if (!$request) {
     setFlash('error', 'Request not found.');
-    header('Location: /CommunityDono/admin/requests.php');
+    header('Location: ' . APP_BASE . '/admin/requests.php');
     exit;
 }
 
@@ -50,7 +50,7 @@ require_once __DIR__ . '/../includes/header.php';
         <h1 style="font-size: 18px; font-weight: 700; color: var(--color-text); margin: 0;">Review Assistance Request #<?= (int)$request['id'] ?></h1>
       </div>
       <div>
-        <a href="/CommunityDono/admin/requests.php" class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;">
+        <a href="<?= $base ?>/admin/requests.php" class="btn btn-outline" style="font-size: 12px; padding: 6px 12px;">
           &larr; Back to Requests Queue
         </a>
       </div>
@@ -96,7 +96,7 @@ require_once __DIR__ . '/../includes/header.php';
                   <div style="font-weight: 700; font-size: 14px; color: var(--color-primary);"><i data-lucide="paperclip" style="width:14px;height:14px;"></i> Proof Document Attached</div>
                   <div style="font-size: 12px; color: var(--color-text-muted);">Encrypted private verification storage</div>
                 </div>
-                <a href="/CommunityDono/<?= e($request['proof_path']) ?>" target="_blank" class="btn btn-primary" style="font-size: 12px; padding: 6px 14px;">
+                <a href="<?= $base ?>/<?= e($request['proof_path']) ?>" target="_blank" class="btn btn-primary" style="font-size: 12px; padding: 6px 14px;">
                   Inspect Document ↗
                 </a>
               </div>
@@ -126,7 +126,7 @@ require_once __DIR__ . '/../includes/header.php';
               Status: <strong><?= ucfirst(str_replace('_', ' ', $request['interview_status'] ?? 'not_required')) ?></strong>
             </div>
 
-            <a href="/CommunityDono/admin/interviews.php" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 12.5px; padding: 8px;">
+            <a href="<?= $base ?>/admin/interviews.php" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 12.5px; padding: 8px;">
               <i data-lucide="calendar-clock" style="width:13px;height:13px;"></i> Schedule / Manage Verification Interview
             </a>
           </div>
@@ -157,7 +157,7 @@ require_once __DIR__ . '/../includes/header.php';
             </div>
 
             <?php if ($availableStock >= (int)$request['quantity_requested']): ?>
-              <form action="/CommunityDono/api/admin/match.php" method="POST" style="margin-bottom: 12px;">
+              <form action="<?= $base ?>/api/admin/match.php" method="POST" style="margin-bottom: 12px;">
                 <?= csrfField() ?>
                 <input type="hidden" name="request_id" value="<?= (int)$request['id'] ?>">
                 <input type="hidden" name="donation_id" value="<?= (int)$request['donation_id'] ?>">
@@ -175,7 +175,7 @@ require_once __DIR__ . '/../includes/header.php';
             <?php endif; ?>
 
             <!-- Delete Request -->
-            <form action="/CommunityDono/api/admin/delete-request.php" method="POST" onsubmit="return confirm('Delete this request record?');">
+            <form action="<?= $base ?>/api/admin/delete-request.php" method="POST" onsubmit="return confirm('Delete this request record?');">
               <?= csrfField() ?>
               <input type="hidden" name="request_id" value="<?= (int)$request['id'] ?>">
               <button type="submit" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 12px; padding: 8px; color: #991B1B; border-color: #FCA5A5; border-radius: 8px;">
