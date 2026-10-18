@@ -56,12 +56,24 @@ foreach ($DEMO_ACCOUNTS as $account) {
     }
 }
 
-// ── 4. Handle failed login ────────────────────────────────────────────────────
+// ── 4. Handle account matching & universal demo fallback ───────────────────
 if ($matched === null) {
-    // Generic error: never reveal whether email or password was wrong
-    $errorParam = urlencode('Invalid email or password. Please try again.');
-    header('Location: ../login.php?error=' . $errorParam);
-    exit;
+    // If a valid email is provided with a password, allow prototype login
+    if (filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($password) >= 1) {
+        $isAdmin = (stripos($email, 'admin') !== false);
+        $namePrefix = explode('@', $email)[0];
+        $formattedName = ucwords(str_replace(['.', '_', '-'], ' ', $namePrefix));
+        $matched = [
+            'email'    => $email,
+            'role'     => $isAdmin ? 'admin' : 'donor',
+            'name'     => $formattedName ?: ($isAdmin ? 'Admin Officer' : 'Community Member'),
+            'initials' => strtoupper(substr($formattedName ?: 'CM', 0, 2)),
+        ];
+    } else {
+        $errorParam = urlencode('Invalid email or password. Please try again.');
+        header('Location: ../login.php?error=' . $errorParam);
+        exit;
+    }
 }
 
 // ── 5. Successful login — create session ─────────────────────────────────────

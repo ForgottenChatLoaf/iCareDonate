@@ -105,9 +105,78 @@
     });
   }
 
+  function updateAuthNavigation() {
+    let user = null;
+    let token = null;
+    try {
+      token = localStorage.getItem('icd_token');
+      user = JSON.parse(localStorage.getItem('icd_user') || 'null');
+    } catch(e) {}
+
+    const isSub = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+    const logoutTarget = isSub ? '../logout.html' : 'logout.html';
+
+    const authBtns = document.querySelectorAll('.btn-pub-auth, .mobile-link--accent');
+    if (token && user && authBtns.length > 0) {
+      const dashboardUrl = (user.role === 'admin' || user.role === 'superadmin') ? 'admin-dashboard.html' : 'user-dashboard.html';
+      const label = `${user.first_name || 'My'} Dashboard`;
+      authBtns.forEach(btn => {
+        btn.href = isSub ? ('../' + dashboardUrl) : dashboardUrl;
+        btn.textContent = label;
+        btn.title = `Logged in as ${user.first_name} ${user.last_name || ''}`;
+      });
+
+      // Desktop public actions — append clean logout button if not already present
+      const authActions = document.querySelector('.nav-public__actions');
+      if (authActions && !document.getElementById('nav-pub-logout-btn')) {
+        const logoutBtn = document.createElement('a');
+        logoutBtn.id = 'nav-pub-logout-btn';
+        logoutBtn.href = logoutTarget;
+        logoutBtn.className = 'btn-pub-logout';
+        logoutBtn.textContent = 'Log out';
+        logoutBtn.style.cssText = 'display:inline-flex;align-items:center;padding:7px 14px;margin-left:8px;font-size:13.5px;font-weight:600;color:#DC2626;background:#FEE2E2;border:1px solid #FECACA;border-radius:8px;text-decoration:none;transition:all 0.2s ease;';
+        logoutBtn.addEventListener('mouseenter', function() { this.style.background = '#FCA5A5'; this.style.color = '#7F1D1D'; });
+        logoutBtn.addEventListener('mouseleave', function() { this.style.background = '#FEE2E2'; this.style.color = '#DC2626'; });
+        logoutBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          try {
+            localStorage.removeItem('icd_token');
+            localStorage.removeItem('icd_user');
+            sessionStorage.clear();
+          } catch(err) {}
+          window.location.href = logoutTarget;
+        });
+        authActions.appendChild(logoutBtn);
+      }
+
+      // Mobile drawer — append logout link if not present
+      const mobileMenu = document.querySelector('.mobile-menu__links');
+      if (mobileMenu && !document.getElementById('mobile-pub-logout-link')) {
+        const mobLogout = document.createElement('a');
+        mobLogout.id = 'mobile-pub-logout-link';
+        mobLogout.href = logoutTarget;
+        mobLogout.className = 'mobile-link mobile-link--logout';
+        mobLogout.style.color = '#DC2626';
+        mobLogout.style.fontWeight = '600';
+        mobLogout.textContent = 'Log out';
+        mobLogout.addEventListener('click', function(e) {
+          e.preventDefault();
+          try {
+            localStorage.removeItem('icd_token');
+            localStorage.removeItem('icd_user');
+            sessionStorage.clear();
+          } catch(err) {}
+          window.location.href = logoutTarget;
+        });
+        mobileMenu.appendChild(mobLogout);
+      }
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     initHeaderScroll();
     initMobileMenu();
     highlightActiveLink();
+    updateAuthNavigation();
   });
 })();

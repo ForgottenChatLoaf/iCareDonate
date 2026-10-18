@@ -56,11 +56,28 @@ $html = file_get_contents($filePath);
 $baseTag = '<base href="' . _icd_root() . 'frontend/admin/">';
 $html = preg_replace('/<head[^>]*>/i', "$0\n  $baseTag", $html, 1);
 
-$sessionScript = '<script>window.ICD_SESSION = ' . json_encode([
+// Inject user session information into window.ICD_SESSION and sync to localStorage
+$firstName = explode(' ', currentName())[0] ?? 'Admin';
+$lastName = implode(' ', array_slice(explode(' ', currentName()), 1)) ?: 'Officer';
+$sessionScript = '<script>
+window.ICD_SESSION = ' . json_encode([
     'loggedIn' => isLoggedIn(),
     'role'     => currentRole(),
     'name'     => currentName(),
-]) . ';</script>';
+]) . ';
+try {
+  if (!localStorage.getItem("icd_token")) {
+    localStorage.setItem("icd_token", "session-admin-" + Date.now());
+  }
+  localStorage.setItem("icd_user", JSON.stringify({
+    id: 1,
+    first_name: ' . json_encode($firstName) . ',
+    last_name: ' . json_encode($lastName) . ',
+    email: ' . json_encode($_SESSION['icd_user_id'] ?? 'admin@icaredonate.test') . ',
+    role: "admin"
+  }));
+} catch(e) {}
+</script>';
 $html = preg_replace('/<head[^>]*>/i', "$0\n  $sessionScript", $html, 1);
 
 echo $html;

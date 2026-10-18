@@ -1,0 +1,12 @@
+[build]
+  publish = "frontend"
+
+[[redirects]]
+  from = "/logout.php"
+  to = "/logout.html"
+  status = 302
+
+[[redirects]]
+  from = "/login.php"
+  to = "/login.html"
+  status = 302

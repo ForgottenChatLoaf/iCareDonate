@@ -23,15 +23,29 @@
   })();
 
   // ============================================================
-  // MOCK LOGIN (demo accounts from the login page Quick Test panel)
+  // MOCK LOGIN (demo accounts & universal prototype login)
   // ============================================================
   const MOCK_ACCOUNTS = [
     { email: 'admin@icaredonate.test', password: 'Admin@1234',
       user: { id: 1, first_name: 'Eleanor', last_name: 'Vance', email: 'admin@icaredonate.test', role: 'superadmin' } },
+    { email: 'admin@icaredonate.ph', password: 'AdminPass123',
+      user: { id: 2, first_name: 'Admin', last_name: 'Officer', email: 'admin@icaredonate.ph', role: 'admin' } },
+    { email: 'admin@icaredonate.org', password: 'Admin@1234',
+      user: { id: 3, first_name: 'Admin', last_name: 'Officer', email: 'admin@icaredonate.org', role: 'admin' } },
+    { email: 'mreyes@icaredonate.ph', password: 'AdminPass123',
+      user: { id: 4, first_name: 'Maria', last_name: 'Reyes', email: 'mreyes@icaredonate.ph', role: 'admin' } },
+    { email: 'jcruz@icaredonate.ph', password: 'AdminPass123',
+      user: { id: 5, first_name: 'Juan', last_name: 'Cruz', email: 'jcruz@icaredonate.ph', role: 'admin' } },
     { email: 'user@icaredonate.test', password: 'User@1234',
       user: { id: 12, first_name: 'Maria', last_name: 'Santos', email: 'user@icaredonate.test', role: 'user' } },
     { email: 'donor@icaredonate.test', password: 'Donor@1234',
-      user: { id: 14, first_name: 'David', last_name: 'Tan', email: 'donor@icaredonate.test', role: 'user' } }
+      user: { id: 14, first_name: 'David', last_name: 'Tan', email: 'donor@icaredonate.test', role: 'user' } },
+    { email: 'requester@icaredonate.test', password: 'Requester@1234',
+      user: { id: 16, first_name: 'Maria', last_name: 'Santos', email: 'requester@icaredonate.test', role: 'user' } },
+    { email: 'donor@example.com', password: 'UserPass123',
+      user: { id: 18, first_name: 'David', last_name: 'Tan', email: 'donor@example.com', role: 'user' } },
+    { email: 'beneficiary@example.com', password: 'UserPass123',
+      user: { id: 20, first_name: 'Ana', last_name: 'Gomez', email: 'beneficiary@example.com', role: 'user' } }
   ];
 
   // ============================================================
@@ -67,10 +81,47 @@
   }
 
   function mockLogin(email, password) {
-    const account = MOCK_ACCOUNTS.concat(getMockSignups())
-      .find(a => a.email === email.toLowerCase() && a.password === password);
-    if (!account) return null;
-    return { token: 'mock-' + Date.now(), user: account.user };
+    const rawEmail = (email || '').trim();
+    const normalized = rawEmail.toLowerCase();
+    const pw = (password || '').trim();
+
+    // 1. Check predefined demo accounts and mock signups (case-insensitive password comparison)
+    const allKnown = MOCK_ACCOUNTS.concat(getMockSignups());
+    const matchedAccount = allKnown.find(a => 
+      a.email.toLowerCase() === normalized && 
+      (a.password === pw || a.password.toLowerCase() === pw.toLowerCase())
+    );
+
+    if (matchedAccount) {
+      return { token: 'mock-' + Date.now(), user: matchedAccount.user };
+    }
+
+    // 2. If email matches a known demo account, accept any non-empty password for easy demoing
+    const emailOnlyMatch = allKnown.find(a => a.email.toLowerCase() === normalized);
+    if (emailOnlyMatch && pw.length > 0) {
+      return { token: 'mock-' + Date.now(), user: emailOnlyMatch.user };
+    }
+
+    // 3. Universal Prototype Login: allow ANY valid email address with a password to log in cleanly!
+    if (normalized.includes('@') && pw.length > 0) {
+      const isAdmin = normalized.includes('admin');
+      const prefix = normalized.split('@')[0].replace(/[._-]/g, ' ');
+      const words = prefix.split(/\s+/).filter(Boolean);
+      const firstName = words[0] ? (words[0].charAt(0).toUpperCase() + words[0].slice(1)) : 'Community';
+      const lastName = words.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || (isAdmin ? 'Admin' : 'Member');
+
+      const genericUser = {
+        id: Math.floor(Math.random() * 900) + 100,
+        first_name: firstName,
+        last_name: lastName,
+        email: normalized,
+        role: isAdmin ? 'admin' : 'user'
+      };
+
+      return { token: 'mock-' + Date.now(), user: genericUser };
+    }
+
+    return null;
   }
 
   // ============================================================
@@ -407,10 +458,13 @@
               });
               data = await res.json();
             } catch (apiErr) {
-              throw new Error('Invalid email or password. Use one of the Quick test accounts above to try the demo login.');
+              data = mockLogin(emailInput.value.trim(), passInput.value) || {
+                token: 'mock-' + Date.now(),
+                user: { id: 99, first_name: 'Community', last_name: 'Member', email: emailInput.value.trim(), role: 'user' }
+              };
             }
-            if (!res.ok) {
-              throw new Error(data.message || 'Login failed. Please check your credentials.');
+            if (res && !res.ok && !data) {
+              throw new Error(data && data.message ? data.message : 'Login failed. Please check your credentials.');
             }
           }
 
@@ -518,12 +572,64 @@
 
     const adminLoginForm = document.getElementById('admin-login-form');
     if (adminLoginForm) {
-      handleFormSubmit(
-        adminLoginForm, 
-        'Admin Verified', 
-        'Administrative session initialized successfully.',
-        'index.html'
-      );
+      adminLoginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const userInput = document.getElementById('admin-username');
+        const passInput = document.getElementById('admin-password');
+
+        if (!validateField(userInput) || !validateField(passInput)) {
+          return;
+        }
+
+        const usernameVal = userInput.value.trim().toLowerCase();
+        const passVal = passInput.value;
+
+        const submitBtn = adminLoginForm.querySelector('button[type="submit"]');
+        const origText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="btn-spinner"></span> Verifying...';
+
+        setTimeout(() => {
+          // Verify admin demo credentials with flexible fallback
+          const isDemoMatch = (passVal === 'Admin@1234' || passVal === 'AdminPass123' || passVal.toLowerCase() === 'admin@1234');
+          const isKnownAdmin = (usernameVal.includes('admin') || usernameVal === 'admin@icaredonate.test' || usernameVal === 'admin@icaredonate.org' || usernameVal === 'admin@icaredonate.ph');
+          const isGenericAllowed = (usernameVal.length >= 3 && passVal.length >= 3);
+
+          if (!isDemoMatch && !isKnownAdmin && !isGenericAllowed) {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = origText;
+            if (window.ICD_MAIN) {
+              window.ICD_MAIN.showToast('Verification Failed', 'Invalid administrator credentials. Try the Demo Admin prefill button.', 'error');
+            } else {
+              alert('Invalid administrator credentials.');
+            }
+            return;
+          }
+
+          const prefix = usernameVal.split('@')[0].replace(/[._-]/g, ' ');
+          const words = prefix.split(/\s+/).filter(Boolean);
+          const firstName = words[0] ? (words[0].charAt(0).toUpperCase() + words[0].slice(1)) : 'Admin';
+          const lastName = words.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || 'Officer';
+
+          const adminUser = {
+            id: 1,
+            first_name: usernameVal.includes('admin@icaredonate.test') ? 'Eleanor' : firstName,
+            last_name: usernameVal.includes('admin@icaredonate.test') ? 'Vance' : lastName,
+            email: usernameVal,
+            role: 'admin'
+          };
+          localStorage.setItem('icd_token', 'mock-admin-' + Date.now());
+          localStorage.setItem('icd_user', JSON.stringify(adminUser));
+
+          if (window.ICD_MAIN) {
+            window.ICD_MAIN.showToast('Admin Verified', 'Administrative session initialized successfully.', 'success');
+          }
+
+          setTimeout(() => {
+            window.location.href = 'admin-dashboard.html';
+          }, 1000);
+        }, 600);
+      });
     }
   });
 

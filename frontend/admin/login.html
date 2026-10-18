@@ -218,10 +218,10 @@
   </a>
   <div class="pub-nav__links">
     <a href="../index.html" class="pub-nav__link">Home</a>
-    <a href="../pages/browse.html" class="pub-nav__link">Browse Donations</a>
-    <a href="../pages/register.html" class="pub-nav__cta">Create Account</a>
+    <a href="../donations.html" class="pub-nav__link">Community Donations</a>
+    <a href="../signup.html" class="pub-nav__cta">Create Account</a>
   </div>
-      <a href="#" class="sidebar-link sidebar-link--logout" id="sidebarLogoutBtn" data-nav="logout">
+      <a href="../logout.html" class="sidebar-link sidebar-link--logout" id="sidebarLogoutBtn" data-nav="logout">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
         <span>Logout</span>
       </a>
@@ -311,7 +311,7 @@
             <input type="checkbox" id="remember" name="remember">
             Remember me for 30 days
           </label>
-          <a href="../pages/forgot-password.html" class="forgot-link">Forgot password?</a>
+          <a href="../forgot-password.html" class="forgot-link">Forgot password?</a>
         </div>
 
         <button type="submit" class="btn-login" id="login-btn">Sign In</button>
@@ -321,7 +321,7 @@
       <div class="divider"><div class="divider-line"></div><span class="divider-text">or</span><div class="divider-line"></div></div>
 
       <div class="register-row">
-        New to iCareDonate? <a href="../pages/register.html">Create a free account</a>
+        New to iCareDonate? <a href="../signup.html">Create a free account</a>
       </div>
 
       <!-- DEV QUICK-LOGIN PANEL -->
@@ -378,18 +378,33 @@
 
       // Mock credential check
       const MOCK_USERS = [
-        { email:'admin@icaredonate.ph',        pw:'AdminPass123', role:'admin' },
-        { email:'mreyes@icaredonate.ph',        pw:'AdminPass123', role:'admin' },
-        { email:'jcruz@icaredonate.ph',         pw:'AdminPass123', role:'admin' },
-        { email:'donor@example.com',            pw:'UserPass123',  role:'donor' },
-        { email:'beneficiary@example.com',      pw:'UserPass123',  role:'beneficiary' },
+        { email:'admin@icaredonate.test',       pw:'Admin@1234',    role:'admin', name:'Eleanor Vance' },
+        { email:'admin@icaredonate.ph',         pw:'AdminPass123',  role:'admin', name:'Admin Officer' },
+        { email:'mreyes@icaredonate.ph',        pw:'AdminPass123',  role:'admin', name:'Maria Reyes' },
+        { email:'jcruz@icaredonate.ph',         pw:'AdminPass123',  role:'admin', name:'Juan Cruz' },
+        { email:'user@icaredonate.test',        pw:'User@1234',     role:'user',  name:'Maria Santos' },
+        { email:'donor@icaredonate.test',       pw:'Donor@1234',    role:'user',  name:'David Tan' },
+        { email:'donor@example.com',            pw:'UserPass123',   role:'donor', name:'David Tan' },
+        { email:'beneficiary@example.com',      pw:'UserPass123',   role:'beneficiary', name:'Ana Gomez' },
       ];
-      const match = MOCK_USERS.find(u => u.email === email && u.pw === pw);
+      const match = MOCK_USERS.find(u => u.email.toLowerCase() === email.toLowerCase() && u.pw === pw);
 
       if (!match) {
         showAlert('error', 'Invalid email or password. Please try again.');
         return;
       }
+
+      try {
+        localStorage.setItem('icd_token', 'mock-' + Date.now());
+        const parts = (match.name || 'Admin Officer').split(' ');
+        localStorage.setItem('icd_user', JSON.stringify({
+          id: 1,
+          first_name: parts[0] || 'Admin',
+          last_name: parts.slice(1).join(' ') || 'Officer',
+          email: match.email,
+          role: match.role === 'admin' ? 'admin' : 'user'
+        }));
+      } catch(err) {}
 
       showAlert('success', 'Login successful! Redirecting...');
       setTimeout(() => {

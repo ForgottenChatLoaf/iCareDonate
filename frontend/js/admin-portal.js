@@ -111,13 +111,19 @@
       document.body.appendChild(modal);
 
       function closeModal() {
+        modal.classList.remove('open');
         modal.style.display = 'none';
+        modal.style.opacity = '0';
+        modal.style.visibility = 'hidden';
         document.body.style.overflow = '';
       }
 
       function openModal(e) {
         if (e) e.preventDefault();
+        modal.classList.add('open');
         modal.style.display = 'flex';
+        modal.style.opacity = '1';
+        modal.style.visibility = 'visible';
         document.body.style.overflow = 'hidden';
       }
 
@@ -135,23 +141,79 @@
           localStorage.removeItem('icd_user');
           sessionStorage.clear();
         } catch(e) {}
-        window.location.href = '../../logout.php';
+        const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+        window.location.href = isSubdir ? '../logout.html' : 'logout.html';
       });
 
       // Bind all logout triggers
       document.addEventListener('click', function(e) {
-        const trigger = e.target.closest('.sidebar-link--logout, #sidebarLogoutBtn, .btn-logout, a.dropdown-danger, a[href*="logout.php"], a[href*="logout.html"], a[href*="login.html"]');
-        if (trigger && (trigger.classList.contains('sidebar-link--logout') || trigger.id === 'sidebarLogoutBtn' || trigger.classList.contains('dropdown-danger') || trigger.textContent.toLowerCase().includes('log out') || trigger.textContent.toLowerCase().includes('logout'))) {
+        const trigger = e.target.closest('.sidebar-link--logout, #sidebarLogoutBtn, .btn-logout, a.dropdown-danger, a[href*="logout.php"], a[href*="logout.html"]');
+        if (trigger) {
           openModal(e);
         }
       });
     }
   }
 
+  // Auth & Role Guard for Admin Portal
+  function checkAdminSession() {
+    // If PHP session is injected into window.ICD_SESSION, sync it to localStorage
+    if (window.ICD_SESSION && window.ICD_SESSION.loggedIn) {
+      try {
+        if (!localStorage.getItem('icd_token')) {
+          localStorage.setItem('icd_token', 'session-admin-' + Date.now());
+        }
+        if (!localStorage.getItem('icd_user')) {
+          const parts = (window.ICD_SESSION.name || 'Admin Officer').split(' ');
+          localStorage.setItem('icd_user', JSON.stringify({
+            id: 1,
+            first_name: parts[0] || 'Admin',
+            last_name: parts.slice(1).join(' ') || 'Officer',
+            email: 'admin@icaredonate.test',
+            role: window.ICD_SESSION.role || 'admin'
+          }));
+        }
+      } catch(e) {}
+    }
+
+    let token = null;
+    let user = null;
+    try {
+      token = localStorage.getItem('icd_token');
+      user = JSON.parse(localStorage.getItem('icd_user') || 'null');
+    } catch(e) {}
+
+    if (!token || !user) {
+      const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+      const page = window.location.pathname.split('/').pop() || 'index.html';
+      const target = isSubdir ? `admin/${page}${window.location.search}` : page;
+      window.location.href = isSubdir ? `../login.html?redirect=${encodeURIComponent(target)}` : `login.html?redirect=${encodeURIComponent(target)}`;
+      return false;
+    }
+
+    if (user.role !== 'admin' && user.role !== 'superadmin') {
+      const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+      window.location.href = isSubdir ? '../user/dashboard.html' : 'user-dashboard.html';
+      return false;
+    }
+
+    const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Admin Officer';
+    const initials = ((user.first_name ? user.first_name[0] : '') + (user.last_name ? user.last_name[0] : '')).toUpperCase() || 'AO';
+
+    document.querySelectorAll('#admin-topbar-name, #admin-sidebar-name, .admin-user-name').forEach(el => el.textContent = fullName);
+    document.querySelectorAll('#admin-avatar-initials, .admin-avatar').forEach(el => {
+      if (el.tagName === 'SPAN' || el.classList.contains('admin-avatar-initials')) el.textContent = initials;
+    });
+
+    return true;
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
-    setupAdminNav();
-    setupAdminTopbarUser();
-    initLogoutModal();
+    if (checkAdminSession()) {
+      setupAdminNav();
+      setupAdminTopbarUser();
+      initLogoutModal();
+    }
   });
 
 })();

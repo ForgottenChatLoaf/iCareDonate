@@ -28,7 +28,24 @@ if (ini_get('session.use_cookies')) {
 
 // Destroy the session data on the server
 session_destroy();
-
-// Redirect to login page
-header('Location: ' . _icd_root() . 'login.php');
-exit;
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Logging Out | iCareDonate</title>
+  <script>
+    try {
+      localStorage.removeItem('icd_token');
+      localStorage.removeItem('icd_user');
+      sessionStorage.clear();
+    } catch(e) {}
+    window.location.replace('<?= _icd_root() ?>login.php');
+  </script>
+  <noscript>
+    <meta http-equiv="refresh" content="0; url=<?= _icd_root() ?>login.php">
+  </noscript>
+</head>
+<body>
+</body>
+</html>
