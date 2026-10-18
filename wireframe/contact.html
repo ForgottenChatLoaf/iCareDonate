@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us | iCareDonate</title>
+  <meta name="description" content="Have a question or need assistance with donations or requests? Get in touch.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/wireframe-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="../frontend/css/variables.css">
+  <link rel="stylesheet" href="../frontend/css/base.css">
+  <link rel="stylesheet" href="../frontend/css/layout.css">
+  <link rel="stylesheet" href="../frontend/css/components.css">
+  <link rel="stylesheet" href="css/wireframe.css">
+</head>
+<body>
+
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate: Home">
+        <img src="assets/images/wireframe-logo.svg" class="logo-icon" width="100" height="32" alt="[Logo Placeholder]">
+        
+      </a>
+      <nav class="nav-public__links" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">[Nav: Home]</a>
+        <a href="about.html" class="nav-link">[Nav: About us]</a>
+        <a href="categories.html" class="nav-link">[Nav: Ways to Help]</a>
+        <a href="how-it-works.html" class="nav-link">[Nav: How it works]</a>
+        <a href="contact.html" class="nav-link nav-link--active">[Nav: Contact us]</a>
+      </nav>
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">[Button: Log in / Sign up]</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
+        <a href="index.html" class="mobile-link">[Nav: Home]</a>
+        <a href="about.html" class="mobile-link">[Nav: About us]</a>
+        <a href="categories.html" class="mobile-link">[Nav: Ways to Help]</a>
+        <a href="how-it-works.html" class="mobile-link">[Nav: How it works]</a>
+        <a href="contact.html" class="mobile-link mobile-link--active">[Nav: Contact us]</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">[Button: Log in / Sign up]</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="padding: 40px 0 80px;">
+    <div class="container" style="max-width: 960px; margin: 0 auto; padding: 0 20px;">
+
+      <div style="margin-bottom: 28px;">
+        <h1 style="margin-bottom: 8px;">[Main Heading: Contact us]</h1>
+        <p class="lead" style="margin-bottom: 0;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+      </div>
+
+      <!-- Success Message (hidden by default, shown via JS after submit) -->
+      <div id="contact-success" class="card" style="padding: 48px; text-align: center; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm); display: none;">
+        <div style="color: var(--cobalt); margin-bottom: 16px;"><i data-lucide="circle-check-big" style="width:52px;height:52px;"></i></div>
+        <h2 style="font-size: 24px; color: var(--cobalt); margin-bottom: 10px;">[Section Heading: Thanks. We received your inquiry.]</h2>
+        <p style="color: var(--slate); font-size: 15.5px; margin-bottom: 24px;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+        <a href="index.html" class="btn btn-primary" style="border-radius: 999px; padding: 12px 28px;">[Button: Return to Homepage]</a>
+      </div>
+
+      <!-- Contact Form -->
+      <div id="contact-form-wrap">
+        <div style="display: grid; grid-template-columns: 320px 1fr; gap: 24px;">
+          <!-- Left Column: Contact Cards -->
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+                <i data-lucide="phone" style="width: 18px; height: 18px;"></i>
+                <b style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Phone number</b>
+              </div>
+              <p style="font-size: 14px; color: var(--slate); margin: 0;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+            </div>
+
+            <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+                <i data-lucide="map-pin" style="width: 18px; height: 18px;"></i>
+                <b style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Address / location</b>
+              </div>
+              <p style="font-size: 14px; color: var(--slate); margin: 0;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+            </div>
+
+            <div class="card" style="padding: 22px 24px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+              <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px; color: var(--cobalt);">
+                <i data-lucide="mail" style="width: 18px; height: 18px;"></i>
+                <b style="font-size: 14.5px; color: var(--navy); font-family: var(--font-heading);">Email address</b>
+              </div>
+              <p style="font-size: 14px; color: var(--slate); margin: 0;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+            </div>
+          </div>
+
+          <!-- Right Column: Inquiry Form -->
+          <div class="card" style="padding: 32px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
+            <h3 style="font-size: 22px; color: var(--cobalt); margin-bottom: 20px;">[Card Title: Inquiry form]</h3>
+
+            <form id="contact-inquiry-form" method="POST">
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px;">
+                <div class="form-group">
+                  <label class="form-label" for="name">[Field Label: Name]</label>
+                  <input type="text" id="name" name="name" class="form-input" required placeholder="[Enter: Your full name]">
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="email">[Field Label: Email]</label>
+                  <input type="email" id="email" name="email" class="form-input" required placeholder="[Enter: you@example.com]">
+                </div>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 14px;">
+                <label class="form-label" for="subject">[Field Label: Type]</label>
+                <select id="subject" name="subject" class="form-input" required>
+                  <option value="General">General Inquiry</option>
+                  <option value="Donation question">Donation question</option>
+                  <option value="Request question">Request question</option>
+                  <option value="Item verification">Item verification</option>
+                  <option value="Pickup coordination">Pickup coordination</option>
+                  <option value="Safety concern">Safety concern</option>
+                  <option value="Technical issue">Technical issue</option>
+                </select>
+              </div>
+
+              <div class="form-group" style="margin-bottom: 20px;">
+                <label class="form-label" for="message">[Field Label: Message]</label>
+                <textarea id="message" name="message" class="form-input" rows="4" required placeholder="[Enter: Write your inquiry message here...]"></textarea>
+              </div>
+
+              <button type="submit" class="btn btn-primary" style="padding: 10px 24px; font-size: 14.5px;">[Button: Send inquiry]</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <!-- Col 1: Brand & Social -->
+        <div class="footer-public__col footer-public__col--brand">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate: Home">
+            <img src="assets/images/wireframe-logo.svg" class="logo-icon" width="100" height="32" alt="[Logo Placeholder]">
+            
+          </a>
+          <p class="footer-tagline">[Short Description: Give what you can. Help where it matters.]</p>
+          <div class="footer-social" aria-label="Official Social Media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Facebook" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: Explore]</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">[Link: Browse Donations]</a></li>
+            <li><a href="categories.html">[Link: Ways to Help]</a></li>
+            <li><a href="how-it-works.html">[Link: How It Works]</a></li>
+            <li><a href="signup.html?redirect=user/offer-donation.html">[Link: Start Donating]</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: About]</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">[Link: About Us]</a></li>
+            <li><a href="mission.html">[Link: Our Mission]</a></li>
+            <li><a href="careers.html">[Link: Careers &amp; Volunteers]</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: Help &amp; Legal]</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">[Link: Help Center]</a></li>
+            <li><a href="faqs.html">[Link: Guides and FAQs]</a></li>
+            <li><a href="contact.html">[Link: Contact Support]</a></li>
+            <li><a href="terms.html">[Link: Terms of Service]</a></li>
+            <li><a href="privacy.html">[Link: Privacy Policy]</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>[Copyright: &copy; 2026 iCareDonate. All rights reserved.]</span>
+        <span class="footer-support-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            style="display:inline;vertical-align:-2px;margin-right:6px;">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <a href="mailto:icaredonate.team@gmail.com">[Email: icaredonate.team@gmail.com]</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../frontend/js/theme.js"></script>
+  <script src="../frontend/js/nav.js"></script>
+  <script src="../frontend/js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if(window.lucide) lucide.createIcons();
+
+      // Contact form: submit via fetch to PHP API
+      const form = document.getElementById('contact-inquiry-form');
+      if (form) {
+        form.addEventListener('submit', async function(e) {
+          e.preventDefault();
+          const submitBtn = form.querySelector('button[type="submit"]');
+          const origText = submitBtn ? submitBtn.innerHTML : 'Send inquiry';
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Sending...';
+          }
+
+          const data = new FormData(form);
+          const submittedEmail = form.email ? form.email.value.trim() : '';
+          // Resolve API base dynamically — consistent with forms.js and data.js
+          var contactApiBase = (function() {
+            var origin = window.location.origin;
+            if (window.location.protocol === 'file:') {
+              return 'http://localhost/CommunityDono/api/v1';
+            }
+            if (window.location.pathname.includes('/CommunityDono/')) {
+              return origin + '/CommunityDono/api/v1';
+            }
+            return '/api/v1';
+          })();
+          const targetUrl = contactApiBase + '/contact.php';
+
+          try {
+            const resp = await fetch(targetUrl, {
+              method: 'POST',
+              body: data,
+              headers: { 'Accept': 'application/json' }
+            });
+            const result = await resp.json().catch(() => ({}));
+
+            if (resp.ok) {
+              const formWrap = document.getElementById('contact-form-wrap');
+              const successBox = document.getElementById('contact-success');
+              if (formWrap) formWrap.style.display = 'none';
+              if (successBox) {
+                const emailTarget = successBox.querySelector('strong');
+                if (emailTarget && submittedEmail) {
+                  emailTarget.textContent = submittedEmail;
+                }
+                successBox.style.display = 'block';
+              }
+              if(window.lucide) lucide.createIcons();
+            } else {
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = origText;
+              }
+              alert(result.message || 'Failed to submit inquiry. Please complete all fields.');
+            }
+          } catch(err) {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = origText;
+            }
+            alert('Network error. Failed to send inquiry. Please try again.');
+          }
+        });
+      }
+    });
+  </script>
+  <script src="js/wireframe.js"></script>
+</body>
+</html>

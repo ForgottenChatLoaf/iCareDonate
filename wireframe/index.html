@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Page Title: iCareDonate — Give what you can. Help where it matters.]</title>
+  <meta name="description"
+    content="[Wireframe Documentation: iCareDonate connects verified donors with individuals and communities who need essential physical resources with dignity and care.]">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Immediate Theme Initializer -->
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch (e) { }
+  </script>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/wireframe-logo.svg">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="../frontend/css/variables.css">
+  <link rel="stylesheet" href="../frontend/css/base.css">
+  <link rel="stylesheet" href="../frontend/css/layout.css">
+  <link rel="stylesheet" href="../frontend/css/components.css">
+  <link rel="stylesheet" href="../frontend/css/pages/home.css">
+  <link rel="stylesheet" href="css/wireframe.css">
+</head>
+
+<body>
+
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- ============================================================
+       PUBLIC NAVIGATION BAR
+       ============================================================ -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+
+      <!-- Brand Logo -->
+      <a href="index.html" class="logo" aria-label="[Logo Placeholder]">
+        <img src="assets/images/wireframe-logo.svg" class="logo-icon" width="100" height="32" alt="[Logo Placeholder]">
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link active">[Nav: Home]</a>
+        <a href="about.html" class="nav-link">[Nav: About us]</a>
+        <a href="categories.html" class="nav-link">[Nav: Ways to Help]</a>
+        <a href="how-it-works.html" class="nav-link">[Nav: How it works]</a>
+        <a href="contact.html" class="nav-link">[Nav: Contact us]</a>
+      </nav>
+
+      <!-- Action Buttons -->
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">[Button: Log in / Sign up]</a>
+      </div>
+
+      <!-- Mobile Hamburger Button -->
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu"
+        aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+      </button>
+
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link active">[Nav: Home]</a>
+        <a href="about.html" class="mobile-link">[Nav: About us]</a>
+        <a href="categories.html" class="mobile-link">[Nav: Ways to Help]</a>
+        <a href="how-it-works.html" class="mobile-link">[Nav: How it works]</a>
+        <a href="contact.html" class="mobile-link">[Nav: Contact us]</a>
+        <a href="signup.html?redirect=user/offer-donation.html" class="mobile-link">[Button: Start Donating]</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">[Button: Log in / Sign up]</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+       ============================================================ -->
+  <main id="main-content" class="main-content">
+    <div class="container">
+
+      <!-- Hero Section -->
+      <section class="hero reveal-on-scroll">
+        <div>
+          <div class="hero-badge-wrap">
+            <span class="logo">
+              <img src="assets/images/wireframe-logo.svg" class="logo-icon" width="80" height="26" alt="[Logo Placeholder]">
+            </span>
+            <span class="badge badge-sky">
+              <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              </svg>
+              [Badge: Verified Giving]
+            </span>
+          </div>
+
+          <h1 class="hero-title">[Main Heading: Give with care. Receive with dignity.]</h1>
+          <p class="hero-lead">
+            [Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.]
+          </p>
+
+          <div class="hero-actions">
+            <a href="signup.html?redirect=user/offer-donation.html" id="hero-donate-btn" class="btn btn-donate btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 12 20 22 4 22 4 12" />
+                <rect width="20" height="5" x="2" y="7" />
+                <line x1="12" x2="12" y1="22" y2="7" />
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+              </svg>
+              [Button: Donate now]
+            </a>
+            <a href="signup.html?redirect=user/request-donation.html" id="hero-request-btn" class="btn btn-primary btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" x2="16.65" y1="21" y2="16.65" />
+              </svg>
+              [Button: Request help]
+            </a>
+            <a href="categories.html" id="hero-categories-btn" class="btn btn-outline btn-lg" style="display:inline-flex;align-items:center;gap:8px;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="7" height="7" x="3" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="3" rx="1" />
+                <rect width="7" height="7" x="14" y="14" rx="1" />
+                <rect width="7" height="7" x="3" y="14" rx="1" />
+              </svg>
+              [Button: Ways to Help]
+            </a>
+          </div>
+
+          <div class="hero-trust">
+            <span class="hero-trust-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                <polyline points="22 4 12 14.01 9 11.01" />
+              </svg>
+              [Indicator: Verified requests]
+            </span>
+            <span class="hero-trust-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+              </svg>
+              [Indicator: 100% Free platform]
+            </span>
+            <span class="hero-trust-item">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              [Indicator: Direct local pick-up]
+            </span>
+          </div>
+        </div>
+
+        <!-- Hero Graphic Placeholder -->
+        <div class="hero-frame">
+          <div class="wf-img-placeholder hero-frame-img" style="position: absolute; inset: 0; width: 100%; height: 100%;">
+            [Hero Image Here]
+          </div>
+          <div class="hero-frame-overlay">
+            <div class="hero-frame-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+              </svg>
+              [Badge: DIRECT COMMUNITY IMPACT]
+            </div>
+            <p class="hero-frame-desc">
+              [Short Description: Bringing neighbors together through transparent, dignified giving across local communities.]
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 3-Step Process -->
+      <section class="steps-section reveal-on-scroll">
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">[1]</div>
+            <h3>[Step 1: Post]</h3>
+            <p>[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donors list items they wish to share with verified proof.]</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">[2]</div>
+            <h3>[Step 2: Admin verifies]</h3>
+            <p>[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Every post and request is thoroughly inspected and verified.]</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">[3]</div>
+            <h3>[Step 3: Match and claim]</h3>
+            <p>[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Matched community members coordinate dignified handovers.]</p>
+          </div>
+        </div>
+        <div class="text-center">
+          <a href="how-it-works.html" class="btn btn-outline">
+            [Button: See how it works &rarr;]
+          </a>
+        </div>
+      </section>
+
+      <!-- Platform Impact Statistics -->
+      <section class="impact-band reveal-on-scroll">
+        <div>
+          <div class="impact-stat-number" id="stat-donations">[00+]</div>
+          <div class="impact-stat-label">[Metric: Approved Donations]</div>
+        </div>
+        <div>
+          <div class="impact-stat-number" id="stat-claimed">[00+]</div>
+          <div class="impact-stat-label">[Metric: Items Claimed &amp; Received]</div>
+        </div>
+        <div>
+          <div class="impact-stat-number" id="stat-users">[00+]</div>
+          <div class="impact-stat-label">[Metric: Active Community Members]</div>
+        </div>
+      </section>
+
+      <!-- Giving Categories Preview -->
+      <section class="reveal-on-scroll">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">[Section Heading: Ways to Help &amp; Community Needs]</h2>
+            <p class="section-subtitle">[Subheading: Essential aid areas where your contribution directly changes lives.]</p>
+          </div>
+          <a href="categories.html" class="btn btn-outline">[Button: Explore all &rarr;]</a>
+        </div>
+
+        <div class="category-home-grid" id="home-categories-grid">
+
+          <!-- Category 1: Emergency -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--emergency">
+              <div>
+                <div class="category-card__tag">[Area of Need]</div>
+                <h3 class="category-card__title">[Category 1:<br>Emergency &amp; Relief]</h3>
+              </div>
+              <div class="category-card__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path
+                    d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z" />
+                </svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">[Category Name: Emergency &amp; Disaster Relief]</h4>
+              <p class="category-card__desc">[Short Description: Essential immediate sustenance, clean water, and shelter supplies for urgent disaster relief.]</p>
+              <div class="category-card__accepted">
+                <strong>[Accepted]:</strong> [Food packs, canned goods, blankets]
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=9" class="category-card__browse-link">[Link: Browse items &rarr;]</a>
+                <span class="badge" style="font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="9">[Badge: Available]</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=other-essentials" class="btn btn-primary btn-block category-action-btn" data-category="other-essentials" data-category-name="Emergency &amp; Disaster Relief">
+                [Button: Donate / Request]
+              </a>
+            </div>
+          </article>
+
+          <!-- Category 2: Healthcare -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--medical">
+              <div>
+                <div class="category-card__tag">[Area of Need]</div>
+                <h3 class="category-card__title">[Category 2:<br>Healthcare &amp; Hygiene]</h3>
+              </div>
+              <div class="category-card__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path
+                    d="M4.8 2.3A.3.3 0 1 0 5 2H4a2 2 0 0 0-2 2v5a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6V4a2 2 0 0 0-2-2h-1a.2.2 0 1 0 .3.3" />
+                  <path d="M8 15v1a6 6 0 0 0 6 6v0a6 6 0 0 0 6-6v-4" />
+                  <circle cx="20" cy="10" r="2" />
+                </svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">[Category Name: Healthcare &amp; Hygiene Kits]</h4>
+              <p class="category-card__desc">[Short Description: Hygiene and basic wellness kits supporting vulnerable community members and seniors.]</p>
+              <div class="category-card__accepted">
+                <strong>[Accepted]:</strong> [Hygiene packs, first-aid, vitamins]
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=4" class="category-card__browse-link">[Link: Browse items &rarr;]</a>
+                <span class="badge" style="font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="4">[Badge: Available]</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=medical-first-aid" class="btn btn-primary btn-block category-action-btn" data-category="medical-first-aid" data-category-name="Healthcare &amp; Hygiene">
+                [Button: Donate / Request]
+              </a>
+            </div>
+          </article>
+
+          <!-- Category 3: Education -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--education">
+              <div>
+                <div class="category-card__tag">[Area of Need]</div>
+                <h3 class="category-card__title">[Category 3:<br>Education &amp; Youth]</h3>
+              </div>
+              <div class="category-card__icon">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                  <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+                </svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">[Category Name: Education &amp; Youth Support]</h4>
+              <p class="category-card__desc">[Short Description: Learning materials, books, and backpacks empowering young students in local schools.]</p>
+              <div class="category-card__accepted">
+                <strong>[Accepted]:</strong> [School bags, notebooks, tablets]
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=2" class="category-card__browse-link">[Link: Browse items &rarr;]</a>
+                <span class="badge" style="font-size: 11px; padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="2">[Badge: Available]</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=school-supplies" class="btn btn-primary btn-block category-action-btn" data-category="school-supplies" data-category-name="Education &amp; Youth Support">
+                [Button: Donate / Request]
+              </a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- Recently Approved Donations Preview -->
+      <section class="reveal-on-scroll">
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">[Section Heading: Recently Approved Donations]</h2>
+            <p class="section-subtitle">[Subheading: Verified supplies available for community request and claim.]</p>
+          </div>
+          <a href="donations.html" class="btn btn-outline">[Button: Browse all &rarr;]</a>
+        </div>
+
+        <div id="home-donations-preview" class="donations-home-grid">
+          <!-- Item Card 1 -->
+          <div class="card" style="border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); overflow: hidden; display: flex; flex-direction: column; padding: 0;">
+            <div style="height: 170px; position: relative; overflow: hidden; background: var(--surface-soft);">
+              <div class="wf-img-placeholder" style="width: 100%; height: 100%;">[Item Image Placeholder]</div>
+              <span style="position: absolute; top: 12px; left: 12px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px;">[Category]</span>
+              <span style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px;">[0 available]</span>
+            </div>
+            <div style="padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge" style="font-size: 11px; margin-bottom: 8px; display: inline-block;">[Badge: Verified Donor]</span>
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;"><a href="donation-details.html?id=1">[Item Title Placeholder]</a></h3>
+                <p style="font-size: 13.5px; margin-bottom: 16px;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+              </div>
+              <div>
+                <a href="donation-details.html?id=1" class="btn btn-outline btn-block">[Button: View Details]</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item Card 2 -->
+          <div class="card" style="border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); overflow: hidden; display: flex; flex-direction: column; padding: 0;">
+            <div style="height: 170px; position: relative; overflow: hidden; background: var(--surface-soft);">
+              <div class="wf-img-placeholder" style="width: 100%; height: 100%;">[Item Image Placeholder]</div>
+              <span style="position: absolute; top: 12px; left: 12px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px;">[Category]</span>
+              <span style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px;">[0 available]</span>
+            </div>
+            <div style="padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge" style="font-size: 11px; margin-bottom: 8px; display: inline-block;">[Badge: Verified Donor]</span>
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;"><a href="donation-details.html?id=2">[Item Title Placeholder]</a></h3>
+                <p style="font-size: 13.5px; margin-bottom: 16px;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+              </div>
+              <div>
+                <a href="donation-details.html?id=2" class="btn btn-outline btn-block">[Button: View Details]</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Item Card 3 -->
+          <div class="card" style="border-radius: 20px; border: 1px solid var(--sky); background: var(--surface); overflow: hidden; display: flex; flex-direction: column; padding: 0;">
+            <div style="height: 170px; position: relative; overflow: hidden; background: var(--surface-soft);">
+              <div class="wf-img-placeholder" style="width: 100%; height: 100%;">[Item Image Placeholder]</div>
+              <span style="position: absolute; top: 12px; left: 12px; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 999px;">[Category]</span>
+              <span style="position: absolute; bottom: 12px; right: 12px; font-size: 12px; font-weight: 700; padding: 4px 12px; border-radius: 999px;">[0 available]</span>
+            </div>
+            <div style="padding: 20px 22px 22px; flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+              <div>
+                <span class="badge" style="font-size: 11px; margin-bottom: 8px; display: inline-block;">[Badge: Verified Donor]</span>
+                <h3 style="font-size: 18px; font-weight: 700; margin-bottom: 8px;"><a href="donation-details.html?id=3">[Item Title Placeholder]</a></h3>
+                <p style="font-size: 13.5px; margin-bottom: 16px;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+              </div>
+              <div>
+                <a href="donation-details.html?id=3" class="btn btn-outline btn-block">[Button: View Details]</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Ready to Make a Difference CTA Banner -->
+      <section class="cta-banner reveal-on-scroll">
+        <div class="cta-banner-content">
+          <div class="cta-banner-tag">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+            [Badge: Join the Community]
+          </div>
+          <h2 class="cta-banner-title">[Section Heading: Ready to make a difference?]</h2>
+          <p class="cta-banner-desc">[Lorem ipsum dolor sit amet, consectetur adipiscing elit. Whether you have something to share or something your family needs, connect directly with your community.]</p>
+          <div class="cta-banner-actions">
+            <a href="signup.html?redirect=user/offer-donation.html" id="home-start-donating-btn" class="btn btn-donate btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 12 20 22 4 22 4 12" />
+                <rect width="20" height="5" x="2" y="7" />
+                <line x1="12" x2="12" y1="22" y2="7" />
+                <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+              </svg>
+              [Button: Start donating]
+            </a>
+            <a href="donations.html" class="btn btn-outline-white btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" x2="16.65" y1="21" y2="16.65" />
+              </svg>
+              [Button: Browse donations]
+            </a>
+          </div>
+          <p class="cta-banner-auth-hint" style="margin-top: 14px; font-size: 14px;">
+            [Account Prompt: Already have an account? <a href="login.html?redirect=user/offer-donation.html" style="text-decoration: underline; font-weight: 600;">Log in here</a>]
+          </p>
+          <p class="cta-banner-footnote">
+            <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            </svg>
+            [Footnote: 100% free &bull; Admin-verified &bull; Direct local pick-ups]
+          </p>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       PUBLIC FOOTER
+       ============================================================ -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <!-- Col 1: Brand & Social -->
+        <div class="footer-public__col footer-public__col--brand">
+          <a href="index.html" class="logo footer-logo" aria-label="[Logo Placeholder]">
+            <img src="assets/images/wireframe-logo.svg" class="logo-icon" width="100" height="32" alt="[Logo Placeholder]">
+          </a>
+          <p class="footer-tagline">[Short Description: Give what you can. Help where it matters.]</p>
+          <div class="footer-social" aria-label="Official Social Media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Facebook" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: Explore]</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">[Link: Browse Donations]</a></li>
+            <li><a href="categories.html">[Link: Ways to Help]</a></li>
+            <li><a href="how-it-works.html">[Link: How It Works]</a></li>
+            <li><a href="signup.html?redirect=user/offer-donation.html">[Link: Start Donating]</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: About]</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">[Link: About Us]</a></li>
+            <li><a href="mission.html">[Link: Our Mission]</a></li>
+            <li><a href="careers.html">[Link: Careers &amp; Volunteers]</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: Help &amp; Legal]</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">[Link: Help Center]</a></li>
+            <li><a href="faqs.html">[Link: Guides and FAQs]</a></li>
+            <li><a href="contact.html">[Link: Contact Support]</a></li>
+            <li><a href="terms.html">[Link: Terms of Service]</a></li>
+            <li><a href="privacy.html">[Link: Privacy Policy]</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>[Copyright: &copy; 2026 iCareDonate. All rights reserved.]</span>
+        <span class="footer-support-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            style="display:inline;vertical-align:-2px;margin-right:6px;">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <a href="mailto:icaredonate.team@gmail.com">[Email: icaredonate.team@gmail.com]</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/wireframe.js"></script>
+</body>
+
+</html>

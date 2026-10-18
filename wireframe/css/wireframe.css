@@ -1,0 +1,747 @@
+/* ============================================================
+   iCareDonate — Wireframe Stylesheet (wireframe/css/wireframe.css)
+   Strict Monochrome Wireframe Palette:
+     - White:       #FFFFFF
+     - Light Gray:  #F2F2F2
+     - Medium Gray: #CCCCCC
+     - Dark Gray:   #666666
+     - Black:       #000000
+   ============================================================ */
+
+/* ── 1. Color Tokens & Theme Overrides ─────────────────────── */
+:root {
+  /* Wireframe Palette */
+  --cobalt:           #000000 !important;
+  --cobalt-dark:      #333333 !important;
+  --cobalt-light:     #666666 !important;
+  --coral:            #000000 !important;
+  --coral-dark:       #333333 !important;
+  --coral-light:      #F2F2F2 !important;
+  --amber:            #666666 !important;
+  --amber-dark:       #000000 !important;
+
+  /* Neutrals */
+  --cream:            #FFFFFF !important;
+  --sky:              #CCCCCC !important;
+  --navy:             #000000 !important;
+  --slate:            #666666 !important;
+
+  /* Surfaces & Text */
+  --bg:               #FFFFFF !important;
+  --surface:          #FFFFFF !important;
+  --surface-soft:     #F2F2F2 !important;
+  --surface-alt:      #F2F2F2 !important;
+  --text:             #000000 !important;
+  --text-soft:        #333333 !important;
+  --text-muted:       #666666 !important;
+  --text-inverse:     #FFFFFF !important;
+  --border:           #CCCCCC !important;
+  --border-strong:    #666666 !important;
+  --focus-ring:       rgba(0, 0, 0, 0.25) !important;
+
+  /* Status Colors (Monochrome) */
+  --approved:         #000000 !important;
+  --approved-bg:      #F2F2F2 !important;
+  --pending:          #666666 !important;
+  --pending-bg:       #F2F2F2 !important;
+  --rejected:         #000000 !important;
+  --rejected-bg:      #F2F2F2 !important;
+  --success:          #000000 !important;
+  --success-bg:       #F2F2F2 !important;
+
+  /* Gradients Removed */
+  --grad-emergency:   none !important;
+  --grad-medical:     none !important;
+  --grad-education:   none !important;
+  --grad-clothing:    none !important;
+  --grad-food:        none !important;
+  --grad-tech:        none !important;
+  --grad-household:   none !important;
+  --grad-toys:        none !important;
+  --grad-cta:         none !important;
+
+  /* Typography: Neutral System Sans-Serif */
+  --font-brand:       -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  --font-serif:       -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  --font-heading:     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  --font-body:        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+
+  /* Shadows Flattened */
+  --shadow-xs:        none !important;
+  --shadow-sm:        none !important;
+  --shadow-md:        none !important;
+  --shadow-lg:        none !important;
+  --shadow-xl:        none !important;
+}
+
+/* ── 2. Global Resets & Wireframe Base ──────────────────────── */
+body {
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  background-image: none !important;
+}
+
+/* Remove decorative shadows, gradients & filters globally */
+*, *::before, *::after {
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6,
+.hero-title, .section-title, .page-header__title, .page-title {
+  color: #000000 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  letter-spacing: normal !important;
+}
+
+/* Body & Muted Text */
+p, .lead, .hero-lead, .card-desc, .text-muted, .text-slate, [class*="desc"], [class*="sub"] {
+  color: #666666 !important;
+}
+
+strong, b, dt {
+  color: #000000 !important;
+}
+
+/* Links */
+a {
+  color: #000000 !important;
+}
+a:hover {
+  color: #666666 !important;
+}
+
+/* ── 3. Public Header & Navigation ──────────────────────────── */
+.header-public,
+.nav-public {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #CCCCCC !important;
+  background-image: none !important;
+}
+
+.nav-link {
+  color: #000000 !important;
+  font-weight: 500 !important;
+  background: transparent !important;
+}
+
+.nav-link:hover,
+.nav-link.active,
+.nav-link[aria-current="page"] {
+  color: #000000 !important;
+  border-bottom: 2px solid #000000 !important;
+  font-weight: 700 !important;
+}
+
+.logo-wordmark {
+  color: #000000 !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.logo-wordmark em {
+  font-style: normal !important;
+  color: #666666 !important;
+}
+
+.logo-icon {
+  width: 160px !important;
+  height: 38px !important;
+  max-width: 180px !important;
+  object-fit: contain !important;
+  display: block !important;
+}
+
+.logo-wordmark {
+  display: none !important;
+}
+
+/* Mobile Navigation */
+.mobile-menu {
+  background-color: #FFFFFF !important;
+  border-bottom: 1px solid #CCCCCC !important;
+}
+
+.mobile-link {
+  color: #000000 !important;
+  border-bottom: 1px solid #F2F2F2 !important;
+}
+
+.mobile-link:hover {
+  background-color: #F2F2F2 !important;
+  color: #000000 !important;
+}
+
+.nav-hamburger {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+}
+
+/* ── 4. Buttons & Controls ──────────────────────────────────── */
+button,
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-outline,
+.btn-pub-auth,
+a.btn,
+a.btn-primary,
+a.btn-secondary,
+a.btn-pub-auth,
+input[type="submit"],
+input[type="button"],
+.filter-btn,
+.tab-btn {
+  background: #F2F2F2 !important;
+  color: #000000 !important;
+  border: 1px solid #000000 !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+  background-image: none !important;
+  transition: background 0.15s ease !important;
+}
+
+button:hover,
+.btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover,
+.btn-outline:hover,
+.btn-pub-auth:hover,
+a.btn:hover,
+a.btn-pub-auth:hover,
+.filter-btn:hover,
+.tab-btn:hover {
+  background: #CCCCCC !important;
+  color: #000000 !important;
+  border-color: #000000 !important;
+}
+
+.btn-pub-auth {
+  border: 1px solid #000000 !important;
+  background: #FFFFFF !important;
+  color: #000000 !important;
+}
+
+/* ── 5. Cards, Containers & Sections ────────────────────────── */
+.card,
+.feature-card,
+.impact-card,
+.pillar-card,
+.team-card,
+.stat-card,
+.faq-item,
+.category-card,
+.workflow-steps-wrap,
+.step-card,
+.participation-card,
+.login-card,
+.auth-card,
+.auth-brand-pane,
+.hero,
+.bg-soft,
+.section-alt,
+.sub-banner,
+.mission-pillar-card,
+.faq-accordion-item,
+.help-card,
+.help-category-card {
+  background-color: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+  background-image: none !important;
+}
+
+/* Alternate light gray section background to preserve visual section boundaries */
+.hero,
+.bg-soft,
+.section-alt,
+.workflow-steps-wrap,
+.auth-brand-pane,
+.impact-band {
+  background-color: #F2F2F2 !important;
+}
+
+/* Card pseudo-elements (remove colored top accents) */
+.participation-card::before,
+.card::before,
+.pillar-card::before,
+.category-card::before {
+  display: none !important;
+}
+
+/* Badges & Pills */
+.badge,
+.badge-pill,
+.category-pill,
+.hero-frame-badge,
+.status-pill,
+.hero-trust-item,
+.auth-brand-badge,
+.category-card__tag,
+.cta-banner-tag {
+  background: #F2F2F2 !important;
+  color: #000000 !important;
+  border: 1px solid #CCCCCC !important;
+  background-image: none !important;
+}
+
+/* ── 6. Forms & Inputs ──────────────────────────────────────── */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+select,
+textarea,
+.form-control,
+.search-input {
+  background-color: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+.form-control:focus {
+  border-color: #000000 !important;
+  outline: 1px solid #000000 !important;
+}
+
+label,
+.form-label {
+  color: #000000 !important;
+  font-weight: 600 !important;
+}
+
+.form-hint,
+.form-help {
+  color: #666666 !important;
+}
+
+/* ── 7. Image & Media Placeholders ──────────────────────────── */
+.wf-img-placeholder {
+  background-color: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  color: #666666 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  text-align: center !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+  box-sizing: border-box !important;
+  padding: 12px !important;
+  user-select: none !important;
+  overflow: hidden !important;
+  background-image: none !important;
+}
+
+/* Make image tags on wireframe pages grayscale placeholders if not replaced with div */
+img:not(.logo-icon) {
+  filter: grayscale(100%) opacity(0.85) !important;
+  border: 1px solid #CCCCCC !important;
+  background-color: #F2F2F2 !important;
+}
+
+/* Hero Frame specific wireframe overrides */
+.hero-frame {
+  background-color: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+}
+
+.hero-frame-overlay {
+  background: rgba(242, 242, 242, 0.9) !important;
+  color: #000000 !important;
+  border-top: 1px solid #CCCCCC !important;
+}
+
+.hero-frame-overlay * {
+  color: #000000 !important;
+}
+
+/* ── 8. Public Footer ───────────────────────────────────────── */
+.footer-public,
+footer {
+  background-color: #FFFFFF !important;
+  border-top: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+  background-image: none !important;
+}
+
+.footer-public__col strong,
+.footer-heading {
+  color: #000000 !important;
+}
+
+.footer-links a,
+.footer-tagline,
+.footer-bottom,
+.footer-public__bottom {
+  color: #666666 !important;
+}
+
+.footer-links a:hover {
+  color: #000000 !important;
+}
+
+.footer-social-link {
+  background: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+}
+
+.footer-social-link svg {
+  stroke: #000000 !important;
+}
+
+.footer-bottom,
+.footer-public__bottom {
+  border-top: 1px solid #CCCCCC !important;
+}
+
+/* ── 9. Icons & SVG Monochrome Treatment ────────────────────── */
+svg:not(.logo-icon) {
+  filter: grayscale(100%) !important;
+  color: #666666 !important;
+}
+
+/* Dividers & Rules */
+hr,
+.divider,
+[class*="divider"] {
+  border-color: #CCCCCC !important;
+  background-color: #CCCCCC !important;
+}
+
+/* Card badges rendered dynamically by JS */
+.card span[style*="position: absolute"] {
+  background: #F2F2F2 !important;
+  color: #000000 !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+/* ── 10. Scroll Reveal Animations (Always Visible in Wireframe) ── */
+.reveal-on-scroll,
+.reveal-on-scroll.is-visible {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+  visibility: visible !important;
+}
+
+.hero.reveal-on-scroll {
+  display: grid !important;
+}
+
+.impact-band.reveal-on-scroll {
+  display: grid !important;
+}
+
+.category-card.reveal-on-scroll {
+  display: flex !important;
+}
+
+/* ── 11. Specific Page Wireframe Overrides (Strict Monochrome) ── */
+
+/* A. Login & Signup Pages */
+.login-brand-card {
+  background: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+}
+
+.login-brand-card::before,
+.login-brand-card::after {
+  display: none !important;
+}
+
+.login-brand__top {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.login-brand__wordmark {
+  display: none !important;
+}
+
+.login-brand__pill {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+}
+
+.login-brand__heading {
+  color: #000000 !important;
+}
+
+.login-brand__sub {
+  color: #666666 !important;
+}
+
+.login-brand__illus-wrap {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+}
+
+.login-brand__icon-box {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+}
+
+.login-brand__icon-box svg {
+  stroke: #000000 !important;
+}
+
+.login-brand__benefit-title {
+  color: #000000 !important;
+}
+
+.login-brand__benefit-desc {
+  color: #666666 !important;
+}
+
+.login-brand__footer-note {
+  color: #666666 !important;
+}
+
+.login-brand__footer-note svg {
+  fill: #666666 !important;
+}
+
+.login-form-card {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+}
+
+.quick-test {
+  background: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+}
+
+.quick-test__label {
+  color: #000000 !important;
+}
+
+.quick-test__btn {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+}
+
+.quick-test__btn:hover {
+  background: #CCCCCC !important;
+  color: #000000 !important;
+}
+
+.login-trust-row {
+  color: #666666 !important;
+}
+
+.login-trust-row svg {
+  stroke: #666666 !important;
+}
+
+/* B. Mission Page */
+.mission-statement-card {
+  background: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+  box-shadow: none !important;
+}
+
+.mission-statement-card::before,
+.mission-statement-card::after {
+  display: none !important;
+}
+
+.mission-statement-quote {
+  color: #000000 !important;
+}
+
+.mission-statement-quote mark {
+  background: #CCCCCC !important;
+  color: #000000 !important;
+  padding: 0 4px !important;
+  border-radius: 2px !important;
+}
+
+.mission-statement-sub {
+  color: #666666 !important;
+}
+
+.mission-split-media {
+  background: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+}
+
+.mission-pillar-card {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+}
+
+.mission-pillar-card:hover {
+  border-color: #000000 !important;
+  box-shadow: none !important;
+}
+
+.mission-pillar-icon {
+  background: #F2F2F2 !important;
+  border: 1px solid #CCCCCC !important;
+  color: #000000 !important;
+}
+
+.mission-pillar-icon svg {
+  stroke: #000000 !important;
+}
+
+.mission-pillar-body h3 {
+  color: #000000 !important;
+}
+
+.mission-pillar-body p {
+  color: #666666 !important;
+}
+
+.mission-step-card {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+}
+
+.mission-step-badge {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border: 1px solid #000000 !important;
+}
+
+.mission-step-card h4 {
+  color: #000000 !important;
+}
+
+.mission-step-card p {
+  color: #666666 !important;
+}
+
+/* C. Form Pages (Donate, Request, Contact, Support) */
+.form-card {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  box-shadow: none !important;
+}
+
+.form-section-header {
+  border-bottom: 1px solid #CCCCCC !important;
+}
+
+.form-section-badge {
+  background: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.form-section-title {
+  color: #000000 !important;
+}
+
+.radio-pill-label {
+  background: #F2F2F2 !important;
+  border: 1.5px solid #CCCCCC !important;
+  color: #000000 !important;
+}
+
+.radio-pill-label:hover {
+  border-color: #000000 !important;
+}
+
+.radio-pill-label.selected,
+.radio-pill-label:has(input:checked) {
+  border-color: #000000 !important;
+  background: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+.radio-pill-title {
+  color: #000000 !important;
+}
+
+.radio-pill-sub {
+  color: #666666 !important;
+}
+
+.file-upload-zone,
+.file-upload {
+  background: #F2F2F2 !important;
+  border: 2px dashed #CCCCCC !important;
+  color: #666666 !important;
+}
+
+.file-upload-zone:hover {
+  border-color: #000000 !important;
+  background: #FFFFFF !important;
+}
+
+.upload-icon-circle {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+}
+
+.upload-icon-circle svg {
+  stroke: #000000 !important;
+}
+
+/* D. FAQs & Accordions */
+.faq-item {
+  background: #FFFFFF !important;
+  border: 1px solid #CCCCCC !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+  margin-bottom: 12px !important;
+}
+
+.faq-item:hover {
+  border-color: #666666 !important;
+}
+
+.faq-item[open] {
+  border-color: #000000 !important;
+}
+
+.faq-summary {
+  background: #FFFFFF !important;
+  color: #000000 !important;
+  font-weight: 600 !important;
+  padding: 16px 20px !important;
+}
+
+.faq-item[open] .faq-summary {
+  background: #F2F2F2 !important;
+  border-bottom: 1px solid #CCCCCC !important;
+}
+
+.faq-icon {
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.faq-content {
+  background: #FFFFFF !important;
+  color: #666666 !important;
+  padding: 18px 20px !important;
+}
+
+

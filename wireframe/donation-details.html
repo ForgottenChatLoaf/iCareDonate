@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Details | iCareDonate</title>
+  <meta name="description" content="View donation details and request this item on iCareDonate.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/wireframe-logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="../frontend/css/variables.css">
+  <link rel="stylesheet" href="../frontend/css/base.css">
+  <link rel="stylesheet" href="../frontend/css/layout.css">
+  <link rel="stylesheet" href="../frontend/css/components.css">
+  <link rel="stylesheet" href="css/wireframe.css">
+</head>
+<body>
+
+  <!-- Public Nav -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate: Home">
+        <img src="assets/images/wireframe-logo.svg" class="logo-icon" width="100" height="32" alt="[Logo Placeholder]">
+        
+      </a>
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">[Nav: Home]</a>
+        <a href="about.html" class="nav-link">[Nav: About us]</a>
+        <a href="categories.html" class="nav-link">[Nav: Ways to Help]</a>
+        <a href="how-it-works.html" class="nav-link">[Nav: How it works]</a>
+        <a href="contact.html" class="nav-link">[Nav: Contact us]</a>
+      </nav>
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">[Button: Log in / Sign up]</a>
+      </div>
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu"
+        aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12" />
+          <line x1="4" x2="20" y1="6" y2="6" />
+          <line x1="4" x2="20" y1="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link">[Nav: Home]</a>
+        <a href="about.html" class="mobile-link">[Nav: About us]</a>
+        <a href="categories.html" class="mobile-link">[Nav: Ways to Help]</a>
+        <a href="how-it-works.html" class="mobile-link">[Nav: How it works]</a>
+        <a href="contact.html" class="mobile-link">[Nav: Contact us]</a>
+        <a href="signup.html?redirect=user/offer-donation.html" class="mobile-link">[Button: Start Donating]</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">[Button: Log in / Sign up]</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="donation-main" style="padding: 40px 0 60px; background: var(--color-bg); min-height: 80vh;">
+    <div class="container" style="max-width: 1040px; margin: 0 auto; padding: 0 20px;">
+
+      <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+        <a href="donations.html" style="color: var(--color-primary); font-size: 14px; text-decoration: none; font-weight: 500;">
+          &larr; Back to Browse Listings
+        </a>
+      </div>
+
+      <!-- Loading State -->
+      <div id="detail-loading" style="text-align:center;padding:80px 20px;">
+        <i data-lucide="loader" style="width:48px;height:48px;color:var(--cobalt);"></i>
+        <p style="color:var(--slate);margin-top:12px;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+      </div>
+
+      <!-- Not Found -->
+      <div id="detail-notfound" style="display:none;text-align:center;padding:80px 20px;">
+        <div style="font-size:72px;color:var(--cobalt);line-height:1;font-family:var(--font-heading);">404</div>
+        <h1 style="font-size:28px;color:var(--color-text);margin:16px 0 8px;">[Main Heading: Donation Not Found]</h1>
+        <p style="color:var(--color-text-muted);font-size:15px;margin-bottom:24px;">[Short Description: Lorem ipsum dolor sit amet, consectetur adipiscing elit.]</p>
+        <a href="donations.html" class="btn btn-primary">[Button: Browse Available Items]</a>
+      </div>
+
+      <!-- Donation Detail Content -->
+      <div id="detail-content" style="display:none;">
+        <div style="display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 36px; align-items: start;">
+
+          <!-- Left: Images Gallery & Description -->
+          <div>
+            <div class="card" style="padding: 0; overflow: hidden; border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 24px;">
+              <div style="height: 360px; background: #F8FAFC; display: flex; align-items: center; justify-content: center; position: relative;">
+                <img id="main-image-view" src="assets/images/placeholder.svg" alt="Donation" style="width: 100%; height: 100%; object-fit: contain;">
+              </div>
+              <div id="thumbnail-strip" style="display:none;gap: 8px; padding: 12px; background: #FFFFFF; border-top: 1px solid var(--color-border); overflow-x: auto;"></div>
+            </div>
+
+            <div class="card" style="padding: 28px; border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
+              <h2 style="font-size: 20px; font-weight: 700; color: var(--color-text); margin-bottom: 14px;">[Section Heading: Item Description]</h2>
+              <div id="item-description" style="font-size: 15px; color: var(--color-text); line-height: 1.7; white-space: pre-line;">No detailed description provided.</div>
+            </div>
+          </div>
+
+          <!-- Right: Summary & Request Box -->
+          <div>
+            <div class="card" style="padding: 32px; border-radius: var(--radius-lg); border: 1px solid var(--color-border); box-shadow: var(--shadow-md); position: sticky; top: 90px;">
+
+              <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 12px;">
+                <span id="cat-badge" class="badge badge-info" style="font-size: 12px;"></span>
+                <span class="badge badge-approved" style="font-size: 12px;">[Badge: Verified by Admin]</span>
+                <span class="badge" style="background:var(--sky, #DCE8F7);color:var(--cobalt, #1F4FA3);font-size:12px;font-weight:600;display:inline-flex;align-items:center;gap:4px;" title="Identity and proof reviewed by the iCareDonate admin team.">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>[Body Paragraph: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.]</p>
+          <div class="footer-social" aria-label="Official Social Media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Facebook" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: Explore]</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">[Link: Browse Donations]</a></li>
+            <li><a href="categories.html">[Link: Ways to Help]</a></li>
+            <li><a href="how-it-works.html">[Link: How It Works]</a></li>
+            <li><a href="signup.html?redirect=user/offer-donation.html">[Link: Start Donating]</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: About]</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">[Link: About Us]</a></li>
+            <li><a href="mission.html">[Link: Our Mission]</a></li>
+            <li><a href="careers.html">[Link: Careers &amp; Volunteers]</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">[Section: Help &amp; Legal]</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">[Link: Help Center]</a></li>
+            <li><a href="faqs.html">[Link: Guides and FAQs]</a></li>
+            <li><a href="contact.html">[Link: Contact Support]</a></li>
+            <li><a href="terms.html">[Link: Terms of Service]</a></li>
+            <li><a href="privacy.html">[Link: Privacy Policy]</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>[Copyright: &copy; 2026 iCareDonate. All rights reserved.]</span>
+        <span class="footer-support-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            style="display:inline;vertical-align:-2px;margin-right:6px;">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <a href="mailto:icaredonate.team@gmail.com">[Email: icaredonate.team@gmail.com]</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../frontend/js/theme.js"></script>
+  <script src="../frontend/js/nav.js"></script>
+  <script src="../frontend/js/mock-data.js"></script>
+  <script src="../frontend/js/main.js"></script>
+  <script>
+    // Resolve API base dynamically (mirrors data.js pattern)
+    var ICD_API_BASE = (function() {
+      var origin = window.location.origin;
+      if (window.location.pathname.includes('/CommunityDono/')) {
+        return origin + '/CommunityDono/api/v1';
+      }
+      return '/api/v1';
+    })();
+    // Image base: resolved for XAMPP sub-folder or root deployment
+    var ICD_IMG_BASE = (function() {
+      if (window.location.pathname.includes('/CommunityDono/')) {
+        return window.location.origin + '/CommunityDono';
+      }
+      return window.location.origin;
+    })();
+
+    function condLabel(c) {
+      const m = { new:'Brand New', like_new:'Like New', good:'Good Condition', fair:'Fair', poor:'Poor' };
+      return m[c] || c || '';
+    }
+    function formatDate(s) {
+      if (!s) return 'Recently verified';
+      const d = new Date(s);
+      if (isNaN(d.getTime())) return s;
+      return d.toLocaleDateString('en-PH', { year:'numeric', month:'long', day:'numeric' });
+    }
+
+    function renderDetail(d) {
+      document.title = `${d.title} — iCareDonate`;
+      document.getElementById('detail-loading').style.display = 'none';
+      document.getElementById('detail-content').style.display = 'block';
+
+      const available = d.available_quantity ?? ((d.quantity_total || 0) - (d.quantity_reserved || 0) - (d.quantity_claimed || 0));
+
+      const titleEl = document.getElementById('item-title');
+      titleEl.textContent = d.title;
+
+      document.getElementById('cat-badge').textContent = d.category_name || '';
+      document.getElementById('qty-display').innerHTML = `${available} <span style="font-size:15px;font-weight:500;">${d.unit || 'units'}</span>`;
+      document.getElementById('condition-display').textContent = condLabel(d.condition_type);
+      document.getElementById('item-description').textContent = d.description || 'No detailed description provided.';
+      document.getElementById('location-display').textContent = (d.pickup_barangay ? d.pickup_barangay + ', ' : '') + (d.pickup_city || 'Metro Manila');
+      document.getElementById('handover-display').textContent = (d.pickup_method || 'pickup').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+      document.getElementById('posted-display').textContent = formatDate(d.created_at);
+
+      // Images
+      const mainImg = document.getElementById('main-image-view');
+      const rawImg = d.primary_image || (d.images && d.images[0] ? d.images[0].file_path : '');
+      if (rawImg) {
+        const fullImg = rawImg.startsWith('http') || rawImg.startsWith('/') ? rawImg : rawImg.replace(/^\.\.\//, '');
+        mainImg.src = fullImg;
+      } else {
+        mainImg.src = 'assets/images/placeholder.svg';
+      }
+
+      if (d.images && d.images.length > 1) {
+        const strip = document.getElementById('thumbnail-strip');
+        strip.style.display = 'flex';
+        strip.innerHTML = d.images.map(img => {
+          const thumbSrc = img.file_path ? (img.file_path.startsWith('http') || img.file_path.startsWith('/') ? img.file_path : img.file_path.replace(/^\.\.\//, '')) : 'assets/images/placeholder.svg';
+          return `<img src="${thumbSrc}" alt="Thumbnail" style="width:60px;height:60px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;" onclick="document.getElementById('main-image-view').src=this.src;">`;
+        }).join('');
+      }
+
+      // CTA - Authentication First
+      const cta = document.getElementById('cta-wrap');
+      const authed = typeof ICD_MAIN !== 'undefined' && typeof ICD_MAIN.isUserAuthenticated === 'function' ? ICD_MAIN.isUserAuthenticated() : (Boolean(localStorage.getItem('icd_token')) && Boolean(localStorage.getItem('icd_user')));
+      const requestTarget = `user/request-donation.html?id=${d.id}`;
+      const requestHref = authed ? requestTarget : `signup.html?redirect=${encodeURIComponent(requestTarget)}&action=request`;
+
+      if (available <= 0) {
+        cta.innerHTML = `<button disabled class="btn btn-outline" style="width:100%;justify-content:center;padding:14px;opacity:0.6;">[Button: Fully Allocated]</button>`;
+      } else {
+        cta.innerHTML = `
+          <a href="${requestHref}" class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;font-size:16px;display:flex;">[Button: Request This Item]</a>
+          ${authed ? '' : '<div style="text-align:center;font-size:13px;color:var(--color-text-muted);margin-top:10px;">Already have an account? <a href="login.html?redirect=' + encodeURIComponent(requestTarget) + '" style="color:var(--cobalt);font-weight:600;">Log in</a></div>'}`;
+      }
+
+      if(window.lucide) lucide.createIcons();
+    }
+
+    function tryMockDetail(id) {
+      if (window.MockStore && typeof window.MockStore.getDonationById === 'function') {
+        const mockItem = window.MockStore.getDonationById(id);
+        if (mockItem) {
+          renderDetail(mockItem);
+          return;
+        }
+      }
+      showNotFound();
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if(window.lucide) lucide.createIcons();
+
+      const params = new URLSearchParams(location.search);
+      const id = params.get('id');
+      if (!id) { showNotFound(); return; }
+
+      fetch(`${ICD_API_BASE}/public/donations.php?id=${id}`)
+        .then(r => {
+          if (!r.ok) throw new Error(`HTTP ${r.status}`);
+          return r.json();
+        })
+        .then(data => {
+          const d = data.data || data;
+          if (!d || !d.id) { tryMockDetail(id); return; }
+          renderDetail(d);
+        })
+        .catch(() => tryMockDetail(id));
+    });
+
+    function showNotFound() {
+      document.getElementById('detail-loading').style.display = 'none';
+      document.getElementById('detail-notfound').style.display = 'block';
+      if(window.lucide) lucide.createIcons();
+    }
+  </script>
+  <script src="js/wireframe.js"></script>
+</body>
+</html>

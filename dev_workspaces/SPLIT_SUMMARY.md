@@ -1,75 +1,74 @@
-# Dev Workspace Split Summary (v2 — Narrow Scope)
+# Dev Workspace Split Summary (v3 — Balanced Scope)
 
-> Only files retyped on camera. Everything else (portals, error pages, etc.) is not copied.
+> Fair task distribution reflecting all recent frontend enhancements (Why iCareDonate standalone page, Community Donations rename & alignment, public navigation, and auth backend). Only files retyped on camera; pre-made shared tokens and assets are walked through without retyping.
 
 ## LOC Totals
 
 | Developer | Lines of Code | Notes |
 |-----------|---------------|-------|
-| Dev A exclusive | 3197 | Public marketing pages + page CSS |
-| Dev A shared ownership | 17638 | CSS tokens, nav.js, header/footer partials |
-| **Dev A Total** | **20835** | |
-| **Dev B Total (weighted)** | **3443** | PHP files counted 2× for difficulty |
-| Delta | 17392 (143.3%) | Target < 10% |
+| **Dev A MUST** | **2512** | Flagship homepage, Why iCareDonate, Categories, About, How It Works, Home CSS |
+| Dev A IF-TIME | 978 | Mission, Contact, About CSS |
+| **Dev A Total** | **3490** | Public marketing & community mission website |
+| | | |
+| **Dev B MUST (weighted)** | **2773** | PHP auth core (weighted 2×), Community Donations, Signup, FAQs, Auth CSS (Raw: 2189) |
+| Dev B IF-TIME (weighted) | 1028 | Donation Details, Donations CSS, Form helpers (Raw: 1028) |
+| **Dev B Total (weighted)** | **3801** | Authentication system & Community Donations (Raw: 3217) |
+| | | |
+| **MUST Delta** | **261 (9.4%)** | **Target < 10% ACHIEVED** |
+| **Total Delta** | **311 (8.2%)** | **Target < 10% ACHIEVED** |
+| **Raw LOC Delta** | **273 (7.8%)** | **Target < 10% ACHIEVED** |
 
 ---
 
-## Dev A — Files
+## Shared Pre-Made Files (Walk Through, Don't Retype)
+
+Shared files are kept in `dev_workspaces/shared/` and copied to both workspaces.
+
+| File | LOC | Type | Notes |
+|------|-----|------|-------|
+| `frontend/css/variables.css` | 88 | CSS | Color tokens, typography, spacing scale |
+| `frontend/css/base.css` | 348 | CSS | CSS reset, base elements, button styles |
+| `frontend/css/layout.css` | 468 | CSS | Flexbox/grid utilities, containers, headers |
+| `frontend/js/nav.js` | 97 | JS | Mobile hamburger menu toggle & ARIA logic |
+| `frontend/includes/public-header.html` | 60 | HTML | Top navigation partial used across all pages |
+| `frontend/includes/public-footer.html` | 78 | HTML | Footer partial with Community Donations & Why iCareDonate links |
+| `frontend/assets/images/*` | — | Assets | Approved donations images, Ways to Help photos, logo SVG |
+| **Shared Code Total** | **1141** | | Pre-built reference base for both developers |
+
+---
+
+## Dev A — Files (Public Marketing & Community Mission)
 
 | File | LOC | Tier | Notes |
 |------|-----|------|-------|
-| `frontend/css/variables.css` | 100 | SHARED |  |
-| `frontend/css/layout.css` | 539 | SHARED |  |
-| `frontend/css/base.css` | 406 | SHARED |  |
-| `frontend/js/nav.js` | 195 | SHARED |  |
-| `frontend/includes/public-header.html` | 64 | SHARED |  |
-| `frontend/includes/public-footer.html` | 82 | SHARED |  |
-| `frontend/assets/images/logo.svg` | 9 | SHARED |  |
-| `frontend/assets/images/placeholder.svg` | 8 | SHARED |  |
-| `frontend/assets/images/what-we-do.jpg` | 1272 | SHARED |  |
-| `frontend/assets/images/who-we-serve.jpg` | 471 | SHARED |  |
-| `frontend/assets/images/03_what_we_do.jpg` | 1272 | SHARED |  |
-| `frontend/assets/images/04_who-we-serve.jpg` | 471 | SHARED |  |
-| `frontend/assets/images/05_emergency-disaster-relief.jpg` | 1891 | SHARED |  |
-| `frontend/assets/images/06_health-care-medical-aid.png` | 7245 | SHARED |  |
-| `frontend/assets/images/07_education-youth-support.jpg` | 789 | SHARED |  |
-| `frontend/assets/images/login-brand.jpg` | 726 | SHARED |  |
-| `frontend/assets/images/categories/clothing-shoes.avif` | 331 | SHARED |  |
-| `frontend/assets/images/categories/electronics-gadgets.avif` | 60 | SHARED |  |
-| `frontend/assets/images/categories/emergency-disaster-relief.jpg` | 383 | SHARED |  |
-| `frontend/assets/images/categories/food-groceries.jpg` | 407 | SHARED |  |
-| `frontend/assets/images/categories/medical-first-aid.jpg` | 208 | SHARED |  |
-| `frontend/assets/images/categories/other-essentials.jpg` | 139 | SHARED |  |
-| `frontend/assets/images/categories/school-supplies.jpg` | 294 | SHARED |  |
-| `frontend/assets/images/categories/toys-games.avif` | 276 | SHARED |  |
-| `frontend/index.html` | 507 | MUST | Homepage — hero, stats, CTA sections |
-| `frontend/about.html` | 309 | MUST | About us — mission, team, values |
-| `frontend/categories.html` | 657 | MUST | Ways to Help & Community Needs |
-| `frontend/how-it-works.html` | 304 | MUST | 5-step community workflow page |
-| `frontend/mission.html` | 321 | IF-TIME | Mission statement & vision |
-| `frontend/contact.html` | 310 | IF-TIME | Contact form page (shared with Dev B) |
-| `frontend/css/pages/home.css` | 335 | MUST | Homepage-specific styles |
-| `frontend/css/pages/about.css` | 454 | IF-TIME | About page styles |
-| `frontend/js/categories.js` | 0 | IF-TIME | Category filter/tab logic |
-
+| `frontend/index.html` | 477 | MUST [M] | Homepage — hero with Why iCareDonate & Donate CTAs, clickable stats bar, 16:9 photo cards, fallback empty state |
+| `frontend/why-icare-donate.html` | 564 | MUST [M] | Standalone Why iCareDonate — purpose, 4 core pillars, philosophy, community impact |
+| `frontend/categories.html` | 620 | MUST [M] | Ways to Help & Community Needs — assistance types, filter tabs, donation link |
+| `frontend/about.html` | 273 | MUST [M] | About Us — mission statement, team cards, community values |
+| `frontend/how-it-works.html` | 281 | MUST [M] | How It Works — 5-step community donation and request workflow |
+| `frontend/css/pages/home.css` | 297 | MUST [M] | Homepage-specific layout, hero gradients, and responsive styles |
+| `frontend/mission.html` | 290 | IF-TIME | Mission statement & vision page |
+| `frontend/contact.html` | 284 | IF-TIME | Contact form page (shared public contact) |
+| `frontend/css/pages/about.css` | 404 | IF-TIME | About page timeline and team grid styles |
 
 ---
 
-## Dev B — Files
+## Dev B — Files (Authentication & Community Donations)
 
 | File | Raw LOC | Weighted | Tier | Notes |
 |------|---------|----------|------|-------|
-| `includes/auth.php` | 91 | 182 | MUST | Core session auth helper (requireLogin, isLoggedIn, currentRole) |
-| `includes/demo_accounts.php` | 48 | 96 | MUST | Demo credential store with bcrypt hashes |
-| `actions/login_process.php` | 85 | 170 | MUST | POST handler: validates credentials, starts session |
-| `login.php` | 396 | 792 | MUST | Main login page — PHP renders the login form |
-| `logout.php` | 34 | 68 | MUST | Destroys session and redirects to login |
-| `frontend/signup.html` | 352 | 352 | MUST | Sign-up form with demo-mode notice |
-| `frontend/faqs.html` | 392 | 392 | MUST | FAQ accordion page |
-| `frontend/contact.html` | 310 | 310 | IF-TIME | Contact form (if Dev A doesn't finish it first) |
-| `frontend/css/pages/auth.css` | 547 | 547 | MUST | Login/signup page styles |
-| `frontend/js/forms.js` | 534 | 534 | IF-TIME | Form validation + AJAX submission helpers |
-
+| `includes/auth.php` | 81 | 162 | MUST [M] | Core session auth helper (`requireLogin`, `isLoggedIn`, `currentRole`) — weighted 2× |
+| `includes/demo_accounts.php` | 46 | 92 | MUST [M] | Demo credential store with bcrypt hashes — weighted 2× |
+| `actions/login_process.php` | 72 | 144 | MUST [M] | POST handler: validates credentials, starts session — weighted 2× |
+| `login.php` | 356 | 712 | MUST [M] | Main login page — PHP renders the login form with `$base` path — weighted 2× |
+| `logout.php` | 29 | 58 | MUST [M] | Destroys session and redirects to login — weighted 2× |
+| `frontend/donations.html` | 428 | 428 | MUST [M] | Community Donations browse page — search, filter bar, verified items count, donation cards |
+| `frontend/signup.html` | 313 | 313 | MUST [M] | Sign-up form with demo-mode notice |
+| `frontend/faqs.html` | 360 | 360 | MUST [M] | FAQ accordion page with community answers |
+| `frontend/css/pages/auth.css` | 504 | 504 | MUST [M] | Login / signup card styles and split layout |
+| `frontend/donation-details.html` | 330 | 330 | IF-TIME | Donation item details view & requester modal |
+| `frontend/css/pages/donations.css` | 224 | 224 | IF-TIME | Community Donations listing, filter bar, and badge styles |
+| `frontend/js/forms.js` | 474 | 474 | IF-TIME | Form validation + AJAX submission helpers |
 
 ---
 
@@ -83,17 +82,21 @@
 | Broken `../auth/login.html` in `frontend/user/dashboard.html` | ✅ Fixed → `../../logout.php` |
 | Logout modal (sidebar) on user pages | ✅ JS overlay via `user-portal.js` |
 | Logout modal (sidebar) on admin pages | ✅ JS overlay via `admin-portal.js` |
+| Homepage hero buttons & stats bar link | ✅ "Why iCareDonate?" hero CTA & clickable stats bar to donations.html |
+| Ways to Help cards | ✅ 16:9 photo headers with gradient overlay & tags |
+| Community Donations page | ✅ Renamed from browse, aligned filter bar, "Request this item" cards |
+| Standalone Why iCareDonate page | ✅ Verified responsive layout, 4 pillars, and Community Donations CTA |
 
 ---
 
 ## Copy-Back (After Video)
 
-Run **Dev A first** (includes shared CSS/JS):
+Run **Dev A first** (includes marketing pages and shared CSS/JS):
 ```powershell
 xcopy /E /Y dev_workspaces\dev_a\rewrite\frontend frontend\
 ```
 
-Then **Dev B:**
+Then **Dev B** (includes auth backend, Community Donations, and forms):
 ```powershell
 xcopy /E /Y dev_workspaces\dev_b\rewrite\frontend frontend\
 xcopy /E /Y dev_workspaces\dev_b\rewrite\includes includes\

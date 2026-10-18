@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Browse Available Donations | iCareDonate</title>
-  <meta name="description" content="Discover verified resources offered by caring neighbors and community organizations.">
+  <title>Community Donations | iCareDonate</title>
+  <meta name="description" content="Verified items shared by neighbors and local organizations. Request what you or your family need.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -68,20 +68,93 @@
     <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
 
       <div style="margin-bottom: 32px;">
-        <h1 style="margin-bottom: 8px;">Browse Available Items</h1>
-        <p class="lead" style="margin-bottom: 0;">Discover verified resources offered by caring neighbors and community organizations.</p>
+        <h1 style="margin-bottom: 8px;">Community Donations</h1>
+        <p class="lead" style="margin-bottom: 0;">Verified items shared by neighbors and local organizations. Request what you or your family need.</p>
       </div>
 
       <!-- Search & Filters Card -->
-      <div class="card" style="padding: 26px; margin-bottom: 36px; border-radius: 20px; border: 1px solid var(--sky); box-shadow: var(--shadow-sm);">
-        <form id="browse-form" style="display: grid; grid-template-columns: 2fr 1.2fr 1fr auto; gap: 14px; align-items: end;">
+      <style>
+        .browse-filters-card {
+          padding: 24px 26px;
+          margin-bottom: 36px;
+          border-radius: 20px;
+          border: 1px solid var(--sky);
+          box-shadow: var(--shadow-sm);
+        }
+        .browse-form-flex {
+          display: flex;
+          align-items: flex-end;
+          gap: 14px;
+          flex-wrap: wrap;
+        }
+        .browse-form-flex .browse-field {
+          display: flex;
+          flex-direction: column;
+          margin: 0;
+        }
+        .browse-field--search {
+          flex: 2 1 240px;
+        }
+        .browse-field--cat {
+          flex: 1.2 1 180px;
+        }
+        .browse-field--cond {
+          flex: 1 1 150px;
+        }
+        .browse-actions {
+          display: flex;
+          gap: 8px;
+          align-items: flex-end;
+          margin: 0;
+        }
+        .browse-form-flex .form-input,
+        .browse-form-flex select.form-input,
+        .browse-form-flex .btn {
+          height: 44px !important;
+          box-sizing: border-box !important;
+          margin: 0 !important;
+          vertical-align: middle;
+        }
+        .browse-form-flex .form-input,
+        .browse-form-flex select.form-input {
+          padding-top: 0;
+          padding-bottom: 0;
+          line-height: 44px;
+        }
+        .browse-form-flex .btn {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0 22px;
+          border-radius: 999px;
+          font-weight: 600;
+          white-space: nowrap;
+        }
+        @media (max-width: 768px) {
+          .browse-form-flex {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 14px;
+          }
+          .browse-form-flex .browse-field,
+          .browse-form-flex .browse-actions {
+            width: 100%;
+            flex: 1 1 100%;
+          }
+          .browse-form-flex .browse-actions .btn {
+            flex: 1;
+          }
+        }
+      </style>
+      <div class="card browse-filters-card">
+        <form id="browse-form" class="browse-form-flex">
 
-          <div class="form-group">
+          <div class="form-group browse-field browse-field--search">
             <label class="form-label" for="search-input">Search Keywords</label>
             <input type="text" id="search-input" name="q" class="form-input" placeholder="Search by item name, description, city...">
           </div>
 
-          <div class="form-group">
+          <div class="form-group browse-field browse-field--cat">
             <label class="form-label" for="cat-select">Category</label>
             <select id="cat-select" name="category" class="form-input">
               <option value="">All Categories</option>
@@ -97,7 +170,7 @@
             </select>
           </div>
 
-          <div class="form-group">
+          <div class="form-group browse-field browse-field--cond">
             <label class="form-label" for="cond-select">Condition</label>
             <select id="cond-select" name="condition" class="form-input">
               <option value="">Any Condition</option>
@@ -108,11 +181,11 @@
             </select>
           </div>
 
-          <div style="display: flex; gap: 8px;">
-            <button type="submit" class="btn btn-primary" style="height: 44px; padding: 0 22px; border-radius: 999px;">
+          <div class="browse-actions">
+            <button type="submit" class="btn btn-primary" id="browse-filter-btn">
               Filter
             </button>
-            <button type="reset" id="reset-btn" class="btn btn-outline" style="height: 44px; padding: 0 18px; display: none; border-radius: 999px;">
+            <button type="reset" id="reset-btn" class="btn btn-outline" style="display: none;">
               Reset
             </button>
           </div>
@@ -177,7 +250,7 @@
         <div class="footer-public__col">
           <strong class="footer-heading">Explore</strong>
           <ul class="footer-links">
-            <li><a href="donations.html">Browse Donations</a></li>
+            <li><a href="donations.html">Community Donations</a></li>
             <li><a href="categories.html">Ways to Help</a></li>
             <li><a href="how-it-works.html">How It Works</a></li>
             <li><a href="signup.html?redirect=user/offer-donation.html">Start Donating</a></li>
@@ -189,7 +262,7 @@
           <strong class="footer-heading">About</strong>
           <ul class="footer-links">
             <li><a href="about.html">About Us</a></li>
-            <li><a href="mission.html">Our Mission</a></li>
+            <li><a href="why-icare-donate.html">Why iCareDonate?</a></li>
             <li><a href="careers.html">Careers &amp; Volunteers</a></li>
           </ul>
         </div>
@@ -258,7 +331,7 @@
             <p style="color:var(--slate);font-size:15px;margin-bottom:24px;">Try another keyword or adjust your category filter.</p>
             <button onclick="document.getElementById('browse-form').reset();loadDonations()" class="btn btn-outline" style="border-radius:999px;padding:10px 24px;">Clear All Filters</button>
           </div>`;
-        countEl.textContent = 'Showing 0 items';
+        countEl.textContent = '0 verified donations available';
         pagEl.innerHTML = '';
         if(window.lucide) lucide.createIcons();
         return;
@@ -266,7 +339,7 @@
 
       const total = data.total || data.data.length;
       const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
-      countEl.innerHTML = `Showing <strong>${data.data.length}</strong> of <strong>${total}</strong> available items`;
+      countEl.innerHTML = `<strong>${total}</strong> verified donations available`;
 
       grid.innerHTML = data.data.map(d => {
         const available = d.available_quantity ?? ((d.quantity_total || 0) - (d.quantity_reserved || 0) - (d.quantity_claimed || 0));
@@ -275,7 +348,7 @@
         return `
           <div class="card" style="border-radius:20px;border:1px solid var(--sky);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm);padding:0;transition:transform 0.2s,box-shadow 0.2s;">
             <div style="height:190px;position:relative;overflow:hidden;background:var(--surface-soft);">
-              <img src="${img}" alt="${d.title}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.src='assets/images/placeholder.svg'">
+              <img src="${img}" alt="${d.title}" style="width:100%;height:100%;object-fit:cover;display:block;" onerror="this.onerror=null; this.src='assets/images/placeholder.svg';">
               <span style="position:absolute;top:12px;left:12px;background:rgba(20,33,61,0.85);color:#fff;font-size:11px;font-weight:600;padding:4px 10px;border-radius:999px;backdrop-filter:blur(4px);">${d.category_name || ''}</span>
               <span style="position:absolute;bottom:12px;right:12px;background:var(--cobalt);color:#fff;font-size:11.5px;font-weight:700;padding:4px 12px;border-radius:999px;">${available} left</span>
             </div>
@@ -294,7 +367,7 @@
                 <i data-lucide="map-pin" style="width:14px;height:14px;color:var(--cobalt);flex-shrink:0;"></i>
                 ${d.pickup_city || 'Metro Manila'} &nbsp;·&nbsp; ${conditionLabel(d.condition_type)}
               </div>
-              <a href="donation-details.html?id=${d.id}" class="btn btn-outline" style="width:100%;justify-content:center;padding:10px 16px;font-size:13.5px;border-radius:999px;">View &amp; Request</a>
+              <a href="donation-details.html?id=${d.id}" class="btn btn-outline" style="width:100%;justify-content:center;padding:10px 16px;font-size:13.5px;border-radius:999px;">Request this item</a>
             </div>
           </div>`;
       }).join('');

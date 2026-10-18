@@ -72,7 +72,7 @@
             </p>
           </div>
           <a href="donation-details.html?id=${id}" class="btn btn-outline" style="width: 100%; justify-content: center; font-size: 13.5px; padding: 10px 16px; text-decoration: none; display: inline-flex; border-radius: 999px;">
-            View details &amp; request
+            Request this item
           </a>
         </div>
       </div>
@@ -251,7 +251,7 @@
           </div>
           <h2 class="donations-empty-title">Invalid or Missing Donation ID</h2>
           <p class="donations-empty-desc">Please choose a valid item listing from our community donations directory.</p>
-          <a href="donations.html" class="btn btn-primary">Browse Available Donations</a>
+          <a href="donations.html" class="btn btn-primary">Community Donations</a>
         </div>
       `;
       return;
@@ -290,7 +290,7 @@
           </div>
           <h2 class="donations-empty-title">${errorTitle}</h2>
           <p class="donations-empty-desc">${errorDesc}</p>
-          <a href="donations.html" class="btn btn-primary">Browse Available Donations</a>
+          <a href="donations.html" class="btn btn-primary">Community Donations</a>
         </div>
       `;
       return;
@@ -388,7 +388,7 @@
               Request this item &rarr;
             </a>
             <a href="donations.html" class="btn btn-outline">
-              Back to all items
+              Back to Community Donations
             </a>
           </div>
         </div>
@@ -416,9 +416,12 @@
     const previewGrid = document.getElementById('home-donations-preview');
     if (!previewGrid) return;
 
+    // Clear the static HTML placeholder (empty state) placed for SSR fallback; show spinner instead
     previewGrid.innerHTML = `
       <div style="grid-column: 1 / -1; text-align: center; padding: 36px 20px; color: var(--text-muted);">
-        <p>Loading recently approved donations...</p>
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display: block; animation: spin 1.2s linear infinite;"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+        <style>@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}</style>
+        <p style="margin-top: 12px; font-size: 14px;">Loading recently approved donations...</p>
       </div>
     `;
 
@@ -437,8 +440,17 @@
 
     if (items.length === 0) {
       previewGrid.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: 40px; color: var(--text-muted);">
-          <p>No recently approved donations available at this time.</p>
+        <div style="grid-column: 1 / -1; text-align: center; padding: 48px 24px; border-radius: 20px; border: 1px solid var(--sky); background: var(--surface-soft, #F8FAFC); box-shadow: var(--shadow-sm);">
+          <div style="margin-bottom: 14px; color: var(--cobalt);">
+            <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="margin: 0 auto; display: block;"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+          </div>
+          <h3 style="font-size: 19px; font-weight: 700; color: var(--cobalt); margin-bottom: 8px;">No Recently Approved Donations Just Yet</h3>
+          <p style="color: var(--slate); font-size: 14.5px; max-width: 480px; margin: 0 auto 20px; line-height: 1.55;">
+            Our team is actively reviewing incoming community donations. Explore all verified items currently open for claim.
+          </p>
+          <a href="donations.html" class="btn btn-primary" style="border-radius: 999px; padding: 10px 24px; font-weight: 600; text-decoration: none; display: inline-flex;">
+            See all available donations
+          </a>
         </div>
       `;
       return;

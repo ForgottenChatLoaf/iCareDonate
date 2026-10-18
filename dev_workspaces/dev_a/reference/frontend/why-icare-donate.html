@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why iCareDonate? | Purpose, Philosophy &amp; Community Impact</title>
+  <meta name="description" content="Discover why iCareDonate was created: bridging surplus household resources with verified community needs through 100% free, dignity-first item sharing.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/about.css">
+  <style>
+    /* ── Layout & Eye-Friendly Spacing System matching About Us & How It Works ── */
+    .why-container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .why-header-block {
+      margin-bottom: 36px;
+    }
+
+    .why-header-block h1 {
+      font-size: clamp(2.1rem, 3.8vw, 2.75rem);
+      font-weight: 800;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+      margin: 0 0 12px;
+      line-height: 1.2;
+    }
+
+    .why-header-block .lead {
+      font-size: 17px;
+      color: var(--slate);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    .why-section-gap {
+      margin-bottom: 56px;
+    }
+
+    /* Mission Statement Banner */
+    .why-mission-card {
+      position: relative;
+      background: linear-gradient(135deg, #0E1A33 0%, #14213D 35%, #183870 75%, #1F4FA3 100%);
+      color: #FFFFFF;
+      border-radius: 20px;
+      padding: 44px 40px;
+      box-shadow: var(--shadow-md);
+      border: 1px solid rgba(242, 184, 75, 0.28);
+      margin-bottom: 56px;
+      overflow: hidden;
+    }
+
+    .why-mission-quote {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 600;
+      line-height: 1.5;
+      color: #FFFFFF;
+      margin: 0 0 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .why-mission-quote mark {
+      background: transparent;
+      color: #F2B84B;
+    }
+
+    .why-mission-sub {
+      font-size: 15.5px;
+      color: #E3EEFB;
+      line-height: 1.8;
+      margin: 0;
+      padding-top: 20px;
+      border-top: 1px solid rgba(227, 238, 251, 0.18);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Split Content Cards (matching How It Works card style) */
+    .why-split-card {
+      background: var(--surface);
+      border: 1px solid var(--sky);
+      border-radius: 20px;
+      padding: 38px 40px;
+      box-shadow: var(--shadow-sm);
+      display: grid;
+      align-items: center;
+      gap: 36px;
+      margin-bottom: 56px;
+    }
+
+    .why-split-card--normal {
+      grid-template-columns: 1fr 280px;
+    }
+
+    .why-split-card--reversed {
+      grid-template-columns: 280px 1fr;
+    }
+
+    .why-split-media {
+      position: relative;
+      border-radius: 16px;
+      height: 240px;
+      overflow: hidden;
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--sky);
+    }
+
+    .why-split-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .why-section-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--cobalt);
+      margin: 0 0 16px;
+      line-height: 1.3;
+    }
+
+    .why-body-p {
+      font-size: 15.5px;
+      color: var(--slate);
+      line-height: 1.75;
+      margin: 0 0 16px;
+    }
+
+    .why-body-p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Pillars Grid */
+    .why-pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+
+    .why-pillar-card {
+      background: var(--surface);
+      border: 1px solid var(--sky);
+      border-radius: 18px;
+      padding: 30px 26px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    }
+
+    .why-pillar-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--cobalt);
+    }
+
+    .why-pillar-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      background: var(--sky-light, #F0F6FD);
+      border: 1px solid #7EA5DC;
+      color: var(--cobalt);
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+
+    .why-pillar-body h3 {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 10px;
+    }
+
+    .why-pillar-body p {
+      font-size: 14.5px;
+      color: var(--slate);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* Lifecycle Grid */
+    .why-lifecycle-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      margin-bottom: 56px;
+    }
+
+    .why-step-card {
+      background: var(--surface);
+      border: 1px solid var(--sky);
+      border-radius: 18px;
+      padding: 30px 18px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .why-step-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .why-step-badge {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--cobalt);
+      color: #fff;
+      font-weight: 700;
+      font-size: 16px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 16px;
+      box-shadow: 0 4px 10px rgba(31, 79, 163, 0.25);
+    }
+
+    .why-step-card h4 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--navy);
+      margin: 0 0 10px;
+    }
+
+    .why-step-card p {
+      font-size: 13.5px;
+      color: var(--slate);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* CTA Card (matching About Us CTA card style) */
+    .why-cta-card {
+      padding: 46px 36px;
+      text-align: center;
+      background: var(--sky);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 32px;
+    }
+
+    .why-cta-card h2 {
+      font-size: 28px;
+      color: var(--cobalt);
+      font-weight: 800;
+      margin: 0 0 12px;
+    }
+
+    .why-cta-card .lead {
+      font-size: 16.5px;
+      color: var(--slate);
+      line-height: 1.7;
+      max-width: 620px;
+      margin: 0 auto 30px;
+    }
+
+    .why-btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .why-btn-group a {
+      min-width: 185px;
+      padding: 13px 28px;
+      font-size: 15px;
+      font-weight: 600;
+      border-radius: 999px;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 860px) {
+      .why-split-card {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        padding: 30px 24px !important;
+      }
+      .why-split-media {
+        height: 220px !important;
+        order: -1;
+      }
+      .why-lifecycle-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .why-pillars-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .why-lifecycle-grid {
+        grid-template-columns: 1fr !important;
+      }
+      .why-btn-group a {
+        width: 100% !important;
+      }
+      .why-mission-card {
+        padding: 32px 24px !important;
+      }
+      .why-mission-quote {
+        font-size: 1.35rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header / Navigation Bar -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="categories.html" class="nav-link">Ways to Help</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="categories.html" class="mobile-link">Ways to Help</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="signup.html?redirect=user/offer-donation.html" class="mobile-link">Start Donating</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" style="padding: 40px 0 80px;">
+    <div class="why-container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Breadcrumbs" style="margin-bottom: 24px;">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Why iCareDonate?</li>
+        </ol>
+      </nav>
+
+      <!-- Section 1: Philosophy & Commitment -->
+      <div class="why-header-block reveal-on-scroll">
+        <span class="badge badge-sky" style="display: inline-block; margin-bottom: 12px;">Philosophy &amp; Commitment</span>
+        <h1>Our Mission &amp; Purpose</h1>
+        <p class="lead">Connecting neighbors with transparency, eliminating waste, and upholding human dignity.</p>
+      </div>
+
+      <!-- Prominent Mission Statement Banner -->
+      <section class="why-mission-card reveal-on-scroll" aria-label="Official Mission Statement">
+        <blockquote class="why-mission-quote">
+          &ldquo;To empower local communities by bridging surplus resources with real, tangible human needs through <mark>100% free</mark>, dignity-first, and admin-verified item sharing.&rdquo;
+        </blockquote>
+        <p class="why-mission-sub">
+          We envision barangays where no child lacks school supplies while neighbors have surplus books; where emergency relief reaches families immediately without commercial intermediaries; and where giving is straightforward, transparent, and respectful.
+        </p>
+      </section>
+
+      <!-- Section 2: Why It Matters -->
+      <section class="why-split-card why-split-card--normal reveal-on-scroll" aria-label="Direct Item Sharing vs Overhead">
+        <div>
+          <span class="badge badge-sky" style="display: inline-block; margin-bottom: 12px;">Why It Matters</span>
+          <h2 class="why-section-title">Direct Item Sharing vs. Overhead</h2>
+          <p class="why-body-p">
+            Traditional charitable avenues frequently suffer from heavy administrative costs, shipping complexities, or delays. Concurrently, thousands of perfectly functioning school bags, textbooks, jackets, kitchen tools, and emergency supplies gather dust in Philippine households.
+          </p>
+          <p class="why-body-p">
+            iCareDonate transforms dormant household surplus into immediate lifelines. By focusing exclusively on physical goods and coordinating localized pick-ups at recognized community centers, we aim to ensure that donated items reach recipients directly.
+          </p>
+        </div>
+        <div class="why-split-media">
+          <img src="assets/images/what-we-do.jpg" alt="Volunteers organizing care items for community distribution" class="why-split-img" loading="lazy">
+        </div>
+      </section>
+
+      <!-- Section 3: Four Guiding Pillars -->
+      <section class="why-section-gap reveal-on-scroll" aria-label="Four Guiding Pillars">
+        <div style="margin-bottom: 28px;">
+          <h2 class="why-section-title" style="margin-bottom: 8px;">Four Guiding Pillars</h2>
+          <p class="why-body-p" style="margin-bottom: 0;">The foundational principles that protect and guide every interaction on iCareDonate.</p>
+        </div>
+
+        <div class="why-pillars-grid">
+          <div class="why-pillar-card">
+            <div class="why-pillar-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+            </div>
+            <div class="why-pillar-body">
+              <h3>1. Dignity in Receiving</h3>
+              <p>Every person requesting aid is treated with privacy and respect. Verification is handled quietly by designated coordinators without public embarrassment or judgment.</p>
+            </div>
+          </div>
+
+          <div class="why-pillar-card">
+            <div class="why-pillar-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+            </div>
+            <div class="why-pillar-body">
+              <h3>2. 100% Free &amp; Zero Exploitation</h3>
+              <p>No transaction charges, monetization, or commercial resale. Every item offered through the platform is intended to remain free for community members with verified needs.</p>
+            </div>
+          </div>
+
+          <div class="why-pillar-card">
+            <div class="why-pillar-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+            </div>
+            <div class="why-pillar-body">
+              <h3>3. Administrator Verification</h3>
+              <p>To help reduce fraud and safeguard community safety, donation listings and beneficiary requests undergo human verification according to the platform's implemented review process.</p>
+            </div>
+          </div>
+
+          <div class="why-pillar-card">
+            <div class="why-pillar-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            </div>
+            <div class="why-pillar-body">
+              <h3>4. Ecological Sustainability</h3>
+              <p>Extending the usable lifespan of electronics, books, and household goods helps reduce unnecessary waste and redirects usable items to people who need them.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 4: The Community Lifecycle -->
+      <section class="why-section-gap reveal-on-scroll" aria-label="The Community Lifecycle">
+        <div style="margin-bottom: 28px;">
+          <h2 class="why-section-title" style="margin-bottom: 8px;">The Community Lifecycle</h2>
+          <p class="why-body-p" style="margin-bottom: 0;">How surplus moves seamlessly into hands that need it most.</p>
+        </div>
+
+        <div class="why-lifecycle-grid">
+          <div class="why-step-card">
+            <div class="why-step-badge">1</div>
+            <h4>Step 1: Item Listed</h4>
+            <p>Donor lists surplus goods with real photos, condition details, and preferred pick-up location.</p>
+          </div>
+
+          <div class="why-step-card">
+            <div class="why-step-badge">2</div>
+            <h4>Step 2: Admin Review</h4>
+            <p>Moderators review listing compliance, item suitability, and cleanliness standards.</p>
+          </div>
+
+          <div class="why-step-card">
+            <div class="why-step-badge">3</div>
+            <h4>Step 3: Need Matched</h4>
+            <p>Verified community recipients request items with basic documentation for fair allocation.</p>
+          </div>
+
+          <div class="why-step-card">
+            <div class="why-step-badge">4</div>
+            <h4>Step 4: Local Pick-Up</h4>
+            <p>Direct, zero-cost handover coordinated safely at barangay multi-purpose halls and community hubs.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 5: Our Focus & Section 6: Team Link -->
+      <section class="why-split-card why-split-card--reversed reveal-on-scroll" aria-label="Serving Everyday Families &amp; Learners">
+        <div class="why-split-media">
+          <img src="assets/images/who-we-serve.jpg" alt="Local community members and students supported through donations" class="why-split-img" loading="lazy">
+        </div>
+        <div>
+          <span class="badge badge-sky" style="display: inline-block; margin-bottom: 12px;">Our Focus</span>
+          <h2 class="why-section-title">Serving Everyday Families &amp; Learners</h2>
+          <p class="why-body-p">
+            Our platform is built to support students striving for education, single parents managing household resources, families rebuilding after seasonal weather disruptions, and local daycare coordinators.
+          </p>
+          <p class="why-body-p">
+            By keeping services accessible and verification processes in place, we aim to foster mutual aid and local solidarity without commercial intermediaries.
+          </p>
+          <div style="margin-top: 22px;">
+            <a href="about.html#meet-the-team" class="btn btn-outline" style="border-radius: 999px; padding: 11px 24px; font-size: 14.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px;">
+              Learn more about our team &rarr;
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section 7: Final Call to Action -->
+      <section class="why-cta-card reveal-on-scroll" aria-label="Be Part of the Mission">
+        <h2>Be Part of the Mission</h2>
+        <p class="lead">Have surplus supplies to offer, or need assistance for your household? Connect with our community today.</p>
+        <div class="why-btn-group">
+          <a href="signup.html?redirect=user/offer-donation.html" class="btn btn-donate">Start Donating</a>
+          <a href="donations.html" class="btn btn-primary">Community Donations</a>
+          <a href="how-it-works.html" class="btn btn-outline" style="background: #FFFFFF;">How It Works</a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <!-- Col 1: Brand & Social -->
+        <div class="footer-public__col footer-public__col--brand">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate: Home">
+            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-social" aria-label="Official Social Media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Facebook" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Explore</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">Community Donations</a></li>
+            <li><a href="categories.html">Ways to Help</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="signup.html?redirect=user/offer-donation.html">Start Donating</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="why-icare-donate.html">Why iCareDonate?</a></li>
+            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Help &amp; Legal</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">Help Center</a></li>
+            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="contact.html">Contact Support</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+        <span class="footer-support-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            style="display:inline;vertical-align:-2px;margin-right:6px;">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <a href="mailto:icaredonate.team@gmail.com">icaredonate.team@gmail.com</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
