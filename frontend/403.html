@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>403 Access Forbidden | iCareDonate</title>
+  <meta name="description" content="You do not have permission to view this page.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Public Nav -->
+  <header class="nav-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate: Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+      <nav class="nav-public__links" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="categories.html" class="nav-link">Ways to Help</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="categories.html" class="mobile-link">Ways to Help</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <main style="min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 40px 20px;">
+    <div style="max-width: 500px;">
+      <div style="font-family: var(--font-heading); font-size: 72px; color: var(--cobalt); line-height: 1; font-weight: 800; margin-bottom: 0;">403</div>
+      <h1 style="font-family: var(--font-heading); font-size: 28px; color: var(--color-text); margin: 16px 0 8px;">Access Forbidden</h1>
+      <p style="color: var(--color-text-muted); font-size: 15px; margin-bottom: 24px;">You do not have permission to view this page or perform this action.</p>
+      <a href="index.html" class="btn btn-primary">Return to Homepage</a>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+
+        <!-- Brand + Social -->
+        <div class="footer-public__col footer-public__col--brand">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate: Home">
+            <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-social" aria-label="Follow us on social media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer" aria-label="Follow iCareDonate on Facebook" class="footer-social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/icaredonate" target="_blank" rel="noopener noreferrer" aria-label="Follow iCareDonate on Instagram" class="footer-social-link">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Explore</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">Browse donations</a></li>
+            <li><a href="categories.html">Ways to Help</a></li>
+            <li><a href="how-it-works.html">How it works</a></li>
+            <li><a href="signup.html">Start donating</a></li>
+          </ul>
+        </div>
+
+        <!-- About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">Our mission</a></li>
+            <li><a href="careers.html">Careers</a></li>
+          </ul>
+        </div>
+
+        <!-- Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Help &amp; Legal</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">Help center</a></li>
+            <li><a href="faqs.html">FAQs</a></li>
+            <li><a href="contact.html">Contact support</a></li>
+            <li><a href="terms.html">Terms of service</a></li>
+            <li><a href="privacy.html">Privacy policy</a></li>
+          </ul>
+          <p class="footer-contact-email"><a href="mailto:icaredonate.team@gmail.com">icaredonate.team@gmail.com</a></p>
+        </div>
+
+      </div>
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => { if(window.lucide) lucide.createIcons(); });
+  </script>
+</body>
+</html>

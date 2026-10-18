@@ -1,0 +1,7 @@
+# iCareDonate — Admin Portal Access Control
+# Prevent direct access to static HTML files; force requests through the PHP gate
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /iCareDonate/frontend/admin/
+RewriteRule ^(.*)\.html$ ../../admin/index.php?page=$1 [R=302,L]
+</IfModule>

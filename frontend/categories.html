@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ways to Help | iCareDonate</title>
+  <meta name="description" content="Discover ways to participate in community sharing, explore areas of need, and learn how iCareDonate coordinates dignified assistance.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+
+  <style>
+    /* ── Participation Cards ──────────────────────────────── */
+    .participation-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 24px;
+      margin-bottom: 56px;
+    }
+    .participation-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg, 16px);
+      padding: 30px 26px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+      box-shadow: 0 4px 16px rgba(20, 33, 61, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    .participation-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--card-accent, var(--cobalt));
+    }
+    .participation-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(31, 79, 163, 0.12);
+      border-color: var(--border-strong, var(--cobalt-light));
+    }
+    .participation-card__icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      background: var(--icon-bg, var(--sky));
+      color: var(--icon-color, var(--cobalt));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 18px;
+    }
+    .participation-card__title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 8px;
+      line-height: 1.3;
+    }
+    .participation-card__desc {
+      font-size: 0.9375rem;
+      color: var(--slate);
+      line-height: 1.6;
+      margin-bottom: 22px;
+      flex-grow: 1;
+    }
+
+    /* ── How Support Works Steps ──────────────────────────── */
+    .workflow-steps-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg, 16px);
+      padding: 40px 32px;
+      margin-bottom: 56px;
+      box-shadow: 0 4px 20px rgba(20, 33, 61, 0.04);
+    }
+    .workflow-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      position: relative;
+    }
+    .workflow-step {
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+    .workflow-step__num {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--cobalt);
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 0.9375rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 10px rgba(31, 79, 163, 0.3);
+    }
+    .workflow-step__title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+    .workflow-step__desc {
+      font-size: 0.875rem;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+
+    /* ── Impact Band Trust ────────────────────────────── */
+    .impact-band-trust {
+      background: linear-gradient(135deg, var(--navy) 0%, #1A2E56 100%);
+      color: #FFFFFF;
+      border-radius: var(--radius-lg, 16px);
+      padding: 36px 32px;
+      margin-bottom: 40px;
+      box-shadow: 0 8px 30px rgba(20, 33, 61, 0.15);
+    }
+    .impact-stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      text-align: center;
+    }
+    .impact-stat-item__num {
+      font-family: var(--font-brand);
+      font-size: 2.25rem;
+      font-weight: 800;
+      color: var(--amber);
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+    .impact-stat-item__label {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Public Navigation Bar -->
+  <header class="header-public nav-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate: Home">
+        <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+      <nav class="nav-public__links" aria-label="Main navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="categories.html" class="nav-link nav-link--active" aria-current="page">Ways to Help</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+      </div>
+      <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+        <i data-lucide="menu"></i>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links" aria-label="Mobile navigation">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="categories.html" class="mobile-link mobile-link--active" aria-current="page">Ways to Help</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content" style="padding: 40px 0 80px; min-height: 80vh;">
+    <div class="container" style="max-width: 1080px; margin: 0 auto; padding: 0 20px;">
+
+      <!-- ══════════════════════════════════════════════════════════
+           PAGE HEADER & INTRODUCTION
+           ══════════════════════════════════════════════════════════ -->
+      <div style="text-align: center; margin-bottom: 48px;">
+        <span class="badge" style="background: var(--sky); color: var(--cobalt); border: 1px solid var(--border); font-size: 12.5px; font-weight: 600; padding: 5px 16px; border-radius: 999px; display: inline-flex; align-items: center; gap: 7px; margin-bottom: 14px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+          Community Assistance &amp; Participation
+        </span>
+        <h1 style="font-size: clamp(2rem, 4vw, 42px); color: var(--navy); margin-bottom: 14px; font-family: var(--font-brand);">
+          Ways to Help &amp; Community Needs
+        </h1>
+        <p class="lead" style="max-width: 680px; margin: 0 auto; font-size: 16.5px; color: var(--slate); line-height: 1.6;">
+          iCareDonate connects neighbors who have usable goods to share with individuals and families seeking assistance. Discover how you can participate, explore current areas of need, and coordinate support with dignity.
+        </p>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════
+           SECTION A: WAYS TO PARTICIPATE
+           ══════════════════════════════════════════════════════════ -->
+      <section id="ways-to-participate" aria-label="Ways to participate in iCareDonate" style="margin-bottom: 60px;">
+        <div style="margin-bottom: 24px;">
+          <h2 style="font-size: 1.5rem; color: var(--navy); font-weight: 700; margin-bottom: 6px;">Ways to Participate</h2>
+          <p style="font-size: 0.9375rem; color: var(--slate); margin: 0;">Choose how you would like to connect with our community sharing network.</p>
+        </div>
+
+        <div class="participation-grid">
+
+          <!-- Card 1: Donate Usable Items -->
+          <article class="participation-card" style="--card-accent: var(--coral);">
+            <div>
+              <div class="participation-card__icon" style="--icon-bg: var(--coral-light); --icon-color: var(--coral);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 12 20 22 4 22 4 12" />
+                  <rect width="20" height="5" x="2" y="7" />
+                  <line x1="12" x2="12" y1="22" y2="7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
+                </svg>
+              </div>
+              <h3 class="participation-card__title">Donate an Item</h3>
+              <p class="participation-card__desc">
+                Have usable school supplies, clean clothing, kitchen essentials, or non-perishables? List them for local families and community centers in need.
+              </p>
+            </div>
+            <a href="signup.html?redirect=user/offer-donation.html" class="btn btn-primary" style="background: var(--coral); border-color: var(--coral); width: 100%; text-align: center;">
+              Offer a Donation &rarr;
+            </a>
+          </article>
+
+          <!-- Card 2: Request Assistance -->
+          <article class="participation-card" style="--card-accent: var(--cobalt);">
+            <div>
+              <div class="participation-card__icon" style="--icon-bg: var(--sky); --icon-color: var(--cobalt);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8" />
+                  <line x1="21" x2="16.65" y1="21" y2="16.65" />
+                  <line x1="11" x2="11" y1="8" y2="14" />
+                  <line x1="8" x2="14" y1="11" y2="11" />
+                </svg>
+              </div>
+              <h3 class="participation-card__title">Request Assistance</h3>
+              <p class="participation-card__desc">
+                If you or your family are going through hardship, request necessary supplies with dignity. Requests are reviewed respectfully by coordinators.
+              </p>
+            </div>
+            <a href="signup.html?redirect=user/request-donation.html" class="btn btn-primary" style="width: 100%; text-align: center;">
+              Request Assistance &rarr;
+            </a>
+          </article>
+
+          <!-- Card 3: Explore Community Needs -->
+          <article class="participation-card" style="--card-accent: var(--approved);">
+            <div>
+              <div class="participation-card__icon" style="--icon-bg: #E8F4FD; --icon-color: var(--approved);">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect width="7" height="7" x="3" y="3" rx="1" />
+                  <rect width="7" height="7" x="14" y="3" rx="1" />
+                  <rect width="7" height="7" x="14" y="14" rx="1" />
+                  <rect width="7" height="7" x="3" y="14" rx="1" />
+                </svg>
+              </div>
+              <h3 class="participation-card__title">Explore Community Needs</h3>
+              <p class="participation-card__desc">
+                Browse available donated items and community requests to see what resources are currently needed across our community focus areas.
+              </p>
+            </div>
+            <a href="donations.html" class="btn btn-outline" style="width: 100%; text-align: center;">
+              Browse Available Items &rarr;
+            </a>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           SECTION B: AREAS OF NEED (7 Community Assistance Types)
+           ══════════════════════════════════════════════════════════ -->
+      <section id="areas-of-need" aria-label="Areas of community need and assistance" style="margin-bottom: 64px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 12px; margin-bottom: 28px;">
+          <div>
+            <span class="badge" style="background: var(--sky); color: var(--cobalt); font-size: 11.5px; font-weight: 600; padding: 4px 12px; border-radius: 999px; margin-bottom: 8px; display: inline-block;">Humanitarian Focus Areas</span>
+            <h2 style="font-size: 1.75rem; color: var(--navy); font-weight: 700; margin: 0;">Areas of Need</h2>
+            <p style="font-size: 0.9375rem; color: var(--slate); margin: 4px 0 0;">Community assistance is organized into seven core material aid categories.</p>
+          </div>
+          <a href="donations.html" class="btn btn-outline btn-sm">View all available items &rarr;</a>
+        </div>
+
+        <!-- 7 Category Cards Grid -->
+        <div id="categories-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 24px;">
+
+          <!-- 1. Food and Daily Essentials -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--food">
+              <div>
+                <div class="category-card__tag">Area of Need</div>
+                <h3 class="category-card__title">Food &amp;<br>Daily Essentials</h3>
+              </div>
+              <div class="category-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Food and Daily Essentials</h4>
+              <p class="category-card__desc">Nourishing dry rations, packaged staples, canned goods, and infant formula to sustain families through hardship.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> Rice sacks, canned goods, powdered milk, oatmeal, dry rations
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=1" class="category-card__browse-link">Browse items &rarr;</a>
+                <span class="badge" style="font-size: 11px; background: var(--sky); color: var(--cobalt); padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="1">Available</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=food-groceries" class="btn btn-primary btn-block category-action-btn" data-category="food-groceries" data-category-name="Food and Daily Essentials">
+                Offer or Request in this Area
+              </a>
+            </div>
+          </article>
+
+          <!-- 2. Clothing and Personal Essentials -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--clothing">
+              <div>
+                <div class="category-card__tag">Area of Need</div>
+                <h3 class="category-card__title">Clothing &amp;<br>Personal Care</h3>
+              </div>
+              <div class="category-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.38 3.46 16 2a4 4 0 0 1-8 0L3.62 3.46a2 2 0 0 0-1.34 2.23l.58 3.47a1 1 0 0 0 .99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 0 0 2-2V10h2.15a1 1 0 0 0 .99-.84l.58-3.47a2 2 0 0 0-1.34-2.23z"/></svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Clothing and Personal Essentials</h4>
+              <p class="category-card__desc">Clean wearables, student uniforms, shoes, jackets, and personal hygiene items for all ages.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> School uniforms, sneakers, jackets, hygiene packs, baby clothes
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=3" class="category-card__browse-link">Browse items &rarr;</a>
+                <span class="badge" style="font-size: 11px; background: var(--sky); color: var(--cobalt); padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="3">Available</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=clothing-shoes" class="btn btn-primary btn-block category-action-btn" data-category="clothing-shoes" data-category-name="Clothing and Personal Essentials">
+                Offer or Request in this Area
+              </a>
+            </div>
+          </article>
+
+          <!-- 3. Education and School Supplies -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--education">
+              <div>
+                <div class="category-card__tag">Area of Need</div>
+                <h3 class="category-card__title">Education &amp;<br>School Supplies</h3>
+              </div>
+              <div class="category-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Education and School Supplies</h4>
+              <p class="category-card__desc">Textbooks, notebooks, writing materials, and sturdy backpacks empowering students in their education.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> School bags, notebooks, geometry sets, crayons, textbooks
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=2" class="category-card__browse-link">Browse items &rarr;</a>
+                <span class="badge" style="font-size: 11px; background: var(--sky); color: var(--cobalt); padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="2">Available</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=school-supplies" class="btn btn-primary btn-block category-action-btn" data-category="school-supplies" data-category-name="Education and School Supplies">
+                Offer or Request in this Area
+              </a>
+            </div>
+          </article>
+
+          <!-- 4. Health and Medical Aid -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--medical">
+              <div>
+                <div class="category-card__tag">Area of Need</div>
+                <h3 class="category-card__title">Health &amp;<br>Medical Aid</h3>
+              </div>
+              <div class="category-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="M12 8v8"/><path d="M8 12h8"/></svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Health and Medical Aid</h4>
+              <p class="category-card__desc">First aid supplies, mobility equipment, over-the-counter remedies, and wellness goods for recovery and senior care.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> First aid kits, bandages, mobility aids, sanitizers, vitamins
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=4" class="category-card__browse-link">Browse items &rarr;</a>
+                <span class="badge" style="font-size: 11px; background: var(--sky); color: var(--cobalt); padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="4">Available</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=medical-first-aid" class="btn btn-primary btn-block category-action-btn" data-category="medical-first-aid" data-category-name="Health and Medical Aid">
+                Offer or Request in this Area
+              </a>
+            </div>
+          </article>
+
+          <!-- 5. Emergency and Disaster Relief -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--emergency">
+              <div>
+                <div class="category-card__tag">Area of Need</div>
+                <h3 class="category-card__title">Emergency &amp;<br>Disaster Relief</h3>
+              </div>
+              <div class="category-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Emergency and Disaster Relief</h4>
+              <p class="category-card__desc">Urgent food packs, flashlights, thermal blankets, and clean containers for communities coping with sudden crisis.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> Emergency food packs, flashlights, batteries, thermal blankets
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=9" class="category-card__browse-link">Browse items &rarr;</a>
+                <span class="badge" style="font-size: 11px; background: var(--sky); color: var(--cobalt); padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="9">Available</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=other-essentials" class="btn btn-primary btn-block category-action-btn" data-category="other-essentials" data-category-name="Emergency and Disaster Relief">
+                Offer or Request in this Area
+              </a>
+            </div>
+          </article>
+
+          <!-- 6. Household Essentials -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--household">
+              <div>
+                <div class="category-card__tag">Area of Need</div>
+                <h3 class="category-card__title">Household<br>Essentials</h3>
+              </div>
+              <div class="category-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Household Essentials</h4>
+              <p class="category-card__desc">Cookware, electric fans, functional bedding, and home essentials to help families re-establish stable living conditions.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> Cookware, thermal blankets, electric fans, utensils, bedding
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=5" class="category-card__browse-link">Browse items &rarr;</a>
+                <span class="badge" style="font-size: 11px; background: var(--sky); color: var(--cobalt); padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="5">Available</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=household-goods" class="btn btn-primary btn-block category-action-btn" data-category="household-goods" data-category-name="Household Essentials">
+                Offer or Request in this Area
+              </a>
+            </div>
+          </article>
+
+          <!-- 7. Other Assistance -->
+          <article class="category-card reveal-on-scroll">
+            <div class="category-card__header category-card__header--tech">
+              <div>
+                <div class="category-card__tag">Area of Need</div>
+                <h3 class="category-card__title">Other<br>Assistance</h3>
+              </div>
+              <div class="category-card__icon" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="3" rx="2"/><line x1="8" x2="16" y1="21" y2="21"/><line x1="12" x2="12" y1="17" y2="21"/></svg>
+              </div>
+            </div>
+            <div class="category-card__body">
+              <h4 class="category-card__name">Other Assistance</h4>
+              <p class="category-card__desc">Trade and vocational tools, learning electronics, mobility equipment, and specialized support for specific community projects.</p>
+              <div class="category-card__accepted">
+                <strong>Accepted:</strong> Working laptops, tablets, vocational tools, study devices
+              </div>
+              <div class="category-card__meta-row">
+                <a href="donations.html?category=8" class="category-card__browse-link">Browse items &rarr;</a>
+                <span class="badge" style="font-size: 11px; background: var(--sky); color: var(--cobalt); padding: 3px 10px; border-radius: 999px; font-weight: 600;" data-cat-count="8">Available</span>
+              </div>
+              <a href="signup.html?redirect=user/offer-donation.html&category=electronics-gadgets" class="btn btn-primary btn-block category-action-btn" data-category="electronics-gadgets" data-category-name="Other Assistance">
+                Offer or Request in this Area
+              </a>
+            </div>
+          </article>
+
+        </div><!-- /#categories-grid -->
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           SLIM BANNER: LINK TO HOW IT WORKS
+           ══════════════════════════════════════════════════════════ -->
+      <section aria-label="Learn how it works" style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg, 16px); padding: 26px 30px; margin-bottom: 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 18px; box-shadow: 0 2px 14px rgba(20, 33, 61, 0.04);">
+        <div style="display: flex; align-items: center; gap: 16px;">
+          <div style="width: 48px; height: 48px; border-radius: 12px; background: var(--sky); color: var(--cobalt); display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          </div>
+          <div>
+            <h3 style="font-size: 1.15rem; color: var(--navy); font-weight: 700; margin: 0 0 4px;">New to iCareDonate?</h3>
+            <p style="font-size: 0.9375rem; color: var(--slate); margin: 0; line-height: 1.5;">Learn how coordinator verification, safe local handovers, and community matching connect donors with recipients.</p>
+          </div>
+        </div>
+        <a href="how-it-works.html" class="btn btn-outline" style="white-space: nowrap; font-weight: 600; padding: 10px 22px;">
+          See how it works &rarr;
+        </a>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           BUILT ON TRUST AND COMMUNITY (4 Value Pillars)
+           ══════════════════════════════════════════════════════════ -->
+      <section id="trust-and-community" aria-label="Built on trust and community" class="impact-band-trust" style="background: linear-gradient(135deg, var(--navy) 0%, #1A2E56 100%); margin-bottom: 32px;">
+        <div style="text-align: center; margin-bottom: 32px;">
+          <span class="badge" style="background: rgba(242, 184, 75, 0.2); color: var(--amber); border: 1px solid rgba(242, 184, 75, 0.35); font-size: 12px; font-weight: 600; padding: 5px 16px; border-radius: 999px; margin-bottom: 10px; display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Community Integrity
+          </span>
+          <h2 style="font-size: 1.75rem; color: #FFFFFF; font-weight: 700; margin: 0 0 8px; font-family: var(--font-brand);">Built on Trust and Community</h2>
+          <p style="font-size: 0.9375rem; color: rgba(255, 255, 255, 0.82); max-width: 620px; margin: 0 auto; line-height: 1.6;">
+            A transparent, verified community platform dedicated to connecting neighbors with dignity and mutual respect.
+          </p>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px;">
+          <div style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 22px 20px;">
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--amber); margin-bottom: 6px;">7 Aid Categories</div>
+            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.85); line-height: 1.55; margin: 0;">Comprehensive material support spanning food, clothing, education, health, and home goods.</p>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 22px 20px;">
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--amber); margin-bottom: 6px;">Coordinator-Reviewed</div>
+            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.85); line-height: 1.55; margin: 0;">Item listings and community requests are reviewed to ensure appropriate detail and condition.</p>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 22px 20px;">
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--amber); margin-bottom: 6px;">Safe Local Handover</div>
+            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.85); line-height: 1.55; margin: 0;">Distribution is coordinated safely through verified community drop-off venues and local hubs.</p>
+          </div>
+          <div style="background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 12px; padding: 22px 20px;">
+            <div style="font-size: 1.15rem; font-weight: 700; color: var(--amber); margin-bottom: 6px;">100% Non-Commercial</div>
+            <p style="font-size: 0.875rem; color: rgba(255, 255, 255, 0.85); line-height: 1.55; margin: 0;">Pure peer-to-peer sharing with zero platform fees, advertisements, buying, or selling.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══════════════════════════════════════════════════════════
+           FINAL CALL TO ACTION STRIP
+           ══════════════════════════════════════════════════════════ -->
+      <section style="background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg, 16px); padding: 40px 32px; text-align: center; box-shadow: 0 4px 20px rgba(20, 33, 61, 0.05); margin-bottom: 40px;">
+        <h2 style="font-size: 1.65rem; color: var(--navy); font-weight: 700; margin: 0 0 10px; font-family: var(--font-brand);">Ready to make a difference?</h2>
+        <p style="font-size: 1rem; color: var(--slate); max-width: 560px; margin: 0 auto 24px; line-height: 1.6;">
+          Join your local community on iCareDonate today. Offer usable items you no longer need, or request the assistance your family deserves.
+        </p>
+        <div style="display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;">
+          <a href="signup.html?redirect=user/offer-donation.html" class="btn btn-primary" style="background: var(--coral); border-color: var(--coral); padding: 12px 28px; font-weight: 600;">
+            Offer a Donation &rarr;
+          </a>
+          <a href="signup.html?redirect=user/request-donation.html" class="btn btn-outline" style="padding: 12px 28px; font-weight: 600;">
+            Request Assistance &rarr;
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- ============================================================
+       PUBLIC FOOTER
+       ============================================================ -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <!-- Col 1: Brand & Social -->
+        <div class="footer-public__col footer-public__col--brand">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate: Home">
+            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-social" aria-label="Official Social Media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Official iCareDonate Facebook" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/iCareDonate" target="_blank" rel="noopener noreferrer" class="footer-social-link" aria-label="Official iCareDonate Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Explore</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">Browse Donations</a></li>
+            <li><a href="categories.html">Ways to Help</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="signup.html?redirect=user/offer-donation.html">Start Donating</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="mission.html">Our Mission</a></li>
+            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Help &amp; Legal</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">Help Center</a></li>
+            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="contact.html">Contact Support</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+        <span class="footer-support-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline;vertical-align:-2px;margin-right:6px;"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          <a href="mailto:icaredonate.team@gmail.com">icaredonate.team@gmail.com</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if(window.lucide) lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

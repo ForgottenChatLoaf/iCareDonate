@@ -1,0 +1,7 @@
+# iCareDonate — User Portal Access Control
+# Prevent direct access to static HTML files; force requests through the PHP gate
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteBase /iCareDonate/frontend/user/
+RewriteRule ^(.*)\.html$ ../../user/index.php?page=$1 [R=302,L]
+</IfModule>
