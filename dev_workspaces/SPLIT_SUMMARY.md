@@ -1,207 +1,103 @@
-# Dev Workspace Split Summary
+# Dev Workspace Split Summary (v2 — Narrow Scope)
 
-Generated: C:/xampp/htdocs/iCareDonate/dev_workspaces
+> Only files retyped on camera. Everything else (portals, error pages, etc.) is not copied.
 
 ## LOC Totals
 
-| Developer | Lines of Code |
-|-----------|---------------|
-| Dev A (exclusive) | 11524 |
-| Dev A (shared ownership) | 1436 |
-| **Dev A Total** | **12960** |
-| **Dev B Total** | **11885** |
-| Delta | 1075 (8.7%) |
-
-> Target: < 10% difference. Actual difference: **8.7%**
+| Developer | Lines of Code | Notes |
+|-----------|---------------|-------|
+| Dev A exclusive | 3197 | Public marketing pages + page CSS |
+| Dev A shared ownership | 17638 | CSS tokens, nav.js, header/footer partials |
+| **Dev A Total** | **20835** | |
+| **Dev B Total (weighted)** | **3443** | PHP files counted 2× for difficulty |
+| Delta | 17392 (143.3%) | Target < 10% |
 
 ---
 
-## Excluded Files
+## Dev A — Files
 
-| File | Reason |
+| File | LOC | Tier | Notes |
+|------|-----|------|-------|
+| `frontend/css/variables.css` | 100 | SHARED |  |
+| `frontend/css/layout.css` | 539 | SHARED |  |
+| `frontend/css/base.css` | 406 | SHARED |  |
+| `frontend/js/nav.js` | 195 | SHARED |  |
+| `frontend/includes/public-header.html` | 64 | SHARED |  |
+| `frontend/includes/public-footer.html` | 82 | SHARED |  |
+| `frontend/assets/images/logo.svg` | 9 | SHARED |  |
+| `frontend/assets/images/placeholder.svg` | 8 | SHARED |  |
+| `frontend/assets/images/what-we-do.jpg` | 1272 | SHARED |  |
+| `frontend/assets/images/who-we-serve.jpg` | 471 | SHARED |  |
+| `frontend/assets/images/03_what_we_do.jpg` | 1272 | SHARED |  |
+| `frontend/assets/images/04_who-we-serve.jpg` | 471 | SHARED |  |
+| `frontend/assets/images/05_emergency-disaster-relief.jpg` | 1891 | SHARED |  |
+| `frontend/assets/images/06_health-care-medical-aid.png` | 7245 | SHARED |  |
+| `frontend/assets/images/07_education-youth-support.jpg` | 789 | SHARED |  |
+| `frontend/assets/images/login-brand.jpg` | 726 | SHARED |  |
+| `frontend/assets/images/categories/clothing-shoes.avif` | 331 | SHARED |  |
+| `frontend/assets/images/categories/electronics-gadgets.avif` | 60 | SHARED |  |
+| `frontend/assets/images/categories/emergency-disaster-relief.jpg` | 383 | SHARED |  |
+| `frontend/assets/images/categories/food-groceries.jpg` | 407 | SHARED |  |
+| `frontend/assets/images/categories/medical-first-aid.jpg` | 208 | SHARED |  |
+| `frontend/assets/images/categories/other-essentials.jpg` | 139 | SHARED |  |
+| `frontend/assets/images/categories/school-supplies.jpg` | 294 | SHARED |  |
+| `frontend/assets/images/categories/toys-games.avif` | 276 | SHARED |  |
+| `frontend/index.html` | 507 | MUST | Homepage — hero, stats, CTA sections |
+| `frontend/about.html` | 309 | MUST | About us — mission, team, values |
+| `frontend/categories.html` | 657 | MUST | Ways to Help & Community Needs |
+| `frontend/how-it-works.html` | 304 | MUST | 5-step community workflow page |
+| `frontend/mission.html` | 321 | IF-TIME | Mission statement & vision |
+| `frontend/contact.html` | 310 | IF-TIME | Contact form page (shared with Dev B) |
+| `frontend/css/pages/home.css` | 335 | MUST | Homepage-specific styles |
+| `frontend/css/pages/about.css` | 454 | IF-TIME | About page styles |
+| `frontend/js/categories.js` | 0 | IF-TIME | Category filter/tab logic |
+
+
+---
+
+## Dev B — Files
+
+| File | Raw LOC | Weighted | Tier | Notes |
+|------|---------|----------|------|-------|
+| `includes/auth.php` | 91 | 182 | MUST | Core session auth helper (requireLogin, isLoggedIn, currentRole) |
+| `includes/demo_accounts.php` | 48 | 96 | MUST | Demo credential store with bcrypt hashes |
+| `actions/login_process.php` | 85 | 170 | MUST | POST handler: validates credentials, starts session |
+| `login.php` | 396 | 792 | MUST | Main login page — PHP renders the login form |
+| `logout.php` | 34 | 68 | MUST | Destroys session and redirects to login |
+| `frontend/signup.html` | 352 | 352 | MUST | Sign-up form with demo-mode notice |
+| `frontend/faqs.html` | 392 | 392 | MUST | FAQ accordion page |
+| `frontend/contact.html` | 310 | 310 | IF-TIME | Contact form (if Dev A doesn't finish it first) |
+| `frontend/css/pages/auth.css` | 547 | 547 | MUST | Login/signup page styles |
+| `frontend/js/forms.js` | 534 | 534 | IF-TIME | Form validation + AJAX submission helpers |
+
+
+---
+
+## Pre-Shoot Checklist
+
+| Item | Status |
 |------|--------|
-| `frontend/admin/.htaccess` | Apache routing config — not developer source |
-| `frontend/user/.htaccess` | Apache routing config — not developer source |
-| `frontend/admin-dashboard.html` | Legacy root mockup duplicate |
-| `frontend/user-dashboard.html` | Legacy root mockup duplicate |
-| `frontend/frontend_inventory.md` | Internal audit documentation |
-| `frontend/includes/readme.md` | Internal component documentation |
+| Password hashes in `includes/demo_accounts.php` | ✅ Real bcrypt hashes (verified) |
+| User portal gate `user/index.php` | ✅ Option B PHP session gate in place |
+| Admin portal gate `admin/index.php` | ✅ Option B PHP session gate in place |
+| Broken `../auth/login.html` in `frontend/user/dashboard.html` | ✅ Fixed → `../../logout.php` |
+| Logout modal (sidebar) on user pages | ✅ JS overlay via `user-portal.js` |
+| Logout modal (sidebar) on admin pages | ✅ JS overlay via `admin-portal.js` |
 
 ---
 
-## Dev A — Exclusive Files
+## Copy-Back (After Video)
 
-| File | Type | LOC | Owner |
-|------|------|-----|-------|
-| `frontend/index.html` | Page (HTML/PHP) | 507 | Dev A |
-| `frontend/about.html` | Page (HTML/PHP) | 309 | Dev A |
-| `frontend/categories.html` | Page (HTML/PHP) | 657 | Dev A |
-| `frontend/how-it-works.html` | Page (HTML/PHP) | 304 | Dev A |
-| `frontend/mission.html` | Page (HTML/PHP) | 321 | Dev A |
-| `frontend/careers.html` | Page (HTML/PHP) | 186 | Dev A |
-| `frontend/contact.html` | Page (HTML/PHP) | 310 | Dev A |
-| `frontend/contact-support.html` | Page (HTML/PHP) | 256 | Dev A |
-| `frontend/help-center.html` | Page (HTML/PHP) | 223 | Dev A |
-| `frontend/faqs.html` | Page (HTML/PHP) | 392 | Dev A |
-| `frontend/terms.html` | Page (HTML/PHP) | 300 | Dev A |
-| `frontend/privacy.html` | Page (HTML/PHP) | 367 | Dev A |
-| `frontend/403.html` | Page (HTML/PHP) | 138 | Dev A |
-| `frontend/404.html` | Page (HTML/PHP) | 159 | Dev A |
-| `frontend/admin/index.html` | Page (HTML/PHP) | 257 | Dev A |
-| `frontend/admin/dashboard.html` | Page (HTML/PHP) | 12 | Dev A |
-| `frontend/admin/donations.html` | Page (HTML/PHP) | 538 | Dev A |
-| `frontend/admin/donation-review.html` | Page (HTML/PHP) | 411 | Dev A |
-| `frontend/admin/requests.html` | Page (HTML/PHP) | 266 | Dev A |
-| `frontend/admin/request-review.html` | Page (HTML/PHP) | 248 | Dev A |
-| `frontend/admin/users.html` | Page (HTML/PHP) | 251 | Dev A |
-| `frontend/admin/user-detail.html` | Page (HTML/PHP) | 474 | Dev A |
-| `frontend/admin/reports.html` | Page (HTML/PHP) | 227 | Dev A |
-| `frontend/admin/inventory.html` | ? | 0 | Dev A |
-| `frontend/admin/distribution.html` | ? | 0 | Dev A |
-| `frontend/admin/communications.html` | ? | 0 | Dev A |
-| `frontend/admin/volunteers.html` | ? | 0 | Dev A |
-| `frontend/admin/finance.html` | ? | 0 | Dev A |
-| `frontend/admin/analytics.html` | ? | 0 | Dev A |
-| `frontend/admin/audit-logs.html` | ? | 0 | Dev A |
-| `frontend/admin/system-health.html` | ? | 0 | Dev A |
-| `frontend/admin/notifications.html` | ? | 0 | Dev A |
-| `frontend/admin/settings.html` | ? | 0 | Dev A |
-| `frontend/admin/admins.html` | Page (HTML/PHP) | 189 | Dev A |
-| `frontend/admin/categories.html` | Page (HTML/PHP) | 178 | Dev A |
-| `frontend/admin/claims.html` | Page (HTML/PHP) | 180 | Dev A |
-| `frontend/admin/faqs.html` | Page (HTML/PHP) | 182 | Dev A |
-| `frontend/admin/inquiries.html` | Page (HTML/PHP) | 172 | Dev A |
-| `frontend/admin/interviews.html` | Page (HTML/PHP) | 241 | Dev A |
-| `frontend/admin/logs.html` | Page (HTML/PHP) | 291 | Dev A |
-| `frontend/admin/matches.html` | Page (HTML/PHP) | 178 | Dev A |
-| `frontend/admin/moderation.html` | Page (HTML/PHP) | 252 | Dev A |
-| `frontend/admin/profile.html` | Page (HTML/PHP) | 158 | Dev A |
-| `frontend/admin/statistics.html` | Page (HTML/PHP) | 255 | Dev A |
-| `frontend/admin/support.html` | Page (HTML/PHP) | 172 | Dev A |
-| `frontend/admin/transactions.html` | Page (HTML/PHP) | 249 | Dev A |
-| `admin/index.php` | Page (HTML/PHP) | 66 | Dev A |
-| `frontend/includes/admin-sidebar.html` | Include/partial | 102 | Dev A |
-| `frontend/css/pages/admin.css` | Stylesheet | 600 | Dev A |
-| `frontend/css/pages/home.css` | Stylesheet | 335 | Dev A |
-| `frontend/css/pages/about.css` | Stylesheet | 454 | Dev A |
-| `frontend/css/pages/careers.css` | ? | 0 | Dev A |
-| `frontend/css/pages/contact.css` | ? | 0 | Dev A |
-| `frontend/css/pages/contact-support.css` | ? | 0 | Dev A |
-| `frontend/css/pages/help-center.css` | ? | 0 | Dev A |
-| `frontend/css/pages/legal.css` | ? | 0 | Dev A |
-| `frontend/js/admin-portal.js` | Script | 157 | Dev A |
-| `frontend/js/admin-data.js` | ? | 0 | Dev A |
-| `frontend/js/categories.js` | ? | 0 | Dev A |
-
----
-
-## Shared Files (Dev A owns for rewrite; Dev B gets read-only copy)
-
-| File | Type | LOC | Owner |
-|------|------|-----|-------|
-| `frontend/css/variables.css` | Stylesheet | 100 | Dev A (shared owner) |
-| `frontend/css/layout.css` | Stylesheet | 539 | Dev A (shared owner) |
-| `frontend/css/base.css` | Stylesheet | 406 | Dev A (shared owner) |
-| `frontend/js/nav.js` | Script | 195 | Dev A (shared owner) |
-| `frontend/js/theme.js` | Script | 33 | Dev A (shared owner) |
-| `frontend/includes/public-header.html` | Include/partial | 64 | Dev A (shared owner) |
-| `frontend/includes/public-footer.html` | Include/partial | 82 | Dev A (shared owner) |
-| `frontend/assets/images/03_what_we_do.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/04_who-we-serve.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/05_emergency-disaster-relief.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/06_health-care-medical-aid.png` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/07_education-youth-support.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/clothing-shoes.avif` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/electronics-gadgets.avif` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/emergency-disaster-relief.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/food-groceries.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/medical-first-aid.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/other-essentials.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/school-supplies-alt.avif` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/school-supplies.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/categories/toys-games.avif` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/food_groceries.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/login-brand.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/logo.svg` | Asset (images/fonts/svg) | 9 | Dev A (shared owner) |
-| `frontend/assets/images/placeholder.svg` | Asset (images/fonts/svg) | 8 | Dev A (shared owner) |
-| `frontend/assets/images/what-we-do.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-| `frontend/assets/images/who-we-serve.jpg` | Asset (images/fonts/svg) | 0 | Dev A (shared owner) |
-
----
-
-## Dev B — Exclusive Files
-
-| File | Type | LOC | Owner |
-|------|------|-----|-------|
-| `frontend/donate.html` | Page (HTML/PHP) | 331 | Dev B |
-| `frontend/request.html` | Page (HTML/PHP) | 331 | Dev B |
-| `frontend/donations.html` | Page (HTML/PHP) | 393 | Dev B |
-| `frontend/donation-details.html` | Page (HTML/PHP) | 370 | Dev B |
-| `frontend/login.html` | Page (HTML/PHP) | 426 | Dev B |
-| `frontend/signup.html` | Page (HTML/PHP) | 352 | Dev B |
-| `frontend/forgot-password.html` | Page (HTML/PHP) | 241 | Dev B |
-| `frontend/reset-password.html` | Page (HTML/PHP) | 244 | Dev B |
-| `frontend/admin-login.html` | Page (HTML/PHP) | 215 | Dev B |
-| `frontend/admin/login.html` | Page (HTML/PHP) | 412 | Dev B |
-| `login.php` | Page (HTML/PHP) | 396 | Dev B |
-| `logout.php` | Page (HTML/PHP) | 34 | Dev B |
-| `includes/auth.php` | Include/partial | 91 | Dev B |
-| `includes/demo_accounts.php` | Include/partial | 48 | Dev B |
-| `actions/login_process.php` | Include/partial | 85 | Dev B |
-| `frontend/user/dashboard.html` | Page (HTML/PHP) | 271 | Dev B |
-| `frontend/user/index.html` | Page (HTML/PHP) | 12 | Dev B |
-| `frontend/user/my-donations.html` | ? | 0 | Dev B |
-| `frontend/user/my-requests.html` | ? | 0 | Dev B |
-| `frontend/user/impact.html` | ? | 0 | Dev B |
-| `frontend/user/history.html` | Page (HTML/PHP) | 169 | Dev B |
-| `frontend/user/rewards.html` | ? | 0 | Dev B |
-| `frontend/user/messages.html` | ? | 0 | Dev B |
-| `frontend/user/notifications.html` | Page (HTML/PHP) | 152 | Dev B |
-| `frontend/user/settings.html` | Page (HTML/PHP) | 223 | Dev B |
-| `frontend/user/browse-donations.html` | Page (HTML/PHP) | 211 | Dev B |
-| `frontend/user/donations.html` | Page (HTML/PHP) | 171 | Dev B |
-| `frontend/user/edit-donation.html` | Page (HTML/PHP) | 197 | Dev B |
-| `frontend/user/offer-donation.html` | Page (HTML/PHP) | 270 | Dev B |
-| `frontend/user/profile.html` | Page (HTML/PHP) | 166 | Dev B |
-| `frontend/user/request-details.html` | Page (HTML/PHP) | 175 | Dev B |
-| `frontend/user/request-donation.html` | Page (HTML/PHP) | 179 | Dev B |
-| `frontend/user/requests.html` | Page (HTML/PHP) | 148 | Dev B |
-| `frontend/user/support.html` | Page (HTML/PHP) | 159 | Dev B |
-| `frontend/user/transactions.html` | Page (HTML/PHP) | 185 | Dev B |
-| `user/index.php` | Page (HTML/PHP) | 59 | Dev B |
-| `frontend/includes/user-sidebar.html` | Include/partial | 85 | Dev B |
-| `frontend/includes/brand-sidebar.html` | Include/partial | 18 | Dev B |
-| `frontend/includes/topbar-user-btn.html` | Include/partial | 25 | Dev B |
-| `frontend/css/pages/user.css` | Stylesheet | 260 | Dev B |
-| `frontend/css/pages/auth.css` | Stylesheet | 547 | Dev B |
-| `frontend/css/pages/donations.css` | Stylesheet | 258 | Dev B |
-| `frontend/css/pages/forms.css` | Stylesheet | 145 | Dev B |
-| `frontend/css/components.css` | Stylesheet | 1061 | Dev B |
-| `frontend/js/forms.js` | Script | 534 | Dev B |
-| `frontend/js/user-portal.js` | Script | 151 | Dev B |
-| `frontend/js/donations.js` | Script | 459 | Dev B |
-| `frontend/js/data.js` | Script | 615 | Dev B |
-| `frontend/js/mock-data.js` | Script | 657 | Dev B |
-| `frontend/js/main.js` | Script | 354 | Dev B |
-
----
-
-## Copy-Back Instructions (After Video Recording)
-
-### Copy Dev A's rewritten files back to production:
+Run **Dev A first** (includes shared CSS/JS):
 ```powershell
 xcopy /E /Y dev_workspaces\dev_a\rewrite\frontend frontend\
-xcopy /E /Y dev_workspaces\dev_a\rewrite\admin admin\
 ```
 
-### Copy Dev B's rewritten files back to production:
+Then **Dev B:**
 ```powershell
 xcopy /E /Y dev_workspaces\dev_b\rewrite\frontend frontend\
 xcopy /E /Y dev_workspaces\dev_b\rewrite\includes includes\
 xcopy /E /Y dev_workspaces\dev_b\rewrite\actions actions\
 copy /Y dev_workspaces\dev_b\rewrite\login.php login.php
 copy /Y dev_workspaces\dev_b\rewrite\logout.php logout.php
-xcopy /E /Y dev_workspaces\dev_b\rewrite\user user\
 ```
-
-> **Note:** Run Dev B's copy AFTER Dev A's, or vice-versa, depending on which is finished first. The shared CSS/JS/partials are in Dev A's rewrite folder, so run Dev A's copy first.

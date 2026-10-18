@@ -1,96 +1,67 @@
 # Dev B — Task List
-
-> **Your role:** Authentication, user portal & donation/request flows.
-> **Rewrite folder:** `dev_workspaces/dev_b/rewrite/`
-> Work from **easy → hard**. Tick each checkbox when the file is finished.
-
----
-
-## 📦 Dependencies to read first (in `reference/`)
-- `frontend/css/variables.css` — All colour tokens and spacing scale.
-- `frontend/includes/public-header.html` — Public nav (you use it on auth pages).
-- `frontend/includes/user-sidebar.html` — User portal sidebar.
-- `includes/auth.php` — Session auth helper used by `login.php`, `logout.php`, and PHP gates.
+**Role:** Authentication system + supporting public pages  
+**Rewrite folder:** `dev_workspaces/dev_b/rewrite/`  
+**Time budget:** ~50–60 min  
+Work from MUST → IF-TIME. Tick each checkbox when done.
 
 ---
 
-## ✅ Tier 1 — Easy (static / mostly markup)
+## ⚙️ Shared files — walk through, don't retype
+These are pre-made. Spend ~1 min each on camera.
 
-| # | File | Lines | Notes |
-|---|------|-------|-------|
-| ☐ | `frontend/forgot-password.html` | ~80 | Simple form page |
-| ☐ | `frontend/reset-password.html` | ~80 | Simple form page |
-| ☐ | `includes/demo_accounts.php` | ~30 | Demo credential store |
-| ☐ | `frontend/user/index.html` | 12 | Redirect stub |
-| ☐ | `frontend/user/notifications.html` | varies | Notifications list |
-| ☐ | `frontend/user/support.html` | 159 | User support page |
+| File | What to explain |
+|------|-----------------|
+| `shared/frontend/css/variables.css` | Colour tokens used on login page |
+| `shared/frontend/includes/public-header.html` | Nav that appears above login form |
 
 ---
 
-## ✅ Tier 2 — Medium (forms, auth logic, styled portals)
+## ✅ MUST — Do these first (PHP auth — the hard part)
 
-| # | File | Lines | Notes |
-|---|------|-------|-------|
-| ☐ | `frontend/login.html` | varies | Public login page (form only) |
-| ☐ | `frontend/signup.html` | varies | Registration form |
-| ☐ | `frontend/admin-login.html` | varies | Admin login page |
-| ☐ | `frontend/includes/user-sidebar.html` | ~80 | User portal sidebar |
-| ☐ | `frontend/includes/brand-sidebar.html` | ~50 | Brand sidebar variant |
-| ☐ | `frontend/includes/topbar-user-btn.html` | ~30 | Topbar user button |
-| ☐ | `actions/login_process.php` | varies | POST handler for login form |
-| ☐ | `logout.php` | ~20 | Session destroy + redirect |
-| ☐ | `frontend/user/settings.html` | varies | Account settings |
-| ☐ | `frontend/user/profile.html` | 166 | User profile |
-| ☐ | `frontend/user/impact.html` | varies | Impact stats |
-| ☐ | `frontend/user/rewards.html` | varies | Reward badges |
-| ☐ | `frontend/user/messages.html` | varies | Messages |
-| ☐ | `frontend/css/pages/auth.css` | varies | Auth page styles |
-| ☐ | `frontend/css/pages/forms.css` | varies | Form component styles |
-| ☐ | `frontend/css/pages/user.css` | varies | User portal styles |
-| ☐ | `frontend/css/components.css` | varies | Shared UI components |
-| ☐ | `frontend/js/main.js` | varies | Site-wide JS init |
-| ☐ | `frontend/js/forms.js` | varies | Form validation + submission |
+| ☐ | File | Raw LOC | Weighted | Notes |
+|----|------|---------|----------|-------|| ☐ | `includes/auth.php` | 91 | 182 | Core session auth helper (requireLogin, isLoggedIn, currentRole) |
+| ☐ | `includes/demo_accounts.php` | 48 | 96 | Demo credential store with bcrypt hashes |
+| ☐ | `actions/login_process.php` | 85 | 170 | POST handler: validates credentials, starts session |
+| ☐ | `login.php` | 396 | 792 | Main login page — PHP renders the login form |
+| ☐ | `logout.php` | 34 | 68 | Destroys session and redirects to login |
+| ☐ | `frontend/signup.html` | 352 | 352 | Sign-up form with demo-mode notice |
+| ☐ | `frontend/faqs.html` | 392 | 392 | FAQ accordion page |
+| ☐ | `frontend/css/pages/auth.css` | 547 | 547 | Login/signup page styles |
+
+**Order recommendation:**
+1. `includes/demo_accounts.php` — smallest; introduces the credential structure
+2. `includes/auth.php` — core helper functions (`isLoggedIn`, `requireLogin`, `currentRole`)
+3. `logout.php` — short; explain `session_destroy()` + redirect
+4. `actions/login_process.php` — POST handler; explain `password_verify()` + session start
+5. `login.php` — the full PHP page; explain `$base` path-building and the form
+6. `frontend/signup.html` — HTML form + demo-mode notice banner
+7. `frontend/faqs.html` — accordion page
+8. `frontend/css/pages/auth.css` — login/signup styles
 
 ---
 
-## ✅ Tier 3 — Hard (complex flows, data, JS state)
+## ⏱ IF-TIME — Do these if you finish early
 
-| # | File | Lines | Notes |
-|---|------|-------|-------|
-| ☐ | `includes/auth.php` | varies | Core session auth helper |
-| ☐ | `login.php` | varies | PHP session login endpoint |
-| ☐ | `user/index.php` | varies | Session gate (PHP) |
-| ☐ | `frontend/donate.html` | varies | Donation submission form |
-| ☐ | `frontend/request.html` | varies | Request submission form |
-| ☐ | `frontend/donations.html` | varies | Public donations browse list |
-| ☐ | `frontend/donation-details.html` | varies | Single donation detail |
-| ☐ | `frontend/user/dashboard.html` | varies | User home dashboard |
-| ☐ | `frontend/user/my-donations.html` | varies | User's own donations |
-| ☐ | `frontend/user/my-requests.html` | varies | User's own requests |
-| ☐ | `frontend/user/history.html` | varies | Activity history |
-| ☐ | `frontend/user/browse-donations.html` | 211 | Browse public donations |
-| ☐ | `frontend/user/donations.html` | 171 | User donations view |
-| ☐ | `frontend/user/edit-donation.html` | 197 | Edit a donation |
-| ☐ | `frontend/user/offer-donation.html` | 270 | Offer a donation form |
-| ☐ | `frontend/user/request-details.html` | 175 | Request detail view |
-| ☐ | `frontend/user/request-donation.html` | 179 | Request a donation form |
-| ☐ | `frontend/user/requests.html` | 148 | User requests list |
-| ☐ | `frontend/user/transactions.html` | 185 | Transactions list |
-| ☐ | `frontend/css/pages/donations.css` | varies | Donation page styles |
-| ☐ | `frontend/js/donations.js` | varies | Donation list filtering JS |
-| ☐ | `frontend/js/user-portal.js` | varies | User portal JS (logout modal, etc.) |
-| ☐ | `frontend/js/data.js` | varies | API/data fetch helpers |
-| ☐ | `frontend/js/mock-data.js` | varies | Mock dataset for demo |
+| ☐ | File | Raw LOC | Weighted | Notes |
+|----|------|---------|----------|-------|| ☐ | `frontend/contact.html` | 310 | 310 | Contact form (if Dev A doesn't finish it first) |
+| ☐ | `frontend/js/forms.js` | 534 | 534 | Form validation + AJAX submission helpers |
 
 ---
 
-## 📋 Copy-back instructions
-When ready for the final video, copy your rewrite files back:
-```
+## 📋 Copy-back (end of video)
+```powershell
 xcopy /E /Y dev_workspaces\dev_b\rewrite\frontend frontend\
 xcopy /E /Y dev_workspaces\dev_b\rewrite\includes includes\
 xcopy /E /Y dev_workspaces\dev_b\rewrite\actions actions\
-copy dev_workspaces\dev_b\rewrite\login.php login.php
-copy dev_workspaces\dev_b\rewrite\logout.php logout.php
-xcopy /E /Y dev_workspaces\dev_b\rewrite\user user\
+copy /Y dev_workspaces\dev_b\rewrite\login.php login.php
+copy /Y dev_workspaces\dev_b\rewrite\logout.php logout.php
 ```
+
+---
+
+## 💡 Learning notes
+- PHP files use `<?php ... ?>` tags. `login.php` uses short-echo `<?= $var ?>` to print variables into HTML.
+- `session_start()` must be the FIRST thing in every PHP file that reads sessions.
+- `password_verify($input, $hash)` returns `true/false` — never compare passwords with `==`.
+- The `$base` variable in `login.php` is built so that CSS/JS paths work whether the server is at `/` or `/iCareDonate/`. Look at how it's set at the top of `login.php`.
+- `requireLogin()` in `auth.php` calls `die()` / `header('Location:')` + `exit` — order matters.
