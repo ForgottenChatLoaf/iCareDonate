@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Request Community Aid | iCareDonate</title>
+  <meta name="description" content="Submit a verified request for essential supplies, student devices, or relief goods with dignity on iCareDonate.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+    (function() {
+      var isAuthed = false;
+      try { isAuthed = !!(localStorage.getItem('icd_token') && localStorage.getItem('icd_user')); } catch(e) {}
+      var params = new URLSearchParams(window.location.search);
+      var qs = params.toString() ? ('?' + params.toString()) : '';
+      if (isAuthed) {
+        window.location.replace('user/request-donation.html' + qs);
+      } else {
+        window.location.replace('signup.html?redirect=' + encodeURIComponent('user/request-donation.html' + qs) + '&action=request');
+      }
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/forms.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="categories.html" class="nav-link">Ways to Help</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="categories.html" class="mobile-link">Ways to Help</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="signup.html?redirect=user/offer-donation.html" class="mobile-link">Start Donating</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <div class="container form-page-container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
+          <li class="breadcrumb-item"><a href="donations.html" class="breadcrumb-link">Donations</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Request Help</li>
+        </ol>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="text-center mb-6 reveal-on-scroll">
+        <span class="badge badge-sky mb-2">Requester Assistance</span>
+        <h1>Submit an Aid Request</h1>
+        <p class="lead">Connect with verified donors. Every application is reviewed with dignity and care.</p>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card reveal-on-scroll">
+        <form id="request-form" novalidate>
+          <input type="hidden" id="donation_id" name="donation_id" value="">
+
+          <!-- Section 1: Beneficiary Information -->
+          <div class="form-section-header">
+            <div class="form-section-badge">1</div>
+            <h3 class="form-section-title">Beneficiary Details</h3>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="requester-name" class="form-label">Full Name <span class="required">*</span></label>
+              <input type="text" id="requester-name" name="requester_name" class="form-control" placeholder="e.g. Juan dela Cruz" required>
+              <div class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="requester-phone" class="form-label">Active Mobile Number <span class="required">*</span></label>
+              <input type="tel" id="requester-phone" name="requester_phone" class="form-control" placeholder="0918 234 5678" required>
+              <div class="form-error"></div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="requester-email" class="form-label">Email Address <span class="required">*</span></label>
+              <input type="email" id="requester-email" name="requester_email" class="form-control" placeholder="juan@example.com" required>
+              <div class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="requester-address" class="form-label">Current Barangay &amp; City <span class="required">*</span></label>
+              <input type="text" id="requester-address" name="requester_address" class="form-control" placeholder="Barangay, City" required>
+              <div class="form-error"></div>
+            </div>
+          </div>
+
+          <!-- Section 2: Need Specifications -->
+          <div class="form-section-header mt-6">
+            <div class="form-section-badge">2</div>
+            <h3 class="form-section-title">What Item Do You Need?</h3>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category" class="form-label">Aid Category <span class="required">*</span></label>
+              <select id="category" name="category" class="form-control" required>
+                <option value="">Select Category</option>
+                <option value="school-supplies">School Supplies</option>
+                <option value="food-groceries">Food &amp; Groceries</option>
+                <option value="electronics-gadgets">Electronics &amp; Gadgets</option>
+                <option value="medical-hygiene">Healthcare &amp; Hygiene</option>
+                <option value="clothing-shoes">Clothing &amp; Shoes</option>
+                <option value="emergency">Emergency Relief</option>
+                <option value="household-goods">Household Goods</option>
+                <option value="toys-games">Toys &amp; Games</option>
+              </select>
+              <div class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="quantity-needed" class="form-label">Quantity Needed <span class="required">*</span></label>
+              <input type="number" id="quantity-needed" name="quantity_needed" class="form-control" placeholder="e.g. 1" min="1" max="100" required>
+              <div class="form-error"></div>
+            </div>
+          </div>
+
+          <!-- Urgency Level -->
+          <div class="form-group">
+            <label class="form-label">Urgency Level <span class="required">*</span></label>
+            <div class="radio-pill-group">
+              <label class="radio-pill-label selected">
+                <input type="radio" name="urgency" value="Standard" checked>
+                <span class="radio-pill-title">Standard</span>
+                <span class="radio-pill-sub">Routine need</span>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="urgency" value="High">
+                <span class="radio-pill-title">High Priority</span>
+                <span class="radio-pill-sub">School or wellness</span>
+              </label>
+              <label class="radio-pill-label">
+                <input type="radio" name="urgency" value="Critical">
+                <span class="radio-pill-title text-coral">Critical Relief</span>
+                <span class="radio-pill-sub">Disaster / Emergency</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="situation-desc" class="form-label">Brief Description of Need <span class="required">*</span></label>
+            <textarea id="situation-desc" name="situation" class="form-control" rows="4" placeholder="Explain how this item will be used and who benefits..." required minlength="15"></textarea>
+            <div class="form-error"></div>
+          </div>
+
+          <!-- Section 3: Proof / Supporting Document -->
+          <div class="form-section-header mt-6">
+            <div class="form-section-badge">3</div>
+            <h3 class="form-section-title">Proof of Need Upload</h3>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Upload Verification Document or Photo <span class="required">*</span></label>
+            <div class="file-dropzone" id="request-dropzone">
+              <input type="file" id="proof-doc" name="proof_doc" accept="image/*,application/pdf" required aria-label="Upload proof document">
+              <div class="file-dropzone-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+              </div>
+              <div class="file-dropzone-text">Click to choose file or drag &amp; drop</div>
+              <div class="file-dropzone-sub">Student ID, Barangay Indigency, or Photo (PDF/JPG/PNG up to 5MB)</div>
+            </div>
+
+            <div class="file-preview-wrap">
+              <img src="" alt="Proof preview" class="file-preview-thumb">
+              <div class="file-preview-details">
+                <div class="file-preview-name"></div>
+                <div class="file-preview-size"></div>
+              </div>
+              <button type="button" class="file-preview-remove">&times; Remove</button>
+            </div>
+            <div class="form-hint">Kept strictly confidential and reviewed only by verified administrators.</div>
+            <div class="form-error"></div>
+          </div>
+
+          <div class="form-group action-mt-md">
+            <label class="checkbox-label">
+              <input type="checkbox" name="terms_confirm" required class="checkbox-input">
+              <span>I confirm that the information and documents provided are genuine and intended solely for personal or community aid.</span>
+            </label>
+            <div class="form-error"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="action-mt-lg">
+            <button type="submit" class="btn btn-primary btn-lg btn-block">
+              Submit Request for Review &rarr;
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <!-- Col 1: Brand & Social -->
+        <div class="footer-public__col footer-public__col--brand">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate: Home">
+            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-social" aria-label="Official Social Media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Facebook" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Explore</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">Browse Donations</a></li>
+            <li><a href="categories.html">Ways to Help</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="signup.html?redirect=user/offer-donation.html">Start Donating</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="mission.html">Our Mission</a></li>
+            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Help &amp; Legal</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">Help Center</a></li>
+            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="contact.html">Contact Support</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+        <span class="footer-support-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            style="display:inline;vertical-align:-2px;margin-right:6px;">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <a href="mailto:icaredonate.team@gmail.com">icaredonate.team@gmail.com</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/forms.js"></script>
+</body>
+</html>

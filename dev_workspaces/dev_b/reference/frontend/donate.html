@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post a Donation | iCareDonate</title>
+  <meta name="description" content="List physical goods and supplies to share with verified community members in need on iCareDonate.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+    (function() {
+      var isAuthed = false;
+      try { isAuthed = !!(localStorage.getItem('icd_token') && localStorage.getItem('icd_user')); } catch(e) {}
+      if (isAuthed) {
+        window.location.replace('user/offer-donation.html');
+      } else {
+        window.location.replace('signup.html?redirect=user/offer-donation.html&action=donate');
+      }
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="assets/images/logo.svg">
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages/forms.css">
+</head>
+<body>
+
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="header-public" role="banner">
+    <div class="container nav-public__inner">
+      <a href="index.html" class="logo" aria-label="iCareDonate Homepage">
+        <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+        <span class="logo-wordmark">i<em>Care</em>Donate</span>
+      </a>
+
+      <nav class="nav-public__links" aria-label="Primary Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About us</a>
+        <a href="categories.html" class="nav-link">Ways to Help</a>
+        <a href="how-it-works.html" class="nav-link">How it works</a>
+        <a href="contact.html" class="nav-link">Contact us</a>
+      </nav>
+
+      <div class="nav-public__actions">
+        <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+      </div>
+
+      <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+      <nav class="mobile-menu__links">
+        <a href="index.html" class="mobile-link">Home</a>
+        <a href="about.html" class="mobile-link">About us</a>
+        <a href="categories.html" class="mobile-link">Ways to Help</a>
+        <a href="how-it-works.html" class="mobile-link">How it works</a>
+        <a href="contact.html" class="mobile-link">Contact us</a>
+        <a href="signup.html?redirect=user/offer-donation.html" class="mobile-link">Start Donating</a>
+        <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <div class="container form-page-container">
+      
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs" aria-label="Breadcrumbs">
+        <ol class="breadcrumb-list">
+          <li class="breadcrumb-item"><a href="index.html" class="breadcrumb-link">Home</a></li>
+          <li class="breadcrumb-item"><a href="donations.html" class="breadcrumb-link">Donations</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Post a Donation</li>
+        </ol>
+      </nav>
+
+      <!-- Page Header -->
+      <div class="text-center mb-6 reveal-on-scroll">
+        <span class="badge badge-sky mb-2">Donor Portal</span>
+        <h1>Offer an Item Donation</h1>
+        <p class="lead">Fill out details below. Our team verifies posts before sharing with families and schools.</p>
+      </div>
+
+      <!-- Form Card -->
+      <div class="form-card reveal-on-scroll">
+        <form id="donate-form" novalidate>
+          
+          <!-- Section 1: Donor Information -->
+          <div class="form-section-header">
+            <div class="form-section-badge">1</div>
+            <h3 class="form-section-title">Donor Information</h3>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="donor-name" class="form-label">Full Name / Organization <span class="required">*</span></label>
+              <input type="text" id="donor-name" name="donor_name" class="form-control" placeholder="e.g. Maria Santos" required>
+              <div class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="donor-email" class="form-label">Email Address <span class="required">*</span></label>
+              <input type="email" id="donor-email" name="donor_email" class="form-control" placeholder="you@example.com" required>
+              <div class="form-error"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="donor-phone" class="form-label">Contact Number <span class="required">*</span></label>
+            <input type="tel" id="donor-phone" name="donor_phone" class="form-control" placeholder="e.g. 0917 123 4567" required>
+            <div class="form-hint">Used strictly for administrative pick-up verification.</div>
+            <div class="form-error"></div>
+          </div>
+
+          <!-- Section 2: Donation Details -->
+          <div class="form-section-header mt-6">
+            <div class="form-section-badge">2</div>
+            <h3 class="form-section-title">Item Specifications</h3>
+          </div>
+
+          <div class="form-group">
+            <label for="item-title" class="form-label">Item Title <span class="required">*</span></label>
+            <input type="text" id="item-title" name="item_title" class="form-control" placeholder="e.g. Elementary School Backpacks with Notebooks" minlength="5" required>
+            <div class="form-error"></div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="category" class="form-label">Category <span class="required">*</span></label>
+              <select id="category" name="category" class="form-control" required>
+                <option value="">Select a Category</option>
+                <option value="school-supplies">School Supplies</option>
+                <option value="food-groceries">Food &amp; Groceries</option>
+                <option value="electronics-gadgets">Electronics &amp; Gadgets</option>
+                <option value="medical-hygiene">Healthcare &amp; Hygiene</option>
+                <option value="clothing-shoes">Clothing &amp; Shoes</option>
+                <option value="emergency">Emergency Relief</option>
+                <option value="household-goods">Household Goods</option>
+                <option value="toys-games">Toys &amp; Games</option>
+              </select>
+              <div class="form-error"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="quantity" class="form-label">Quantity Available <span class="required">*</span></label>
+              <input type="number" id="quantity" name="quantity" class="form-control" placeholder="e.g. 10" min="1" required>
+              <div class="form-error"></div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="condition" class="form-label">Item Condition <span class="required">*</span></label>
+            <select id="condition" name="condition" class="form-control" required>
+              <option value="Brand New">Brand New / Sealed</option>
+              <option value="Gently Used">Gently Used (Clean &amp; Fully Functional)</option>
+              <option value="Refurbished">Refurbished / Serviced</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="item-desc" class="form-label">Item Description &amp; Details <span class="required">*</span></label>
+            <textarea id="item-desc" name="description" class="form-control" rows="4" placeholder="Detail the items, sizes, brand, contents, and suitability..." required minlength="20"></textarea>
+            <div class="form-error"></div>
+          </div>
+
+          <!-- Section 3: Photo Upload -->
+          <div class="form-section-header mt-6">
+            <div class="form-section-badge">3</div>
+            <h3 class="form-section-title">Item Photo Upload</h3>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Upload Real Photo of Item <span class="required">*</span></label>
+            <div class="file-dropzone" id="donate-dropzone">
+              <input type="file" id="item-photo" name="item_photo" accept="image/*" required aria-label="Upload item photo">
+              <div class="file-dropzone-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div class="file-dropzone-text">Click to choose image or drag &amp; drop</div>
+              <div class="file-dropzone-sub">PNG, JPG, AVIF, or WEBP up to 5MB</div>
+            </div>
+
+            <div class="file-preview-wrap">
+              <img src="" alt="Photo preview" class="file-preview-thumb">
+              <div class="file-preview-details">
+                <div class="file-preview-name"></div>
+                <div class="file-preview-size"></div>
+              </div>
+              <button type="button" class="file-preview-remove">&times; Remove</button>
+            </div>
+            <div class="form-error"></div>
+          </div>
+
+          <!-- Section 4: Pick-up Terms -->
+          <div class="form-section-header mt-6">
+            <div class="form-section-badge">4</div>
+            <h3 class="form-section-title">Pick-up Location &amp; Instructions</h3>
+          </div>
+
+          <div class="form-group">
+            <label for="pickup-location" class="form-label">Designated Pick-up Barangay / City <span class="required">*</span></label>
+            <input type="text" id="pickup-location" name="pickup_location" class="form-control" placeholder="e.g. Barangay San Antonio Hall, Pasig City" required>
+            <div class="form-hint">Public and accessible community spaces only.</div>
+            <div class="form-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="pickup-notes" class="form-label">Available Days &amp; Instructions</label>
+            <textarea id="pickup-notes" name="pickup_notes" class="form-control" rows="2" placeholder="e.g. Weekdays 9:00 AM – 3:00 PM upon admin confirmation."></textarea>
+          </div>
+
+          <div class="form-group action-mt-md">
+            <label class="checkbox-label">
+              <input type="checkbox" name="terms_confirm" required class="checkbox-input">
+              <span>I confirm that this donation is 100% free of charge, in safe and hygienic condition, and ready for community pick-up.</span>
+            </label>
+            <div class="form-error"></div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="action-mt-lg">
+            <button type="submit" class="btn btn-donate btn-lg btn-block">
+              Submit Donation for Verification &rarr;
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer-public" role="contentinfo">
+    <div class="container footer-public__container">
+      <div class="footer-public__grid">
+        <!-- Col 1: Brand & Social -->
+        <div class="footer-public__col footer-public__col--brand">
+          <a href="index.html" class="logo footer-logo" aria-label="iCareDonate: Home">
+            <img src="assets/images/logo.svg" class="logo-icon" width="36" height="36" alt="iCareDonate Logo">
+            <span class="logo-wordmark">i<em>Care</em>Donate</span>
+          </a>
+          <p class="footer-tagline">Give what you can. Help where it matters.</p>
+          <div class="footer-social" aria-label="Official Social Media">
+            <a href="https://www.facebook.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Facebook" title="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+              </svg>
+            </a>
+            <a href="https://www.instagram.com/iCareDonate" target="_blank" rel="noopener noreferrer"
+              class="footer-social-link" aria-label="Official iCareDonate Instagram" title="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                aria-hidden="true">
+                <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Col 2: Explore -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Explore</strong>
+          <ul class="footer-links">
+            <li><a href="donations.html">Browse Donations</a></li>
+            <li><a href="categories.html">Ways to Help</a></li>
+            <li><a href="how-it-works.html">How It Works</a></li>
+            <li><a href="signup.html?redirect=user/offer-donation.html">Start Donating</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: About -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">About</strong>
+          <ul class="footer-links">
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="mission.html">Our Mission</a></li>
+            <li><a href="careers.html">Careers &amp; Volunteers</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 4: Help & Legal -->
+        <div class="footer-public__col">
+          <strong class="footer-heading">Help &amp; Legal</strong>
+          <ul class="footer-links">
+            <li><a href="help-center.html">Help Center</a></li>
+            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="contact.html">Contact Support</a></li>
+            <li><a href="terms.html">Terms of Service</a></li>
+            <li><a href="privacy.html">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="footer-public__bottom">
+        <span>&copy; 2026 iCareDonate. All rights reserved.</span>
+        <span class="footer-support-email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            style="display:inline;vertical-align:-2px;margin-right:6px;">
+            <rect width="20" height="16" x="2" y="4" rx="2" />
+            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+          </svg>
+          <a href="mailto:icaredonate.team@gmail.com">icaredonate.team@gmail.com</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/forms.js"></script>
+</body>
+</html>

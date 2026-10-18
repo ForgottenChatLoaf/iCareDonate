@@ -1,0 +1,64 @@
+<!-- frontend/includes/public-header.html
+     Public Navigation Header Component
+-->
+<header class="header-public nav-public" role="banner">
+  <div class="container nav-public__inner">
+    <!-- Brand Logo -->
+    <a href="index.html" class="logo" aria-label="iCareDonate: Home">
+      <img src="assets/images/logo.svg" class="logo-icon" alt="iCareDonate" width="36" height="36">
+      <span class="logo-wordmark">i<em>Care</em>Donate</span>
+    </a>
+
+    <!-- Desktop Nav Links -->
+    <nav class="nav-public__links" aria-label="Primary Navigation">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About us</a>
+      <a href="categories.html" class="nav-link">Ways to Help</a>
+      <a href="how-it-works.html" class="nav-link">How it works</a>
+      <a href="contact.html" class="nav-link">Contact us</a>
+    </nav>
+
+    <!-- Action Buttons -->
+    <div class="nav-public__actions">
+      <a href="donations.html?focus=search" class="nav-search-icon" aria-label="Search donations" title="Browse Donations">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <line x1="21" x2="16.65" y1="21" y2="16.65"/>
+        </svg>
+      </a>
+      <a href="login.html" class="btn-pub-auth">Log in / Sign up</a>
+    </div>
+
+    <!-- Mobile Hamburger Button -->
+    <button type="button" class="nav-hamburger" id="nav-hamburger" aria-label="Toggle navigation menu"
+      aria-expanded="false" aria-controls="mobile-menu">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" x2="20" y1="12" y2="12" />
+        <line x1="4" x2="20" y1="6" y2="6" />
+        <line x1="4" x2="20" y1="18" y2="18" />
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Dropdown Menu -->
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Mobile navigation" hidden>
+    <nav class="mobile-menu__links">
+      <a href="index.html" class="mobile-link">Home</a>
+      <a href="about.html" class="mobile-link">About us</a>
+      <a href="categories.html" class="mobile-link">Ways to Help</a>
+      <a href="how-it-works.html" class="mobile-link">How it works</a>
+      <a href="donations.html" class="mobile-link mobile-link--search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/>
+        </svg>
+        Browse Donations
+      </a>
+      <a href="contact.html" class="mobile-link">Contact us</a>
+      <a href="signup.html?redirect=user/offer-donation.html" class="mobile-link">Start Donating</a>
+      <a href="login.html" class="mobile-link mobile-link--accent">Log in / Sign up</a>
+    </nav>
+  </div>
+</header>

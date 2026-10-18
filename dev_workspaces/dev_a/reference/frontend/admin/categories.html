@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Donation Categories — iCareDonate Admin</title>
+  <meta name="description" content="Manage donation item categories for the iCareDonate platform.">
+  <meta name="theme-color" content="#1F4FA3">
+  <script>document.documentElement.setAttribute('data-theme','light');</script>
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/admin.css">
+</head>
+<body>
+<div class="admin-layout">
+
+  <aside class="user-sidebar admin-sidebar" role="complementary">
+    <div class="brand-sidebar-container">
+      <a href="index.html" class="brand-sidebar-logo">
+        <img src="../assets/images/logo.svg" class="brand-sidebar-icon" alt="iCareDonate Logo" width="32" height="32">
+        <span class="brand-sidebar-wordmark"><span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span></span>
+      </a>
+      <span class="brand-sidebar-badge brand-sidebar-badge--admin">ADMIN</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg><span>Dashboard</span></a>
+      <a href="donations.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg><span>Donation Review</span></a>
+      <a href="requests.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg><span>Request &amp; Proof Review</span></a>
+      <a href="transactions.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg><span>Transaction Monitoring</span></a>
+      <a href="interviews.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg><span>Interviews</span></a>
+      <a href="users.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Users &amp; Moderation</span></a>
+      <a href="support.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Message &amp; Support</span></a>
+      <a href="faqs.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg><span>FAQ Content</span></a>
+      <a href="reports.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg><span>Reports</span></a>
+      <a href="categories.html" class="sidebar-link sidebar-link--active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" x2="7.01" y1="7" y2="7"/></svg><span>Categories</span></a>
+      <a href="statistics.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg><span>Statistics</span></a>
+      <a href="profile.html" class="sidebar-link"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Admin Profile</span></a>
+      <hr style="border:none;border-top:1px solid var(--color-border);margin:8px 0;">
+      <a href="admins.html" class="sidebar-link" style="color:var(--amber-dark,#D99B26);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><span>Admin Management</span></a>
+      <a href="logs.html" class="sidebar-link" style="color:var(--amber-dark,#D99B26);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg><span>Audit Logs</span></a>
+          <a href="#" class="sidebar-link sidebar-link--logout" id="sidebarLogoutBtn" data-nav="logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
+        <span>Logout</span>
+      </a>
+    </nav>
+    </aside>
+
+  <div class="admin-main">
+    <header class="admin-topbar">
+      <div><h1 class="admin-topbar__title" style="margin:0;font-size:20px;font-weight:700;">Donation Categories</h1></div>
+      <div>
+        <button type="button" class="btn btn-primary" onclick="document.getElementById('add-cat-dialog').showModal()" style="font-size:12.5px;padding:6px 16px;">
+          + Add Category
+        </button>
+      </div>
+    </header>
+
+    <div class="admin-content" style="padding:28px 32px;">
+
+      <!-- Category Cards Grid -->
+      <div id="categories-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px;margin-bottom:28px;">
+      </div>
+
+      <!-- Summary Table -->
+      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);">
+        <div style="padding:16px 20px;border-bottom:1px solid var(--color-border);font-weight:700;font-size:14px;">All Categories</div>
+        <table class="table" style="width:100%;border-collapse:collapse;font-size:13.5px;">
+          <thead style="background:#F8FAFC;border-bottom:1px solid var(--color-border);">
+            <tr>
+              <th style="padding:11px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Order</th>
+              <th style="padding:11px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Category Name</th>
+              <th style="padding:11px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Description</th>
+              <th style="padding:11px 16px;font-weight:700;color:var(--color-text-muted);text-align:center;">Donations</th>
+              <th style="padding:11px 16px;font-weight:700;color:var(--color-text-muted);text-align:center;">Status</th>
+              <th style="padding:11px 16px;font-weight:700;color:var(--color-text-muted);text-align:right;">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="cat-tbody"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ADD CATEGORY DIALOG -->
+<dialog id="add-cat-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:480px;width:92%;">
+  <div class="card" style="padding:28px;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <h2 style="font-size:17px;font-weight:700;margin:0 0 18px;">Add Donation Category</h2>
+    <form onsubmit="handleAddCategory(event)">
+      <div style="margin-bottom:13px;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Category Name <span style="color:#DC2626;">*</span></label>
+        <input type="text" id="new-cat-name" class="form-input" placeholder="e.g. Toys & Leisure" style="width:100%;height:36px;font-size:13px;" required>
+      </div>
+      <div style="margin-bottom:13px;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Description</label>
+        <textarea id="new-cat-desc" class="form-input" rows="2" placeholder="Optional description..." style="width:100%;font-size:13px;"></textarea>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Sort Order</label>
+        <input type="number" id="new-cat-order" class="form-input" value="99" min="1" style="width:120px;height:36px;font-size:13px;">
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('add-cat-dialog').close()" style="font-size:13px;padding:7px 16px;">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="font-size:13px;padding:7px 18px;">Save Category</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<script src="../js/mock-data.js"></script>
+<script src="../js/admin-portal.js"></script>
+<script>
+const CATEGORIES = [
+  { id:1, order:1, name:'Food & Groceries',    desc:'Non-perishable food items, canned goods, rice, and basic groceries.', count:14, active:true },
+  { id:2, order:2, name:'Clothing',            desc:'Shirts, pants, shoes, and other wearable items for all ages.',         count:9,  active:true },
+  { id:3, order:3, name:'School Supplies',     desc:'Notebooks, pens, bags, and educational materials for students.',      count:11, active:true },
+  { id:4, order:4, name:'Medical Supplies',    desc:'First-aid kits, medicines, hygiene products, and PPE.',               count:6,  active:true },
+  { id:5, order:5, name:'Household Items',     desc:'Kitchenware, furniture, blankets, and home utilities.',               count:5,  active:true },
+  { id:6, order:6, name:'Toys & Leisure',      desc:'Toys, books, and recreational items for children.',                   count:3,  active:false },
+];
+
+function renderCategories() {
+  const grid = document.getElementById('categories-grid');
+  const tbody = document.getElementById('cat-tbody');
+
+  grid.innerHTML = CATEGORIES.map(c=>`
+    <div class="card" style="padding:20px;border:1px solid var(--color-border);border-radius:var(--radius-md);position:relative;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+        <div style="font-size:15px;font-weight:700;color:var(--color-text);">${c.name}</div>
+        <span class="badge ${c.active ? 'badge-success' : 'badge-neutral'}">${c.active ? 'Active' : 'Inactive'}</span>
+      </div>
+      <div style="font-size:12.5px;color:var(--color-text-muted);margin-bottom:14px;">${c.desc}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:22px;font-weight:800;color:var(--color-primary);">${c.count}</span>
+        <span style="font-size:11.5px;color:var(--color-text-muted);">donations listed</span>
+      </div>
+    </div>
+  `).join('');
+
+  tbody.innerHTML = CATEGORIES.map(c=>`
+    <tr style="border-bottom:1px solid var(--color-border-light);">
+      <td style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);">${c.order}</td>
+      <td style="padding:12px 16px;font-weight:600;">${c.name}</td>
+      <td style="padding:12px 16px;color:var(--color-text-muted);font-size:12.5px;">${c.desc}</td>
+      <td style="padding:12px 16px;text-align:center;font-weight:700;">${c.count}</td>
+      <td style="padding:12px 16px;text-align:center;"><span class="badge ${c.active ? 'badge-success' : 'badge-neutral'}">${c.active ? 'Active' : 'Inactive'}</span></td>
+      <td style="padding:12px 16px;text-align:right;white-space:nowrap;">
+        <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;margin-right:5px;" onclick="editCategory(${c.id})">Edit</button>
+        <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;color:#DC2626;border-color:#FCA5A5;" onclick="deleteCategory(${c.id})">Delete</button>
+      </td>
+    </tr>
+  `).join('');
+}
+
+function handleAddCategory(e) {
+  e.preventDefault();
+  const name = document.getElementById('new-cat-name').value.trim();
+  CATEGORIES.push({ id:CATEGORIES.length+1, order:CATEGORIES.length+1, name, desc:document.getElementById('new-cat-desc').value, count:0, active:true });
+  renderCategories();
+  document.getElementById('add-cat-dialog').close();
+  e.target.reset();
+  window.showAdminFlash('success', `Category "${name}" created successfully.`);
+}
+function editCategory(id) { window.showAdminFlash('info', `Edit panel for category #${id} would open here in production.`); }
+function deleteCategory(id) {
+  if (confirm('Delete this category? Existing donations will need to be re-assigned.')) {
+    const idx = CATEGORIES.findIndex(c=>c.id===id);
+    if (idx>-1) { const n = CATEGORIES[idx].name; CATEGORIES.splice(idx,1); renderCategories(); window.showAdminFlash('success',`Category "${n}" deleted.`); }
+  }
+}
+renderCategories();
+</script>
+</body>
+</html>

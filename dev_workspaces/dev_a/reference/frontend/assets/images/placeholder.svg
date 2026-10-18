@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="Donation Item Placeholder">
+  <rect width="100%" height="100%" fill="#E3EEFB"/>
+  <circle cx="200" cy="130" r="48" fill="#C8D9F0"/>
+  <path d="M185 130 L195 140 L215 120" stroke="#1F4FA3" stroke-width="4" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <path d="M178 150 C178 140 188 132 200 132 C212 132 222 140 222 150" fill="#1F4FA3" opacity="0.3"/>
+  <text x="200" y="210" font-family="'Inter', system-ui, sans-serif" font-size="14" font-weight="600" fill="#1F4FA3" text-anchor="middle">iCareDonate Verified Resource</text>
+  <text x="200" y="230" font-family="'Inter', system-ui, sans-serif" font-size="12" fill="#5A6781" text-anchor="middle">Photo pending or item ready for pick-up</text>
+</svg>
