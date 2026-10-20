@@ -7,26 +7,30 @@
   'use strict';
 
   /**
-   * Resolve the correct base path for /actions/ endpoints.
+   * Resolve the correct base URL for /actions/ endpoints.
    *
-   * On XAMPP the app lives in a subfolder, e.g.:
-   *   http://localhost/iCareDonate/frontend/login.html
-   * A bare '/actions/...' fetch hits localhost root (404).
-   * We detect '/frontend/' in the pathname and strip it to get the app root.
+   * On localhost/XAMPP:
+   *   Preserves relative pathing inside subfolders (e.g. /iCareDonate).
    *
-   * On Vercel (cleanUrls) pages are served from the root:
-   *   https://app.vercel.app/login
-   * '/frontend/' is absent, so we return '' and the '/actions/' rewrite fires.
+   * On Vercel / Production:
+   *   Connects directly to Render backend (https://icaredonate.onrender.com)
+   *   bypassing reverse-proxy Cloudflare Host header 403 Forbidden drops.
    */
   function icd_actionsBase() {
-    const p = window.location.pathname;
-    const idx = p.indexOf('/frontend/');
-    if (idx !== -1) {
-      // e.g. '/iCareDonate/frontend/...' → '/iCareDonate'
-      return p.substring(0, idx);
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      const p = window.location.pathname;
+      const idx = p.indexOf('/frontend/');
+      if (idx !== -1) {
+        return p.substring(0, idx);
+      }
+      return '';
     }
-    return ''; // production / Vercel root
+    return 'https://icaredonate.onrender.com';
   }
+
+  // Expose globally for portal scripts
+  window.icd_actionsBase = icd_actionsBase;
 
   // Production authentication: requests proxy directly to Render PHP backend
   // via /actions/login_process.php and /actions/signup_process.php.
@@ -355,7 +359,7 @@
           try {
             res = await fetch(icd_actionsBase() + '/actions/login_process.php', {
               method: 'POST',
-              credentials: 'same-origin',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -454,7 +458,7 @@
           try {
             res = await fetch(icd_actionsBase() + '/actions/signup_process.php', {
               method: 'POST',
-              credentials: 'same-origin',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
@@ -540,9 +544,9 @@
         try {
           let res;
           try {
-            res = await fetch('/actions/login_process.php', {
+            res = await fetch(icd_actionsBase() + '/actions/login_process.php', {
               method: 'POST',
-              credentials: 'same-origin',
+              credentials: 'include',
               headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'

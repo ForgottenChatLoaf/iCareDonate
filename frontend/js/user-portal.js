@@ -234,6 +234,22 @@
       .replace(/'/g, '&#39;');
   }
 
+  function icd_actionsBase() {
+    if (typeof window.icd_actionsBase === 'function') {
+      return window.icd_actionsBase();
+    }
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      const p = window.location.pathname;
+      const idx = p.indexOf('/frontend/');
+      if (idx !== -1) {
+        return p.substring(0, idx);
+      }
+      return '';
+    }
+    return 'https://icaredonate.onrender.com';
+  }
+
   // ── Authenticated API Client ──────────────────────────────────────────────
   async function fetchWithAuth(url, options = {}) {
     let token = null;
@@ -249,14 +265,16 @@
       headers['Authorization'] = 'Bearer ' + token;
     }
 
+    const fullUrl = (typeof url === 'string' && url.startsWith('http')) ? url : (icd_actionsBase() + url);
+
     const opts = Object.assign({}, options, {
-      credentials: 'same-origin',
+      credentials: 'include',
       headers: headers
     });
 
     let res;
     try {
-      res = await fetch(url, opts);
+      res = await fetch(fullUrl, opts);
     } catch (netErr) {
       throw new Error('Network error: Unable to reach server. Please check your connection.');
     }

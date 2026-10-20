@@ -362,6 +362,19 @@
     hide.style.display = isHidden ? '' : 'none';
   }
 
+  function icd_actionsBase() {
+    const host = window.location.hostname;
+    if (host === 'localhost' || host === '127.0.0.1') {
+      const p = window.location.pathname;
+      const idx = p.indexOf('/frontend/');
+      if (idx !== -1) {
+        return p.substring(0, idx);
+      }
+      return '';
+    }
+    return 'https://icaredonate.onrender.com';
+  }
+
   async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
@@ -375,9 +388,9 @@
     try {
       let res;
       try {
-        res = await fetch('/actions/login_process.php', {
+        res = await fetch(icd_actionsBase() + '/actions/login_process.php', {
           method: 'POST',
-          credentials: 'same-origin',
+          credentials: 'include',
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'

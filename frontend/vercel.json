@@ -1,10 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "cleanUrls": true,
-  "rewrites": [
-    {
-      "source": "/actions/:path*",
-      "destination": "https://icaredonate.onrender.com/actions/:path*"
-    }
-  ]
+  "cleanUrls": true
 }

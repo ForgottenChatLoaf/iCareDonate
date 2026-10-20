@@ -12,6 +12,8 @@
  *   requireAdmin();   // Redirects to 403.html if not admin role
  */
 
+require_once __DIR__ . '/cors.php';
+
 // Start session if one is not already active
 if (session_status() === PHP_SESSION_NONE) {
     $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
@@ -20,7 +22,7 @@ if (session_status() === PHP_SESSION_NONE) {
         'lifetime' => 0,          // Session cookie — expires when browser closes
         'path'     => '/',
         'httponly' => true,       // Not accessible to JavaScript
-        'samesite' => 'Lax',      // Lax ensures cookie is sent on top-level navigation and same-origin AJAX
+        'samesite' => $isSecure ? 'None' : 'Lax', // 'None' permits cross-origin API credentials over HTTPS
         'secure'   => $isSecure,
     ]);
     session_start();
