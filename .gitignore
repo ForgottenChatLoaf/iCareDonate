@@ -68,3 +68,7 @@ backup/
 backups/
 
 transcript.txt
+
+# ── Old Docs & Archived Files (not tracked) ──────────
+docs/
+archived/
