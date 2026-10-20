@@ -39,6 +39,12 @@ $DEMO_ACCOUNTS = [
     ],
 ];
 
+// Disable demo accounts in production (APP_ENV=production)
+if (getenv('APP_ENV') === 'production') {
+    $DEMO_ACCOUNTS = [];
+}
+
+
 // Role-to-destination map — Option B gates
 define('ICD_REDIRECT_ADMIN',     'admin/index.php');
 define('ICD_REDIRECT_DONOR',     'user/index.php');

@@ -22,107 +22,9 @@
     return '/CommunityDono/api';
   })();
 
-  // ============================================================
-  // MOCK LOGIN (demo accounts & universal prototype login)
-  // ============================================================
-  const MOCK_ACCOUNTS = [
-    { email: 'admin@icaredonate.test', password: 'Admin@1234',
-      user: { id: 1, first_name: 'Eleanor', last_name: 'Vance', email: 'admin@icaredonate.test', role: 'superadmin' } },
-    { email: 'admin@icaredonate.ph', password: 'AdminPass123',
-      user: { id: 2, first_name: 'Admin', last_name: 'Officer', email: 'admin@icaredonate.ph', role: 'admin' } },
-    { email: 'admin@icaredonate.org', password: 'Admin@1234',
-      user: { id: 3, first_name: 'Admin', last_name: 'Officer', email: 'admin@icaredonate.org', role: 'admin' } },
-    { email: 'mreyes@icaredonate.ph', password: 'AdminPass123',
-      user: { id: 4, first_name: 'Maria', last_name: 'Reyes', email: 'mreyes@icaredonate.ph', role: 'admin' } },
-    { email: 'jcruz@icaredonate.ph', password: 'AdminPass123',
-      user: { id: 5, first_name: 'Juan', last_name: 'Cruz', email: 'jcruz@icaredonate.ph', role: 'admin' } },
-    { email: 'user@icaredonate.test', password: 'User@1234',
-      user: { id: 12, first_name: 'Maria', last_name: 'Santos', email: 'user@icaredonate.test', role: 'user' } },
-    { email: 'donor@icaredonate.test', password: 'Donor@1234',
-      user: { id: 14, first_name: 'David', last_name: 'Tan', email: 'donor@icaredonate.test', role: 'user' } },
-    { email: 'requester@icaredonate.test', password: 'Requester@1234',
-      user: { id: 16, first_name: 'Maria', last_name: 'Santos', email: 'requester@icaredonate.test', role: 'user' } },
-    { email: 'donor@example.com', password: 'UserPass123',
-      user: { id: 18, first_name: 'David', last_name: 'Tan', email: 'donor@example.com', role: 'user' } },
-    { email: 'beneficiary@example.com', password: 'UserPass123',
-      user: { id: 20, first_name: 'Ana', last_name: 'Gomez', email: 'beneficiary@example.com', role: 'user' } }
-  ];
-
-  // ============================================================
-  // MOCK SIGNUP (accounts created on the signup page, kept in this browser)
-  // ============================================================
-  const MOCK_SIGNUPS_KEY = 'icd_mock_accounts';
-
-  function getMockSignups() {
-    try {
-      return JSON.parse(localStorage.getItem(MOCK_SIGNUPS_KEY)) || [];
-    } catch (e) {
-      return [];
-    }
-  }
-
-  function mockSignup(firstName, lastName, email, phone, password) {
-    const normalized = email.toLowerCase();
-    const signups = getMockSignups();
-    if (MOCK_ACCOUNTS.concat(signups).some(a => a.email === normalized)) {
-      throw new Error('An account with this email already exists. Please log in instead.');
-    }
-    const user = {
-      id: 100 + signups.length + 1,
-      first_name: firstName,
-      last_name: lastName,
-      email: normalized,
-      phone: phone,
-      role: 'user'
-    };
-    signups.push({ email: normalized, password: password, user: user });
-    localStorage.setItem(MOCK_SIGNUPS_KEY, JSON.stringify(signups));
-    return { token: 'mock-' + Date.now(), user: user };
-  }
-
-  function mockLogin(email, password) {
-    const rawEmail = (email || '').trim();
-    const normalized = rawEmail.toLowerCase();
-    const pw = (password || '').trim();
-
-    // 1. Check predefined demo accounts and mock signups (case-insensitive password comparison)
-    const allKnown = MOCK_ACCOUNTS.concat(getMockSignups());
-    const matchedAccount = allKnown.find(a => 
-      a.email.toLowerCase() === normalized && 
-      (a.password === pw || a.password.toLowerCase() === pw.toLowerCase())
-    );
-
-    if (matchedAccount) {
-      return { token: 'mock-' + Date.now(), user: matchedAccount.user };
-    }
-
-    // 2. If email matches a known demo account, accept any non-empty password for easy demoing
-    const emailOnlyMatch = allKnown.find(a => a.email.toLowerCase() === normalized);
-    if (emailOnlyMatch && pw.length > 0) {
-      return { token: 'mock-' + Date.now(), user: emailOnlyMatch.user };
-    }
-
-    // 3. Universal Prototype Login: allow ANY valid email address with a password to log in cleanly!
-    if (normalized.includes('@') && pw.length > 0) {
-      const isAdmin = normalized.includes('admin');
-      const prefix = normalized.split('@')[0].replace(/[._-]/g, ' ');
-      const words = prefix.split(/\s+/).filter(Boolean);
-      const firstName = words[0] ? (words[0].charAt(0).toUpperCase() + words[0].slice(1)) : 'Community';
-      const lastName = words.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || (isAdmin ? 'Admin' : 'Member');
-
-      const genericUser = {
-        id: Math.floor(Math.random() * 900) + 100,
-        first_name: firstName,
-        last_name: lastName,
-        email: normalized,
-        role: isAdmin ? 'admin' : 'user'
-      };
-
-      return { token: 'mock-' + Date.now(), user: genericUser };
-    }
-
-    return null;
-  }
+  // Production authentication: requests proxy directly to Render PHP backend
+  // via /actions/login_process.php and /actions/signup_process.php.
+  // Mock-authentication fallbacks have been removed.
 
   // ============================================================
   // PREFILL FORM FROM URL PARAMETERS
@@ -443,34 +345,42 @@
         submitBtn.innerHTML = '<span class="btn-spinner"></span> Logging in...';
 
         try {
-          const actionBase = window.location.pathname.includes('/frontend/') ? '../actions' : 'actions';
           let res;
-          let data;
           try {
-            res = await fetch(`${actionBase}/login_process.php`, {
+            res = await fetch('/actions/login_process.php', {
               method: 'POST',
               credentials: 'same-origin',
-              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
               body: JSON.stringify({
                 email: emailInput.value.trim(),
                 password: passInput.value
               })
             });
-            data = await res.json();
-          } catch (apiErr) {
-            data = mockLogin(emailInput.value.trim(), passInput.value);
-            if (data) data.success = true;
+          } catch (netErr) {
+            throw new Error('Network error: Unable to reach authentication server. Please check your connection.');
           }
 
-          if (!data || !data.success) {
-            throw new Error((data && data.message) ? data.message : 'Invalid email or password. Please try again.');
+          let data;
+          try {
+            data = await res.json();
+          } catch (jsonErr) {
+            throw new Error(`Server returned status ${res.status} with non-JSON response.`);
+          }
+
+          if (!res.ok || !data || !data.success) {
+            const errorMsg = (data && data.message) ? data.message : `Authentication failed (${res.status}).`;
+            throw new Error(errorMsg);
           }
 
           if (data.token) localStorage.setItem('icd_token', data.token);
           if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
 
           if (window.ICD_MAIN) {
-            window.ICD_MAIN.showToast('Welcome back!', `Logged in as ${data.user.first_name} ${data.user.last_name || ''}`, 'success');
+            const displayName = data.user ? (data.user.first_name || data.user.name || 'User') : 'User';
+            window.ICD_MAIN.showToast('Welcome back!', `Logged in as ${displayName}`, 'success');
           }
 
           setTimeout(() => {
@@ -480,7 +390,7 @@
               window.location.href = redirect;
               return;
             }
-            if (data.redirect) {
+            if (data.redirect && !data.redirect.endsWith('.php')) {
               window.location.href = data.redirect;
             } else if (data.user && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
               window.location.href = 'admin/index.html';
@@ -491,7 +401,7 @@
         } catch (err) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = origText;
-          var msg = err.message || 'Login failed.';
+          const msg = err.message || 'Login failed. Please check your credentials and try again.';
           if (window.ICD_MAIN) {
             window.ICD_MAIN.showToast('Login Failed', msg, 'error');
           } else {
@@ -534,14 +444,15 @@
         submitBtn.innerHTML = '<span class="btn-spinner"></span> Creating account...';
 
         try {
-          const actionBase = window.location.pathname.includes('/frontend/') ? '../actions' : 'actions';
           let res;
-          let data;
           try {
-            res = await fetch(`${actionBase}/signup_process.php`, {
+            res = await fetch('/actions/signup_process.php', {
               method: 'POST',
               credentials: 'same-origin',
-              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
               body: JSON.stringify({
                 first_name: firstName,
                 last_name: lastName,
@@ -552,20 +463,20 @@
                 role: (document.getElementById('signup-role') ? document.getElementById('signup-role').value : 'donor')
               })
             });
-            data = await res.json();
-          } catch (apiErr) {
-            data = mockSignup(
-              firstName,
-              lastName,
-              emailInput.value.trim(),
-              phoneInput ? phoneInput.value.trim() : '',
-              passInput.value
-            );
-            if (data) data.success = true;
+          } catch (netErr) {
+            throw new Error('Network error: Unable to reach registration server. Please check your connection.');
           }
 
-          if (!data || !data.success) {
-            throw new Error((data && data.message) ? data.message : 'Registration failed.');
+          let data;
+          try {
+            data = await res.json();
+          } catch (jsonErr) {
+            throw new Error(`Server returned status ${res.status} with non-JSON response.`);
+          }
+
+          if (!res.ok || !data || !data.success) {
+            const errorMsg = (data && data.message) ? data.message : `Registration failed (${res.status}).`;
+            throw new Error(errorMsg);
           }
 
           if (data.token) localStorage.setItem('icd_token', data.token);
@@ -582,7 +493,7 @@
               window.location.href = redirect;
               return;
             }
-            if (data.redirect) {
+            if (data.redirect && !data.redirect.endsWith('.php')) {
               window.location.href = data.redirect;
             } else {
               window.location.href = 'user/dashboard.html';
@@ -591,10 +502,11 @@
         } catch (err) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = origText;
+          const msg = err.message || 'Registration failed. Please try again.';
           if (window.ICD_MAIN) {
-            window.ICD_MAIN.showToast('Registration Error', err.message, 'error');
+            window.ICD_MAIN.showToast('Registration Error', msg, 'error');
           } else {
-            alert(err.message);
+            alert(msg);
           }
         }
       });
@@ -602,7 +514,7 @@
 
     const adminLoginForm = document.getElementById('admin-login-form');
     if (adminLoginForm) {
-      adminLoginForm.addEventListener('submit', function(e) {
+      adminLoginForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const userInput = document.getElementById('admin-username');
         const passInput = document.getElementById('admin-password');
@@ -617,77 +529,73 @@
         const submitBtn = adminLoginForm.querySelector('button[type="submit"]');
         const origText = submitBtn.innerHTML;
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="btn-spinner"></span> Verifying...';        (async function() {
-          const actionBase = window.location.pathname.includes('/frontend/') ? '../actions' : 'actions';
+        submitBtn.innerHTML = '<span class="btn-spinner"></span> Verifying...';
+
+        try {
           let res;
-          let data;
           try {
-            res = await fetch(`${actionBase}/login_process.php`, {
+            res = await fetch('/actions/login_process.php', {
               method: 'POST',
               credentials: 'same-origin',
-              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+              },
               body: JSON.stringify({
                 email: usernameVal,
                 password: passVal
               })
             });
+          } catch (netErr) {
+            throw new Error('Network error: Unable to reach authentication server. Please check your connection.');
+          }
+
+          let data;
+          try {
             data = await res.json();
-          } catch (e) {
-            // fallback below
+          } catch (jsonErr) {
+            throw new Error(`Server returned status ${res.status} with non-JSON response.`);
           }
 
-          if (data && data.success && data.user && data.user.role === 'admin') {
-            if (data.token) localStorage.setItem('icd_token', data.token);
-            if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
-
-            if (window.ICD_MAIN) {
-              window.ICD_MAIN.showToast('Admin Verified', 'Administrative session initialized successfully.', 'success');
-            }
-            setTimeout(() => {
-              window.location.href = data.redirect || 'admin/index.html';
-            }, 800);
-            return;
+          if (!res.ok || !data || !data.success) {
+            const errorMsg = (data && data.message) ? data.message : `Authentication failed (${res.status}).`;
+            throw new Error(errorMsg);
           }
 
-          // Fallback check
-          const isDemoMatch = (passVal === 'Admin@1234' || passVal === 'AdminPass123' || passVal.toLowerCase() === 'admin@1234');
-          const isKnownAdmin = (usernameVal.includes('admin') || usernameVal === 'admin@icaredonate.test' || usernameVal === 'admin@icaredonate.org' || usernameVal === 'admin@icaredonate.ph');
-          const isGenericAllowed = (usernameVal.length >= 3 && passVal.length >= 3);
-
-          if (!isDemoMatch && !isKnownAdmin && !isGenericAllowed) {
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = origText;
-            if (window.ICD_MAIN) {
-              window.ICD_MAIN.showToast('Verification Failed', 'Invalid administrator credentials. Try the Demo Admin prefill button.', 'error');
-            } else {
-              alert('Invalid administrator credentials.');
-            }
-            return;
+          if (!data.user || (data.user.role !== 'admin' && data.user.role !== 'superadmin')) {
+            throw new Error('Access denied. Administrator privileges required.');
           }
 
-          const prefix = usernameVal.split('@')[0].replace(/[._-]/g, ' ');
-          const words = prefix.split(/\s+/).filter(Boolean);
-          const firstName = words[0] ? (words[0].charAt(0).toUpperCase() + words[0].slice(1)) : 'Admin';
-          const lastName = words.slice(1).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') || 'Officer';
-
-          const adminUser = {
-            id: 1,
-            first_name: usernameVal.includes('admin@icaredonate.test') ? 'Eleanor' : firstName,
-            last_name: usernameVal.includes('admin@icaredonate.test') ? 'Vance' : lastName,
-            email: usernameVal,
-            role: 'admin'
-          };
-          localStorage.setItem('icd_token', 'mock-admin-' + Date.now());
-          localStorage.setItem('icd_user', JSON.stringify(adminUser));
+          if (data.token) localStorage.setItem('icd_token', data.token);
+          if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
 
           if (window.ICD_MAIN) {
             window.ICD_MAIN.showToast('Admin Verified', 'Administrative session initialized successfully.', 'success');
           }
 
           setTimeout(() => {
-            window.location.href = 'admin/index.html';
+            const params = new URLSearchParams(window.location.search);
+            const redirect = params.get('redirect') || params.get('returnUrl');
+            if (redirect && !redirect.startsWith('http://') && !redirect.startsWith('https://') && !redirect.startsWith('//')) {
+              window.location.href = redirect;
+              return;
+            }
+            if (data.redirect && !data.redirect.endsWith('.php')) {
+              window.location.href = data.redirect;
+            } else {
+              window.location.href = 'admin/index.html';
+            }
           }, 800);
-        })();
+        } catch (err) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+          const msg = err.message || 'Verification failed. Please check your credentials and try again.';
+          if (window.ICD_MAIN) {
+            window.ICD_MAIN.showToast('Verification Failed', msg, 'error');
+          } else {
+            alert(msg);
+          }
+        }
       });
     }
   });

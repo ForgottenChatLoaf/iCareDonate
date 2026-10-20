@@ -70,6 +70,7 @@ if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
 }
 
 $matched = null;
+$isProduction = (getenv('APP_ENV') === 'production');
 
 // ── 1. Check against MySQL database via PDO ──────────────────────────────
 $pdo = getDB();
@@ -99,12 +100,16 @@ if ($pdo !== null) {
         }
     } catch (PDOException $e) {
         error_log('Database query error in login_process: ' . $e->getMessage());
-        // Do not crash — fallback will be checked
+        if ($isProduction) {
+            sendLoginResponse(false, 'Database service is currently unavailable. Please try again shortly.', '', null, $isJson);
+        }
     }
+} elseif ($isProduction) {
+    sendLoginResponse(false, 'Database service is currently unavailable. Please try again shortly.', '', null, $isJson);
 }
 
-// ── 2. Fallback to Demo Accounts array if DB didn't match ───────────────
-if ($matched === null && !empty($DEMO_ACCOUNTS)) {
+// ── 2. Fallback to Demo Accounts array ONLY in local development ───────────────
+if (!$isProduction && $matched === null && !empty($DEMO_ACCOUNTS)) {
     foreach ($DEMO_ACCOUNTS as $account) {
         if (strtolower($account['email']) === strtolower($email)) {
             if (password_verify($password, $account['hash'])) {
@@ -144,10 +149,12 @@ $_SESSION['icd_login_at']= time();
 
 // ── 5. Determine redirection destination ─────────────────────────────────
 $root = _icd_root();
-if ($matched['role'] === 'admin') {
-    $target = $root . ICD_REDIRECT_ADMIN;
+if ($isJson || $isProduction) {
+    // Frontend static dashboard pages
+    $target = ($matched['role'] === 'admin') ? 'admin/index.html' : 'user/dashboard.html';
 } else {
-    $target = $root . ICD_REDIRECT_USER;
+    // Local PHP server pages
+    $target = ($matched['role'] === 'admin') ? ($root . ICD_REDIRECT_ADMIN) : ($root . ICD_REDIRECT_USER);
 }
 
 // Honor safe return redirect if inside application
@@ -162,3 +169,4 @@ sendLoginResponse(true, 'Login successful.', $target, [
     'email'      => $matched['email'],
     'role'       => $matched['role'],
 ], $isJson);
+

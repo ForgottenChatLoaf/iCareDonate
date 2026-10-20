@@ -129,7 +129,13 @@ try {
     $_SESSION['icd_login_at']= time();
 
     $root = _icd_root();
-    $target = $root . 'user/index.php';
+    $target = ($isJson || getenv('APP_ENV') === 'production') ? 'user/dashboard.html' : ($root . 'user/index.php');
+
+    // Honor safe return redirect if provided
+    $returnUrl = trim($_POST['redirect'] ?? ($jsonBody['redirect'] ?? ''));
+    if ($returnUrl !== '' && !preg_match('#^(https?:)?//#i', $returnUrl)) {
+        $target = $returnUrl;
+    }
 
     sendSignupResponse(true, 'Account created successfully! Welcome to iCareDonate.', $target, [
         'id'         => $newId,

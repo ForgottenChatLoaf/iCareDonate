@@ -362,7 +362,7 @@
     hide.style.display = isHidden ? '' : 'none';
   }
 
-  function handleLogin(e) {
+  async function handleLogin(e) {
     e.preventDefault();
     const email = document.getElementById('email').value.trim();
     const pw    = document.getElementById('password').value;
@@ -372,49 +372,48 @@
 
     setLoading(true);
 
-    // Simulate auth check (mock only)
-    setTimeout(() => {
-      setLoading(false);
-
-      // Mock credential check
-      const MOCK_USERS = [
-        { email:'admin@icaredonate.test',       pw:'Admin@1234',    role:'admin', name:'Eleanor Vance' },
-        { email:'admin@icaredonate.ph',         pw:'AdminPass123',  role:'admin', name:'Admin Officer' },
-        { email:'mreyes@icaredonate.ph',        pw:'AdminPass123',  role:'admin', name:'Maria Reyes' },
-        { email:'jcruz@icaredonate.ph',         pw:'AdminPass123',  role:'admin', name:'Juan Cruz' },
-        { email:'user@icaredonate.test',        pw:'User@1234',     role:'user',  name:'Maria Santos' },
-        { email:'donor@icaredonate.test',       pw:'Donor@1234',    role:'user',  name:'David Tan' },
-        { email:'donor@example.com',            pw:'UserPass123',   role:'donor', name:'David Tan' },
-        { email:'beneficiary@example.com',      pw:'UserPass123',   role:'beneficiary', name:'Ana Gomez' },
-      ];
-      const match = MOCK_USERS.find(u => u.email.toLowerCase() === email.toLowerCase() && u.pw === pw);
-
-      if (!match) {
-        showAlert('error', 'Invalid email or password. Please try again.');
-        return;
+    try {
+      let res;
+      try {
+        res = await fetch('/actions/login_process.php', {
+          method: 'POST',
+          credentials: 'same-origin',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify({ email: email, password: pw })
+        });
+      } catch (netErr) {
+        throw new Error('Network error: Unable to reach authentication server. Please check your connection.');
       }
 
+      let data;
       try {
-        localStorage.setItem('icd_token', 'mock-' + Date.now());
-        const parts = (match.name || 'Admin Officer').split(' ');
-        localStorage.setItem('icd_user', JSON.stringify({
-          id: 1,
-          first_name: parts[0] || 'Admin',
-          last_name: parts.slice(1).join(' ') || 'Officer',
-          email: match.email,
-          role: match.role === 'admin' ? 'admin' : 'user'
-        }));
-      } catch(err) {}
+        data = await res.json();
+      } catch (jsonErr) {
+        throw new Error(`Server returned status ${res.status} with non-JSON response.`);
+      }
 
-      showAlert('success', 'Login successful! Redirecting...');
+      if (!res.ok || !data || !data.success) {
+        throw new Error((data && data.message) ? data.message : `Authentication failed (${res.status}).`);
+      }
+
+      if (!data.user || (data.user.role !== 'admin' && data.user.role !== 'superadmin')) {
+        throw new Error('Access denied. Administrator privileges required.');
+      }
+
+      if (data.token) localStorage.setItem('icd_token', data.token);
+      if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
+
+      showAlert('success', 'Admin verified! Redirecting to dashboard...');
       setTimeout(() => {
-        if (match.role === 'admin') {
-          window.location.href = '../admin/index.html';
-        } else {
-          window.location.href = '../user/dashboard.html';
-        }
-      }, 900);
-    }, 700);
+        window.location.href = 'index.html';
+      }, 800);
+    } catch (err) {
+      setLoading(false);
+      showAlert('error', err.message || 'Login failed. Please check your credentials.');
+    }
   }
 
   function quickLogin(email, pw, role) {
