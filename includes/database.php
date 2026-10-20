@@ -3,19 +3,27 @@
  * iCareDonate — Database Connection (PDO Singleton)
  * includes/database.php
  *
- * Connects to MySQL/MariaDB via PDO using prepared statement defaults.
- * Provides getDB() and $pdo for authentication and account operations.
+ * On Render, credentials are injected as environment variables.
+ * On XAMPP/localhost, falls back to hardcoded local defaults.
+ *
+ * Environment variables read:
+ *   DB_HOST      — MySQL hostname  (default: 127.0.0.1)
+ *   DB_PORT      — MySQL port      (default: 3306)
+ *   DB_DATABASE  — Database name   (default: icaredonate)
+ *   DB_USERNAME  — DB user         (default: root)
+ *   DB_PASSWORD  — DB password     (default: empty)
  */
 
 declare(strict_types=1);
 
-$host    = '127.0.0.1';
-$dbName  = 'icaredonate';
-$dbUser  = 'root';
-$dbPass  = '';
+$host    = getenv('DB_HOST')     ?: '127.0.0.1';
+$port    = getenv('DB_PORT')     ?: '3306';
+$dbName  = getenv('DB_DATABASE') ?: 'icaredonate';
+$dbUser  = getenv('DB_USERNAME') ?: 'root';
+$dbPass  = getenv('DB_PASSWORD') ?: '';
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host={$host};dbname={$dbName};charset={$charset}";
+$dsn = "mysql:host={$host};port={$port};dbname={$dbName};charset={$charset}";
 $options = [
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
@@ -25,14 +33,8 @@ $options = [
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass, $options);
 } catch (PDOException $e) {
-    // Graceful fallback: check if alternative database name 'icare_donate' exists
-    try {
-        $dsnFallback = "mysql:host={$host};dbname=icare_donate;charset={$charset}";
-        $pdo = new PDO($dsnFallback, $dbUser, $dbPass, $options);
-    } catch (PDOException $eFallback) {
-        error_log('Database connection error: ' . $eFallback->getMessage());
-        $pdo = null;
-    }
+    error_log('Database connection error: ' . $e->getMessage());
+    $pdo = null;
 }
 
 /**

@@ -71,11 +71,22 @@ function currentName(): ?string {
 
 /**
  * Helper: resolves the project root URL path so redirects work from any depth.
- * Returns something like '/iCareDonate/'.
+ *
+ * On Render (APP_ENV=production or APP_URL is set), the app IS the document
+ * root, so this returns '/'.
+ * On XAMPP (subdirectory install), it computes the subpath automatically.
  */
 function _icd_root(): string {
-    $dir = __DIR__; // This file is at iCareDonate/includes/
-    $root = dirname($dir); // iCareDonate/
+    // Production: app served from document root (Render, VPS, etc.)
+    $appEnv = getenv('APP_ENV') ?: '';
+    $appUrl = getenv('APP_URL') ?: '';
+    if ($appEnv === 'production' || $appUrl !== '') {
+        return '/';
+    }
+
+    // Local XAMPP: compute subdirectory path
+    $dir     = __DIR__; // iCareDonate/includes/
+    $root    = dirname($dir); // iCareDonate/
     $docRoot = rtrim($_SERVER['DOCUMENT_ROOT'] ?? '', '/\\');
 
     $rootNorm = str_replace('\\', '/', $root);

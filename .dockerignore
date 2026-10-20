@@ -1,0 +1,63 @@
+# iCareDonate — .dockerignore
+# Files and directories excluded from the Docker build context.
+# These are never sent to the Docker daemon and never end up inside the image.
+
+# ── Secrets & local config ────────────────────────────────────────────────────
+.env
+.env.*
+*.env
+!.env.example
+
+# ── Git metadata ──────────────────────────────────────────────────────────────
+.git/
+.gitignore
+.gitattributes
+
+# ── OS clutter ────────────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# ── Editor artifacts ──────────────────────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ── Old/archived internal docs ────────────────────────────────────────────────
+docs/
+archived/
+dev_workspaces/
+
+# ── Wireframes (removed but guard against resurrection) ───────────────────────
+wireframe/
+
+# ── Local test & development scripts ─────────────────────────────────────────
+# setup_admin.php is already blocked in the Dockerfile via Apache config.
+# Keep it out of the image entirely as a second layer of defence.
+setup_admin.php
+
+# ── Database dumps & backups ─────────────────────────────────────────────────
+*.sql.gz
+*.sql.bak
+*.dump
+*.backup
+*.bak
+backup/
+backups/
+
+# ── Logs & temp ───────────────────────────────────────────────────────────────
+*.log
+logs/
+tmp/
+temp/
+
+# ── Node (not used, but guard against accidental installs) ───────────────────
+node_modules/
+npm-debug.log*
+
+# ── Render / deployment meta ─────────────────────────────────────────────────
+# Don't exclude Dockerfile or entrypoint — they ARE needed in the build.
+README.md
+netlify.toml

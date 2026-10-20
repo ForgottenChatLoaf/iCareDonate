@@ -1,0 +1,34 @@
+# iCareDonate — Root .htaccess
+# Handles URL routing, security restrictions, and canonical redirects.
+# Only directives valid in AllowOverride All context are used here.
+# Server-level directives (Directory blocks) belong in the Dockerfile/VirtualHost.
+
+Options -Indexes
+
+# ── Enable mod_rewrite ────────────────────────────────────────────────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # Block direct access to sensitive directories via URL
+  RewriteRule ^(includes|config|database|archived|dev_workspaces|\.git)(/|$) - [F,L]
+
+  # Block setup_admin.php from web access (belt-and-suspenders with Dockerfile)
+  RewriteRule ^setup_admin\.php$ - [F,L]
+
+  # Block direct access to .env files
+  RewriteRule ^\.env - [F,L]
+</IfModule>
+
+# ── Block access to .env and sensitive file types ─────────────────────────────
+<FilesMatch "(\.env|\.bak|\.sql|\.log|\.sh|\.gitignore|\.dockerignore)$">
+  Require all denied
+</FilesMatch>
+
+# ── Security headers ──────────────────────────────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set X-XSS-Protection "1; mode=block"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+</IfModule>
