@@ -611,7 +611,7 @@
   });
 
   window.ICD_FORMS = {
-    API_BASE_URL: API_BASE_URL,
+    API_BASE_URL: icd_actionsBase(),
     validateField: validateField
   };
 })();

@@ -14,7 +14,12 @@
     
     document.querySelectorAll('.sidebar-link[data-nav]').forEach(link => {
       const navKey = link.getAttribute('data-nav');
-      if (navKey === page || (page === 'index' && navKey === 'dashboard')) {
+      if (navKey === page || 
+          (page === 'index' && navKey === 'dashboard') ||
+          (page === 'settings' && navKey === 'profile') ||
+          (page === 'request-details' && navKey === 'requests') ||
+          (page === 'request-donation' && navKey === 'requests') ||
+          (page === 'edit-donation' && navKey === 'donations')) {
         link.classList.add('sidebar-link--active');
       } else {
         link.classList.remove('sidebar-link--active');

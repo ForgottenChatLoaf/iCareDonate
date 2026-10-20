@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Messages &amp; Support | iCareDonate</title>
-  <meta name="description" content="Reach out to community coordinators, donors, and support helpdesk.">
+  <title>Support Requests | iCareDonate</title>
+  <meta name="description" content="Submit technical issues, track ticket progress, and communicate with community care administrators.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -31,79 +31,44 @@
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/pages/user.css">
+
   <style>
-    .support-tab-btn {
-      padding: 10px 18px;
-      font-size: 14px;
-      font-weight: 600;
-      border: none;
-      background: none;
-      border-bottom: 2px solid transparent;
-      color: var(--color-text-muted, #64748B);
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
+    .ticket-card {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border, #E2E8F0);
+      border-radius: var(--radius-lg, 12px);
+      padding: 22px 24px;
+      margin-bottom: 16px;
+      transition: all 0.15s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
-    .support-tab-btn:hover {
-      color: var(--color-primary, #1F4FA3);
+    .ticket-card:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
     }
-    .support-tab-btn.is-active {
-      color: var(--color-primary, #1F4FA3);
-      border-bottom-color: var(--color-primary, #1F4FA3);
+    .reply-thread-box {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 16px;
+      margin-top: 14px;
     }
-    .conv-item {
-      padding: 14px 16px;
+    .reply-item {
+      padding: 10px 14px;
       border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.15s ease;
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      border-left: 3px solid transparent;
-    }
-    .conv-item:hover {
-      background: #F1F5F9;
-    }
-    .conv-item.is-selected {
-      background: #EFF6FF;
-      border-left-color: var(--color-primary, #1F4FA3);
-    }
-    .chat-bubble {
-      max-width: 78%;
-      padding: 12px 16px;
-      border-radius: 14px;
+      margin-bottom: 10px;
       font-size: 13.5px;
       line-height: 1.5;
-      margin-bottom: 12px;
     }
-    .chat-bubble--incoming {
-      background: #F1F5F9;
-      color: #1E293B;
-      align-self: flex-start;
-      border-bottom-left-radius: 4px;
+    .reply-item--admin {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E3A8A;
     }
-    .chat-bubble--outgoing {
-      background: var(--color-primary, #1F4FA3);
-      color: #FFFFFF;
-      align-self: flex-end;
-      border-bottom-right-radius: 4px;
-    }
-    .chat-time {
-      font-size: 11px;
-      margin-top: 4px;
-      opacity: 0.8;
-      display: block;
-    }
-    @media (max-width: 768px) {
-      .chat-layout {
-        flex-direction: column !important;
-      }
-      .chat-sidebar-col {
-        width: 100% !important;
-        max-height: 280px !important;
-      }
+    .reply-item--user {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      color: #334155;
     }
   </style>
 </head>
@@ -111,7 +76,9 @@
 
 <div class="user-layout">
 
-  <!-- USER SIDEBAR -->
+  <!-- ══════════════════════════════════════════════════════════
+       USER SIDEBAR
+       ══════════════════════════════════════════════════════════ -->
   <aside class="user-sidebar" role="complementary" aria-label="User navigation">
     <div class="brand-sidebar-container" role="banner">
       <a href="dashboard.html" class="brand-sidebar-logo" aria-label="iCareDonate USER">
@@ -120,54 +87,80 @@
           <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
         </span>
       </a>
-      <span class="brand-sidebar-badge brand-sidebar-badge--user" aria-label="USER Portal">USER</span>
+      <span class="brand-sidebar-badge brand-sidebar-badge--user" aria-label="USER Portal">
+        USER
+      </span>
     </div>
 
     <nav class="sidebar-nav" aria-label="User dashboard navigation">
       <a href="dashboard.html" class="sidebar-link" data-nav="dashboard">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
         <span>Dashboard</span>
       </a>
-      <a href="offer-donation.html" class="sidebar-link sidebar-link--accent" data-nav="offer-donation">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:10px 12px 4px;margin-top:2px;">Donations &amp; Requests</div>
+
+      <!-- Prominent Primary Action: Post Donation -->
+      <a href="offer-donation.html" class="sidebar-link sidebar-link--accent" data-nav="offer-donation" style="font-weight:700;background:#FFF0EC;border:1px solid #FFD8CE;border-radius:8px;margin-bottom:4px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
         <span>Post Donation</span>
       </a>
-      <a href="browse-donations.html" class="sidebar-link" data-nav="browse-donations">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
-        <span>Browse Donations</span>
-      </a>
+
       <a href="donations.html" class="sidebar-link" data-nav="donations">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
         <span>My Donations</span>
       </a>
+
+      <a href="browse-donations.html" class="sidebar-link" data-nav="browse-donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+        <span>Browse Resources</span>
+      </a>
+
       <a href="requests.html" class="sidebar-link" data-nav="requests">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
         <span>My Requests</span>
       </a>
+
       <a href="transactions.html" class="sidebar-link" data-nav="transactions">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-        <span>Claim &amp; Pick-up</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transactions &amp; Claims</span>
       </a>
+
       <a href="history.html" class="sidebar-link" data-nav="history">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span>History</span>
       </a>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Communication</div>
+
+      <a href="messages.html" class="sidebar-link" data-nav="messages">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Messages</span>
+      </a>
+
       <a href="notifications.html" class="sidebar-link" data-nav="notifications">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
         <span>Notifications</span>
+        <span class="sidebar-badge" id="sidebarNotifBadge" style="display:none;">0</span>
       </a>
+
       <a href="support.html" class="sidebar-link sidebar-link--active" data-nav="support">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="12.01" x2="12" y2="17"/></svg>
-        <span>Messages &amp; Support</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Support Requests</span>
       </a>
-      <a href="settings.html" class="sidebar-link" data-nav="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <span>Account Settings</span>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Account</div>
+
+      <a href="profile.html" class="sidebar-link" data-nav="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Profile &amp; Settings</span>
       </a>
+
       <a href="../help-center.html" class="sidebar-link" data-nav="help">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>Help &amp; Support</span>
+        <span>Help Center</span>
       </a>
+
       <a href="../logout.html" class="sidebar-link sidebar-link--logout" id="sidebarLogoutBtn" data-nav="logout">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
         <span>Logout</span>
@@ -175,8 +168,9 @@
     </nav>
   </aside>
 
-  <!-- USER MAIN -->
-  <!-- Sidebar backdrop (mobile) -->
+  <!-- ══════════════════════════════════════════════════════════
+       USER MAIN CONTENT
+       ══════════════════════════════════════════════════════════ -->
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
   <div class="user-main">
@@ -185,13 +179,13 @@
         <button type="button" class="user-sidebar-toggle" id="userSidebarToggle" aria-label="Toggle navigation" aria-expanded="false">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <h1 style="font-size:20px;font-weight:700;color:var(--text, #1E293B);margin:0;">Messages &amp; Support</h1>
+        <h1 style="font-size:20px;font-weight:700;color:var(--text, #1E293B);margin:0;">Support Requests &amp; Tickets</h1>
       </div>
-      
+
       <div style="display:flex;align-items:center;gap:12px;">
-        <a href="dashboard.html" class="btn btn-outline" style="font-size:13px;padding:6px 14px;">
-          &larr; Dashboard
-        </a>
+        <button type="button" class="btn btn-primary" onclick="toggleSubmitTicketModal(true)" style="font-size:13.5px;padding:8px 16px;font-weight:600;">
+          + Submit a Problem
+        </button>
         <div class="topbar-dropdown-wrap">
           <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
             <span class="user-avatar-circle" id="topbarUserInitials">CM</span>
@@ -201,11 +195,11 @@
           <div class="topbar-dropdown" id="topbarDropdownMenu" role="menu" aria-label="User account menu">
             <a href="profile.html" role="menuitem">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-              <span>My Profile</span>
+              <span>Profile &amp; Settings</span>
             </a>
-            <a href="settings.html" role="menuitem">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-              <span>Account Settings</span>
+            <a href="../help-center.html" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Help Center</span>
             </a>
             <div class="dropdown-divider"></div>
             <a href="../logout.html" class="sidebar-link--logout dropdown-danger" role="menuitem">
@@ -217,366 +211,307 @@
       </div>
     </header>
 
-    <div class="user-content" style="max-width:1040px;margin:0 auto;padding:28px 32px;">
+    <div class="user-content" style="max-width:960px;margin:0 auto;padding:28px 32px;">
 
-      <!-- Quick Help Introduction & Public Resource Shortcuts -->
-      <div style="background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border: 1px solid #DBEAFE; border-radius: var(--radius-lg, 12px); padding: 20px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
-        <div style="max-width: 600px;">
-          <h2 style="font-size: 16.5px; font-weight: 700; color: #1E3A8A; margin: 0 0 4px;">Welcome to Community Care &amp; Support</h2>
+      <!-- Scope notice -->
+      <div style="background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%); border: 1px solid #DBEAFE; border-radius: 12px; padding: 18px 24px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+        <div style="max-width: 620px;">
+          <h2 style="font-size: 16px; font-weight: 700; color: #1E3A8A; margin: 0 0 4px;">User Assistance &amp; Problem Reporting</h2>
           <p style="font-size: 13px; color: #475569; margin: 0; line-height: 1.5;">
-            Have questions regarding item pickups, verification documents, or active donation listings? Check our public guides or submit an official inquiry to our care coordinators below.
+            Encountered a verification issue, missing claim code, or need moderation help? File a support ticket below to communicate directly with administrators.
           </p>
         </div>
-        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+        <div>
           <a href="../faqs.html" class="btn btn-outline" style="font-size: 12.5px; padding: 6px 14px; background: #fff;" target="_blank">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 4px; vertical-align: -2px;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-            FAQ Guides
-          </a>
-          <a href="../help-center.html" class="btn btn-outline" style="font-size: 12.5px; padding: 6px 14px; background: #fff;" target="_blank">
-            Help Center
+            Search FAQs &rarr;
           </a>
         </div>
       </div>
 
-      <!-- Navigation Tabs: Support Desk vs Direct Messages -->
-      <div style="display:flex;border-bottom:1px solid var(--color-border, #E2E8F0);margin-bottom:24px;gap:8px;">
-        <button type="button" class="support-tab-btn is-active" id="tabBtnSupport" onclick="switchSupportTab('tickets')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
-          Support Tickets &amp; Helpdesk
-        </button>
-        <button type="button" class="support-tab-btn" id="tabBtnMessages" onclick="switchSupportTab('messages')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          Direct Messages
-          <span class="badge badge-primary" style="font-size: 11px; padding: 2px 7px; border-radius: 10px;">2</span>
-        </button>
+      <!-- Ticket Filter Tabs -->
+      <div style="display:flex;gap:8px;border-bottom:2px solid var(--border, #E2E8F0);margin-bottom:20px;padding-bottom:4px;">
+        <button type="button" class="btn btn-primary" id="btnFilterAll" onclick="filterTickets('all')">All Tickets</button>
+        <button type="button" class="btn btn-soft" id="btnFilterOpen" onclick="filterTickets('open')">Open / In Progress</button>
+        <button type="button" class="btn btn-soft" id="btnFilterResolved" onclick="filterTickets('resolved')">Resolved</button>
       </div>
 
-      <!-- SECTION 1: SUPPORT TICKETS & HELPDESK -->
-      <div id="sectionTickets">
-        <div class="card" style="padding:28px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;margin-bottom:28px;">
-          <h2 style="font-size:18px;font-weight:700;color:var(--text, #1E293B);margin:0 0 6px;">Submit a Formal Support Request</h2>
-          <p style="font-size:13.5px;color:#64748B;margin:0 0 20px;">Our administrative and community coordinators review tickets within 24 to 48 hours.</p>
-
-          <form id="support-ticket-form">
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-              <div class="form-group">
-                <label class="form-label" for="ticket-category">Category <span style="color:var(--coral, #E0553D);">*</span></label>
-                <select id="ticket-category" class="form-input" required>
-                  <option value="">Select an issue category...</option>
-                  <option value="account">Account &amp; Identity Verification</option>
-                  <option value="donation">Donation Listing &amp; Item Condition</option>
-                  <option value="request">Assistance Request &amp; Eligibility</option>
-                  <option value="pickup">Transaction, Handover &amp; Pick-up Venue</option>
-                  <option value="technical">Technical Bug / Website Issue</option>
-                  <option value="other">Other Inquiry</option>
-                </select>
-              </div>
-
-              <div class="form-group">
-                <label class="form-label" for="ticket-ref">Associated Reference ID <span style="font-weight:400;color:#94A3B8;">(Optional)</span></label>
-                <input type="text" id="ticket-ref" class="form-input" placeholder="e.g. DN-101, RQ-204, or TX-301">
-              </div>
-            </div>
-
-            <div class="form-group" style="margin-bottom:16px;">
-              <label class="form-label" for="ticket-subject">Subject / Issue Summary <span style="color:var(--coral, #E0553D);">*</span></label>
-              <input type="text" id="ticket-subject" class="form-input" required placeholder="e.g. Need to adjust pickup schedule for Quezon City center">
-            </div>
-
-            <div class="form-group" style="margin-bottom:16px;">
-              <label class="form-label" for="ticket-message">Detailed Explanation <span style="color:var(--coral, #E0553D);">*</span></label>
-              <textarea id="ticket-message" class="form-input" rows="4" required placeholder="Describe the concern in detail. Include dates, item descriptions, and any relevant details..."></textarea>
-            </div>
-
-            <div id="ticketSubmitAlert" style="display:none;padding:12px 16px;border-radius:8px;font-size:13.5px;margin-bottom:16px;"></div>
-
-            <div style="display:flex;justify-content:space-between;align-items:center;">
-              <span style="font-size:12px;color:#94A3B8;">Logged in as: <strong class="topbar-user-name">Community Member</strong></span>
-              <button type="submit" id="ticketSubmitBtn" class="btn btn-primary" style="padding:10px 24px;">
-                Submit Ticket
-              </button>
-            </div>
-          </form>
-        </div>
-
-        <!-- Ticket Tracker History -->
-        <div class="card" style="padding:28px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;">
-          <h3 style="font-size:17px;font-weight:700;color:var(--text, #1E293B);margin:0 0 16px;">Your Support Ticket History</h3>
-          
-          <div style="display:flex;flex-direction:column;gap:14px;" id="ticketList">
-            <!-- Ticket 1 -->
-            <div style="padding:16px;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
-                <div>
-                  <div style="display:flex;gap:8px;align-items:center;">
-                    <span style="font-size:11.5px;color:#64748B;font-weight:600;">Ticket #ST-8812 &middot; Oct 09, 2026</span>
-                    <span class="badge" style="background:#E0E7FF;color:#3730A3;font-size:11px;">Verification</span>
-                  </div>
-                  <div style="font-weight:600;font-size:14.5px;color:var(--text, #1E293B);margin-top:4px;">
-                    Verification query for student proof document
-                  </div>
-                  <p style="font-size:12.5px;color:#64748B;margin:4px 0 0;">
-                    Response: "Document accepted by coordinator. Your verified student badge is now active."
-                  </p>
-                </div>
-                <span class="badge badge-success">Resolved</span>
-              </div>
-            </div>
-
-            <!-- Ticket 2 -->
-            <div style="padding:16px;border-radius:8px;border:1px solid #E2E8F0;background:#F8FAFC;">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;">
-                <div>
-                  <div style="display:flex;gap:8px;align-items:center;">
-                    <span style="font-size:11.5px;color:#64748B;font-weight:600;">Ticket #ST-8904 &middot; Oct 18, 2026</span>
-                    <span class="badge" style="background:#FEF3C7;color:#92400E;font-size:11px;">Pickup &amp; Logistics</span>
-                  </div>
-                  <div style="font-weight:600;font-size:14.5px;color:var(--text, #1E293B);margin-top:4px;">
-                    Handover reschedule for Study Desk #DN-101
-                  </div>
-                  <p style="font-size:12.5px;color:#64748B;margin:4px 0 0;">
-                    Response: "Assigned to Pasig Community Coordinator. Awaiting donor date confirmation."
-                  </p>
-                </div>
-                <span class="badge badge-warning">In Review</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SECTION 2: DIRECT COMMUNITY MESSAGES (INBOX & CHAT) -->
-      <div id="sectionMessages" style="display:none;">
-        <div class="card chat-layout" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#fff;display:flex;min-height:560px;">
-          
-          <!-- Conversation List Sidebar -->
-          <div class="chat-sidebar-col" style="width:320px;border-right:1px solid var(--color-border);background:#F8FAFC;display:flex;flex-direction:column;">
-            <div style="padding:16px;border-bottom:1px solid var(--color-border);">
-              <h3 style="font-size:15px;font-weight:700;color:var(--text);margin:0 0 8px;">Inbox Conversations</h3>
-              <input type="text" class="form-input" placeholder="Search messages..." style="font-size:12.5px;height:34px;">
-            </div>
-
-            <div style="flex:1;overflow-y:auto;padding:8px;" id="convList">
-              <div class="conv-item is-selected" onclick="selectConversation('coord')">
-                <div class="user-avatar-circle" style="background:#1F4FA3;color:#fff;width:36px;height:36px;font-size:12px;font-weight:700;flex-shrink:0;">ER</div>
-                <div style="flex:1;min-width:0;">
-                  <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <strong style="font-size:13px;color:#1E293B;">Elena Rostova</strong>
-                    <span style="font-size:11px;color:#94A3B8;">10:15 AM</span>
-                  </div>
-                  <div style="font-size:11.5px;color:var(--color-primary);font-weight:600;">Coordinator &middot; Pass #TX-302</div>
-                  <div style="font-size:12px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
-                    Hi! The pickup pass is ready for download.
-                  </div>
-                </div>
-              </div>
-
-              <div class="conv-item" onclick="selectConversation('donor')">
-                <div class="user-avatar-circle" style="background:#D97706;color:#fff;width:36px;height:36px;font-size:12px;font-weight:700;flex-shrink:0;">CD</div>
-                <div style="flex:1;min-width:0;">
-                  <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <strong style="font-size:13px;color:#1E293B;">Carlos D.</strong>
-                    <span style="font-size:11px;color:#94A3B8;">Yesterday</span>
-                  </div>
-                  <div style="font-size:11.5px;color:#475569;font-weight:500;">Donor &middot; Grade 3 Books</div>
-                  <div style="font-size:12px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
-                    I have packed the textbooks securely in a box.
-                  </div>
-                </div>
-              </div>
-
-              <div class="conv-item" onclick="selectConversation('system')">
-                <div class="user-avatar-circle" style="background:#0D9488;color:#fff;width:36px;height:36px;font-size:12px;font-weight:700;flex-shrink:0;">IC</div>
-                <div style="flex:1;min-width:0;">
-                  <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <strong style="font-size:13px;color:#1E293B;">System Notification</strong>
-                    <span style="font-size:11px;color:#94A3B8;">Oct 12</span>
-                  </div>
-                  <div style="font-size:11.5px;color:#475569;font-weight:500;">Automated Care Alert</div>
-                  <div style="font-size:12px;color:#64748B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">
-                    Your account registration has been confirmed!
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Active Conversation Message Thread -->
-          <div style="flex:1;display:flex;flex-direction:column;background:#FFFFFF;">
-            
-            <!-- Thread Header -->
-            <div style="padding:14px 20px;border-bottom:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center;">
-              <div style="display:flex;align-items:center;gap:10px;">
-                <div class="user-avatar-circle" id="chatHeaderAvatar" style="background:#1F4FA3;color:#fff;width:36px;height:36px;font-size:12px;font-weight:700;">ER</div>
-                <div>
-                  <div style="display:flex;align-items:center;gap:6px;">
-                    <strong style="font-size:14px;color:#1E293B;" id="chatHeaderName">Elena Rostova</strong>
-                    <span class="badge badge-primary" style="font-size:10.5px;" id="chatHeaderBadge">Verified Coordinator</span>
-                  </div>
-                  <div style="font-size:12px;color:#64748B;" id="chatHeaderTopic">Regarding Claim Pass #TX-302 &middot; Quezon City Hub</div>
-                </div>
-              </div>
-              <a href="transactions.html" class="btn btn-outline" style="font-size:12px;padding:4px 12px;">View Related Pass &rarr;</a>
-            </div>
-
-            <!-- Messages Stream -->
-            <div style="flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;" id="chatMessagesStream">
-              <div class="chat-bubble chat-bubble--incoming">
-                Hello! Thank you for requesting the school supplies package for your community student group.
-                <span class="chat-time">10:10 AM</span>
-              </div>
-              <div class="chat-bubble chat-bubble--incoming">
-                We have approved your request #RQ-204. Your release pass #TX-302 is ready. Please bring a valid ID when you arrive at the Quezon City Community Hub between 9:00 AM and 4:00 PM this Thursday.
-                <span class="chat-time">10:15 AM</span>
-              </div>
-            </div>
-
-            <!-- Message Composer -->
-            <div style="padding:14px 20px;border-top:1px solid var(--color-border);background:#FAFAFA;">
-              <form id="chatReplyForm" style="display:flex;gap:10px;align-items:flex-end;">
-                <textarea id="chatInputText" class="form-input" rows="2" placeholder="Type a message to the coordinator..." required style="resize:none;font-size:13.5px;"></textarea>
-                <button type="submit" class="btn btn-primary" style="padding:10px 20px;white-space:nowrap;height:52px;">
-                  Send
-                </button>
-              </form>
-            </div>
-
-          </div>
-
-        </div>
+      <!-- Tickets Container -->
+      <div id="ticketsContainer">
+        <!-- Rendered dynamically -->
       </div>
 
     </div>
   </div>
 </div>
 
+<!-- Modal: Submit Support Request -->
+<div id="submitTicketModal" style="position:fixed;inset:0;background:rgba(15,23,42,0.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:9999;padding:20px;">
+  <div style="background:#FFFFFF;border-radius:16px;max-width:540px;width:100%;padding:28px;box-shadow:0 20px 45px rgba(15,23,42,0.2);border:1px solid #E2E8F0;max-height:90vh;overflow-y:auto;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-size:18px;font-weight:700;color:#1E293B;margin:0;">Submit a Support Request</h3>
+      <button type="button" onclick="toggleSubmitTicketModal(false)" style="background:none;border:none;font-size:20px;color:#94A3B8;cursor:pointer;">&times;</button>
+    </div>
+    <form id="createTicketForm">
+      <div class="form-group" style="margin-bottom:14px;">
+        <label class="form-label" for="ticketSubject">Subject / Summary <span style="color:#DC2626;">*</span></label>
+        <input type="text" id="ticketSubject" class="form-input" required placeholder="e.g. Schedule adjustment question after matching">
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div class="form-group">
+          <label class="form-label" for="ticketCategory">Issue Category <span style="color:#DC2626;">*</span></label>
+          <select id="ticketCategory" class="form-input" required>
+            <option value="Logistics">Logistics &amp; Handover</option>
+            <option value="Verification">Document Verification</option>
+            <option value="Account">Account &amp; Security</option>
+            <option value="Donation Listing">Donation Listing</option>
+            <option value="Other">Other Concern</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="ticketRef">Related ID (Optional)</label>
+          <input type="text" id="ticketRef" class="form-input" placeholder="e.g. #301 or #REQ-201">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom:20px;">
+        <label class="form-label" for="ticketDesc">Description &amp; Problem Details <span style="color:#DC2626;">*</span></label>
+        <textarea id="ticketDesc" class="form-input" rows="4" required placeholder="Please provide specific details so administrators can help you quickly..."></textarea>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="toggleSubmitTicketModal(false)">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btnSubmitTicket">Submit Ticket</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
-  // Tab Switcher
-  function switchSupportTab(tab) {
-    var btnSup = document.getElementById('tabBtnSupport');
-    var btnMsg = document.getElementById('tabBtnMessages');
-    var secSup = document.getElementById('sectionTickets');
-    var secMsg = document.getElementById('sectionMessages');
-
-    if (tab === 'tickets') {
-      btnSup.classList.add('is-active');
-      btnMsg.classList.remove('is-active');
-      secSup.style.display = 'block';
-      secMsg.style.display = 'none';
-    } else {
-      btnMsg.classList.add('is-active');
-      btnSup.classList.remove('is-active');
-      secSup.style.display = 'none';
-      secMsg.style.display = 'block';
+  // Initial support tickets matching Admin Support desk
+  const initialTickets = [
+    {
+      id: 'TK-204',
+      subject: 'How to update pickup schedule after matching?',
+      category: 'Logistics',
+      refId: 'Transaction #301',
+      date: 'Oct 12, 2026',
+      status: 'in_progress',
+      statusLabel: 'In Progress',
+      statusBadge: 'badge-warning',
+      description: 'Hello, I agreed with the beneficiary to move the backpack pickup by one day due to rainy weather. Does this need formal approval or can we proceed?',
+      replies: [
+        {
+          sender: 'Administrator Eleanor Vance',
+          role: 'admin',
+          time: 'Oct 12, 2026 at 2:15 PM',
+          text: 'Hello Maria! As long as both parties mutually agree on the new date and pickup venue within the approved claim deadline, you may proceed with the handover. We have updated your transaction notes.'
+        }
+      ]
+    },
+    {
+      id: 'TK-191',
+      subject: 'Barangay Indigency Document Upload Question',
+      category: 'Verification',
+      refId: 'Request #201',
+      date: 'Oct 07, 2026',
+      status: 'resolved',
+      statusLabel: 'Resolved',
+      statusBadge: 'badge-success',
+      description: 'Is a digital photo of the Barangay Indigency Certificate sufficient, or does it require a certified true copy seal?',
+      replies: [
+        {
+          sender: 'Administrator Eleanor Vance',
+          role: 'admin',
+          time: 'Oct 07, 2026 at 11:30 AM',
+          text: 'A clear, high-resolution photo showing the official dry seal and barangay captain signature is fully accepted. Thank you!'
+        }
+      ]
     }
+  ];
+
+  let userTickets = initialTickets;
+  try {
+    const saved = localStorage.getItem('icd_user_tickets');
+    if (saved) userTickets = JSON.parse(saved);
+  } catch(e) {}
+
+  let activeFilter = 'all';
+
+  function saveTickets() {
+    try {
+      localStorage.setItem('icd_user_tickets', JSON.stringify(userTickets));
+    } catch(e) {}
   }
 
-  // Conversation Selection
-  function selectConversation(type) {
-    var items = document.querySelectorAll('.conv-item');
-    items.forEach(function(i) { i.classList.remove('is-selected'); });
-
-    var stream = document.getElementById('chatMessagesStream');
-    var name = document.getElementById('chatHeaderName');
-    var badge = document.getElementById('chatHeaderBadge');
-    var topic = document.getElementById('chatHeaderTopic');
-    var avatar = document.getElementById('chatHeaderAvatar');
-
-    if (type === 'coord') {
-      items[0].classList.add('is-selected');
-      avatar.textContent = 'ER';
-      avatar.style.background = '#1F4FA3';
-      name.textContent = 'Elena Rostova';
-      badge.textContent = 'Verified Coordinator';
-      topic.textContent = 'Regarding Claim Pass #TX-302 · Quezon City Hub';
-      stream.innerHTML = '<div class="chat-bubble chat-bubble--incoming">Hello! Thank you for requesting the school supplies package for your community student group.<span class="chat-time">10:10 AM</span></div><div class="chat-bubble chat-bubble--incoming">We have approved your request #RQ-204. Your release pass #TX-302 is ready. Please bring a valid ID when you arrive at the Quezon City Community Hub between 9:00 AM and 4:00 PM this Thursday.<span class="chat-time">10:15 AM</span></div>';
-    } else if (type === 'donor') {
-      items[1].classList.add('is-selected');
-      avatar.textContent = 'CD';
-      avatar.style.background = '#D97706';
-      name.textContent = 'Carlos D.';
-      badge.textContent = 'Registered Donor';
-      topic.textContent = 'Regarding Donation #DN-102 · Grade 3 Textbooks';
-      stream.innerHTML = '<div class="chat-bubble chat-bubble--incoming">Hi there! I saw you matched with the grade 3 textbooks.<span class="chat-time">Yesterday 2:30 PM</span></div><div class="chat-bubble chat-bubble--incoming">I have packed the textbooks securely in a box and dropped them at the hub drop-off desk.<span class="chat-time">Yesterday 4:12 PM</span></div>';
-    } else if (type === 'system') {
-      items[2].classList.add('is-selected');
-      avatar.textContent = 'IC';
-      avatar.style.background = '#0D9488';
-      name.textContent = 'iCareDonate Support';
-      badge.textContent = 'System Care Desk';
-      topic.textContent = 'Official Platform Notice';
-      stream.innerHTML = '<div class="chat-bubble chat-bubble--incoming">Welcome to the iCareDonate community network! Give with care, receive with dignity.<span class="chat-time">Oct 12 9:00 AM</span></div>';
-    }
+  function filterTickets(filter) {
+    activeFilter = filter;
+    document.getElementById('btnFilterAll').className = filter === 'all' ? 'btn btn-primary' : 'btn btn-soft';
+    document.getElementById('btnFilterOpen').className = filter === 'open' ? 'btn btn-primary' : 'btn btn-soft';
+    document.getElementById('btnFilterResolved').className = filter === 'resolved' ? 'btn btn-primary' : 'btn btn-soft';
+    renderTickets();
   }
 
-  // Handle Chat Reply
-  document.getElementById('chatReplyForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var input = document.getElementById('chatInputText');
-    var text = input.value.trim();
-    if (!text) return;
+  function renderTickets() {
+    const container = document.getElementById('ticketsContainer');
+    if (!container) return;
 
-    var stream = document.getElementById('chatMessagesStream');
-    var now = new Date();
-    var timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    const filtered = userTickets.filter(t => {
+      if (activeFilter === 'open') return t.status === 'open' || t.status === 'in_progress';
+      if (activeFilter === 'resolved') return t.status === 'resolved';
+      return true;
+    });
 
-    var bubble = document.createElement('div');
-    bubble.className = 'chat-bubble chat-bubble--outgoing';
-    bubble.innerHTML = text.replace(/</g, '&lt;').replace(/>/g, '&gt;') + '<span class="chat-time">' + timeStr + ' &middot; Sent</span>';
-    stream.appendChild(bubble);
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="card" style="padding:48px 24px;text-align:center;border-radius:12px;background:#fff;border:1px solid #E2E8F0;">
+          <div style="font-size:15px;font-weight:700;color:#1E293B;margin-bottom:6px;">No Support Tickets Found</div>
+          <p style="font-size:13.5px;color:#64748B;margin:0 0 16px;">You currently have no tickets matching this filter.</p>
+          <button type="button" class="btn btn-primary" onclick="toggleSubmitTicketModal(true)">Submit a Ticket</button>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(t => {
+      const repliesHtml = t.replies && t.replies.length > 0 ? `
+        <div class="reply-thread-box">
+          <div style="font-size:12.5px;font-weight:700;color:#1E293B;margin-bottom:10px;display:flex;align-items:center;gap:6px;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            Replies &amp; Administrator Notes (${t.replies.length})
+          </div>
+          ${t.replies.map(r => `
+            <div class="reply-item ${r.role === 'admin' ? 'reply-item--admin' : 'reply-item--user'}">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <strong>${escapeHtml(r.sender)}</strong>
+                <span style="font-size:11px;opacity:0.8;">${escapeHtml(r.time)}</span>
+              </div>
+              <div>${escapeHtml(r.text)}</div>
+            </div>
+          `).join('')}
+        </div>
+      ` : '<div style="font-size:12.5px;color:#94A3B8;margin-top:10px;font-style:italic;">Awaiting administrative review. Response typically provided within 24 hours.</div>';
+
+      return `
+        <div class="ticket-card" id="ticket-${t.id}">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;">
+                <span class="badge ${t.statusBadge}">Status: ${escapeHtml(t.statusLabel)}</span>
+                <span style="font-size:12px;color:#64748B;">Ticket #${escapeHtml(t.id)} &bull; ${escapeHtml(t.date)}</span>
+                ${t.refId ? `<span class="badge badge-info" style="font-size:11px;">Ref: ${escapeHtml(t.refId)}</span>` : ''}
+              </div>
+              <h3 style="font-size:17px;font-weight:700;color:#1E293B;margin:0 0 6px;">${escapeHtml(t.subject)}</h3>
+            </div>
+            <div>
+              <span class="badge badge-neutral" style="font-size:11.5px;">${escapeHtml(t.category)}</span>
+            </div>
+          </div>
+          <p style="font-size:13.5px;color:#334155;background:#F8FAFC;padding:12px 14px;border-radius:8px;margin:0 0 10px;line-height:1.5;">
+            "${escapeHtml(t.description)}"
+          </p>
+
+          ${repliesHtml}
+
+          <!-- Reply box if open/in progress -->
+          ${t.status !== 'resolved' ? `
+            <div style="margin-top:14px;display:flex;gap:8px;">
+              <input type="text" id="replyInput-${t.id}" class="form-input" placeholder="Type a follow-up reply..." style="height:36px;font-size:13px;flex:1;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="sendTicketReply('${t.id}')" style="height:36px;padding:0 14px;">Send Reply</button>
+            </div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function toggleSubmitTicketModal(show) {
+    const modal = document.getElementById('submitTicketModal');
+    if (modal) modal.style.display = show ? 'flex' : 'none';
+  }
+
+  function sendTicketReply(ticketId) {
+    const input = document.getElementById('replyInput-' + ticketId);
+    if (!input || !input.value.trim()) return;
+
+    const ticket = userTickets.find(t => t.id === ticketId);
+    if (!ticket) return;
+
+    if (!ticket.replies) ticket.replies = [];
+    ticket.replies.push({
+      sender: 'You',
+      role: 'user',
+      time: 'Just now',
+      text: input.value.trim()
+    });
+
     input.value = '';
-    stream.scrollTop = stream.scrollHeight;
+    saveTickets();
+    renderTickets();
+
+    if (window.showPortalFlash) {
+      window.showPortalFlash('success', 'Your follow-up reply has been added to Ticket #' + ticketId);
+    }
+  }
+
+  document.getElementById('createTicketForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const subject = document.getElementById('ticketSubject').value.trim();
+    const category = document.getElementById('ticketCategory').value;
+    const refId = document.getElementById('ticketRef').value.trim();
+    const desc = document.getElementById('ticketDesc').value.trim();
+
+    if (!subject || !desc) return;
+
+    const newTicketId = 'TK-' + Math.floor(100 + Math.random() * 900);
+    const newTicket = {
+      id: newTicketId,
+      subject: subject,
+      category: category,
+      refId: refId || '',
+      date: 'Just now',
+      status: 'open',
+      statusLabel: 'Open',
+      statusBadge: 'badge-warning',
+      description: desc,
+      replies: []
+    };
+
+    userTickets.unshift(newTicket);
+    saveTickets();
+    toggleSubmitTicketModal(false);
+    this.reset();
+    renderTickets();
+
+    if (window.showPortalFlash) {
+      window.showPortalFlash('success', 'Support Ticket #' + newTicketId + ' logged successfully. An administrator will review it shortly.');
+    }
   });
 
-  // Ticket Form Handler
-  document.getElementById('support-ticket-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    var category = document.getElementById('ticket-category').value;
-    var subject = document.getElementById('ticket-subject').value.trim();
-    var ref = document.getElementById('ticket-ref').value.trim();
-    var msg = document.getElementById('ticket-message').value.trim();
-    var alertBox = document.getElementById('ticketSubmitAlert');
-    var submitBtn = document.getElementById('ticketSubmitBtn');
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-
-    setTimeout(function() {
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Submit Ticket';
-
-      alertBox.style.display = 'block';
-      alertBox.style.background = '#ECFDF5';
-      alertBox.style.color = '#065F46';
-      alertBox.style.border = '1px solid #A7F3D0';
-      alertBox.innerHTML = '<strong>Success!</strong> Your ticket #ST-' + Math.floor(1000 + Math.random() * 9000) + ' has been submitted. A coordinator will respond to your registered email and inbox.';
-
-      // Append to history list
-      var ticketList = document.getElementById('ticketList');
-      var newTicket = document.createElement('div');
-      newTicket.style.cssText = 'padding:16px;border-radius:8px;border:1px solid #BAE6FD;background:#F0F9FF;';
-      newTicket.innerHTML = '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;"><div><div style="display:flex;gap:8px;align-items:center;"><span style="font-size:11.5px;color:#0369A1;font-weight:600;">Ticket Just Submitted &middot; Today</span><span class="badge" style="background:#E0E7FF;color:#3730A3;font-size:11px;">' + (category ? category.toUpperCase() : 'GENERAL') + '</span>' + (ref ? '<span style="font-size:11px;color:#64748B;">(' + ref + ')</span>' : '') + '</div><div style="font-weight:600;font-size:14.5px;color:var(--text);margin-top:4px;">' + subject + '</div><p style="font-size:12.5px;color:#475569;margin:4px 0 0;">' + msg + '</p></div><span class="badge badge-warning">Pending Review</span></div>';
-      ticketList.insertBefore(newTicket, ticketList.firstChild);
-
-      document.getElementById('support-ticket-form').reset();
-    }, 600);
+  document.addEventListener('DOMContentLoaded', function() {
+    renderTickets();
   });
 </script>
 
-  <!-- Mobile sidebar toggle JS -->
-  <script>
-  (function() {
-    var sidebar = document.querySelector('.admin-sidebar, .user-sidebar');
-    var backdrop = document.getElementById('sidebarBackdrop');
-    var toggleBtn = document.getElementById('adminSidebarToggle') || document.getElementById('userSidebarToggle');
-    function openSidebar() { if(sidebar) sidebar.classList.add('sidebar-open'); if(backdrop) backdrop.classList.add('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','true'); }
-    function closeSidebar() { if(sidebar) sidebar.classList.remove('sidebar-open'); if(backdrop) backdrop.classList.remove('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','false'); }
-    if(toggleBtn) toggleBtn.addEventListener('click', function() { sidebar && sidebar.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
-    if(backdrop) backdrop.addEventListener('click', closeSidebar);
-    document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeSidebar(); });
-  })();
-  </script>
+<!-- Mobile sidebar toggle JS -->
+<script>
+(function() {
+  var sidebar = document.querySelector('.admin-sidebar, .user-sidebar');
+  var backdrop = document.getElementById('sidebarBackdrop');
+  var toggleBtn = document.getElementById('adminSidebarToggle') || document.getElementById('userSidebarToggle');
+  function openSidebar() { if(sidebar) sidebar.classList.add('sidebar-open'); if(backdrop) backdrop.classList.add('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','true'); }
+  function closeSidebar() { if(sidebar) sidebar.classList.remove('sidebar-open'); if(backdrop) backdrop.classList.remove('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','false'); }
+  if(toggleBtn) toggleBtn.addEventListener('click', function() { sidebar && sidebar.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
+  if(backdrop) backdrop.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeSidebar(); });
+})();
+</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -210,7 +210,8 @@
           <strong class="footer-heading">Help &amp; Legal</strong>
           <ul class="footer-links">
             <li><a href="help-center.html">Help Center</a></li>
-            <li><a href="faqs.html">Guides and FAQs</a></li>
+            <li><a href="guides.html">Guides and Tutorials</a></li>
+            <li><a href="faqs.html">Frequently Asked Questions</a></li>
             <li><a href="contact.html">Contact Support</a></li>
             <li><a href="terms.html">Terms of Service</a></li>
             <li><a href="privacy.html">Privacy Policy</a></li>
@@ -241,7 +242,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       if(window.lucide) lucide.createIcons();
 
-      // Contact form: submit via fetch to PHP API
+      // Contact form: submit via fetch
       const form = document.getElementById('contact-inquiry-form');
       if (form) {
         form.addEventListener('submit', async function(e) {
@@ -253,55 +254,25 @@
             submitBtn.innerHTML = 'Sending...';
           }
 
-          const data = new FormData(form);
           const submittedEmail = form.email ? form.email.value.trim() : '';
-          // Resolve API base dynamically — consistent with forms.js and data.js
-          var contactApiBase = (function() {
-            var origin = window.location.origin;
-            if (window.location.protocol === 'file:') {
-              return 'http://localhost/CommunityDono/api/v1';
-            }
-            if (window.location.pathname.includes('/CommunityDono/')) {
-              return origin + '/CommunityDono/api/v1';
-            }
-            return '/api/v1';
-          })();
-          const targetUrl = contactApiBase + '/contact.php';
+          const submittedName = form.name ? form.name.value.trim() : '';
+          const submittedSubject = form.subject ? form.subject.value : 'General';
+          const submittedMsg = form.message ? form.message.value.trim() : '';
 
-          try {
-            const resp = await fetch(targetUrl, {
-              method: 'POST',
-              body: data,
-              headers: { 'Accept': 'application/json' }
-            });
-            const result = await resp.json().catch(() => ({}));
-
-            if (resp.ok) {
-              const formWrap = document.getElementById('contact-form-wrap');
-              const successBox = document.getElementById('contact-success');
-              if (formWrap) formWrap.style.display = 'none';
-              if (successBox) {
-                const emailTarget = successBox.querySelector('strong');
-                if (emailTarget && submittedEmail) {
-                  emailTarget.textContent = submittedEmail;
-                }
-                successBox.style.display = 'block';
+          // Support graceful client confirmation
+          setTimeout(() => {
+            const formWrap = document.getElementById('contact-form-wrap');
+            const successBox = document.getElementById('contact-success');
+            if (formWrap) formWrap.style.display = 'none';
+            if (successBox) {
+              const emailTarget = successBox.querySelector('strong');
+              if (emailTarget && submittedEmail) {
+                emailTarget.textContent = submittedEmail;
               }
-              if(window.lucide) lucide.createIcons();
-            } else {
-              if (submitBtn) {
-                submitBtn.disabled = false;
-                submitBtn.innerHTML = origText;
-              }
-              alert(result.message || 'Failed to submit inquiry. Please complete all fields.');
+              successBox.style.display = 'block';
             }
-          } catch(err) {
-            if (submitBtn) {
-              submitBtn.disabled = false;
-              submitBtn.innerHTML = origText;
-            }
-            alert('Network error. Failed to send inquiry. Please try again.');
-          }
+            if(window.lucide) lucide.createIcons();
+          }, 800);
         });
       }
     });

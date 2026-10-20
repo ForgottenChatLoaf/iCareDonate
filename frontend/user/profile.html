@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Profile | iCareDonate</title>
-  <meta name="description" content="View and update your personal and contact details.">
+  <title>Profile &amp; Settings | iCareDonate</title>
+  <meta name="description" content="Manage personal details, account verification, privacy controls, security settings, and notifications.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -31,12 +31,73 @@
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/pages/user.css">
+
+  <style>
+    .settings-nav-tabs {
+      display: flex;
+      gap: 6px;
+      border-bottom: 2px solid var(--color-border, #E2E8F0);
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+    .settings-tab-btn {
+      padding: 9px 16px;
+      font-size: 13.5px;
+      font-weight: 600;
+      border-radius: 8px;
+      border: none;
+      background: #F1F5F9;
+      color: #64748B;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+    .settings-tab-btn:hover {
+      background: #E2E8F0;
+      color: #1E293B;
+    }
+    .settings-tab-btn.is-active {
+      background: var(--color-primary, #1F4FA3);
+      color: #FFFFFF;
+    }
+    .settings-card {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border, #E2E8F0);
+      border-radius: var(--radius-lg, 14px);
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      margin-bottom: 24px;
+    }
+    .switch-label {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #F1F5F9;
+      font-size: 14px;
+      color: #334155;
+    }
+    .switch-label:last-child {
+      border-bottom: none;
+    }
+    .toggle-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
 
 <div class="user-layout">
 
-  <!-- USER SIDEBAR -->
+  <!-- ══════════════════════════════════════════════════════════
+       USER SIDEBAR
+       ══════════════════════════════════════════════════════════ -->
   <aside class="user-sidebar" role="complementary" aria-label="User navigation">
     <div class="brand-sidebar-container" role="banner">
       <a href="dashboard.html" class="brand-sidebar-logo" aria-label="iCareDonate USER">
@@ -45,126 +106,474 @@
           <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
         </span>
       </a>
-      <span class="brand-sidebar-badge brand-sidebar-badge--user" aria-label="USER Portal">USER</span>
+      <span class="brand-sidebar-badge brand-sidebar-badge--user" aria-label="USER Portal">
+        USER
+      </span>
     </div>
 
     <nav class="sidebar-nav" aria-label="User dashboard navigation">
       <a href="dashboard.html" class="sidebar-link" data-nav="dashboard">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
         <span>Dashboard</span>
       </a>
-      <a href="offer-donation.html" class="sidebar-link sidebar-link--accent" data-nav="offer-donation">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:10px 12px 4px;margin-top:2px;">Donations &amp; Requests</div>
+
+      <!-- Prominent Primary Action: Post Donation -->
+      <a href="offer-donation.html" class="sidebar-link sidebar-link--accent" data-nav="offer-donation" style="font-weight:700;background:#FFF0EC;border:1px solid #FFD8CE;border-radius:8px;margin-bottom:4px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
         <span>Post Donation</span>
       </a>
-      <a href="browse-donations.html" class="sidebar-link" data-nav="browse-donations">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
-        <span>Browse Donations</span>
-      </a>
+
       <a href="donations.html" class="sidebar-link" data-nav="donations">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
         <span>My Donations</span>
       </a>
+
+      <a href="browse-donations.html" class="sidebar-link" data-nav="browse-donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+        <span>Browse Resources</span>
+      </a>
+
       <a href="requests.html" class="sidebar-link" data-nav="requests">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
         <span>My Requests</span>
       </a>
+
       <a href="transactions.html" class="sidebar-link" data-nav="transactions">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-        <span>Claim &amp; Pick-up</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transactions &amp; Claims</span>
       </a>
+
       <a href="history.html" class="sidebar-link" data-nav="history">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
         <span>History</span>
       </a>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Communication</div>
+
+      <a href="messages.html" class="sidebar-link" data-nav="messages">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Messages</span>
+      </a>
+
       <a href="notifications.html" class="sidebar-link" data-nav="notifications">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
         <span>Notifications</span>
+        <span class="sidebar-badge" id="sidebarNotifBadge" style="display:none;">0</span>
       </a>
+
       <a href="support.html" class="sidebar-link" data-nav="support">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="12.01" y2="17" y2="17"/></svg>
-        <span>Messages &amp; Support</span>
-      </a>
-      <a href="settings.html" class="sidebar-link" data-nav="settings">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        <span>Account Settings</span>
-      </a>
-          <a href="../help-center.html" class="sidebar-link" data-nav="help">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>Help &amp; Support</span>
+        <span>Support Requests</span>
       </a>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Account</div>
+
+      <a href="profile.html" class="sidebar-link sidebar-link--active" data-nav="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Profile &amp; Settings</span>
+      </a>
+
+      <a href="../help-center.html" class="sidebar-link" data-nav="help">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Help Center</span>
+      </a>
+
       <a href="../logout.html" class="sidebar-link sidebar-link--logout" id="sidebarLogoutBtn" data-nav="logout">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
         <span>Logout</span>
       </a>
     </nav>
+  </aside>
 
-    </aside>
-
-  <!-- USER MAIN -->
-    <!-- Sidebar backdrop (mobile) -->
+  <!-- ══════════════════════════════════════════════════════════
+       USER MAIN CONTENT
+       ══════════════════════════════════════════════════════════ -->
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
   <div class="user-main">
     <header class="user-topbar">
-      <div style="display:flex;align-items:center;gap:10px;"><button type="button" class="user-sidebar-toggle" id="userSidebarToggle" aria-label="Toggle navigation" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div>
-        <h1 style="font-size:20px;font-weight:700;color:var(--text, #1E293B);margin:0;">User Profile</h1>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button type="button" class="user-sidebar-toggle" id="userSidebarToggle" aria-label="Toggle navigation" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h1 style="font-size:20px;font-weight:700;color:var(--text, #1E293B);margin:0;">Profile &amp; Settings</h1>
       </div>
-      <div>
-        <a href="dashboard.html" class="btn btn-outline" style="font-size:13.5px;padding:6px 14px;">
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="dashboard.html" class="btn btn-outline" style="font-size:13px;padding:6px 14px;">
           &larr; Dashboard
         </a>
+        <div class="topbar-dropdown-wrap">
+          <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-avatar-circle" id="topbarUserInitials">CM</span>
+            <span id="topbarUserName">Community Member</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="topbar-chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="topbar-dropdown" id="topbarDropdownMenu" role="menu" aria-label="User account menu">
+            <a href="profile.html" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Profile &amp; Settings</span>
+            </a>
+            <a href="../help-center.html" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Help Center</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="../logout.html" class="sidebar-link--logout dropdown-danger" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
+              <span>Log Out</span>
+            </a>
+          </div>
+        </div>
       </div>
     </header>
 
-    <div class="user-content" style="max-width:720px;margin:0 auto;padding:28px 32px;">
+    <div class="user-content" style="max-width:960px;margin:0 auto;padding:28px 32px;">
 
-      <div class="card" style="padding:32px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);margin-bottom:24px;">
-        <h2 style="font-size:18px;font-weight:700;color:var(--text, #1E293B);margin:0 0 20px;">
-          Personal &amp; Contact Details
-        </h2>
+      <!-- Nav Tabs -->
+      <div class="settings-nav-tabs">
+        <button type="button" class="settings-tab-btn is-active" id="tab-btn-personal" onclick="switchSettingsSection('personal')">
+          Personal Information
+        </button>
+        <button type="button" class="settings-tab-btn" id="tab-btn-verification" onclick="switchSettingsSection('verification')">
+          Verification
+        </button>
+        <button type="button" class="settings-tab-btn" id="tab-btn-security" onclick="switchSettingsSection('security')">
+          Security
+        </button>
+        <button type="button" class="settings-tab-btn" id="tab-btn-privacy" onclick="switchSettingsSection('privacy')">
+          Privacy &amp; Location
+        </button>
+        <button type="button" class="settings-tab-btn" id="tab-btn-notifs" onclick="switchSettingsSection('notifs')">
+          Notifications
+        </button>
+        <button type="button" class="settings-tab-btn" id="tab-btn-locale" onclick="switchSettingsSection('locale')">
+          Language &amp; Region
+        </button>
+        <button type="button" class="settings-tab-btn" id="tab-btn-linked" onclick="switchSettingsSection('linked')">
+          Linked Accounts
+        </button>
+        <button type="button" class="settings-tab-btn" id="tab-btn-account" onclick="switchSettingsSection('account')">
+          Account Status
+        </button>
+      </div>
 
-        <form id="profile-details-form">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
-            <div class="form-group">
-              <label class="form-label" for="prof-fn">First Name</label>
-              <input type="text" id="prof-fn" class="form-input" required value="Maria">
+      <!-- SECTION A: Personal Information -->
+      <section id="section-personal" class="settings-card">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Personal Information</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 24px;">Update your community identity and official communication channels.</p>
+
+        <form id="personalInfoForm">
+          <div style="display:flex;align-items:center;gap:20px;margin-bottom:24px;">
+            <div style="width:72px;height:72px;border-radius:50%;background:var(--color-primary, #1F4FA3);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:700;" id="profileAvatarBig">
+              MS
             </div>
-            <div class="form-group">
-              <label class="form-label" for="prof-ln">Last Name</label>
-              <input type="text" id="prof-ln" class="form-input" required value="Santos">
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#1E293B;" id="profileDisplayName">Maria Santos</div>
+              <div style="font-size:12.5px;color:#64748B;">Member since Jan 2026 &middot; Role: Community Member</div>
             </div>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
             <div class="form-group">
-              <label class="form-label" for="prof-email">Email Address</label>
-              <input type="email" id="prof-email" class="form-input" required value="maria.santos@example.com">
+              <label class="form-label" for="profFirstName">First Name</label>
+              <input type="text" id="profFirstName" class="form-input" required value="Maria">
             </div>
             <div class="form-group">
-              <label class="form-label" for="prof-phone">Mobile Phone</label>
-              <input type="tel" id="prof-phone" class="form-input" required value="0917-555-0192">
+              <label class="form-label" for="profLastName">Last Name</label>
+              <input type="text" id="profLastName" class="form-input" required value="Santos">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div class="form-group">
+              <div style="display:flex;justify-content:space-between;">
+                <label class="form-label" for="profEmail">Email Address</label>
+                <span class="badge badge-success" style="font-size:10.5px;">Verified</span>
+              </div>
+              <input type="email" id="profEmail" class="form-input" required value="maria.santos@example.com">
+            </div>
+            <div class="form-group">
+              <div style="display:flex;justify-content:space-between;">
+                <label class="form-label" for="profPhone">Mobile Phone</label>
+                <span class="badge badge-success" style="font-size:10.5px;">Verified</span>
+              </div>
+              <input type="tel" id="profPhone" class="form-input" required value="0917-555-0192">
             </div>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
             <div class="form-group">
-              <label class="form-label" for="prof-city">City</label>
-              <input type="text" id="prof-city" class="form-input" required value="Quezon City">
+              <label class="form-label" for="profCity">City / Municipality</label>
+              <input type="text" id="profCity" class="form-input" value="Quezon City">
             </div>
             <div class="form-group">
-              <label class="form-label" for="prof-barangay">Barangay</label>
-              <input type="text" id="prof-barangay" class="form-input" required value="Barangay Central">
+              <label class="form-label" for="profBarangay">Barangay / Locality</label>
+              <input type="text" id="profBarangay" class="form-input" value="Barangay Central">
             </div>
           </div>
 
-          <div style="display:flex;justify-content:flex-end;">
-            <button type="submit" class="btn btn-primary" style="padding:10px 24px;">
-              Save Profile Changes
-            </button>
-          </div>
+          <button type="submit" class="btn btn-primary" id="btnSavePersonal">
+            Save Changes
+          </button>
         </form>
-      </div>
+      </section>
+
+      <!-- SECTION B: Account Verification -->
+      <section id="section-verification" class="settings-card" style="display:none;">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Account Verification Status</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 24px;">Proof of identity and residency enables priority allocation for assistance requests.</p>
+
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:20px;margin-bottom:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#DCFCE7;color:#16A34A;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div>
+                <div style="font-weight:700;font-size:15px;color:#1E293B;">Beneficiary Identity Verified</div>
+                <div style="font-size:12.5px;color:#64748B;">Approved via Barangay Certificate of Indigency</div>
+              </div>
+            </div>
+            <span class="badge badge-success">Approved</span>
+          </div>
+          <div style="font-size:13px;color:#475569;line-height:1.6;border-top:1px solid #E2E8F0;padding-top:12px;">
+            <strong>Verification Record:</strong> Submitted Oct 11, 2026 &bull; Verified by Community Coordinator Ramos.<br>
+            <strong>Interview Schedule:</strong> Completed on Oct 12, 2026 via Online Coordination.
+          </div>
+        </div>
+
+        <div style="border:1px dashed #CBD5E1;border-radius:10px;padding:20px;text-align:center;">
+          <div style="font-size:14px;font-weight:600;color:#1E293B;margin-bottom:4px;">Need to update your verification documents?</div>
+          <p style="font-size:13px;color:#64748B;margin:0 0 12px;">If your residency or eligibility documentation changes, upload an updated file here.</p>
+          <input type="file" id="resubmitProofFile" style="display:none;" onchange="handleProofUpload(this)">
+          <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('resubmitProofFile').click()">
+            Upload Updated Certificate / ID
+          </button>
+        </div>
+      </section>
+
+      <!-- SECTION C: Security -->
+      <section id="section-security" class="settings-card" style="display:none;">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Security &amp; Password</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 24px;">Keep your credentials protected. Ensure passwords are at least 8 characters.</p>
+
+        <form id="changePasswordForm" style="margin-bottom:32px;">
+          <div class="form-group" style="margin-bottom:16px;">
+            <label class="form-label" for="currPassword">Current Password</label>
+            <input type="password" id="currPassword" class="form-input" required placeholder="Enter current password">
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div class="form-group">
+              <label class="form-label" for="newPassword">New Password</label>
+              <input type="password" id="newPassword" class="form-input" required minlength="8" placeholder="At least 8 characters">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="confirmPassword">Confirm New Password</label>
+              <input type="password" id="confirmPassword" class="form-input" required minlength="8" placeholder="Re-type new password">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary" id="btnUpdatePassword">
+            Update Password
+          </button>
+        </form>
+
+        <h3 style="font-size:16px;font-weight:700;color:#1E293B;margin:0 0 12px;border-top:1px solid #E2E8F0;padding-top:20px;">
+          Active Devices &amp; Sessions
+        </h3>
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div>
+            <div style="font-weight:700;font-size:14px;color:#1E293B;">Current Web Session &middot; Windows Desktop</div>
+            <div style="font-size:12px;color:#64748B;margin-top:2px;">Metro Manila, PH &bull; Active session token</div>
+          </div>
+          <span class="badge badge-success">This Device</span>
+        </div>
+
+        <button type="button" class="btn btn-outline btn-sm" onclick="window.showPortalFlash('success', 'All other active sessions have been invalidated.')">
+          Sign Out All Other Sessions
+        </button>
+      </section>
+
+      <!-- SECTION D: Privacy & Location -->
+      <section id="section-privacy" class="settings-card" style="display:none;">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Privacy &amp; Location Preferences</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 24px;">Manage how your personal details are handled during donor-recipient matching.</p>
+
+        <form id="privacyForm">
+          <div class="form-group" style="margin-bottom:20px;">
+            <label class="form-label" for="prefProfileVis">Profile Visibility</label>
+            <select id="prefProfileVis" class="form-input">
+              <option value="community" selected>Registered Community Members</option>
+              <option value="matched">Matched Participants Only (Recommended)</option>
+              <option value="private">Private (Only Admin Coordinators)</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:20px;">
+            <label class="form-label" for="prefPhoneVis">Contact Phone Sharing</label>
+            <select id="prefPhoneVis" class="form-input">
+              <option value="matched" selected>Reveal phone number only after transaction match is confirmed</option>
+              <option value="coordinators">Only allow platform coordinators to see my phone</option>
+            </select>
+          </div>
+
+          <div class="form-group" style="margin-bottom:24px;">
+            <label class="form-label" for="prefAddressVis">Pickup / Meeting Location Privacy</label>
+            <select id="prefAddressVis" class="form-input">
+              <option value="hub" selected>Public Meeting Venue / Drop Hub (Never share private home address)</option>
+              <option value="city_only">Show City/Municipality only</option>
+            </select>
+          </div>
+
+          <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+            <div class="switch-label">
+              <div>
+                <strong style="color:#1E293B;">Device Geolocation</strong>
+                <div style="font-size:12px;color:#64748B;margin-top:2px;">Keep GPS disabled and use manual barangay selection (default).</div>
+              </div>
+              <input type="checkbox" id="geoToggle" class="toggle-checkbox" onchange="window.showPortalFlash('success', 'Location preference saved.')">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Save Privacy Settings
+          </button>
+        </form>
+      </section>
+
+      <!-- SECTION E: Notifications -->
+      <section id="section-notifs" class="settings-card" style="display:none;">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Notification Preferences</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 24px;">Choose which automated alerts you receive for handovers, matches, and tickets.</p>
+
+        <form id="notifPrefForm">
+          <div style="border:1px solid #E2E8F0;border-radius:10px;padding:8px 20px;background:#FFFFFF;margin-bottom:24px;">
+            <div class="switch-label">
+              <div>
+                <strong style="color:#1E293B;">In-App Activity Notifications</strong>
+                <div style="font-size:12px;color:#64748B;">Receive real-time badges and bell alerts inside the dashboard.</div>
+              </div>
+              <input type="checkbox" checked class="toggle-checkbox" id="notifInApp">
+            </div>
+
+            <div class="switch-label">
+              <div>
+                <strong style="color:#1E293B;">Item Match &amp; Handover Alerts</strong>
+                <div style="font-size:12px;color:#64748B;">Notifies you when an offered donation or request is formally matched.</div>
+              </div>
+              <input type="checkbox" checked class="toggle-checkbox" id="notifMatch">
+            </div>
+
+            <div class="switch-label">
+              <div>
+                <strong style="color:#1E293B;">Claim Deadline &amp; Pickup Reminders</strong>
+                <div style="font-size:12px;color:#64748B;">Alerts 24 hours prior to scheduled meeting venue handovers.</div>
+              </div>
+              <input type="checkbox" checked class="toggle-checkbox" id="notifPickup">
+            </div>
+
+            <div class="switch-label">
+              <div>
+                <strong style="color:#1E293B;">Support Ticket Replies</strong>
+                <div style="font-size:12px;color:#64748B;">Immediate notification when administrators reply to your help request.</div>
+              </div>
+              <input type="checkbox" checked class="toggle-checkbox" id="notifTickets">
+            </div>
+
+            <div class="switch-label">
+              <div>
+                <strong style="color:#1E293B;">Security &amp; Account Notices</strong>
+                <div style="font-size:12px;color:#64748B;">Password changes, verification outcomes, and session warnings (Required).</div>
+              </div>
+              <input type="checkbox" checked disabled class="toggle-checkbox">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Save Notification Preferences
+          </button>
+        </form>
+      </section>
+
+      <!-- SECTION F: Language & Region -->
+      <section id="section-locale" class="settings-card" style="display:none;">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Language &amp; Region</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 24px;">Configure standard regional formatting for schedules and dates.</p>
+
+        <form id="localeForm">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+            <div class="form-group">
+              <label class="form-label" for="prefLang">Interface Language</label>
+              <select id="prefLang" class="form-input">
+                <option value="en" selected>English</option>
+                <option value="tl">Filipino / Tagalog</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="prefCountry">Country</label>
+              <input type="text" id="prefCountry" class="form-input" value="Philippines" readonly>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
+            <div class="form-group">
+              <label class="form-label" for="prefTimezone">Timezone</label>
+              <input type="text" id="prefTimezone" class="form-input" value="Asia/Manila (GMT+8)" readonly>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="prefDateFormat">Date Format</label>
+              <select id="prefDateFormat" class="form-input">
+                <option value="MMM D, YYYY" selected>Oct 12, 2026</option>
+                <option value="YYYY-MM-DD">2026-10-12</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary">
+            Save Regional Settings
+          </button>
+        </form>
+      </section>
+
+      <!-- SECTION G: Linked Accounts -->
+      <section id="section-linked" class="settings-card" style="display:none;">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Linked Accounts</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 20px;">Manage third-party single sign-on identities.</p>
+
+        <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px 20px;font-size:13.5px;color:#92400E;line-height:1.5;">
+          <strong>Deployment Notice:</strong> Direct social sign-on (Google / Facebook) is currently disabled on this environment. Your account is authenticated via your verified email and password.
+        </div>
+      </section>
+
+      <!-- SECTION H: Account Management -->
+      <section id="section-account" class="settings-card" style="display:none;">
+        <h2 style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Account Status &amp; Deactivation</h2>
+        <p style="font-size:13.5px;color:#64748B;margin:0 0 24px;">Review your account standing and policies regarding historical records.</p>
+
+        <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:18px;margin-bottom:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-weight:700;color:#1E293B;font-size:14px;">Current Status:</span>
+            <span class="badge badge-success">Active &amp; In Good Standing</span>
+          </div>
+          <p style="font-size:13px;color:#64748B;margin:0;line-height:1.5;">
+            In accordance with Philippine donation audit regulations, completed handover records and claim transactions are archived permanently for transparency.
+          </p>
+        </div>
+
+        <div style="border-top:1px solid #FEE2E2;padding-top:20px;">
+          <h3 style="font-size:15px;font-weight:700;color:#DC2626;margin:0 0 6px;">Request Account Deactivation</h3>
+          <p style="font-size:13px;color:#64748B;margin:0 0 16px;">
+            Temporarily disables your ability to post listings or request resources. Active transactions must be resolved first.
+          </p>
+          <button type="button" class="btn" style="background:#FEE2E2;color:#DC2626;border:1px solid #FCA5A5;padding:8px 18px;font-size:13px;font-weight:600;" onclick="confirmDeactivation()">
+            Request Deactivation
+          </button>
+        </div>
+      </section>
 
     </div>
   </div>
@@ -173,24 +582,146 @@
 <script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
-  document.getElementById('profile-details-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    window.showPortalFlash('success', 'Profile details saved successfully!');
+  function switchSettingsSection(sectionId) {
+    const sections = ['personal', 'verification', 'security', 'privacy', 'notifs', 'locale', 'linked', 'account'];
+    sections.forEach(s => {
+      const el = document.getElementById('section-' + s);
+      const btn = document.getElementById('tab-btn-' + s);
+      if (el) el.style.display = s === sectionId ? 'block' : 'none';
+      if (btn) btn.classList.toggle('is-active', s === sectionId);
+    });
+  }
+
+  // Load stored user info if present
+  document.addEventListener('DOMContentLoaded', function() {
+    try {
+      const u = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      if (u.first_name) document.getElementById('profFirstName').value = u.first_name;
+      if (u.last_name) document.getElementById('profLastName').value = u.last_name;
+      if (u.email) document.getElementById('profEmail').value = u.email;
+      if (u.phone) document.getElementById('profPhone').value = u.phone;
+      if (u.city) document.getElementById('profCity').value = u.city;
+      if (u.barangay) document.getElementById('profBarangay').value = u.barangay;
+
+      const fullName = `${u.first_name || 'Maria'} ${u.last_name || 'Santos'}`.trim();
+      const initials = ((u.first_name ? u.first_name[0] : 'M') + (u.last_name ? u.last_name[0] : 'S')).toUpperCase();
+      document.getElementById('profileDisplayName').textContent = fullName;
+      document.getElementById('profileAvatarBig').textContent = initials;
+    } catch(e) {}
+
+    // Check URL hash for direct tab navigation
+    const hash = window.location.hash.replace('#', '');
+    if (hash && ['personal', 'verification', 'security', 'privacy', 'notifs', 'locale', 'linked', 'account'].includes(hash)) {
+      switchSettingsSection(hash);
+    }
   });
+
+  // Personal Info Form Submission
+  document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const fn = document.getElementById('profFirstName').value.trim();
+    const ln = document.getElementById('profLastName').value.trim();
+    const email = document.getElementById('profEmail').value.trim();
+    const phone = document.getElementById('profPhone').value.trim();
+    const city = document.getElementById('profCity').value.trim();
+    const barangay = document.getElementById('profBarangay').value.trim();
+
+    try {
+      const stored = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      stored.first_name = fn;
+      stored.last_name = ln;
+      stored.name = `${fn} ${ln}`;
+      stored.email = email;
+      stored.phone = phone;
+      stored.city = city;
+      stored.barangay = barangay;
+      localStorage.setItem('icd_user', JSON.stringify(stored));
+    } catch(err) {}
+
+    const initials = ((fn ? fn[0] : '') + (ln ? ln[0] : '')).toUpperCase() || 'CM';
+    document.getElementById('profileDisplayName').textContent = `${fn} ${ln}`;
+    document.getElementById('profileAvatarBig').textContent = initials;
+
+    if (window.showPortalFlash) {
+      window.showPortalFlash('success', 'Personal information saved successfully.');
+    }
+  });
+
+  // Password Change
+  document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const curr = document.getElementById('currPassword').value;
+    const newPwd = document.getElementById('newPassword').value;
+    const conf = document.getElementById('confirmPassword').value;
+
+    if (newPwd !== conf) {
+      if (window.showPortalFlash) {
+        window.showPortalFlash('error', 'New passwords do not match. Please re-enter.');
+      } else {
+        alert('New passwords do not match.');
+      }
+      return;
+    }
+
+    this.reset();
+    if (window.showPortalFlash) {
+      window.showPortalFlash('success', 'Your password has been changed securely.');
+    }
+  });
+
+  // Privacy Form
+  document.getElementById('privacyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (window.showPortalFlash) {
+      window.showPortalFlash('success', 'Privacy and location settings updated.');
+    }
+  });
+
+  // Notifications Form
+  document.getElementById('notifPrefForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (window.showPortalFlash) {
+      window.showPortalFlash('success', 'Notification preferences saved.');
+    }
+  });
+
+  // Locale Form
+  document.getElementById('localeForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (window.showPortalFlash) {
+      window.showPortalFlash('success', 'Language and regional preferences saved.');
+    }
+  });
+
+  function handleProofUpload(input) {
+    if (input.files && input.files[0]) {
+      if (window.showPortalFlash) {
+        window.showPortalFlash('success', 'Updated document uploaded: ' + input.files[0].name + '. Verification coordinator notified.');
+      }
+    }
+  }
+
+  function confirmDeactivation() {
+    if (confirm('Are you sure you want to request deactivation of your account? An administrator will review your active records before processing.')) {
+      if (window.showPortalFlash) {
+        window.showPortalFlash('success', 'Deactivation request submitted. A coordinator will follow up via email.');
+      }
+    }
+  }
 </script>
 
-  <!-- Mobile sidebar toggle JS -->
-  <script>
-  (function() {
-    var sidebar = document.querySelector('.admin-sidebar, .user-sidebar');
-    var backdrop = document.getElementById('sidebarBackdrop');
-    var toggleBtn = document.getElementById('adminSidebarToggle') || document.getElementById('userSidebarToggle');
-    function openSidebar() { if(sidebar) sidebar.classList.add('sidebar-open'); if(backdrop) backdrop.classList.add('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','true'); }
-    function closeSidebar() { if(sidebar) sidebar.classList.remove('sidebar-open'); if(backdrop) backdrop.classList.remove('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','false'); }
-    if(toggleBtn) toggleBtn.addEventListener('click', function() { sidebar && sidebar.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
-    if(backdrop) backdrop.addEventListener('click', closeSidebar);
-    document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeSidebar(); });
-  })();
-  </script>
+<!-- Mobile sidebar toggle JS -->
+<script>
+(function() {
+  var sidebar = document.querySelector('.admin-sidebar, .user-sidebar');
+  var backdrop = document.getElementById('sidebarBackdrop');
+  var toggleBtn = document.getElementById('adminSidebarToggle') || document.getElementById('userSidebarToggle');
+  function openSidebar() { if(sidebar) sidebar.classList.add('sidebar-open'); if(backdrop) backdrop.classList.add('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','true'); }
+  function closeSidebar() { if(sidebar) sidebar.classList.remove('sidebar-open'); if(backdrop) backdrop.classList.remove('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','false'); }
+  if(toggleBtn) toggleBtn.addEventListener('click', function() { sidebar && sidebar.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
+  if(backdrop) backdrop.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeSidebar(); });
+})();
+</script>
 </body>
 </html>
