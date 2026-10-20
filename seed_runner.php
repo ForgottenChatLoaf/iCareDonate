@@ -10,7 +10,6 @@ require_once __DIR__ . '/includes/database.php';
 
 header('Content-Type: application/json; charset=utf-8');
 
-// Optional basic protection
 $secret = $_GET['secret'] ?? '';
 if ($secret !== 'icd_defense_2026') {
     http_response_code(403);
@@ -28,29 +27,50 @@ if ($pdo === null) {
 $results = [];
 
 try {
-    // 1. Ensure core test accounts exist with known passwords
-    // Passwords:
-    // admin@icaredonate.test -> Admin@1234
-    // donor@icaredonate.test -> DonorPass123!
-    // requester@icaredonate.test -> RequestPass123!
-    $userSql = "
-        INSERT INTO `users` (`name`, `email`, `password_hash`, `role`, `created_at`)
-        VALUES
-        ('System Administrator', 'admin@icaredonate.test', '$2y$10$EldpE/z5JCoAimVCjjQyFOB59k.4KU6r5CEqP.jVdcxv6XOsNGyE6', 'admin', NOW()),
-        ('David Tan', 'donor@icaredonate.test', '$2y$10$Tp8I1RL1w90ghbqaIRn0RuxXlJoJ07KtBqzrn6b8t.yo7PkaSfznq', 'donor', NOW()),
-        ('Maria Santos', 'requester@icaredonate.test', '$2y$10$TaO9lGf61pBO50NmF2YsTufI6gjoR8qGkWTGja/LH9FDpuj12wMku', 'requester', NOW())
-        ON DUPLICATE KEY UPDATE `password_hash` = VALUES(`password_hash`), `role` = VALUES(`role`);
-    ";
-    $pdo->exec($userSql);
-    $results['users'] = 'Admin, Donor, and Requester accounts verified/created.';
+    // Insert/Update users using parameterized queries so bcrypt $ characters are never interpolated!
+    $accounts = [
+        [
+            'name'  => 'System Administrator',
+            'email' => 'admin@icaredonate.test',
+            'pass'  => 'Admin@1234',
+            'role'  => 'admin'
+        ],
+        [
+            'name'  => 'David Tan',
+            'email' => 'donor@icaredonate.test',
+            'pass'  => 'DonorPass123!',
+            'role'  => 'donor'
+        ],
+        [
+            'name'  => 'Maria Santos',
+            'email' => 'requester@icaredonate.test',
+            'pass'  => 'RequestPass123!',
+            'role'  => 'requester'
+        ]
+    ];
 
-    // 2. Read and execute seed_dashboard_test_data.sql
+    $userStmt = $pdo->prepare('
+        INSERT INTO `users` (`name`, `email`, `password_hash`, `role`, `created_at`)
+        VALUES (:name, :email, :hash, :role, NOW())
+        ON DUPLICATE KEY UPDATE `password_hash` = VALUES(`password_hash`), `role` = VALUES(`role`)
+    ');
+
+    foreach ($accounts as $acc) {
+        $hash = password_hash($acc['pass'], PASSWORD_DEFAULT);
+        $userStmt->execute([
+            ':name'  => $acc['name'],
+            ':email' => strtolower($acc['email']),
+            ':hash'  => $hash,
+            ':role'  => $acc['role']
+        ]);
+    }
+    $results['users'] = 'Admin, Donor, and Requester accounts safely seeded with correct bcrypt hashes.';
+
+    // Execute seed_dashboard_test_data.sql
     $seedFile = __DIR__ . '/database/seed_dashboard_test_data.sql';
     if (file_exists($seedFile)) {
         $sql = file_get_contents($seedFile);
-        // Remove comment lines
         $cleaned = preg_replace('/--.*$/m', '', $sql);
-        // Split on semicolons
         $statements = array_filter(array_map('trim', explode(';', $cleaned)));
         $executed = 0;
         foreach ($statements as $stmt) {
@@ -62,7 +82,6 @@ try {
         $results['seed_statements_executed'] = $executed;
     }
 
-    // 3. Verify accounts
     $check = $pdo->query("SELECT id, name, email, role FROM users WHERE email IN ('admin@icaredonate.test', 'donor@icaredonate.test', 'requester@icaredonate.test')");
     $results['active_accounts'] = $check->fetchAll();
 
