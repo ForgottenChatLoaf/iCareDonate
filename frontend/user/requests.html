@@ -168,7 +168,7 @@
 
     <div class="user-content" style="padding:28px 32px;">
 
-      <div style="display:flex;flex-direction:column;gap:16px;">
+      <div id="requests-list-container" style="display:flex;flex-direction:column;gap:16px;">
 
         <!-- Request 1: Approved & Matched -->
         <div class="card" style="padding:24px;border-radius:var(--radius-lg, 12px);border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
@@ -209,6 +209,47 @@
 
 <script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const container = document.getElementById('requests-list-container');
+    const localReqs = JSON.parse(localStorage.getItem('icd_user_requests') || '[]');
+    if (container && localReqs.length > 0) {
+      localReqs.forEach(req => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.cssText = 'padding:24px;border-radius:var(--radius-lg, 12px);border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);';
+        card.innerHTML = `
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
+                <span class="badge badge-info" style="font-size:11px;">Request #${req.id}</span>
+                <span style="font-size:12px;color:#64748B;">Submitted ${req.created_at || 'Today'}</span>
+              </div>
+              <h3 style="font-size:18px;font-weight:700;color:var(--text, #1E293B);margin:0 0 4px;">
+                ${req.item_title}
+              </h3>
+              <p style="color:#64748B;font-size:13.5px;margin:0 0 8px;">
+                Quantity: <strong>${req.quantity}</strong> &middot; Beneficiary: <strong>${req.requester_name || 'Verified Member'}</strong> &middot; Locality: <strong>${req.barangay || 'Metro Manila'}</strong>
+              </p>
+            </div>
+            <div style="text-align:right;">
+              <span class="badge badge-warning" style="background:#FEF3C7;color:#D97706;border:1px solid #FDE68A;">Under Coordinator Review</span>
+            </div>
+          </div>
+          <div style="background:#F8FAFC;padding:12px 16px;border-radius:8px;font-size:13px;color:#475569;margin-bottom:16px;">
+            <strong>Fulfillment Address:</strong> ${req.complete_address || 'Confirmed on File'} &bull; <strong>Contact:</strong> ${req.contact_number || 'Confirmed'}
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:10px;">
+            <span class="badge badge-neutral" style="font-size:12px;padding:6px 12px;">Verification in Progress</span>
+          </div>
+        `;
+        container.prepend(card);
+      });
+    }
+  } catch(e) {}
+});
+</script>
 
   <!-- Mobile sidebar toggle JS -->
   <script>

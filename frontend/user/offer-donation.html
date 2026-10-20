@@ -168,6 +168,23 @@
 
     <div class="user-content" style="max-width:840px;margin:0 auto;padding:28px 32px;">
 
+            <!-- Pending Restriction Warning Banner -->
+      <div id="pending-restriction-banner" style="display:none;background:#FFFBEB;border:1px solid #FCD34D;border-left:4px solid #D97706;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>
+            <div style="font-weight:700;color:#92400E;font-size:14.5px;margin-bottom:4px;">Submission Pending Review</div>
+            <div style="font-size:13.5px;color:#78350F;line-height:1.5;" id="pending-restriction-msg">
+              You already have a submission awaiting admin review. Please wait for the review to finish before submitting another donation or resource request.
+            </div>
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+              <a href="donations.html" class="btn btn-sm btn-outline" style="font-size:12px;padding:4px 12px;background:#fff;border-color:#D97706;color:#92400E;">View My Donations &rarr;</a>
+              <a href="requests.html" class="btn btn-sm btn-outline" style="font-size:12px;padding:4px 12px;background:#fff;border-color:#D97706;color:#92400E;">View My Requests &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="card" style="padding:32px;border-radius:var(--radius-lg, 12px);border:1px solid var(--border, #E2E8F0);box-shadow:0 1px 3px rgba(0,0,0,0.05);background:#fff;">
 
         <div style="margin-bottom:28px;text-align:center;">
@@ -304,7 +321,7 @@
           <!-- Submit Buttons -->
           <div style="display:flex;justify-content:flex-end;gap:12px;">
             <a href="donations.html" class="btn btn-outline" style="padding:10px 20px;">Cancel</a>
-            <button type="submit" class="btn btn-primary" style="padding:10px 28px;font-size:14px;font-weight:600;">
+            <button type="submit" id="offer-submit-btn" class="btn btn-primary" style="padding:10px 28px;font-size:14px;font-weight:600;">
               Submit Listing for Verification
             </button>
           </div>
@@ -318,18 +335,215 @@
 </div>
 
 <script src="../js/mock-data.js"></script>
+<script src="../js/forms.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
-  document.getElementById('post-donation-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const title = document.getElementById('title').value.trim();
-    if (!title) return;
+(function() {
+  'use strict';
 
-    window.showPortalFlash('success', `Listing "${title}" submitted! It will undergo rapid verification before appearing on browse listings.`);
-    setTimeout(() => {
-      window.location.href = 'donations.html';
-    }, 1800);
+  // Prefill Donor contact details from user profile
+  function prefillDonorContact() {
+    try {
+      const u = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      const donorName = document.getElementById('donor_name');
+      const donorPhone = document.getElementById('donor_phone');
+      const city = document.getElementById('pickup_city');
+      const brgy = document.getElementById('pickup_barangay');
+
+      if (donorName && (!donorName.value || donorName.value === 'Maria Santos')) {
+        donorName.value = u.name || (u.first_name ? (u.first_name + ' ' + (u.last_name || '')).trim() : 'Maria Santos');
+      }
+      if (donorPhone && (!donorPhone.value || donorPhone.value === '0917-555-0192')) {
+        donorPhone.value = u.phone || '0917-555-0192';
+      }
+      if (city && (!city.value || city.value === 'Quezon City')) {
+        city.value = u.city || 'Quezon City';
+      }
+      if (brgy && (!brgy.value || brgy.value === 'Barangay Central')) {
+        brgy.value = u.barangay || 'Barangay Central';
+      }
+    } catch(e) {}
+  }
+
+  // Pending Submission Restriction Check
+  function checkPendingRestriction() {
+    const banner = document.getElementById('pending-restriction-banner');
+    const submitBtn = document.getElementById('offer-submit-btn');
+    const actionsBase = (window.icd_actionsBase ? window.icd_actionsBase() : '');
+
+    fetch(actionsBase + '/actions/check_pending_submission.php', {
+      headers: { 'Accept': 'application/json' },
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.restricted) {
+        applyPendingRestriction(data.message || 'You already have a submission awaiting admin review. Please wait for the review to finish before submitting another donation or resource request.');
+      }
+    })
+    .catch(() => {
+      try {
+        const localDons = JSON.parse(localStorage.getItem('icd_user_donations') || '[]');
+        const pending = localDons.find(d => d.status === 'pending');
+        if (pending) {
+          applyPendingRestriction('You already have a donation submission ("' + pending.title + '") awaiting admin review. Please wait for the review to finish before submitting another donation or resource request.');
+        }
+      } catch(e) {}
+    });
+
+    function applyPendingRestriction(msg) {
+      if (banner) {
+        banner.style.display = 'block';
+        const msgEl = document.getElementById('pending-restriction-msg');
+        if (msgEl) msgEl.textContent = msg;
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.55';
+        submitBtn.style.cursor = 'not-allowed';
+        submitBtn.textContent = 'Submission Blocked (Review in Progress)';
+      }
+    }
+  }
+
+  // Handle Form Submit
+  const form = document.getElementById('post-donation-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const title = document.getElementById('title').value.trim();
+      const category = document.getElementById('category').value;
+      const condition = document.getElementById('condition_type').value;
+      const quantity = parseInt(document.getElementById('quantity_total').value, 10) || 1;
+      const unit = document.getElementById('unit').value.trim() || 'pcs';
+      const description = document.getElementById('description').value.trim();
+      const donorName = document.getElementById('donor_name').value.trim();
+      const donorPhone = document.getElementById('donor_phone').value.trim();
+      const pickupMethod = document.getElementById('pickup_method').value;
+      const city = document.getElementById('pickup_city').value.trim();
+      const barangay = document.getElementById('pickup_barangay').value.trim();
+
+      if (!title || title.length < 3) {
+        if (window.showPortalFlash) window.showPortalFlash('error', 'Please provide a clear item title for your donation (at least 3 characters).');
+        return;
+      }
+      if (!city || !barangay) {
+        if (window.showPortalFlash) window.showPortalFlash('error', 'Please specify the city and barangay for pickup/delivery coordination.');
+        return;
+      }
+
+      const submitBtn = document.getElementById('offer-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting Listing...';
+      }
+
+      const payload = {
+        title,
+        category,
+        description,
+        quantity,
+        unit,
+        condition_type: condition,
+        pickup_method: pickupMethod,
+        pickup_city: city,
+        pickup_barangay: barangay,
+        donor_name: donorName,
+        donor_phone: donorPhone
+      };
+
+      const actionsBase = (window.icd_actionsBase ? window.icd_actionsBase() : '');
+
+      fetch(actionsBase + '/actions/submit_donation.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json().then(data => ({ status: res.status, body: data })))
+      .then(res => {
+        if (res.status === 403 && res.body.code === 'PENDING_RESTRICTION') {
+          if (window.showPortalFlash) window.showPortalFlash('error', res.body.message);
+          const banner = document.getElementById('pending-restriction-banner');
+          if (banner) {
+            banner.style.display = 'block';
+            document.getElementById('pending-restriction-msg').textContent = res.body.message;
+          }
+          if (submitBtn) {
+            submitBtn.textContent = 'Submission Blocked';
+          }
+          return;
+        }
+
+        if (res.status >= 400 || !res.body.success) {
+          if (window.showPortalFlash) window.showPortalFlash('error', res.body.message || 'Submission error.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Listing for Verification';
+          }
+          return;
+        }
+
+        // Successfully submitted! Add to local donations for instant reflection
+        try {
+          const donList = JSON.parse(localStorage.getItem('icd_user_donations') || '[]');
+          donList.unshift({
+            id: res.body.donation_id || (100 + Math.floor(Math.random() * 500)),
+            title: title,
+            category: category,
+            quantity: quantity,
+            unit: unit,
+            status: 'pending',
+            created_at: new Date().toISOString().split('T')[0],
+            city: city,
+            barangay: barangay
+          });
+          localStorage.setItem('icd_user_donations', JSON.stringify(donList));
+        } catch(e) {}
+
+        if (window.showPortalFlash) {
+          window.showPortalFlash('success', 'Donation listing submitted successfully! Community moderators will review and publish your listing.');
+        }
+        setTimeout(() => {
+          window.location.href = 'donations.html';
+        }, 1500);
+      })
+      .catch(err => {
+        // Fallback for mock environments
+        try {
+          const donList = JSON.parse(localStorage.getItem('icd_user_donations') || '[]');
+          donList.unshift({
+            id: 100 + Math.floor(Math.random() * 500),
+            title: title,
+            category: category,
+            quantity: quantity,
+            unit: unit,
+            status: 'pending',
+            created_at: new Date().toISOString().split('T')[0],
+            city: city,
+            barangay: barangay
+          });
+          localStorage.setItem('icd_user_donations', JSON.stringify(donList));
+        } catch(e) {}
+
+        if (window.showPortalFlash) {
+          window.showPortalFlash('success', 'Donation listing submitted successfully! Community moderators will review and publish your listing.');
+        }
+        setTimeout(() => {
+          window.location.href = 'donations.html';
+        }, 1500);
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    prefillDonorContact();
+    checkPendingRestriction();
   });
+})();
 </script>
 
   <!-- Mobile sidebar toggle JS -->

@@ -168,16 +168,33 @@
 
     <div class="user-content" style="max-width:820px;margin:0 auto;padding:28px 32px;">
 
+            <!-- Pending Restriction Warning Banner -->
+      <div id="pending-restriction-banner" style="display:none;background:#FFFBEB;border:1px solid #FCD34D;border-left:4px solid #D97706;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#D97706" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>
+            <div style="font-weight:700;color:#92400E;font-size:14.5px;margin-bottom:4px;">Submission Pending Review</div>
+            <div style="font-size:13.5px;color:#78350F;line-height:1.5;" id="pending-restriction-msg">
+              You already have a submission awaiting admin review. Please wait for the review to finish before submitting another donation or resource request.
+            </div>
+            <div style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap;">
+              <a href="requests.html" class="btn btn-sm btn-outline" style="font-size:12px;padding:4px 12px;background:#fff;border-color:#D97706;color:#92400E;">View My Requests &rarr;</a>
+              <a href="donations.html" class="btn btn-sm btn-outline" style="font-size:12px;padding:4px 12px;background:#fff;border-color:#D97706;color:#92400E;">View My Donations &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Item Preview Card -->
-      <div class="card" style="padding:20px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;margin-bottom:24px;display:flex;gap:20px;align-items:center;">
+      <div class="card" id="req-item-preview" style="padding:20px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;margin-bottom:24px;display:flex;gap:20px;align-items:center;">
         <div style="width:110px;height:90px;border-radius:8px;overflow:hidden;background:#F1F5F9;flex-shrink:0;">
-          <img src="../assets/images/categories/food-groceries.jpg" alt="Item" style="width:100%;height:100%;object-fit:cover;">
+          <img id="preview-item-image" src="../assets/images/categories/food-groceries.jpg" alt="Item" style="width:100%;height:100%;object-fit:cover;">
         </div>
         <div style="flex:1;">
-          <span class="badge badge-neutral" style="font-size:11px;margin-bottom:4px;display:inline-block;">Food &amp; Groceries</span>
-          <h2 style="font-size:18px;font-weight:700;color:var(--text, #1E293B);margin:0 0 4px;">Family Rice &amp; Canned Goods Care Packs</h2>
-          <div style="font-size:13px;color:#64748B;">
-            Donor: <strong>David Tan</strong> &middot; Available: <strong style="color:var(--color-primary, #1F4FA3);">4 packs</strong> &middot; Location: <strong>Pasig City</strong>
+          <span class="badge badge-neutral" id="preview-item-category" style="font-size:11px;margin-bottom:4px;display:inline-block;">Food &amp; Groceries</span>
+          <h2 style="font-size:18px;font-weight:700;color:var(--text, #1E293B);margin:0 0 4px;" id="preview-item-title">Family Rice &amp; Canned Goods Care Packs</h2>
+          <div style="font-size:13px;color:#64748B;" id="preview-item-meta">
+            Donor: <strong id="preview-donor-name">David Tan</strong> &middot; Available: <strong style="color:var(--color-primary, #1F4FA3);" id="preview-avail-qty">4 packs</strong> &middot; Location: <strong id="preview-donor-location">Pasig City</strong>
           </div>
         </div>
       </div>
@@ -186,37 +203,100 @@
       <div class="card" style="padding:32px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         
         <form id="assistance-request-form">
+          <input type="hidden" id="req-donation-id" value="2">
           
-          <div class="form-group" style="margin-bottom:18px;">
-            <label class="form-label" for="req-quantity">Requested Quantity (Packs) <span style="color:var(--coral, #E0553D);">*</span></label>
-            <input type="number" id="req-quantity" class="form-input" required min="1" max="4" value="1">
-            <span style="font-size:12px;color:#64748B;margin-top:4px;display:block;">Maximum allowed based on available stock: 4 packs</span>
-          </div>
+          <!-- 1. Resource Request Details -->
+          <div style="margin-bottom:24px;">
+            <h3 style="font-size:16px;font-weight:700;color:var(--text, #1E293B);border-bottom:1px solid var(--border, #E2E8F0);padding-bottom:8px;margin-bottom:16px;">
+              1. Resource Request Details
+            </h3>
 
-          <div class="form-group" style="margin-bottom:18px;">
-            <label class="form-label" for="req-reason">Reason &amp; Purpose of Request <span style="color:var(--coral, #E0553D);">*</span></label>
-            <textarea id="req-reason" class="form-input" rows="4" required placeholder="Please describe how this assistance will benefit your household or family situation..."></textarea>
-          </div>
+            <div class="form-group" style="margin-bottom:18px;">
+              <label class="form-label" for="req-quantity">Requested Quantity <span style="color:var(--coral, #E0553D);">*</span></label>
+              <input type="number" id="req-quantity" class="form-input" required min="1" max="4" value="1">
+              <span style="font-size:12px;color:#64748B;margin-top:4px;display:block;" id="quantity-hint">Maximum allowed based on available stock: 4 packs</span>
+            </div>
 
-          <div class="form-group" style="margin-bottom:24px;">
-            <label class="form-label">Proof of Need Verification Document <span style="color:var(--coral, #E0553D);">*</span></label>
-            <div style="border:2px dashed #CBD5E1;border-radius:10px;padding:24px;text-align:center;background:#F8FAFC;cursor:pointer;">
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto 8px;color:var(--color-primary, #1F4FA3);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
-              <div style="font-weight:600;font-size:13.5px;color:var(--text, #1E293B);">Upload Certificate of Indigency, Student ID, or Barangay Proof</div>
-              <div style="font-size:12px;color:#64748B;margin-top:3px;">PDF, PNG, or JPG up to 5MB</div>
+            <div class="form-group" style="margin-bottom:18px;">
+              <label class="form-label" for="req-reason">Reason &amp; Purpose of Request <span style="color:var(--coral, #E0553D);">*</span></label>
+              <textarea id="req-reason" class="form-input" rows="4" required placeholder="Please describe how this assistance will benefit your household or family situation..."></textarea>
+              <span style="font-size:11.5px;color:#64748B;margin-top:3px;display:block;">Provide sufficient context for community coordinators reviewing the allocation.</span>
+            </div>
+
+            <div class="form-group" style="margin-bottom:18px;">
+              <label class="form-label" for="req-proof-type">Verification Proof Type <span style="color:var(--coral, #E0553D);">*</span></label>
+              <select id="req-proof-type" class="form-input" required>
+                <option value="Barangay Certificate of Indigency" selected>Barangay Certificate of Indigency</option>
+                <option value="Valid Government ID / Senior Citizen ID">Valid Government ID / Senior Citizen ID</option>
+                <option value="Solo Parent ID / Disability ID">Solo Parent ID / Disability ID</option>
+                <option value="Public School Enrollment Record">Public School Enrollment Record</option>
+                <option value="Disaster Relief Victim Certificate">Disaster Relief Victim Certificate</option>
+              </select>
+            </div>
+
+            <div class="form-group" style="margin-bottom:16px;">
+              <label class="form-label">Upload Proof of Need Document <span style="color:var(--coral, #E0553D);">*</span></label>
+              <div id="proof-dropzone" style="border:2px dashed #CBD5E1;border-radius:10px;padding:24px;text-align:center;background:#F8FAFC;cursor:pointer;transition:all 0.15s ease;">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto 8px;color:var(--color-primary, #1F4FA3);"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+                <div style="font-weight:600;font-size:13.5px;color:var(--text, #1E293B);" id="proof-label-text">Click to choose verification file (Indigency / Valid ID)</div>
+                <div style="font-size:12px;color:#64748B;margin-top:3px;">PDF, PNG, JPG, or WEBP up to 5MB</div>
+                <input type="file" id="req-proof-file" style="display:none;" accept=".pdf,image/*">
+              </div>
             </div>
           </div>
 
+          <!-- 2. Requester Personal & Contact Information (Required for coordination) -->
+          <div style="margin-bottom:28px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border, #E2E8F0);padding-bottom:8px;margin-bottom:16px;">
+              <h3 style="font-size:16px;font-weight:700;color:var(--text, #1E293B);margin:0;">
+                2. Requester &amp; Distribution Information
+              </h3>
+              <span class="badge badge-info" style="font-size:11px;">Profile Auto-fill</span>
+            </div>
+            <p style="font-size:12.5px;color:#64748B;margin:0 0 16px;line-height:1.5;">
+              Required for identity verification and handover logistics. Confirmed details are kept strictly confidential and only accessed by authorized coordinators upon approved matching.
+            </p>
+
+            <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px;margin-bottom:16px;">
+              <div class="form-group">
+                <label class="form-label" for="req-fullname">Full Legal Name <span style="color:var(--coral, #E0553D);">*</span></label>
+                <input type="text" id="req-fullname" name="requester_name" class="form-input" required placeholder="e.g. Maria Santos">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="req-contact">Active Contact Number <span style="color:var(--coral, #E0553D);">*</span></label>
+                <input type="tel" id="req-contact" name="contact_number" class="form-input" required placeholder="e.g. 0917-555-0192">
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
+              <div class="form-group">
+                <label class="form-label" for="req-city">City / Municipality <span style="color:var(--coral, #E0553D);">*</span></label>
+                <input type="text" id="req-city" name="city" class="form-input" required placeholder="e.g. Quezon City">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="req-barangay">Barangay / Locality <span style="color:var(--coral, #E0553D);">*</span></label>
+                <input type="text" id="req-barangay" name="barangay" class="form-input" required placeholder="e.g. Barangay Central">
+              </div>
+            </div>
+
+            <div class="form-group" style="margin-bottom:16px;">
+              <label class="form-label" for="req-address">Complete Delivery / Handover Address <span style="color:var(--coral, #E0553D);">*</span></label>
+              <input type="text" id="req-address" name="complete_address" class="form-input" required placeholder="House/Unit No., Street name, Landmark">
+              <span style="font-size:11.5px;color:#64748B;margin-top:3px;display:block;">Used by coordinators to assign the nearest physical community distribution point.</span>
+            </div>
+          </div>
+
+          <!-- 3. Good Faith Certification -->
           <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:8px;padding:14px 18px;margin-bottom:24px;display:flex;gap:12px;align-items:flex-start;">
             <input type="checkbox" id="req-confirm" required style="margin-top:3px;">
             <label for="req-confirm" style="font-size:13px;color:#475569;cursor:pointer;">
-              I certify that this request is submitted in good faith for immediate personal or family need, and will not be resold or monetized.
+              I certify that this request is submitted in good faith for immediate personal or family need, all personal details provided are true and accurate, and the allocated items will not be resold or monetized.
             </label>
           </div>
 
-          <div style="display:flex;justify-content:flex-end;gap:12px;">
+          <div style="display:flex;justify-content:flex-end;gap:12px;align-items:center;">
             <a href="browse-donations.html" class="btn btn-outline" style="padding:10px 20px;">Cancel</a>
-            <button type="submit" class="btn btn-primary" style="padding:10px 26px;">
+            <button type="submit" class="btn btn-primary" id="req-submit-btn" style="padding:10px 26px;">
               Submit Assistance Request
             </button>
           </div>
@@ -230,15 +310,277 @@
 </div>
 
 <script src="../js/mock-data.js"></script>
+<script src="../js/forms.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
-  document.getElementById('assistance-request-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    window.showPortalFlash('success', 'Assistance request submitted successfully! Community moderators will review your verification.');
-    setTimeout(() => {
-      window.location.href = 'requests.html';
-    }, 1500);
+(function() {
+  'use strict';
+
+  // 1. Prefill Requester Information from Profile / Session
+  function prefillRequesterInfo() {
+    try {
+      const u = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      const fullNameInput = document.getElementById('req-fullname');
+      const contactInput = document.getElementById('req-contact');
+      const cityInput = document.getElementById('req-city');
+      const brgyInput = document.getElementById('req-barangay');
+      const addrInput = document.getElementById('req-address');
+
+      if (fullNameInput && !fullNameInput.value) {
+        fullNameInput.value = u.name || (u.first_name ? (u.first_name + ' ' + (u.last_name || '')).trim() : 'Maria Santos');
+      }
+      if (contactInput && !contactInput.value) {
+        contactInput.value = u.phone || '0917-555-0192';
+      }
+      if (cityInput && !cityInput.value) {
+        cityInput.value = u.city || 'Quezon City';
+      }
+      if (brgyInput && !brgyInput.value) {
+        brgyInput.value = u.barangay || 'Barangay Central';
+      }
+      if (addrInput && !addrInput.value) {
+        addrInput.value = u.address || 'Block 12 Lot 4, Community Avenue';
+      }
+    } catch(e) {}
+  }
+
+  // 2. Resolve donation details from query param (?id=...)
+  function initItemPreview() {
+    const params = new URLSearchParams(window.location.search);
+    const donationId = params.get('id') || params.get('donation_id');
+    if (donationId) {
+      document.getElementById('req-donation-id').value = donationId;
+      if (window.MOCK_DATA && window.MOCK_DATA.browseDonations) {
+        const item = window.MOCK_DATA.browseDonations.find(d => String(d.id) === String(donationId));
+        if (item) {
+          document.getElementById('preview-item-title').textContent = item.title;
+          document.getElementById('preview-item-category').textContent = item.categoryName || 'Surplus Item';
+          document.getElementById('preview-donor-name').textContent = item.donorName || 'Community Donor';
+          document.getElementById('preview-avail-qty').textContent = item.availableQuantity + ' ' + (item.unit || 'units');
+          document.getElementById('preview-donor-location').textContent = item.location || 'Metro Manila';
+          const maxQ = Math.max(1, item.availableQuantity || 1);
+          const qInput = document.getElementById('req-quantity');
+          qInput.max = maxQ;
+          document.getElementById('quantity-hint').textContent = 'Maximum allowed based on available stock: ' + maxQ + ' ' + (item.unit || 'units');
+        }
+      }
+    }
+  }
+
+  // 3. Dropzone file upload preview
+  const dropzone = document.getElementById('proof-dropzone');
+  const fileInput = document.getElementById('req-proof-file');
+  const labelText = document.getElementById('proof-label-text');
+
+  if (dropzone && fileInput) {
+    dropzone.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files[0]) {
+        labelText.textContent = 'Selected: ' + fileInput.files[0].name + ' (' + Math.round(fileInput.files[0].size / 1024) + ' KB)';
+        dropzone.style.borderColor = 'var(--color-primary, #1F4FA3)';
+        dropzone.style.background = '#EFF6FF';
+      }
+    });
+  }
+
+  // 4. Pending Submission Restriction Check
+  function checkPendingRestriction() {
+    const banner = document.getElementById('pending-restriction-banner');
+    const submitBtn = document.getElementById('req-submit-btn');
+    const actionsBase = (window.icd_actionsBase ? window.icd_actionsBase() : '');
+
+    // Check server endpoint
+    fetch(actionsBase + '/actions/check_pending_submission.php', {
+      headers: { 'Accept': 'application/json' },
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.restricted) {
+        applyPendingRestriction(data.message || 'You already have a submission awaiting admin review. Please wait for the review to finish before submitting another donation or resource request.');
+      }
+    })
+    .catch(() => {
+      // Offline fallback: check localStorage for any pending requests/donations
+      try {
+        const localReqs = JSON.parse(localStorage.getItem('icd_user_requests') || '[]');
+        const pending = localReqs.find(r => r.status === 'pending' || r.status === 'under_review');
+        if (pending) {
+          applyPendingRestriction('You already have an assistance request ("' + pending.item_title + '") awaiting admin review. Please wait for the review to finish before submitting another donation or resource request.');
+        }
+      } catch(e) {}
+    });
+
+    function applyPendingRestriction(msg) {
+      if (banner) {
+        banner.style.display = 'block';
+        const msgEl = document.getElementById('pending-restriction-msg');
+        if (msgEl) msgEl.textContent = msg;
+      }
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.55';
+        submitBtn.style.cursor = 'not-allowed';
+        submitBtn.textContent = 'Submission Blocked (Review in Progress)';
+      }
+    }
+  }
+
+  // 5. Form submission with validation and server POST
+  const form = document.getElementById('assistance-request-form');
+  if (form) {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById('req-fullname').value.trim();
+      const contact = document.getElementById('req-contact').value.trim();
+      const city = document.getElementById('req-city').value.trim();
+      const barangay = document.getElementById('req-barangay').value.trim();
+      const address = document.getElementById('req-address').value.trim();
+      const reason = document.getElementById('req-reason').value.trim();
+      const quantity = parseInt(document.getElementById('req-quantity').value, 10) || 1;
+      const proofType = document.getElementById('req-proof-type').value;
+      const donationId = document.getElementById('req-donation-id').value;
+      const itemTitle = document.getElementById('preview-item-title').textContent.trim();
+
+      // Client-side Validation
+      if (!fullName) {
+        if (window.showPortalFlash) window.showPortalFlash('error', 'Please provide your full legal name for request verification.');
+        return;
+      }
+
+      const cleanPhone = contact.replace(/[^0-9+]/g, '');
+      if (!contact || cleanPhone.length < 10) {
+        if (window.showPortalFlash) window.showPortalFlash('error', 'Please provide an active mobile contact number (at least 10 digits).');
+        return;
+      }
+
+      if (!city || !barangay || !address) {
+        if (window.showPortalFlash) window.showPortalFlash('error', 'Please complete your city, barangay, and complete address for distribution coordination.');
+        return;
+      }
+
+      if (!reason || reason.length < 10) {
+        if (window.showPortalFlash) window.showPortalFlash('error', 'Please describe the reason for your request (minimum 10 characters).');
+        return;
+      }
+
+      const submitBtn = document.getElementById('req-submit-btn');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Submitting Request...';
+      }
+
+      const payload = {
+        donation_id: donationId,
+        item_title: itemTitle,
+        quantity: quantity,
+        unit: 'packs',
+        reason: reason,
+        proof_type: proofType,
+        requester_name: fullName,
+        contact_number: contact,
+        barangay: barangay,
+        city: city,
+        complete_address: address
+      };
+
+      const actionsBase = (window.icd_actionsBase ? window.icd_actionsBase() : '');
+
+      fetch(actionsBase + '/actions/submit_request.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      })
+      .then(res => res.json().then(data => ({ status: res.status, body: data })))
+      .then(res => {
+        if (res.status === 403 && res.body.code === 'PENDING_RESTRICTION') {
+          if (window.showPortalFlash) window.showPortalFlash('error', res.body.message);
+          const banner = document.getElementById('pending-restriction-banner');
+          if (banner) {
+            banner.style.display = 'block';
+            document.getElementById('pending-restriction-msg').textContent = res.body.message;
+          }
+          if (submitBtn) {
+            submitBtn.textContent = 'Submission Blocked';
+          }
+          return;
+        }
+
+        if (res.status >= 400 || !res.body.success) {
+          if (window.showPortalFlash) window.showPortalFlash('error', res.body.message || 'Submission error. Please check your entries.');
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Submit Assistance Request';
+          }
+          return;
+        }
+
+        // Successfully submitted! Save to local storage for instant UI reflection
+        try {
+          const reqList = JSON.parse(localStorage.getItem('icd_user_requests') || '[]');
+          reqList.unshift({
+            id: res.body.request_id || (500 + Math.floor(Math.random() * 500)),
+            item_title: itemTitle,
+            quantity: quantity,
+            status: 'pending',
+            created_at: new Date().toISOString().split('T')[0],
+            requester_name: fullName,
+            contact_number: contact,
+            barangay: barangay,
+            city: city,
+            complete_address: address
+          });
+          localStorage.setItem('icd_user_requests', JSON.stringify(reqList));
+        } catch(e) {}
+
+        if (window.showPortalFlash) {
+          window.showPortalFlash('success', 'Assistance request submitted successfully! Community moderators will review your verification.');
+        }
+        setTimeout(() => {
+          window.location.href = 'requests.html';
+        }, 1500);
+      })
+      .catch(err => {
+        // Fallback for mock/static server environments
+        try {
+          const reqList = JSON.parse(localStorage.getItem('icd_user_requests') || '[]');
+          reqList.unshift({
+            id: 500 + Math.floor(Math.random() * 500),
+            item_title: itemTitle,
+            quantity: quantity,
+            status: 'pending',
+            created_at: new Date().toISOString().split('T')[0],
+            requester_name: fullName,
+            contact_number: contact,
+            barangay: barangay,
+            city: city,
+            complete_address: address
+          });
+          localStorage.setItem('icd_user_requests', JSON.stringify(reqList));
+        } catch(e) {}
+
+        if (window.showPortalFlash) {
+          window.showPortalFlash('success', 'Assistance request submitted successfully! Community moderators will review your verification.');
+        }
+        setTimeout(() => {
+          window.location.href = 'requests.html';
+        }, 1500);
+      });
+
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    prefillRequesterInfo();
+    initItemPreview();
+    checkPendingRestriction();
   });
+})();
 </script>
 
   <!-- Mobile sidebar toggle JS -->

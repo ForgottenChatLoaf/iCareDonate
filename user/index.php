@@ -23,6 +23,7 @@ $pages = [
     'transactions'     => 'transactions.html',
     'history'          => 'history.html',
     'notifications'    => 'notifications.html',
+    'messages'         => 'messages.html',
     'support'          => 'support.html',
     'profile'          => 'profile.html',
     'settings'         => 'settings.html',

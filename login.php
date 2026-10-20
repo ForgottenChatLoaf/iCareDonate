@@ -320,7 +320,9 @@ $base = 'frontend/';
           <strong class="footer-heading">Help &amp; Legal</strong>
           <ul class="footer-links">
             <li><a href="<?= $base ?>help-center.html">Help Center</a></li>
-            <li><a href="<?= $base ?>faqs.html">Guides and FAQs</a></li>
+            <li><a href="<?= $base ?>guides.html">Guides and Tutorials</a></li>
+            <li><a href="<?= $base ?>faqs.html">Frequently Asked Questions</a></li>
+            <li><a href="<?= $base ?>contact.html">Contact Support</a></li>
             <li><a href="<?= $base ?>terms.html">Terms of Service</a></li>
             <li><a href="<?= $base ?>privacy.html">Privacy Policy</a></li>
           </ul>
