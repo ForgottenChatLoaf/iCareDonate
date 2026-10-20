@@ -385,6 +385,16 @@
   padding-right: 44px;
 }
 
+/* Hide duplicate browser-native reveal/clear icons in Chromium/Edge/IE */
+.password-input-wrap input[type="password"]::-ms-reveal,
+.password-input-wrap input[type="password"]::-ms-clear,
+.input-password-wrap input[type="password"]::-ms-reveal,
+.input-password-wrap input[type="password"]::-ms-clear {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
 .password-toggle-btn {
   position: absolute;
   right: 12px;

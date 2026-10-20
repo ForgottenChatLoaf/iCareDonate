@@ -18,7 +18,7 @@ $isJson = (
     (!empty($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json'))
 );
 
-function sendSignupResponse(bool $success, string $message, string $redirectUrl = '', ?array $user = null, bool $isJson = false): void {
+function sendSignupResponse(bool $success, string $message, string $redirectUrl = '', ?array $user = null, bool $isJson = false, ?string $token = null): void {
     if ($isJson) {
         header('Content-Type: application/json; charset=utf-8');
         http_response_code($success ? 200 : 400);
@@ -26,7 +26,8 @@ function sendSignupResponse(bool $success, string $message, string $redirectUrl 
             'success'  => $success,
             'message'  => $message,
             'redirect' => $redirectUrl,
-            'token'    => $success ? ('sess-' . bin2hex(random_bytes(16))) : null,
+            // Only return a token on confirmed success and when one was persisted.
+            'token'    => ($success && $token !== null) ? $token : null,
             'user'     => $user,
         ]);
         exit;
@@ -137,13 +138,25 @@ try {
         $target = $returnUrl;
     }
 
+    // ── 4. Generate and persist API session token ──────────────────────────
+    // Store only the SHA-256 hash so a DB leak cannot yield working tokens.
+    $sessionToken = 'sess-' . bin2hex(random_bytes(16));
+    $sessionTokenHash = hash('sha256', $sessionToken);
+    try {
+        $stmtSess = $pdo->prepare('INSERT INTO user_sessions (user_id, token, expires_at) VALUES (:uid, :token, DATE_ADD(NOW(), INTERVAL 30 DAY))');
+        $stmtSess->execute([':uid' => $newId, ':token' => $sessionTokenHash]);
+    } catch (PDOException $e) {
+        // user_sessions table not yet created — session cookie still works same-origin.
+        $sessionToken = null;
+    }
+
     sendSignupResponse(true, 'Account created successfully! Welcome to iCareDonate.', $target, [
         'id'         => $newId,
         'first_name' => $firstName ?: 'Community',
         'last_name'  => $lastName ?: 'Member',
         'email'      => strtolower($email),
         'role'       => $role,
-    ], $isJson);
+    ], $isJson, $sessionToken);
 
 } catch (PDOException $e) {
     error_log('Registration database error: ' . $e->getMessage());

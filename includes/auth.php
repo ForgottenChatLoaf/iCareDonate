@@ -14,14 +14,59 @@
 
 // Start session if one is not already active
 if (session_status() === PHP_SESSION_NONE) {
-    // Harden session cookie for local development
+    $isSecure = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        || (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https');
     session_set_cookie_params([
         'lifetime' => 0,          // Session cookie — expires when browser closes
         'path'     => '/',
         'httponly' => true,       // Not accessible to JavaScript
-        'samesite' => 'Strict',   // No cross-site submission
+        'samesite' => 'Lax',      // Lax ensures cookie is sent on top-level navigation and same-origin AJAX
+        'secure'   => $isSecure,
     ]);
     session_start();
+}
+
+/**
+ * Safely resolves the authenticated user ID from server-side session or verified token.
+ * Never trusts a client-supplied user ID parameter.
+ */
+function getAuthenticatedUserId(): ?int {
+    // 1. Check PHP Session
+    if (!empty($_SESSION['icd_user_id'])) {
+        return (int)$_SESSION['icd_user_id'];
+    }
+
+    // 2. Check Authorization Bearer header
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '');
+    if ($authHeader === '' && function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        $authHeader = $headers['Authorization'] ?? ($headers['authorization'] ?? '');
+    }
+
+    if ($authHeader !== '' && preg_match('/Bearer\s+(\S+)/i', $authHeader, $matches)) {
+        $token = $matches[1];
+        if (function_exists('getDB')) {
+            $pdo = getDB();
+            if ($pdo !== null) {
+                try {
+                    // DB stores SHA-256(token); compare hash so raw tokens never live in DB.
+                    $tokenHash = hash('sha256', $token);
+                    $stmt = $pdo->prepare('SELECT user_id FROM user_sessions WHERE token = :token AND expires_at > NOW() LIMIT 1');
+                    $stmt->execute([':token' => $tokenHash]);
+                    $row = $stmt->fetch();
+                    if ($row) {
+                        $uid = (int)$row['user_id'];
+                        $_SESSION['icd_user_id'] = $uid;
+                        return $uid;
+                    }
+                } catch (PDOException $e) {
+                    // Graceful fallback if table is not yet created
+                }
+            }
+        }
+    }
+
+    return null;
 }
 
 /**

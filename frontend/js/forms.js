@@ -6,21 +6,27 @@
 (function() {
   'use strict';
 
-  const API_BASE_URL = (function() {
-    if (window.location.protocol === 'file:') {
-      return 'http://localhost/CommunityDono/api';
+  /**
+   * Resolve the correct base path for /actions/ endpoints.
+   *
+   * On XAMPP the app lives in a subfolder, e.g.:
+   *   http://localhost/iCareDonate/frontend/login.html
+   * A bare '/actions/...' fetch hits localhost root (404).
+   * We detect '/frontend/' in the pathname and strip it to get the app root.
+   *
+   * On Vercel (cleanUrls) pages are served from the root:
+   *   https://app.vercel.app/login
+   * '/frontend/' is absent, so we return '' and the '/actions/' rewrite fires.
+   */
+  function icd_actionsBase() {
+    const p = window.location.pathname;
+    const idx = p.indexOf('/frontend/');
+    if (idx !== -1) {
+      // e.g. '/iCareDonate/frontend/...' → '/iCareDonate'
+      return p.substring(0, idx);
     }
-    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      if (window.location.port && window.location.port !== '80') {
-        return 'http://localhost/CommunityDono/api';
-      }
-      return `${window.location.origin}/CommunityDono/api`;
-    }
-    if (window.location.pathname.includes('/CommunityDono/')) {
-      return `${window.location.origin}/CommunityDono/api`;
-    }
-    return '/CommunityDono/api';
-  })();
+    return ''; // production / Vercel root
+  }
 
   // Production authentication: requests proxy directly to Render PHP backend
   // via /actions/login_process.php and /actions/signup_process.php.
@@ -347,7 +353,7 @@
         try {
           let res;
           try {
-            res = await fetch('/actions/login_process.php', {
+            res = await fetch(icd_actionsBase() + '/actions/login_process.php', {
               method: 'POST',
               credentials: 'same-origin',
               headers: {
@@ -446,7 +452,7 @@
         try {
           let res;
           try {
-            res = await fetch('/actions/signup_process.php', {
+            res = await fetch(icd_actionsBase() + '/actions/signup_process.php', {
               method: 'POST',
               credentials: 'same-origin',
               headers: {
