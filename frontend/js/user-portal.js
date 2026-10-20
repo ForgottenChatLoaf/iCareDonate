@@ -317,7 +317,12 @@
 
     try {
       const res = await fetchWithAuth('/actions/user_dashboard.php');
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        throw new Error(`Server returned status ${res.status} with non-JSON response.`);
+      }
 
       if (!res.ok || !data || !data.success) {
         throw new Error((data && data.message) ? data.message : 'Failed to retrieve dashboard records.');
@@ -430,7 +435,12 @@
 
     try {
       const res = await fetchWithAuth('/actions/notifications.php');
-      const data = await res.json();
+      let data;
+      try {
+        data = await res.json();
+      } catch (jsonErr) {
+        throw new Error(`Server returned status ${res.status} with non-JSON response.`);
+      }
 
       if (!res.ok || !data || !data.success) {
         throw new Error((data && data.message) ? data.message : 'Unable to load notifications.');
