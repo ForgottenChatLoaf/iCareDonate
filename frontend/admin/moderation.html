@@ -104,9 +104,12 @@
     </aside>
 
   <!-- ADMIN MAIN -->
+    <!-- Sidebar backdrop (mobile) -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
   <div class="admin-main">
     <header class="admin-topbar">
-      <div>
+      <div style="display:flex;align-items:center;gap:10px;"><button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle" aria-label="Toggle navigation" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button><div>
         <h1 class="admin-topbar__title" style="margin:0;font-size:20px;font-weight:700;">Community Moderation &amp; Flags</h1>
       </div>
       <div style="display:flex;gap:8px;">
@@ -248,5 +251,19 @@
   }
 </script>
 
+
+  <!-- Mobile sidebar toggle JS -->
+  <script>
+  (function() {
+    var sidebar = document.querySelector('.admin-sidebar, .user-sidebar');
+    var backdrop = document.getElementById('sidebarBackdrop');
+    var toggleBtn = document.getElementById('adminSidebarToggle') || document.getElementById('userSidebarToggle');
+    function openSidebar() { if(sidebar) sidebar.classList.add('sidebar-open'); if(backdrop) backdrop.classList.add('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','true'); }
+    function closeSidebar() { if(sidebar) sidebar.classList.remove('sidebar-open'); if(backdrop) backdrop.classList.remove('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','false'); }
+    if(toggleBtn) toggleBtn.addEventListener('click', function() { sidebar && sidebar.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
+    if(backdrop) backdrop.addEventListener('click', closeSidebar);
+    document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeSidebar(); });
+  })();
+  </script>
 </body>
 </html>

@@ -253,8 +253,96 @@
   color: var(--cobalt, #1F4FA3);
 }
 
-@media (max-width: 768px) {
+/* ══════════════════════════════════════════════════════════
+   HAMBURGER TOGGLE BUTTON
+   ══════════════════════════════════════════════════════════ */
+.user-sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid var(--border, #E2E8F0);
+  border-radius: 8px;
+  background: var(--surface, #FFFFFF);
+  cursor: pointer;
+  color: var(--text, #1E293B);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.user-sidebar-toggle:hover {
+  background: var(--sky-light, #F0F6FD);
+  border-color: var(--cobalt, #1F4FA3);
+  color: var(--cobalt, #1F4FA3);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR BACKDROP (mobile overlay)
+   ══════════════════════════════════════════════════════════ */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 20, 45, 0.45);
+  z-index: 199;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.sidebar-backdrop.is-active {
+  display: block;
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1080px) {
+  .user-content {
+    padding: 20px 20px 40px;
+  }
+}
+
+@media (max-width: 900px) {
+  .user-sidebar-toggle {
+    display: inline-flex;
+  }
+
+  /* Off-canvas drawer */
   .user-sidebar {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+    overflow-y: auto;
+  }
+
+  .user-sidebar.sidebar-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.14);
+  }
+
+  .user-topbar {
+    padding: 0 16px;
+    gap: 10px;
+  }
+
+  .user-content {
+    padding: 16px 14px 36px;
+  }
+}
+
+@media (max-width: 600px) {
+  .user-stats-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .user-stats-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .user-content {
+    padding: 12px 12px 28px;
   }
 }

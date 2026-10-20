@@ -583,6 +583,45 @@
   color: var(--cobalt, #1F4FA3);
 }
 
+/* ══════════════════════════════════════════════════════════
+   HAMBURGER TOGGLE BUTTON
+   ══════════════════════════════════════════════════════════ */
+.admin-sidebar-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  border: 1.5px solid var(--border, #E2E8F0);
+  border-radius: 8px;
+  background: var(--surface, #FFFFFF);
+  cursor: pointer;
+  color: var(--text, #1E293B);
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+}
+.admin-sidebar-toggle:hover {
+  background: var(--sky-light, #F0F6FD);
+  border-color: var(--cobalt, #1F4FA3);
+  color: var(--cobalt, #1F4FA3);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SIDEBAR BACKDROP (mobile overlay)
+   ══════════════════════════════════════════════════════════ */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(14, 20, 45, 0.45);
+  z-index: 199;
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+.sidebar-backdrop.is-active {
+  display: block;
+}
+
 /* ── Responsive ──────────────────────────────────────────── */
 @media (max-width: 1080px) {
   .admin-stats-row {
@@ -593,8 +632,55 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
+  .admin-sidebar-toggle {
+    display: inline-flex;
+  }
+
+  /* Off-canvas drawer */
   .admin-sidebar {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 200;
+    transform: translateX(-100%);
+    transition: transform 0.26s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
+    overflow-y: auto;
+  }
+
+  .admin-sidebar.sidebar-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.14);
+  }
+
+  .admin-topbar {
+    padding: 10px 16px;
+  }
+
+  .admin-content {
+    padding: 20px 16px 40px;
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-stats-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .admin-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+  .admin-topbar__title {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 420px) {
+  .admin-stats-row {
+    grid-template-columns: 1fr;
+  }
+  .admin-content {
+    padding: 14px 12px 32px;
   }
 }
