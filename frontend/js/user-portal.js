@@ -226,8 +226,14 @@
       }
     });
 
+    document.documentElement.classList.add('portal-hydrated');
     return true;
   }
+
+  // Synchronous early hydration if elements already parsed
+  try {
+    checkUserSession();
+  } catch(e) {}
 
   function escapeHtml(str) {
     if (str === null || str === undefined) return '';

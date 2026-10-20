@@ -232,8 +232,14 @@
       }
     });
 
+    document.documentElement.classList.add('portal-hydrated');
     return true;
   }
+
+  // Synchronous early hydration if elements already parsed
+  try {
+    checkAdminSession();
+  } catch(e) {}
 
   document.addEventListener('DOMContentLoaded', function() {
     if (checkAdminSession()) {
