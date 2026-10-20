@@ -49,7 +49,7 @@ if ($method === 'POST') {
 
     try {
         if ($action === 'mark_all_read') {
-            $stmt = $pdo->prepare('UPDATE notifications SET is_read = 1, updated_at = NOW() WHERE user_id = :uid AND is_read = 0');
+            $stmt = $pdo->prepare('UPDATE notifications SET is_read = 1 WHERE user_id = :uid AND is_read = 0');
             $stmt->execute([':uid' => $userId]);
 
             http_response_code(200);

@@ -294,7 +294,7 @@
 
       // Images
       const mainImg = document.getElementById('main-image-view');
-      const rawImg = d.primary_image || (d.images && d.images[0] ? d.images[0].file_path : '');
+      const rawImg = d.image_url || d.primary_image || (d.images && d.images[0] ? d.images[0].file_path : '');
       if (rawImg) {
         const fullImg = rawImg.startsWith('http') || rawImg.startsWith('/') ? rawImg : rawImg.replace(/^\.\.\//, '');
         mainImg.src = fullImg;

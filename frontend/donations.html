@@ -342,7 +342,7 @@
 
       grid.innerHTML = data.data.map(d => {
         const available = d.available_quantity ?? ((d.quantity_total || 0) - (d.quantity_reserved || 0) - (d.quantity_claimed || 0));
-        const rawImg = d.primary_image || (d.images && d.images[0] ? d.images[0].file_path : '');
+        const rawImg = d.image_url || d.primary_image || (d.images && d.images[0] ? d.images[0].file_path : '');
         const img = rawImg ? (rawImg.startsWith('http') || rawImg.startsWith('/') ? rawImg : rawImg.replace(/^\.\.\//, '')) : 'assets/images/placeholder.svg';
         return `
           <div class="card" style="border-radius:20px;border:1px solid var(--sky);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm);padding:0;transition:transform 0.2s,box-shadow 0.2s;">

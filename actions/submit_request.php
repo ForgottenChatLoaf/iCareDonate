@@ -91,6 +91,8 @@ if ($city === '') {
 
 if ($completeAddress === '' || mb_strlen($completeAddress) < 5) {
     $errors[] = 'Please provide your complete residential or delivery coordination address.';
+} elseif (mb_strlen($completeAddress) > 1000) {
+    $errors[] = 'Complete address must not exceed 1,000 characters.';
 }
 
 // 5. Server-Side Validation: Request Details
