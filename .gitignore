@@ -66,3 +66,5 @@ vendor/
 *.sql.bak
 backup/
 backups/
+
+transcript.txt

@@ -1059,3 +1059,146 @@ textarea.form-input,
   font-weight: 500;
   margin-top: 4px;
 }
+
+/* ══════════════════════════════════════════════════════════
+   PORTAL TOPBAR USER PROFILE & DROPDOWN COMPONENT
+   Shared across Admin and User Portals
+   ══════════════════════════════════════════════════════════ */
+.admin-user-btn,
+.portal-user-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 6px 14px 6px 8px;
+  border-radius: 999px;
+  background: var(--surface, #FFFFFF);
+  border: 1.5px solid var(--border, #E2E8F0);
+  cursor: pointer;
+  font-family: var(--font-body, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--text, #1E293B);
+  transition: all 0.18s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  position: relative;
+  outline: none;
+}
+
+.admin-user-btn:hover,
+.admin-user-btn:focus-visible,
+.portal-user-btn:hover,
+.portal-user-btn:focus-visible {
+  background: #EEF4FF;
+  border-color: var(--cobalt, #1F4FA3);
+  color: var(--cobalt, #1F4FA3);
+}
+
+.admin-user-btn .user-avatar-circle,
+.portal-user-btn .user-avatar-circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1F4FA3 0%, #14213D 100%);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  flex-shrink: 0;
+  letter-spacing: 0.04em;
+}
+
+.user-sidebar ~ .admin-main .user-avatar-circle,
+.user-layout .user-avatar-circle {
+  background: linear-gradient(135deg, #1F4FA3 0%, #E0553D 100%);
+}
+
+.topbar-chevron {
+  transition: transform 0.2s ease;
+  color: var(--text-muted, #64748B);
+  flex-shrink: 0;
+}
+
+.topbar-dropdown-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.topbar-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
+  background: #FFFFFF;
+  border: 1px solid var(--border, #E2E8F0);
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -5px rgba(20, 33, 61, 0.15), 0 8px 10px -6px rgba(20, 33, 61, 0.1);
+  min-width: 200px;
+  z-index: 1000;
+  padding: 6px;
+  display: none;
+  flex-direction: column;
+  gap: 2px;
+  animation: topbarDropdownFadeIn 0.18s ease forwards;
+}
+
+.topbar-dropdown.is-open {
+  display: flex;
+}
+
+@keyframes topbarDropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.topbar-dropdown a,
+.topbar-dropdown button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--text, #1E293B);
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.topbar-dropdown a:hover,
+.topbar-dropdown button:hover {
+  background-color: var(--surface-soft, #F8FAFC);
+  color: var(--cobalt, #1F4FA3);
+}
+
+.topbar-dropdown a.dropdown-danger,
+.topbar-dropdown a.sidebar-link--logout,
+.topbar-dropdown button.dropdown-danger {
+  color: #DC2626 !important;
+  border-top: 1px solid var(--border, #E2E8F0);
+  margin-top: 4px;
+  padding-top: 10px;
+}
+
+.topbar-dropdown a.dropdown-danger:hover,
+.topbar-dropdown button.dropdown-danger:hover {
+  background-color: #FEF2F2 !important;
+  color: #B91C1C !important;
+}
+
+.topbar-dropdown svg {
+  flex-shrink: 0;
+  color: currentColor;
+}

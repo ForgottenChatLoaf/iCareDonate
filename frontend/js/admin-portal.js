@@ -24,24 +24,44 @@
 
   // Topbar dropdown toggle
   function setupAdminTopbarUser() {
-    const btn = document.getElementById('topbarUserMenuBtn');
-    const dd = document.getElementById('topbarDropdownMenu');
+    const btn = document.getElementById('topbarUserMenuBtn') || document.getElementById('adminUserMenuBtn');
+    const dd = document.getElementById('topbarDropdownMenu') || document.getElementById('adminDropdownMenu') || document.getElementById('topbarDropdown');
     if (!btn || !dd) return;
+
+    function closeDropdown() {
+      dd.classList.remove('is-open');
+      dd.style.display = 'none';
+      btn.setAttribute('aria-expanded', 'false');
+      const chev = btn.querySelector('.topbar-chevron');
+      if (chev) chev.style.transform = '';
+    }
+
+    function openDropdown() {
+      dd.classList.add('is-open');
+      dd.style.display = 'flex';
+      btn.setAttribute('aria-expanded', 'true');
+      const chev = btn.querySelector('.topbar-chevron');
+      if (chev) chev.style.transform = 'rotate(180deg)';
+    }
 
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      const open = dd.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      const chev = btn.querySelector('.topbar-chevron');
-      if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+      if (dd.classList.contains('is-open') || dd.style.display === 'flex') {
+        closeDropdown();
+      } else {
+        openDropdown();
+      }
     });
 
     document.addEventListener('click', function(e) {
       if (!btn.contains(e.target) && !dd.contains(e.target)) {
-        dd.classList.remove('is-open');
-        btn.setAttribute('aria-expanded', 'false');
-        const chev = btn.querySelector('.topbar-chevron');
-        if (chev) chev.style.transform = '';
+        closeDropdown();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeDropdown();
       }
     });
   }
@@ -200,9 +220,16 @@
     const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Admin Officer';
     const initials = ((user.first_name ? user.first_name[0] : '') + (user.last_name ? user.last_name[0] : '')).toUpperCase() || 'AO';
 
-    document.querySelectorAll('#admin-topbar-name, #admin-sidebar-name, .admin-user-name').forEach(el => el.textContent = fullName);
-    document.querySelectorAll('#admin-avatar-initials, .admin-avatar').forEach(el => {
-      if (el.tagName === 'SPAN' || el.classList.contains('admin-avatar-initials')) el.textContent = initials;
+    document.querySelectorAll('#admin-topbar-name, #admin-sidebar-name, .admin-user-name, #topbarUserName, .topbar-user-name').forEach(el => el.textContent = fullName);
+    document.querySelectorAll('#admin-avatar-initials, .admin-avatar, #topbarUserInitials, .user-avatar-circle').forEach(el => {
+      if (el.tagName === 'SPAN' || el.classList.contains('admin-avatar-initials') || el.classList.contains('user-avatar-circle')) el.textContent = initials;
+    });
+
+    // Also update any raw span inside #topbarUserMenuBtn / #adminUserMenuBtn
+    document.querySelectorAll('#topbarUserMenuBtn > span:not(.user-avatar-circle), #adminUserMenuBtn > span:not(.user-avatar-circle):not(#admin-avatar-initials)').forEach(el => {
+      if (!el.querySelector('svg') && !el.classList.contains('topbar-chevron')) {
+        el.textContent = fullName;
+      }
     });
 
     return true;

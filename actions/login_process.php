@@ -3,95 +3,162 @@
  * iCareDonate — Login Form Handler (POST only)
  * actions/login_process.php
  *
- * Validates submitted credentials against demo accounts.
- * Creates a PHP session and redirects to the appropriate portal on success.
- * Redirects back to login.php with a generic error on failure.
- *
- * Only processes POST requests. GET requests are redirected to login.php.
+ * Authenticates user credentials using PDO prepared statements and password_verify().
+ * Supports database persistence (MySQL/MariaDB via XAMPP) with demo account fallback.
+ * Creates a secure PHP session and redirects to the appropriate portal.
  */
 
+declare(strict_types=1);
+
 require_once __DIR__ . '/../includes/auth.php';
+require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../includes/demo_accounts.php';
+
+$isJson = (
+    (!empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) ||
+    (!empty($_SERVER['CONTENT_TYPE']) && str_contains($_SERVER['CONTENT_TYPE'], 'application/json'))
+);
+
+// Helper for responses
+function sendLoginResponse(bool $success, string $message, string $redirectUrl, ?array $user = null, bool $isJson = false): void {
+    if ($isJson) {
+        header('Content-Type: application/json; charset=utf-8');
+        http_response_code($success ? 200 : 400);
+        echo json_encode([
+            'success'  => $success,
+            'message'  => $message,
+            'redirect' => $redirectUrl,
+            'token'    => $success ? ('sess-' . bin2hex(random_bytes(16))) : null,
+            'user'     => $user,
+        ]);
+        exit;
+    }
+
+    if (!$success) {
+        header('Location: ' . _icd_root() . 'login.php?error=' . urlencode($message));
+        exit;
+    }
+
+    header('Location: ' . $redirectUrl);
+    exit;
+}
 
 // Reject non-POST requests
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    header('Location: ../login.php');
+    if ($isJson) {
+        sendLoginResponse(false, 'Method Not Allowed. POST required.', '', null, true);
+    }
+    header('Location: ' . _icd_root() . 'login.php');
     exit;
 }
 
-// ── 1. Collect and sanitise inputs ───────────────────────────────────────────
-$email    = trim($_POST['email']    ?? '');
-$password = $_POST['password']      ?? '';
+// Read inputs from POST or JSON body
+$rawInput = file_get_contents('php://input');
+$jsonBody = json_decode($rawInput, true);
 
-// ── 2. Server-side field validation ──────────────────────────────────────────
-$errors = [];
+$email    = trim($_POST['email'] ?? ($jsonBody['email'] ?? ''));
+$password = (string)($_POST['password'] ?? ($jsonBody['password'] ?? ''));
+$returnUrl= trim($_POST['redirect'] ?? ($jsonBody['redirect'] ?? ''));
 
-if ($email === '') {
-    $errors[] = 'Email address is required.';
-} elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors[] = 'Please enter a valid email address.';
+// Validate fields
+if ($email === '' || $password === '') {
+    sendLoginResponse(false, 'Please enter both email and password.', '', null, $isJson);
 }
 
-if ($password === '') {
-    $errors[] = 'Password is required.';
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    sendLoginResponse(false, 'Please enter a valid email address.', '', null, $isJson);
 }
 
-if (!empty($errors)) {
-    // Redirect back with a generic error — do not reveal which field failed
-    $errorParam = urlencode('Please fill in all required fields correctly.');
-    header('Location: ../login.php?error=' . $errorParam);
-    exit;
-}
-
-// ── 3. Check credentials against demo accounts ───────────────────────────────
 $matched = null;
-foreach ($DEMO_ACCOUNTS as $account) {
-    if (strtolower($account['email']) === strtolower($email)) {
-        if (password_verify($password, $account['hash'])) {
-            $matched = $account;
-            break;
+
+// ── 1. Check against MySQL database via PDO ──────────────────────────────
+$pdo = getDB();
+if ($pdo !== null) {
+    try {
+        $stmt = $pdo->prepare('SELECT id, name, email, password_hash, role FROM users WHERE LOWER(email) = LOWER(:email) LIMIT 1');
+        $stmt->execute([':email' => $email]);
+        $row = $stmt->fetch();
+
+        if ($row && !empty($row['password_hash'])) {
+            if (password_verify($password, $row['password_hash'])) {
+                $nameParts = explode(' ', trim($row['name']));
+                $firstName = $nameParts[0] ?? 'User';
+                $lastName  = implode(' ', array_slice($nameParts, 1)) ?: '';
+                $initials  = strtoupper(substr($firstName, 0, 1) . substr($lastName ?: $firstName, 0, 1));
+
+                $matched = [
+                    'id'         => (int)$row['id'],
+                    'email'      => $row['email'],
+                    'role'       => ($row['role'] === 'admin' || $row['role'] === 'superadmin') ? 'admin' : ($row['role'] === 'requester' ? 'requester' : 'donor'),
+                    'name'       => $row['name'],
+                    'first_name' => $firstName,
+                    'last_name'  => $lastName,
+                    'initials'   => $initials,
+                ];
+            }
         }
-        // Email matched but password wrong — stop checking (prevents timing attacks)
-        break;
+    } catch (PDOException $e) {
+        error_log('Database query error in login_process: ' . $e->getMessage());
+        // Do not crash — fallback will be checked
     }
 }
 
-// ── 4. Handle account matching & universal demo fallback ───────────────────
+// ── 2. Fallback to Demo Accounts array if DB didn't match ───────────────
+if ($matched === null && !empty($DEMO_ACCOUNTS)) {
+    foreach ($DEMO_ACCOUNTS as $account) {
+        if (strtolower($account['email']) === strtolower($email)) {
+            if (password_verify($password, $account['hash'])) {
+                $nameParts = explode(' ', trim($account['name']));
+                $firstName = $nameParts[0] ?? 'User';
+                $lastName  = implode(' ', array_slice($nameParts, 1)) ?: '';
+
+                $matched = [
+                    'id'         => 900 + crc32($account['email']) % 99,
+                    'email'      => $account['email'],
+                    'role'       => $account['role'],
+                    'name'       => $account['name'],
+                    'first_name' => $firstName,
+                    'last_name'  => $lastName,
+                    'initials'   => $account['initials'] ?? 'US',
+                ];
+                break;
+            }
+        }
+    }
+}
+
+// ── 3. Reject if invalid ──────────────────────────────────────────────────
 if ($matched === null) {
-    // If a valid email is provided with a password, allow prototype login
-    if (filter_var($email, FILTER_VALIDATE_EMAIL) && strlen($password) >= 1) {
-        $isAdmin = (stripos($email, 'admin') !== false);
-        $namePrefix = explode('@', $email)[0];
-        $formattedName = ucwords(str_replace(['.', '_', '-'], ' ', $namePrefix));
-        $matched = [
-            'email'    => $email,
-            'role'     => $isAdmin ? 'admin' : 'donor',
-            'name'     => $formattedName ?: ($isAdmin ? 'Admin Officer' : 'Community Member'),
-            'initials' => strtoupper(substr($formattedName ?: 'CM', 0, 2)),
-        ];
-    } else {
-        $errorParam = urlencode('Invalid email or password. Please try again.');
-        header('Location: ../login.php?error=' . $errorParam);
-        exit;
-    }
+    sendLoginResponse(false, 'Invalid email or password. Please try again.', '', null, $isJson);
 }
 
-// ── 5. Successful login — create session ─────────────────────────────────────
-// Regenerate session ID to prevent session fixation
+// ── 4. Successful login: Regenerate session & store state ────────────────
 session_regenerate_id(true);
 
-$_SESSION['icd_user_id'] = $matched['email']; // Use email as ID (no DB primary key yet)
+$_SESSION['icd_user_id'] = $matched['id'];
+$_SESSION['icd_email']   = $matched['email'];
 $_SESSION['icd_role']    = $matched['role'];
 $_SESSION['icd_name']    = $matched['name'];
 $_SESSION['icd_initials']= $matched['initials'];
 $_SESSION['icd_login_at']= time();
 
-// ── 6. Redirect to appropriate portal ────────────────────────────────────────
+// ── 5. Determine redirection destination ─────────────────────────────────
 $root = _icd_root();
-
 if ($matched['role'] === 'admin') {
-    header('Location: ' . $root . ICD_REDIRECT_ADMIN);
+    $target = $root . ICD_REDIRECT_ADMIN;
 } else {
-    header('Location: ' . $root . ICD_REDIRECT_USER);
+    $target = $root . ICD_REDIRECT_USER;
 }
-exit;
+
+// Honor safe return redirect if inside application
+if ($returnUrl !== '' && !preg_match('#^(https?:)?//#i', $returnUrl)) {
+    $target = $returnUrl;
+}
+
+sendLoginResponse(true, 'Login successful.', $target, [
+    'id'         => $matched['id'],
+    'first_name' => $matched['first_name'],
+    'last_name'  => $matched['last_name'],
+    'email'      => $matched['email'],
+    'role'       => $matched['role'],
+], $isJson);

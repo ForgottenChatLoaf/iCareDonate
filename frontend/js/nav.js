@@ -118,7 +118,7 @@
 
     const authBtns = document.querySelectorAll('.btn-pub-auth, .mobile-link--accent');
     if (token && user && authBtns.length > 0) {
-      const dashboardUrl = (user.role === 'admin' || user.role === 'superadmin') ? 'admin-dashboard.html' : 'user-dashboard.html';
+      const dashboardUrl = (user.role === 'admin' || user.role === 'superadmin') ? 'admin/index.html' : 'user/dashboard.html';
       const label = `${user.first_name || 'My'} Dashboard`;
       authBtns.forEach(btn => {
         btn.href = isSub ? ('../' + dashboardUrl) : dashboardUrl;

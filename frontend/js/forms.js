@@ -443,36 +443,34 @@
         submitBtn.innerHTML = '<span class="btn-spinner"></span> Logging in...';
 
         try {
-          let data = mockLogin(emailInput.value.trim(), passInput.value);
-          if (!data) {
-            let res;
-            try {
-              res = await fetch(`${API_BASE_URL}/v1/auth/login.php`, {
-                method: 'POST',
-                credentials: 'same-origin',
-                headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-                body: JSON.stringify({
-                  email: emailInput.value.trim(),
-                  password: passInput.value
-                })
-              });
-              data = await res.json();
-            } catch (apiErr) {
-              data = mockLogin(emailInput.value.trim(), passInput.value) || {
-                token: 'mock-' + Date.now(),
-                user: { id: 99, first_name: 'Community', last_name: 'Member', email: emailInput.value.trim(), role: 'user' }
-              };
-            }
-            if (res && !res.ok && !data) {
-              throw new Error(data && data.message ? data.message : 'Login failed. Please check your credentials.');
-            }
+          const actionBase = window.location.pathname.includes('/frontend/') ? '../actions' : 'actions';
+          let res;
+          let data;
+          try {
+            res = await fetch(`${actionBase}/login_process.php`, {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({
+                email: emailInput.value.trim(),
+                password: passInput.value
+              })
+            });
+            data = await res.json();
+          } catch (apiErr) {
+            data = mockLogin(emailInput.value.trim(), passInput.value);
+            if (data) data.success = true;
+          }
+
+          if (!data || !data.success) {
+            throw new Error((data && data.message) ? data.message : 'Invalid email or password. Please try again.');
           }
 
           if (data.token) localStorage.setItem('icd_token', data.token);
           if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
 
           if (window.ICD_MAIN) {
-            window.ICD_MAIN.showToast('Welcome back!', `Logged in as ${data.user.first_name} ${data.user.last_name}`, 'success');
+            window.ICD_MAIN.showToast('Welcome back!', `Logged in as ${data.user.first_name} ${data.user.last_name || ''}`, 'success');
           }
 
           setTimeout(() => {
@@ -482,12 +480,14 @@
               window.location.href = redirect;
               return;
             }
-            if (data.user.role === 'admin' || data.user.role === 'superadmin') {
-              window.location.href = 'admin-dashboard.html';
+            if (data.redirect) {
+              window.location.href = data.redirect;
+            } else if (data.user && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
+              window.location.href = 'admin/index.html';
             } else {
-              window.location.href = 'user-dashboard.html';
+              window.location.href = 'user/dashboard.html';
             }
-          }, 1000);
+          }, 800);
         } catch (err) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = origText;
@@ -534,13 +534,39 @@
         submitBtn.innerHTML = '<span class="btn-spinner"></span> Creating account...';
 
         try {
-          const data = mockSignup(
-            firstName,
-            lastName,
-            emailInput.value.trim(),
-            phoneInput ? phoneInput.value.trim() : '',
-            passInput.value
-          );
+          const actionBase = window.location.pathname.includes('/frontend/') ? '../actions' : 'actions';
+          let res;
+          let data;
+          try {
+            res = await fetch(`${actionBase}/signup_process.php`, {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({
+                first_name: firstName,
+                last_name: lastName,
+                email: emailInput.value.trim(),
+                phone: phoneInput ? phoneInput.value.trim() : '',
+                password: passInput.value,
+                confirm_password: confirmInput ? confirmInput.value : passInput.value,
+                role: (document.getElementById('signup-role') ? document.getElementById('signup-role').value : 'donor')
+              })
+            });
+            data = await res.json();
+          } catch (apiErr) {
+            data = mockSignup(
+              firstName,
+              lastName,
+              emailInput.value.trim(),
+              phoneInput ? phoneInput.value.trim() : '',
+              passInput.value
+            );
+            if (data) data.success = true;
+          }
+
+          if (!data || !data.success) {
+            throw new Error((data && data.message) ? data.message : 'Registration failed.');
+          }
 
           if (data.token) localStorage.setItem('icd_token', data.token);
           if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
@@ -556,8 +582,12 @@
               window.location.href = redirect;
               return;
             }
-            window.location.href = 'user-dashboard.html';
-          }, 1200);
+            if (data.redirect) {
+              window.location.href = data.redirect;
+            } else {
+              window.location.href = 'user/dashboard.html';
+            }
+          }, 1000);
         } catch (err) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = origText;
@@ -587,10 +617,39 @@
         const submitBtn = adminLoginForm.querySelector('button[type="submit"]');
         const origText = submitBtn.innerHTML;
         submitBtn.disabled = true;
-        submitBtn.innerHTML = '<span class="btn-spinner"></span> Verifying...';
+        submitBtn.innerHTML = '<span class="btn-spinner"></span> Verifying...';        (async function() {
+          const actionBase = window.location.pathname.includes('/frontend/') ? '../actions' : 'actions';
+          let res;
+          let data;
+          try {
+            res = await fetch(`${actionBase}/login_process.php`, {
+              method: 'POST',
+              credentials: 'same-origin',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({
+                email: usernameVal,
+                password: passVal
+              })
+            });
+            data = await res.json();
+          } catch (e) {
+            // fallback below
+          }
 
-        setTimeout(() => {
-          // Verify admin demo credentials with flexible fallback
+          if (data && data.success && data.user && data.user.role === 'admin') {
+            if (data.token) localStorage.setItem('icd_token', data.token);
+            if (data.user) localStorage.setItem('icd_user', JSON.stringify(data.user));
+
+            if (window.ICD_MAIN) {
+              window.ICD_MAIN.showToast('Admin Verified', 'Administrative session initialized successfully.', 'success');
+            }
+            setTimeout(() => {
+              window.location.href = data.redirect || 'admin/index.html';
+            }, 800);
+            return;
+          }
+
+          // Fallback check
           const isDemoMatch = (passVal === 'Admin@1234' || passVal === 'AdminPass123' || passVal.toLowerCase() === 'admin@1234');
           const isKnownAdmin = (usernameVal.includes('admin') || usernameVal === 'admin@icaredonate.test' || usernameVal === 'admin@icaredonate.org' || usernameVal === 'admin@icaredonate.ph');
           const isGenericAllowed = (usernameVal.length >= 3 && passVal.length >= 3);
@@ -626,9 +685,9 @@
           }
 
           setTimeout(() => {
-            window.location.href = 'admin-dashboard.html';
-          }, 1000);
-        }, 600);
+            window.location.href = 'admin/index.html';
+          }, 800);
+        })();
       });
     }
   });

@@ -24,24 +24,44 @@
 
   // Topbar dropdown toggle
   function setupTopbarUser() {
-    const btn = document.getElementById('topbarUserMenuBtn');
-    const dd = document.getElementById('topbarDropdownMenu');
+    const btn = document.getElementById('topbarUserMenuBtn') || document.getElementById('userUserMenuBtn');
+    const dd = document.getElementById('topbarDropdownMenu') || document.getElementById('userDropdownMenu') || document.getElementById('topbarDropdown');
     if (!btn || !dd) return;
+
+    function closeDropdown() {
+      dd.classList.remove('is-open');
+      dd.style.display = 'none';
+      btn.setAttribute('aria-expanded', 'false');
+      const chev = btn.querySelector('.topbar-chevron');
+      if (chev) chev.style.transform = '';
+    }
+
+    function openDropdown() {
+      dd.classList.add('is-open');
+      dd.style.display = 'flex';
+      btn.setAttribute('aria-expanded', 'true');
+      const chev = btn.querySelector('.topbar-chevron');
+      if (chev) chev.style.transform = 'rotate(180deg)';
+    }
 
     btn.addEventListener('click', function(e) {
       e.stopPropagation();
-      const open = dd.classList.toggle('is-open');
-      btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-      const chev = btn.querySelector('.topbar-chevron');
-      if (chev) chev.style.transform = open ? 'rotate(180deg)' : '';
+      if (dd.classList.contains('is-open') || dd.style.display === 'flex') {
+        closeDropdown();
+      } else {
+        openDropdown();
+      }
     });
 
     document.addEventListener('click', function(e) {
       if (!btn.contains(e.target) && !dd.contains(e.target)) {
-        dd.classList.remove('is-open');
-        btn.setAttribute('aria-expanded', 'false');
-        const chev = btn.querySelector('.topbar-chevron');
-        if (chev) chev.style.transform = '';
+        closeDropdown();
+      }
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        closeDropdown();
       }
     });
   }
@@ -188,10 +208,17 @@
     const fullName = `${user.first_name || ''} ${user.last_name || ''}`.trim() || 'Community Member';
     const initials = ((user.first_name ? user.first_name[0] : '') + (user.last_name ? user.last_name[0] : '')).toUpperCase() || 'CM';
 
-    document.querySelectorAll('#topbarUserName, #user-topbar-name, .topbar-user-name, #user-sidebar-name').forEach(el => el.textContent = fullName);
+    document.querySelectorAll('#topbarUserName, #user-topbar-name, .topbar-user-name, #user-sidebar-name, [data-user-name]').forEach(el => el.textContent = fullName);
     document.querySelectorAll('#topbarUserRole, .topbar-user-role').forEach(el => el.textContent = (user.role === 'admin' || user.role === 'superadmin') ? 'Administrator' : 'Verified Member');
-    document.querySelectorAll('#topbarUserAvatar, #topbarUserInitials, .topbar-avatar').forEach(el => {
-      if (el.tagName === 'SPAN' || el.classList.contains('topbar-avatar-initials')) el.textContent = initials;
+    document.querySelectorAll('#topbarUserAvatar, #topbarUserInitials, .topbar-avatar, .user-avatar-circle').forEach(el => {
+      if (el.tagName === 'SPAN' || el.classList.contains('topbar-avatar-initials') || el.classList.contains('user-avatar-circle')) el.textContent = initials;
+    });
+
+    // Also update any raw span inside #topbarUserMenuBtn
+    document.querySelectorAll('#topbarUserMenuBtn > span:not(.user-avatar-circle)').forEach(el => {
+      if (!el.querySelector('svg') && !el.classList.contains('topbar-chevron')) {
+        el.textContent = fullName;
+      }
     });
 
     return true;
