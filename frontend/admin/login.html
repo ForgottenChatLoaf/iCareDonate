@@ -326,11 +326,10 @@
 
       <!-- DEV QUICK-LOGIN PANEL -->
       <div class="dev-panel" id="dev-panel">
-        <h4>Quick Login (Dev Preview Only)</h4>
-        <button type="button" class="dev-btn" onclick="quickLogin('admin@icaredonate.ph','AdminPass123','admin')">Head Admin</button>
-        <button type="button" class="dev-btn" onclick="quickLogin('mreyes@icaredonate.ph','AdminPass123','admin')">Maria Reyes (Admin)</button>
-        <button type="button" class="dev-btn" onclick="quickLogin('donor@example.com','UserPass123','donor')">Test Donor</button>
-        <button type="button" class="dev-btn" onclick="quickLogin('beneficiary@example.com','UserPass123','beneficiary')">Test Beneficiary</button>
+        <h4>Quick Login (Demo Accounts)</h4>
+        <button type="button" class="dev-btn" onclick="quickLogin('admin@icaredonate.test','Admin@1234')">Administrator</button>
+        <button type="button" class="dev-btn" onclick="quickLogin('donor@icaredonate.test','Donor@1234')">Test Donor</button>
+        <button type="button" class="dev-btn" onclick="quickLogin('requester@icaredonate.test','Requester@1234')">Test Requester</button>
       </div>
 
     </div>
@@ -339,6 +338,20 @@
 </main>
 
 <script>
+  function quickLogin(email, pass) {
+    const emailEl = document.getElementById('email');
+    const passEl = document.getElementById('password');
+    if (emailEl) emailEl.value = email;
+    if (passEl) passEl.value = pass;
+    const form = document.getElementById('login-form');
+    if (form) {
+      if (typeof form.requestSubmit === 'function') {
+        form.requestSubmit();
+      } else {
+        form.submit();
+      }
+    }
+  }
   function showAlert(type, msg) {
     const box = document.getElementById('alert-box');
     box.className = 'alert-box ' + type;

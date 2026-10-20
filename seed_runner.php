@@ -38,14 +38,20 @@ try {
         [
             'name'  => 'David Tan',
             'email' => 'donor@icaredonate.test',
-            'pass'  => 'DonorPass123!',
+            'pass'  => 'Donor@1234',
             'role'  => 'donor'
         ],
         [
             'name'  => 'Maria Santos',
             'email' => 'requester@icaredonate.test',
-            'pass'  => 'RequestPass123!',
+            'pass'  => 'Requester@1234',
             'role'  => 'requester'
+        ],
+        [
+            'name'  => 'Alex Rivera',
+            'email' => 'user@icaredonate.test',
+            'pass'  => 'User@1234',
+            'role'  => 'donor'
         ]
     ];
 

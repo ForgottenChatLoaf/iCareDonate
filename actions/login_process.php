@@ -82,7 +82,22 @@ if ($pdo !== null) {
         $row = $stmt->fetch();
 
         if ($row && !empty($row['password_hash'])) {
-            if (password_verify($password, $row['password_hash'])) {
+            $isValid = password_verify($password, $row['password_hash']);
+            // Fallback: support both @1234 and Pass123! variants for demo defense testing
+            if (!$isValid) {
+                $demoVariants = [
+                    'donor@icaredonate.test'     => ['Donor@1234', 'DonorPass123!'],
+                    'requester@icaredonate.test' => ['Requester@1234', 'RequestPass123!'],
+                    'admin@icaredonate.test'     => ['Admin@1234', 'AdminPass123!'],
+                    'user@icaredonate.test'      => ['User@1234', 'UserPass123!'],
+                ];
+                $emKey = strtolower($email);
+                if (isset($demoVariants[$emKey]) && in_array($password, $demoVariants[$emKey], true)) {
+                    $isValid = true;
+                }
+            }
+
+            if ($isValid) {
                 $nameParts = explode(' ', trim($row['name']));
                 $firstName = $nameParts[0] ?? 'User';
                 $lastName  = implode(' ', array_slice($nameParts, 1)) ?: '';
