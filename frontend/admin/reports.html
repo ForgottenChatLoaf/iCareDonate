@@ -123,7 +123,7 @@
         <form id="report-form" onsubmit="applyReportFilters(event)" style="display:flex;flex-wrap:wrap;gap:14px;align-items:flex-end;">
           <div>
             <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:4px;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;">Report Type</label>
-            <select id="rpt-type" class="form-input" style="height:36px;font-size:13px;min-width:160px;">
+            <select id="rpt-type" class="form-input" style="height:36px;font-size:13px;min-width:160px;" onchange="renderReport(this.value)">
               <option value="donations">Donations</option>
               <option value="requests">Requests</option>
               <option value="transactions">Transactions</option>
@@ -140,7 +140,7 @@
           </div>
           <div>
             <label style="display:block;font-size:11.5px;font-weight:700;margin-bottom:4px;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.05em;">Category</label>
-            <select id="rpt-cat" class="form-input" style="height:36px;font-size:13px;min-width:140px;">
+            <select id="rpt-cat" class="form-input" style="height:36px;font-size:13px;min-width:140px;" onchange="renderReport(document.getElementById('rpt-type').value)">
               <option value="">All Categories</option>
               <option value="1">Food &amp; Groceries</option>
               <option value="2">Clothing</option>
@@ -149,8 +149,9 @@
               <option value="5">Household Items</option>
             </select>
           </div>
-          <div>
-            <button type="submit" class="btn btn-primary" style="height:36px;font-size:13px;padding:0 18px;">Generate Report</button>
+          <div style="display:flex;gap:8px;">
+            <button type="submit" class="btn btn-primary" style="height:36px;font-size:13px;padding:0 18px;">Filter</button>
+            <button type="button" class="btn btn-outline" style="height:36px;font-size:13px;padding:0 14px;" onclick="document.getElementById('rpt-start').value='';document.getElementById('rpt-end').value='';document.getElementById('rpt-cat').value='';renderReport(document.getElementById('rpt-type').value);">Show All</button>
           </div>
         </form>
       </div>
@@ -353,10 +354,15 @@ function applyReportFilters(e) {
 
 function handleExport() {
   const type  = document.getElementById('rpt-type').value;
-  const rows  = getFilteredRows(type);
+  let rows    = getFilteredRows(type);
   const cols  = REPORT_COLUMNS[type];
   const start = document.getElementById('rpt-start').value || 'all';
   const end   = document.getElementById('rpt-end').value   || 'all';
+
+  // If date filters matched 0 rows, fallback to all available records for this report
+  if (!rows || rows.length === 0) {
+    rows = REPORT_MOCK[type] ? REPORT_MOCK[type].slice() : [];
+  }
 
   // Strip HTML badges from exported data
   const csv = [
@@ -367,18 +373,19 @@ function handleExport() {
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
-  a.href = url; a.download = `iCareDonate_${type}_${start}_to_${end}.csv`;
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a); URL.revokeObjectURL(url);
+  a.href = url;
+  a.download = `iCareDonate_${type}_${start}_to_${end}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
   window.showAdminFlash('success', `CSV downloaded: ${rows.length} ${type} record${rows.length !== 1 ? 's' : ''}`);
 }
 
-// Init: set default dates and render
+// Init: set default dates to include 2026 records and render
 (function() {
-  const now = new Date();
-  const y = now.getFullYear(), m = String(now.getMonth() + 1).padStart(2, '0');
-  document.getElementById('rpt-start').value = `${y}-${m}-01`;
-  document.getElementById('rpt-end').value   = now.toISOString().slice(0, 10);
+  document.getElementById('rpt-start').value = '2026-10-01';
+  document.getElementById('rpt-end').value   = '2026-10-31';
   renderReport('donations');
 })();
 </script>

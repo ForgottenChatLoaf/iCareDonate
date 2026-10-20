@@ -328,7 +328,36 @@ function clearFilters() {
 }
 
 function handleExportLogs() {
-  window.showAdminFlash('info', 'CSV export initiated — no file download in frontend preview.');
+  const cols = ['Log ID', 'Timestamp', 'Action', 'Actor', 'Role', 'Target', 'Reason / Note', 'IP Address'];
+  const data = (filteredLogs && filteredLogs.length > 0) ? filteredLogs : ALL_LOGS;
+
+  const rows = data.map(l => [
+    l.id,
+    l.ts,
+    l.action,
+    l.actor,
+    l.role,
+    l.target,
+    l.reason,
+    l.ip
+  ]);
+
+  const csv = [
+    cols.join(','),
+    ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
+  ].join('\n');
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  const now  = new Date().toISOString().slice(0, 10);
+  a.href = url;
+  a.download = `iCareDonate_Audit_Logs_${now}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  window.showAdminFlash('success', `CSV downloaded: ${rows.length} audit log record${rows.length !== 1 ? 's' : ''}`);
 }
 
 renderLogs();

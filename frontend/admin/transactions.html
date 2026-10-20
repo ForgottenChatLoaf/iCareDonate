@@ -157,12 +157,18 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
-      <!-- Status Filter Tabs -->
-      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
-        <button type="button" class="btn btn-primary" onclick="filterTx('all')">All (3)</button>
-        <button type="button" class="btn btn-outline" onclick="filterTx('created')">Scheduled Pickup (1)</button>
-        <button type="button" class="btn btn-outline" onclick="filterTx('claimed')">In Transit (1)</button>
-        <button type="button" class="btn btn-outline" onclick="filterTx('completed')">Completed (1)</button>
+      <!-- Status Filter Tabs & Export -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="tx-filter-buttons">
+          <button type="button" class="btn btn-primary" onclick="filterTx('all')">All (3)</button>
+          <button type="button" class="btn btn-outline" onclick="filterTx('created')">Scheduled Pickup (1)</button>
+          <button type="button" class="btn btn-outline" onclick="filterTx('claimed')">In Transit (1)</button>
+          <button type="button" class="btn btn-outline" onclick="filterTx('completed')">Completed (1)</button>
+        </div>
+        <button type="button" class="btn btn-outline" onclick="handleExportTransactions()" style="height:36px;font-size:12.5px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+          Export CSV
+        </button>
       </div>
 
       <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#fff;">
@@ -288,6 +294,43 @@
       badge.textContent = 'Completed • Verified';
     }
     window.showAdminFlash('success', `Transaction #${id} handover confirmed and verified in audit records.`);
+  }
+
+  function handleExportTransactions() {
+    const rows = [];
+    document.querySelectorAll('#tx-tbody tr').forEach(tr => {
+      const tds = tr.querySelectorAll('td');
+      if (tds.length >= 6) {
+        rows.push([
+          tds[0].innerText.trim(),
+          tds[1].innerText.replace(/\n/g, ' - ').trim(),
+          tds[2].innerText.replace(/\n/g, ' - ').trim(),
+          tds[3].innerText.replace(/\n/g, ' - ').trim(),
+          tds[4].innerText.trim(),
+          tds[5].innerText.trim()
+        ]);
+      }
+    });
+
+    const cols = ['Transaction Code', 'Donation Item', 'Donor', 'Beneficiary', 'Handover Method', 'Status'];
+    const csv = [
+      cols.join(','),
+      ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    const now  = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `iCareDonate_Transactions_${now}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if (window.showAdminFlash) {
+      window.showAdminFlash('success', `CSV downloaded: ${rows.length} transaction record${rows.length !== 1 ? 's' : ''}`);
+    }
   }
 </script>
 

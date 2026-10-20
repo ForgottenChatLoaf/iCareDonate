@@ -199,8 +199,12 @@
             </select>
           </div>
 
-          <div>
+          <div style="display:flex;gap:8px;">
             <button type="button" class="btn btn-outline" onclick="resetFilters()" style="height:38px;font-size:13px;padding:0 14px;">Reset</button>
+            <button type="button" class="btn btn-outline" onclick="handleExportDonations()" style="height:38px;font-size:13px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Export CSV
+            </button>
           </div>
         </div>
       </div>
@@ -576,6 +580,57 @@
     document.getElementById('categoryFilter').value = '';
     document.getElementById('sortFilter').value = 'newest';
     applyFilters();
+  }
+
+  function handleExportDonations() {
+    const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+    const cat = document.getElementById('categoryFilter').value;
+    let items = window.MockStore ? window.MockStore.getDonations(currentFilter, '') : [];
+
+    if (query) {
+      items = items.filter(d => 
+        d.title.toLowerCase().includes(query) ||
+        (d.donor_name || '').toLowerCase().includes(query) ||
+        (d.description || '').toLowerCase().includes(query) ||
+        (d.pickup_city || '').toLowerCase().includes(query)
+      );
+    }
+    if (cat) {
+      items = items.filter(d => d.category_name === cat);
+    }
+
+    const cols = ['Donation ID', 'Title', 'Category', 'Donor Name', 'Total Qty', 'Unit', 'Condition', 'Status', 'City', 'Created Date'];
+    const rows = items.map(d => [
+      d.id,
+      d.title,
+      d.category_name,
+      d.donor_name || '',
+      d.quantity_total,
+      d.unit,
+      d.condition_type,
+      d.status,
+      d.pickup_city || '',
+      d.created_at
+    ]);
+
+    const csv = [
+      cols.join(','),
+      ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    const now  = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `iCareDonate_Donations_${currentFilter}_${now}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if (window.showAdminFlash) {
+      window.showAdminFlash('success', `CSV downloaded: ${rows.length} donation record${rows.length !== 1 ? 's' : ''}`);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {

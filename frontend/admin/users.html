@@ -188,9 +188,13 @@
             </button>
           </div>
 
-          <!-- Search bar aligned neatly in toolbar -->
-          <div style="min-width:260px;max-width:340px;flex:1;">
-            <input type="text" id="userSearchInput" class="form-input" placeholder="Search name, email, city..." style="height:38px;font-size:13px;width:100%;" oninput="renderUserTable()">
+          <!-- Search and Export toolbar -->
+          <div style="display:flex;gap:10px;align-items:center;flex:1;max-width:440px;">
+            <input type="text" id="userSearchInput" class="form-input" placeholder="Search name, email, city..." style="height:38px;font-size:13px;flex:1;" oninput="renderUserTable()">
+            <button type="button" class="btn btn-outline" onclick="handleExportUsers()" style="height:38px;font-size:12.5px;padding:0 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+              Export CSV
+            </button>
           </div>
         </div>
       </div>
@@ -281,7 +285,7 @@
           <td style="padding:14px 16px;color:var(--color-text);">${u.city || 'Metro Manila'}</td>
           <td style="padding:14px 16px;"><span class="badge badge-info" style="font-size:11px;">${u.role}</span></td>
           <td style="padding:14px 16px;"><span class="badge ${badgeClass}" style="font-size:11px;">${statusText}</span></td>
-          <td style="padding:14px 16px;color:var(--color-text-muted);font-size:12.5px;">${u.joined}</td>
+          <td style="padding:14px 16px;color:var(--color-text-muted);font-size:12.5px;">${u.joined || u.registered || '2026-01-15'}</td>
           <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
             <a href="user-detail.html?id=${u.id}" class="btn btn-outline" style="font-size:12px;padding:4px 10px;">
               Manage &bull; Moderate
@@ -292,6 +296,41 @@
     }).join('');
 
     updateUserCounts();
+  }
+
+  function handleExportUsers() {
+    const q = (document.getElementById('userSearchInput').value || '').trim();
+    const users = window.MockStore ? window.MockStore.getUsers(activeUserFilter, q) : [];
+    const cols = ['User ID', 'Full Name', 'Email', 'City', 'Barangay', 'Role', 'Status', 'Registered Date'];
+    const rows = users.map(u => [
+      u.id,
+      `${u.firstName} ${u.lastName}`,
+      u.email,
+      u.city || '',
+      u.barangay || '',
+      u.role || 'user',
+      u.status,
+      u.joined || u.registered || '2026-01-15'
+    ]);
+
+    const csv = [
+      cols.join(','),
+      ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    const now  = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `iCareDonate_Users_${activeUserFilter}_${now}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    if (window.showAdminFlash) {
+      window.showAdminFlash('success', `CSV downloaded: ${rows.length} user record${rows.length !== 1 ? 's' : ''}`);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', function() {

@@ -376,7 +376,7 @@
     document.getElementById('u-email').textContent = targetUser.email;
     document.getElementById('u-phone').textContent = targetUser.phone || 'None provided';
     document.getElementById('u-location').textContent = `${targetUser.barangay || ''}, ${targetUser.city || ''}`;
-    document.getElementById('u-joined').textContent = targetUser.joined;
+    document.getElementById('u-joined').textContent = targetUser.joined || targetUser.registered || 'Jan 15, 2026';
 
     renderUserStatus();
     renderUserDonations();
