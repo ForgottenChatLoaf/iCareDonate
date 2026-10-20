@@ -89,7 +89,7 @@
                       ((pageFilename === 'mission.html' || pageFilename === 'careers.html') && targetFilename === 'about.html') ||
                       ((pageFilename === 'donation-details.html') && targetFilename === 'donations.html') ||
                       ((pageFilename === 'contact-support.html') && targetFilename === 'contact.html') ||
-                      ((pageFilename === 'help-center.html' || pageFilename === 'faqs.html') && targetFilename === 'how-it-works.html');
+                      ((pageFilename === 'help-center.html' || pageFilename === 'faqs.html' || pageFilename === 'guides.html') && targetFilename === 'how-it-works.html');
 
       if (isMatch) {
         link.classList.add('active');
@@ -119,11 +119,13 @@
     const authBtns = document.querySelectorAll('.btn-pub-auth, .mobile-link--accent');
     if (token && user && authBtns.length > 0) {
       const dashboardUrl = (user.role === 'admin' || user.role === 'superadmin') ? 'admin/index.html' : 'user/dashboard.html';
-      const label = `${user.first_name || 'My'} Dashboard`;
+      const firstName = user.first_name || (user.name ? user.name.split(' ')[0] : 'My');
+      const label = `${firstName} Dashboard`;
       authBtns.forEach(btn => {
         btn.href = isSub ? ('../' + dashboardUrl) : dashboardUrl;
         btn.textContent = label;
-        btn.title = `Logged in as ${user.first_name} ${user.last_name || ''}`;
+        btn.title = `Logged in as ${user.first_name || user.name || ''} ${user.last_name || ''}`.trim();
+        btn.classList.add('btn-pub-auth--authed');
       });
 
       // Desktop public actions — append clean logout button if not already present
@@ -134,9 +136,7 @@
         logoutBtn.href = logoutTarget;
         logoutBtn.className = 'btn-pub-logout';
         logoutBtn.textContent = 'Log out';
-        logoutBtn.style.cssText = 'display:inline-flex;align-items:center;padding:7px 14px;margin-left:8px;font-size:13.5px;font-weight:600;color:#DC2626;background:#FEE2E2;border:1px solid #FECACA;border-radius:8px;text-decoration:none;transition:all 0.2s ease;';
-        logoutBtn.addEventListener('mouseenter', function() { this.style.background = '#FCA5A5'; this.style.color = '#7F1D1D'; });
-        logoutBtn.addEventListener('mouseleave', function() { this.style.background = '#FEE2E2'; this.style.color = '#DC2626'; });
+        logoutBtn.setAttribute('aria-label', 'Log out of iCareDonate');
         logoutBtn.addEventListener('click', function(e) {
           e.preventDefault();
           try {
@@ -156,9 +156,8 @@
         mobLogout.id = 'mobile-pub-logout-link';
         mobLogout.href = logoutTarget;
         mobLogout.className = 'mobile-link mobile-link--logout';
-        mobLogout.style.color = '#DC2626';
-        mobLogout.style.fontWeight = '600';
         mobLogout.textContent = 'Log out';
+        mobLogout.setAttribute('aria-label', 'Log out of iCareDonate');
         mobLogout.addEventListener('click', function(e) {
           e.preventDefault();
           try {

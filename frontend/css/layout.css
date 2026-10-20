@@ -207,6 +207,7 @@
   border: 1.5px solid var(--cobalt);
   background: transparent;
   padding: 8px 18px;
+  height: 38px;
   border-radius: var(--radius-full);
   text-decoration: none;
   display: inline-flex;
@@ -220,6 +221,49 @@
   background: var(--cobalt);
   color: #fff;
   box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.btn-pub-auth:active {
+  transform: translateY(1px);
+}
+
+.btn-pub-auth.btn-pub-auth--authed {
+  background: var(--surface-soft, #E3EEFB);
+  border-color: var(--cobalt);
+  color: var(--cobalt);
+}
+
+.btn-pub-auth.btn-pub-auth--authed:hover {
+  background: var(--cobalt);
+  color: #FFFFFF;
+}
+
+.btn-pub-logout {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 14px;
+  margin-left: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #DC2626;
+  background: #FEE2E2;
+  border: 1px solid #FECACA;
+  border-radius: var(--radius-sm, 8px);
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+  height: 36px;
+  box-sizing: border-box;
+}
+
+.btn-pub-logout:hover,
+.btn-pub-logout:focus-visible {
+  background: #FCA5A5;
+  color: #7F1D1D;
+  outline: none;
+  box-shadow: var(--shadow-xs);
+  transform: translateY(-1px);
 }
 
 /* Hamburger Button */
@@ -293,10 +337,24 @@
   background: var(--cobalt-dark);
 }
 
+.mobile-link--logout {
+  color: #DC2626 !important;
+  background: #FEE2E2;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 6px;
+  border-radius: var(--radius-sm);
+}
+
+.mobile-link--logout:hover {
+  background: #FCA5A5 !important;
+  color: #7F1D1D !important;
+}
+
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-10px);
+    transform: translateY(-8px);
   }
 
   to {

@@ -20,8 +20,12 @@
   border: 1.5px solid transparent;
   text-decoration: none;
   cursor: pointer;
-  transition: all var(--transition-fast);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
   white-space: nowrap;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
 }
 
 .btn:active {
@@ -32,10 +36,6 @@
   opacity: 0.65;
   cursor: not-allowed;
   pointer-events: none;
-}
-
-.btn:hover {
-  transform: translateY(-2px);
 }
 
 .btn:focus-visible {
@@ -186,9 +186,30 @@
   overflow: hidden;
 }
 
-.card:hover {
+/* Subtle elevation exclusively on interactive cards */
+a.card,
+.card-interactive,
+.card--interactive,
+.guide-card,
+.workflow-card-3,
+.workflow-card-2 {
+  cursor: pointer;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+}
+
+a.card:hover,
+.card-interactive:hover,
+.card--interactive:hover,
+.guide-card:hover,
+.workflow-card-3:hover,
+.workflow-card-2:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
+  border-color: var(--border-strong);
+}
+
+/* Static cards stay grounded and only subtly respond to focus/hover without jumping */
+.card:not(a):not(.card-interactive):not(.card--interactive):not(.guide-card):not(.workflow-card-3):not(.workflow-card-2):not(.category-card):not(.donation-card):hover {
   border-color: var(--border-strong);
 }
 
@@ -506,6 +527,18 @@
   margin-top: 5px;
   display: none;
   font-weight: 500;
+  animation: errorFadeIn 0.2s ease-out;
+}
+
+@keyframes errorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .form-hint {
@@ -825,7 +858,7 @@
 .accordion-icon {
   font-size: 18px;
   color: var(--cobalt);
-  transition: transform var(--transition-fast);
+  transition: transform var(--transition-normal);
   flex-shrink: 0;
 }
 
@@ -843,6 +876,18 @@
 
 .accordion-item.open .accordion-body {
   display: block;
+  animation: accordionOpen 0.22s ease-out;
+}
+
+@keyframes accordionOpen {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Step Row Walkthrough Helpers */
