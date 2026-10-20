@@ -79,7 +79,60 @@ if (!empty($errors)) {
     exit;
 }
 
-// 3. Enforce Business Rule: Pending Submission Restriction (Atomic Check)
+// 3. Handle Optional Item Photo Upload
+$imageUrl = null;
+$uploadError = null;
+$uploadedFile = $_FILES['item_photo'] ?? ($_FILES['image'] ?? null);
+
+if ($uploadedFile && is_array($uploadedFile) && !empty($uploadedFile['name'])) {
+    if ($uploadedFile['error'] === UPLOAD_ERR_OK) {
+        // Size validation (Max 5MB)
+        $maxBytes = 5 * 1024 * 1024;
+        if ($uploadedFile['size'] > $maxBytes) {
+            http_response_code(422);
+            echo json_encode(['success' => false, 'message' => 'Uploaded photo exceeds the 5MB size limit.']);
+            exit;
+        }
+
+        // Verify MIME type using finfo (not extension alone)
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $mime = finfo_file($finfo, $uploadedFile['tmp_name']);
+        finfo_close($finfo);
+
+        $allowedMimes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (!in_array($mime, $allowedMimes, true)) {
+            http_response_code(422);
+            echo json_encode(['success' => false, 'message' => 'Invalid file format. Please upload a JPG, PNG, or WEBP image.']);
+            exit;
+        }
+
+        $ext = match($mime) {
+            'image/jpeg' => 'jpg',
+            'image/png'  => 'png',
+            'image/webp' => 'webp',
+            default      => 'jpg'
+        };
+
+        $uploadDir = __DIR__ . '/../uploads/donations';
+        if (!is_dir($uploadDir)) {
+            @mkdir($uploadDir, 0755, true);
+            @file_put_contents($uploadDir . '/.htaccess', "Options -ExecCGI\nphp_flag engine off\n<FilesMatch \"\.(php|phtml|php5|php7|php8)$\">\nOrder allow,deny\nDeny from all\n</FilesMatch>");
+        }
+
+        $safeFileName = 'don_' . $userId . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
+        $targetPath = $uploadDir . '/' . $safeFileName;
+
+        if (move_uploaded_file($uploadedFile['tmp_name'], $targetPath)) {
+            $imageUrl = 'uploads/donations/' . $safeFileName;
+        }
+    } elseif ($uploadedFile['error'] !== UPLOAD_ERR_NO_FILE) {
+        http_response_code(422);
+        echo json_encode(['success' => false, 'message' => 'Photo upload failed. Please try again.']);
+        exit;
+    }
+}
+
+// 4. Enforce Business Rule: Pending Submission Restriction (Atomic Check)
 try {
     $pdo->beginTransaction();
 
@@ -115,29 +168,60 @@ try {
         exit;
     }
 
-    // 4. Insert the Donation Record
-    $insertStmt = $pdo->prepare('
-        INSERT INTO donations (
-            user_id, title, category, description, quantity, unit,
-            condition_type, status, pickup_method, pickup_city, pickup_barangay, created_at
-        ) VALUES (
-            :uid, :title, :cat, :desc, :qty, :unit,
-            :cond, "pending", :method, :city, :brgy, NOW()
-        )
-    ');
+    // 5. Insert the Donation Record
+    // Dynamically check if image_url column exists in donations
+    $hasImageCol = false;
+    try {
+        $colCheck = $pdo->query("SHOW COLUMNS FROM donations LIKE 'image_url'");
+        $hasImageCol = ($colCheck && $colCheck->rowCount() > 0);
+    } catch (PDOException $e) {}
 
-    $insertStmt->execute([
-        ':uid'    => $userId,
-        ':title'  => $title,
-        ':cat'    => $category,
-        ':desc'   => $description,
-        ':qty'    => $quantity,
-        ':unit'   => $unit ?: 'pcs',
-        ':cond'   => $conditionType,
-        ':method' => $pickupMethod ?: 'both',
-        ':city'   => $pickupCity,
-        ':brgy'   => $pickupBarangay,
-    ]);
+    if ($hasImageCol && $imageUrl !== null) {
+        $insertStmt = $pdo->prepare('
+            INSERT INTO donations (
+                user_id, title, category, description, image_url, quantity, unit,
+                condition_type, status, pickup_method, pickup_city, pickup_barangay, created_at
+            ) VALUES (
+                :uid, :title, :cat, :desc, :img, :qty, :unit,
+                :cond, "pending", :method, :city, :brgy, NOW()
+            )
+        ');
+        $insertStmt->execute([
+            ':uid'    => $userId,
+            ':title'  => $title,
+            ':cat'    => $category,
+            ':desc'   => $description,
+            ':img'    => $imageUrl,
+            ':qty'    => $quantity,
+            ':unit'   => $unit ?: 'pcs',
+            ':cond'   => $conditionType,
+            ':method' => $pickupMethod ?: 'both',
+            ':city'   => $pickupCity,
+            ':brgy'   => $pickupBarangay,
+        ]);
+    } else {
+        $insertStmt = $pdo->prepare('
+            INSERT INTO donations (
+                user_id, title, category, description, quantity, unit,
+                condition_type, status, pickup_method, pickup_city, pickup_barangay, created_at
+            ) VALUES (
+                :uid, :title, :cat, :desc, :qty, :unit,
+                :cond, "pending", :method, :city, :brgy, NOW()
+            )
+        ');
+        $insertStmt->execute([
+            ':uid'    => $userId,
+            ':title'  => $title,
+            ':cat'    => $category,
+            ':desc'   => $description,
+            ':qty'    => $quantity,
+            ':unit'   => $unit ?: 'pcs',
+            ':cond'   => $conditionType,
+            ':method' => $pickupMethod ?: 'both',
+            ':city'   => $pickupCity,
+            ':brgy'   => $pickupBarangay,
+        ]);
+    }
 
     $newDonationId = (int)$pdo->lastInsertId();
 

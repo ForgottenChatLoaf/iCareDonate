@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activity Log — iCareDonate</title>
+  <meta name="description" content="Review verified activity history, status updates, donation actions, and coordination events.">
+  <meta name="theme-color" content="#1F4FA3">
+
+  <script>
+    document.documentElement.setAttribute('data-theme', 'light');
+    try { localStorage.removeItem('icd-theme'); } catch(e) {}
+    (function() {
+      if (!document.querySelector('base')) {
+        var p = window.location.pathname;
+        var isSub = p.includes('/admin') || p.includes('/user');
+        if (isSub) {
+          var f = p.includes('/admin') ? 'admin' : 'user';
+          var i = p.indexOf('/' + f);
+          var b = document.createElement('base');
+          b.href = window.location.origin + p.substring(0, i) + '/' + f + '/';
+          document.head.prepend(b);
+        }
+      }
+    })();
+  </script>
+
+  <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
+  <link rel="stylesheet" href="../css/variables.css">
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/pages/user.css">
+</head>
+<body>
+
+<div class="user-layout">
+
+  <!-- USER SIDEBAR -->
+  <aside class="user-sidebar" role="complementary" aria-label="User navigation">
+    <div class="brand-sidebar-container" role="banner">
+      <a href="../index.html" class="brand-sidebar-logo" aria-label="iCareDonate Home">
+        <img src="../assets/images/logo.svg" class="brand-sidebar-icon" alt="iCareDonate Logo" width="32" height="32">
+        <span class="brand-sidebar-wordmark">
+          <span class="brand-split-blue">i</span><span class="brand-split-orange">Care</span><span class="brand-split-blue">Donate</span>
+        </span>
+      </a>
+      <span class="brand-sidebar-badge" aria-label="User Portal">PORTAL</span>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="User dashboard sections">
+      <a href="dashboard.html" class="sidebar-link" data-nav="dashboard">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Donations &amp; Requests</div>
+
+      <a href="offer-donation.html" class="sidebar-link sidebar-link--highlight" data-nav="offer-donation">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="16"/><line x1="8" x2="16" y1="12" y2="12"/></svg>
+        <span>Post Donation</span>
+      </a>
+
+      <a href="donations.html" class="sidebar-link" data-nav="donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <span>My Donations</span>
+      </a>
+
+      <a href="browse-donations.html" class="sidebar-link" data-nav="browse-donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+        <span>Browse Resources</span>
+      </a>
+
+      <a href="requests.html" class="sidebar-link" data-nav="requests">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"/><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"/><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg>
+        <span>My Requests</span>
+      </a>
+
+      <a href="transactions.html" class="sidebar-link" data-nav="transactions">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+        <span>Transactions &amp; Claims</span>
+      </a>
+
+      <a href="history.html" class="sidebar-link" data-nav="history">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>History</span>
+      </a>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Communication</div>
+
+      <a href="activity-log.html" class="sidebar-link sidebar-link--active" data-nav="activity-log">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span>Activity Log</span>
+      </a>
+
+      <a href="notifications.html" class="sidebar-link" data-nav="notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+        <span>Notifications</span>
+        <span class="sidebar-badge" id="sidebarNotifBadge" style="display:none;">0</span>
+      </a>
+
+      <a href="support.html" class="sidebar-link" data-nav="support">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Support Requests</span>
+      </a>
+
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Account</div>
+
+      <a href="profile.html" class="sidebar-link" data-nav="profile">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Profile &amp; Settings</span>
+      </a>
+
+      <a href="../help-center.html" class="sidebar-link" data-nav="help">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>Help Center</span>
+      </a>
+
+      <a href="../logout.html" class="sidebar-link sidebar-link--logout" id="sidebarLogoutBtn" data-nav="logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
+        <span>Logout</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- USER MAIN -->
+  <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+  <div class="user-main">
+    <header class="user-topbar">
+      <div style="display:flex;align-items:center;gap:10px;">
+        <button type="button" class="user-sidebar-toggle" id="userSidebarToggle" aria-label="Toggle navigation" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+        <h1 style="font-size:20px;font-weight:700;color:var(--text, #1E293B);margin:0;">Activity Log</h1>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:12px;">
+        <a href="dashboard.html" class="btn btn-outline" style="font-size:13.5px;padding:6px 14px;">&larr; Dashboard</a>
+        <div class="topbar-dropdown-wrap">
+          <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-avatar-circle" id="topbarUserInitials">CM</span>
+            <span id="topbarUserName">Community Member</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="topbar-chevron"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="topbar-dropdown" id="topbarDropdownMenu" role="menu" aria-label="User account menu">
+            <a href="profile.html" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <span>Profile &amp; Settings</span>
+            </a>
+            <a href="../help-center.html" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Help Center</span>
+            </a>
+            <div class="dropdown-divider"></div>
+            <a href="../logout.html" class="sidebar-link--logout dropdown-danger" role="menuitem">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
+              <span>Log Out</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="user-content" style="padding:28px 32px;">
+
+      <!-- Notice Banner: Transparent Coordination Model -->
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-left:4px solid #16A34A;border-radius:10px;padding:16px 20px;margin-bottom:24px;">
+        <div style="display:flex;gap:12px;align-items:flex-start;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+          <div>
+            <div style="font-weight:700;color:#166534;font-size:14.5px;margin-bottom:2px;">Account &amp; Transaction Audit Trail</div>
+            <div style="font-size:13.5px;color:#14532D;line-height:1.5;">
+              This log records all formal actions, submissions, verification decisions, and coordination milestones associated with your account.
+              For direct communication regarding active claims, use your mutually agreed external channels (Phone, SMS, Messenger, Discord) via <a href="transactions.html" style="color:#166534;font-weight:700;text-decoration:underline;">Transactions &amp; Claims</a>.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Controls Bar -->
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="activityFilterTabs">
+          <button type="button" class="btn btn-sm btn-primary act-filter-btn" data-filter="all">All Activity</button>
+          <button type="button" class="btn btn-sm btn-outline act-filter-btn" data-filter="donations">Donations</button>
+          <button type="button" class="btn btn-sm btn-outline act-filter-btn" data-filter="requests">Requests</button>
+          <button type="button" class="btn btn-sm btn-outline act-filter-btn" data-filter="system">System Updates</button>
+        </div>
+
+        <div style="font-size:13px;color:#64748B;">
+          Showing: <strong id="activityCountLabel">0</strong> recorded events
+        </div>
+      </div>
+
+      <!-- Activity Timeline Container -->
+      <div id="activityTimelineList" style="display:flex;flex-direction:column;gap:12px;">
+        <div style="padding:48px 24px;text-align:center;background:#fff;border:1px solid #E2E8F0;border-radius:12px;color:#64748B;">
+          <div class="btn-spinner" style="display:inline-block;width:24px;height:24px;border:2.5px solid #CBD5E1;border-top-color:var(--color-primary,#1F4FA3);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px;"></div>
+          <div style="font-size:14px;">Loading your activity log...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script src="../js/mock-data.js"></script>
+<script src="../js/user-portal.js?v=defense3"></script>
+
+<script>
+(function() {
+  'use strict';
+
+  let currentFilter = 'all';
+  let allActivities = [];
+
+  function loadActivities() {
+    const container = document.getElementById('activityTimelineList');
+    const actionsBase = (window.icd_actionsBase ? window.icd_actionsBase() : '');
+
+    fetch(actionsBase + '/actions/activity_log.php?type=' + encodeURIComponent(currentFilter), {
+      headers: { 'Accept': 'application/json' },
+      credentials: 'same-origin'
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data && data.success && Array.isArray(data.activities)) {
+        allActivities = data.activities;
+        renderActivities(allActivities);
+      } else {
+        renderFallbackActivities();
+      }
+    })
+    .catch(() => {
+      renderFallbackActivities();
+    });
+  }
+
+  function renderFallbackActivities() {
+    // Generate authorized activities from localStorage user records
+    const list = [];
+    try {
+      const dons = JSON.parse(localStorage.getItem('icd_user_donations') || '[]');
+      dons.forEach(d => {
+        list.push({
+          id: 'local-don-' + (d.id || Math.random()),
+          type: 'donation',
+          category: 'Donations',
+          title: d.title || 'Donation Item',
+          description: d.status === 'pending'
+            ? 'Donation listing submitted and awaiting admin verification.'
+            : 'Donation listing active in the community catalog.',
+          status: d.status || 'pending',
+          time_ago: 'Recently',
+          created_at: d.created_at || new Date().toISOString(),
+          link: 'donations.html'
+        });
+      });
+
+      const reqs = JSON.parse(localStorage.getItem('icd_user_requests') || '[]');
+      reqs.forEach(r => {
+        list.push({
+          id: 'local-req-' + (r.id || Math.random()),
+          type: 'request',
+          category: 'Requests',
+          title: r.item_title || 'Resource Request',
+          description: 'Assistance request submitted with complete requester coordination details.',
+          status: r.status || 'pending',
+          time_ago: 'Recently',
+          created_at: r.created_at || new Date().toISOString(),
+          link: 'requests.html'
+        });
+      });
+    } catch(e) {}
+
+    // Default sample entries if brand-new account
+    if (list.length === 0) {
+      list.push(
+        {
+          id: 'welcome-1',
+          type: 'system',
+          category: 'Account',
+          title: 'Account Registered & Community Profile Active',
+          description: 'Your iCareDonate community account was created. You can browse resources, offer donations, and submit requests.',
+          status: 'completed',
+          time_ago: 'Today',
+          created_at: new Date().toISOString(),
+          link: 'profile.html'
+        }
+      );
+    }
+
+    allActivities = list;
+    renderActivities(allActivities);
+  }
+
+  function renderActivities(items) {
+    const container = document.getElementById('activityTimelineList');
+    const countLabel = document.getElementById('activityCountLabel');
+    if (!container) return;
+
+    let filtered = items;
+    if (currentFilter !== 'all') {
+      filtered = items.filter(i => i.type === currentFilter);
+    }
+
+    if (countLabel) countLabel.textContent = filtered.length;
+
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div style="background:#fff;border:1px dashed #CBD5E1;border-radius:12px;padding:48px 24px;text-align:center;color:#64748B;">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" style="margin:0 auto 12px;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <div style="font-weight:700;font-size:16px;color:#1E293B;margin-bottom:6px;">No activities recorded yet</div>
+          <div style="font-size:13.5px;max-width:420px;margin:0 auto;">
+            When you post donations, submit assistance requests, or complete handovers, your milestones will automatically appear here.
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = filtered.map(item => {
+      let badgeClass = 'badge-info';
+      let statusLabel = item.status || 'Updated';
+      if (item.status === 'completed' || item.status === 'approved') badgeClass = 'badge-success';
+      if (item.status === 'pending' || item.status === 'under_review') badgeClass = 'badge-warning';
+      if (item.status === 'rejected' || item.status === 'cancelled') badgeClass = 'badge-danger';
+
+      let typeIcon = `
+        <div style="width:40px;height:40px;border-radius:10px;background:#F1F5F9;display:flex;align-items:center;justify-content:center;color:#1E293B;flex-shrink:0;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+      `;
+
+      if (item.type === 'donation') {
+        typeIcon = `
+          <div style="width:40px;height:40px;border-radius:10px;background:#E0F2FE;display:flex;align-items:center;justify-content:center;color:#0369A1;flex-shrink:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>
+          </div>
+        `;
+      } else if (item.type === 'request') {
+        typeIcon = `
+          <div style="width:40px;height:40px;border-radius:10px;background:#FEF3C7;display:flex;align-items:center;justify-content:center;color:#B45309;flex-shrink:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="card" style="padding:18px 22px;border:1px solid #E2E8F0;border-radius:12px;background:#fff;display:flex;justify-content:space-between;align-items:flex-start;gap:16px;box-shadow:0 1px 2px rgba(0,0,0,0.03);">
+          <div style="display:flex;gap:14px;align-items:flex-start;">
+            ${typeIcon}
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+                <span class="badge ${badgeClass}" style="font-size:11px;text-transform:capitalize;">${statusLabel}</span>
+                <span style="font-size:12px;color:#94A3B8;">&bull;</span>
+                <span style="font-size:12px;font-weight:600;color:#64748B;">${item.category || 'Activity'}</span>
+                <span style="font-size:12px;color:#94A3B8;">&bull;</span>
+                <span style="font-size:12px;color:#94A3B8;">${item.time_ago || ''}</span>
+              </div>
+              <h3 style="font-size:15.5px;font-weight:700;color:#1E293B;margin:0 0 4px;">${item.title}</h3>
+              <p style="font-size:13.5px;color:#64748B;margin:0;line-height:1.4;">${item.description}</p>
+            </div>
+          </div>
+          <div style="flex-shrink:0;text-align:right;">
+            ${item.link ? `<a href="${item.link}" class="btn btn-sm btn-outline" style="font-size:12px;padding:4px 12px;">View &rarr;</a>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // Filter Buttons
+  document.querySelectorAll('.act-filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.act-filter-btn').forEach(b => {
+        b.classList.remove('btn-primary');
+        b.classList.add('btn-outline');
+      });
+      this.classList.remove('btn-outline');
+      this.classList.add('btn-primary');
+      currentFilter = this.getAttribute('data-filter') || 'all';
+      loadActivities();
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', loadActivities);
+})();
+</script>
+
+<!-- Mobile sidebar toggle JS -->
+<script>
+(function() {
+  var sidebar = document.querySelector('.admin-sidebar, .user-sidebar');
+  var backdrop = document.getElementById('sidebarBackdrop');
+  var toggleBtn = document.getElementById('adminSidebarToggle') || document.getElementById('userSidebarToggle');
+  function openSidebar() { if(sidebar) sidebar.classList.add('sidebar-open'); if(backdrop) backdrop.classList.add('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','true'); }
+  function closeSidebar() { if(sidebar) sidebar.classList.remove('sidebar-open'); if(backdrop) backdrop.classList.remove('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','false'); }
+  if(toggleBtn) toggleBtn.addEventListener('click', function() { sidebar && sidebar.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
+  if(backdrop) backdrop.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeSidebar(); });
+})();
+</script>
+</body>
+</html>

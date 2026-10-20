@@ -91,9 +91,9 @@
 
       <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Communication</div>
 
-      <a href="messages.html" class="sidebar-link" data-nav="messages">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <span>Messages</span>
+      <a href="activity-log.html" class="sidebar-link" data-nav="activity-log">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+        <span>Activity Log</span>
       </a>
 
       <a href="notifications.html" class="sidebar-link" data-nav="notifications">
@@ -308,14 +308,25 @@
               4. Item Photo
             </h3>
 
-            <div class="file-dropzone" id="offer-dropzone" style="border:2px dashed #CBD5E1;border-radius:10px;padding:32px 20px;text-align:center;background:#F8FAFC;cursor:pointer;">
+            <div class="file-dropzone" id="offer-dropzone" style="border:2px dashed #CBD5E1;border-radius:10px;padding:32px 20px;text-align:center;background:#F8FAFC;cursor:pointer;transition:all 0.2s ease;">
               <div class="file-dropzone-icon" style="margin-bottom:10px;color:var(--color-primary, #1F4FA3);">
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin:0 auto;"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
               </div>
               <div class="file-dropzone-text" style="font-weight:600;font-size:14px;color:var(--text, #1E293B);">Click to choose photo or drag &amp; drop</div>
               <div class="file-dropzone-sub" style="font-size:12px;color:#64748B;margin-top:4px;">JPG, PNG, or WEBP up to 5MB</div>
-              <input type="file" id="item-image" style="display:none;" accept="image/*">
+              <input type="file" id="item-image" name="item_photo" style="display:none;" accept="image/jpeg,image/png,image/webp">
             </div>
+
+            <!-- Preview Card -->
+            <div class="file-preview-wrap" id="offer-preview-wrap" style="display:none;align-items:center;gap:14px;padding:12px 16px;margin-top:12px;background:#fff;border:1px solid #E2E8F0;border-radius:8px;" data-show-as="flex">
+              <img src="" alt="Item preview" class="file-preview-thumb" id="offer-preview-thumb" style="width:56px;height:56px;border-radius:6px;object-fit:cover;border:1px solid #CBD5E1;">
+              <div class="file-preview-details" style="flex:1;text-align:left;">
+                <div class="file-preview-name" id="offer-preview-name" style="font-size:13.5px;font-weight:600;color:#1E293B;"></div>
+                <div class="file-preview-size" id="offer-preview-size" style="font-size:12px;color:#64748B;"></div>
+              </div>
+              <button type="button" class="btn btn-sm btn-outline file-preview-remove" id="offer-preview-remove" style="font-size:12px;padding:4px 10px;color:#DC2626;border-color:#FCA5A5;">&times; Remove Photo</button>
+            </div>
+            <div id="offer-file-error" style="display:none;color:#DC2626;font-size:12.5px;margin-top:6px;font-weight:600;"></div>
           </div>
 
           <!-- Submit Buttons -->
@@ -406,13 +417,112 @@
     }
   }
 
-  // Handle Form Submit
+  // Dropzone show/hide helper
+  function showPreviewWrap(wrap, show) {
+    if (!wrap) return;
+    wrap.style.display = show ? 'flex' : 'none';
+  }
+
+  // Dropzone wiring (independent of forms.js — handles preview for offer form)
+  (function() {
+    const dz = document.getElementById('offer-dropzone');
+    const fileInput = document.getElementById('item-image');
+    const previewWrap = document.getElementById('offer-preview-wrap');
+    const thumb = document.getElementById('offer-preview-thumb');
+    const nameEl = document.getElementById('offer-preview-name');
+    const sizeEl = document.getElementById('offer-preview-size');
+    const removeBtn = document.getElementById('offer-preview-remove');
+    const errorEl = document.getElementById('offer-file-error');
+
+    if (!dz || !fileInput) return;
+
+    function formatSize(bytes) {
+      if (bytes < 1024) return bytes + ' B';
+      if (bytes < 1048576) return (bytes / 1024).toFixed(1) + ' KB';
+      return (bytes / 1048576).toFixed(1) + ' MB';
+    }
+
+    function clearError() {
+      if (errorEl) { errorEl.textContent = ''; errorEl.style.display = 'none'; }
+    }
+
+    function showError(msg) {
+      if (errorEl) { errorEl.textContent = msg; errorEl.style.display = 'block'; }
+    }
+
+    function handleFile(file) {
+      clearError();
+      if (!file) return;
+      const MAX = 5 * 1024 * 1024;
+      if (file.size > MAX) {
+        showError('File too large. Please upload a photo under 5MB.');
+        fileInput.value = '';
+        showPreviewWrap(previewWrap, false);
+        return;
+      }
+      const allowed = ['image/jpeg', 'image/png', 'image/webp'];
+      if (!allowed.includes(file.type)) {
+        showError('Invalid file type. Please upload a JPG, PNG, or WEBP image.');
+        fileInput.value = '';
+        showPreviewWrap(previewWrap, false);
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        if (thumb) thumb.src = ev.target.result;
+        if (nameEl) nameEl.textContent = file.name;
+        if (sizeEl) sizeEl.textContent = formatSize(file.size);
+        showPreviewWrap(previewWrap, true);
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Click to open file picker
+    dz.addEventListener('click', function() { fileInput.click(); });
+    fileInput.addEventListener('change', function() {
+      if (this.files && this.files[0]) handleFile(this.files[0]);
+    });
+
+    // Drag & Drop
+    ['dragenter', 'dragover'].forEach(ev => {
+      dz.addEventListener(ev, e => { e.preventDefault(); dz.style.borderColor = 'var(--color-primary, #1F4FA3)'; dz.style.background = '#EFF6FF'; });
+    });
+    ['dragleave', 'drop'].forEach(ev => {
+      dz.addEventListener(ev, e => { e.preventDefault(); dz.style.borderColor = '#CBD5E1'; dz.style.background = '#F8FAFC'; });
+    });
+    dz.addEventListener('drop', function(e) {
+      if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+        // Assign to input for FormData to pick up
+        try {
+          const dt = new DataTransfer();
+          dt.items.add(e.dataTransfer.files[0]);
+          fileInput.files = dt.files;
+        } catch(err) {}
+        handleFile(e.dataTransfer.files[0]);
+      }
+    });
+
+    // Remove photo
+    if (removeBtn) {
+      removeBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        fileInput.value = '';
+        if (thumb) thumb.src = '';
+        if (nameEl) nameEl.textContent = '';
+        if (sizeEl) sizeEl.textContent = '';
+        showPreviewWrap(previewWrap, false);
+        clearError();
+      });
+    }
+  })();
+
+  // Handle Form Submit — uses FormData for multipart (required for file upload)
   const form = document.getElementById('post-donation-form');
   if (form) {
     form.addEventListener('submit', function(e) {
       e.preventDefault();
       const title = document.getElementById('title').value.trim();
-      const category = document.getElementById('category').value;
+      const category = document.getElementById('category_id').value; // fixed id
       const condition = document.getElementById('condition_type').value;
       const quantity = parseInt(document.getElementById('quantity_total').value, 10) || 1;
       const unit = document.getElementById('unit').value.trim() || 'pcs';
@@ -438,30 +548,32 @@
         submitBtn.textContent = 'Submitting Listing...';
       }
 
-      const payload = {
-        title,
-        category,
-        description,
-        quantity,
-        unit,
-        condition_type: condition,
-        pickup_method: pickupMethod,
-        pickup_city: city,
-        pickup_barangay: barangay,
-        donor_name: donorName,
-        donor_phone: donorPhone
-      };
+      // Build multipart FormData so file upload is included
+      const fd = new FormData();
+      fd.append('title', title);
+      fd.append('category', category);
+      fd.append('description', description);
+      fd.append('quantity_total', String(quantity));
+      fd.append('unit', unit);
+      fd.append('condition_type', condition);
+      fd.append('pickup_method', pickupMethod);
+      fd.append('pickup_city', city);
+      fd.append('pickup_barangay', barangay);
+      fd.append('donor_name', donorName);
+      fd.append('donor_phone', donorPhone);
+
+      const fileInput = document.getElementById('item-image');
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        fd.append('item_photo', fileInput.files[0]);
+      }
 
       const actionsBase = (window.icd_actionsBase ? window.icd_actionsBase() : '');
 
       fetch(actionsBase + '/actions/submit_donation.php', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
+        headers: { 'Accept': 'application/json' }, // NO Content-Type — let browser set multipart boundary
         credentials: 'same-origin',
-        body: JSON.stringify(payload)
+        body: fd
       })
       .then(res => res.json().then(data => ({ status: res.status, body: data })))
       .then(res => {
@@ -470,11 +582,10 @@
           const banner = document.getElementById('pending-restriction-banner');
           if (banner) {
             banner.style.display = 'block';
-            document.getElementById('pending-restriction-msg').textContent = res.body.message;
+            const msgEl = document.getElementById('pending-restriction-msg');
+            if (msgEl) msgEl.textContent = res.body.message;
           }
-          if (submitBtn) {
-            submitBtn.textContent = 'Submission Blocked';
-          }
+          if (submitBtn) { submitBtn.disabled = false; submitBtn.textContent = 'Submit Listing for Verification'; }
           return;
         }
 
@@ -487,19 +598,15 @@
           return;
         }
 
-        // Successfully submitted! Add to local donations for instant reflection
+        // Successfully submitted — update local cache
         try {
           const donList = JSON.parse(localStorage.getItem('icd_user_donations') || '[]');
           donList.unshift({
             id: res.body.donation_id || (100 + Math.floor(Math.random() * 500)),
-            title: title,
-            category: category,
-            quantity: quantity,
-            unit: unit,
+            title, category, quantity, unit,
             status: 'pending',
             created_at: new Date().toISOString().split('T')[0],
-            city: city,
-            barangay: barangay
+            city, barangay
           });
           localStorage.setItem('icd_user_donations', JSON.stringify(donList));
         } catch(e) {}
@@ -507,34 +614,25 @@
         if (window.showPortalFlash) {
           window.showPortalFlash('success', 'Donation listing submitted successfully! Community moderators will review and publish your listing.');
         }
-        setTimeout(() => {
-          window.location.href = 'donations.html';
-        }, 1500);
+        setTimeout(() => { window.location.href = 'donations.html'; }, 1500);
       })
-      .catch(err => {
-        // Fallback for mock environments
+      .catch(() => {
+        // Network/offline fallback
         try {
           const donList = JSON.parse(localStorage.getItem('icd_user_donations') || '[]');
           donList.unshift({
             id: 100 + Math.floor(Math.random() * 500),
-            title: title,
-            category: category,
-            quantity: quantity,
-            unit: unit,
+            title, category, quantity, unit,
             status: 'pending',
             created_at: new Date().toISOString().split('T')[0],
-            city: city,
-            barangay: barangay
+            city, barangay
           });
           localStorage.setItem('icd_user_donations', JSON.stringify(donList));
         } catch(e) {}
-
         if (window.showPortalFlash) {
           window.showPortalFlash('success', 'Donation listing submitted successfully! Community moderators will review and publish your listing.');
         }
-        setTimeout(() => {
-          window.location.href = 'donations.html';
-        }, 1500);
+        setTimeout(() => { window.location.href = 'donations.html'; }, 1500);
       });
     });
   }
