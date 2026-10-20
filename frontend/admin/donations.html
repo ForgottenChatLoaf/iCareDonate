@@ -10,6 +10,19 @@
   <script>
     document.documentElement.setAttribute('data-theme', 'light');
     try { localStorage.removeItem('icd-theme'); } catch(e) {}
+    (function() {
+      if (!document.querySelector('base')) {
+        var p = window.location.pathname;
+        var isSub = p.includes('/admin') || p.includes('/user');
+        if (isSub) {
+          var f = p.includes('/admin') ? 'admin' : 'user';
+          var i = p.indexOf('/' + f);
+          var b = document.createElement('base');
+          b.href = window.location.origin + p.substring(0, i) + '/' + f + '/';
+          document.head.prepend(b);
+        }
+      }
+    })();
   </script>
 
   <link rel="icon" type="image/svg+xml" href="../assets/images/logo.svg">
@@ -394,7 +407,7 @@
             
             <!-- Thumbnail Image -->
             <div style="width:120px;height:100px;background:#F1F5F9;border-radius:var(--radius-md);overflow:hidden;display:flex;align-items:center;justify-content:center;">
-              ${d.primary_image ? `<img src="${d.primary_image}" alt="" style="width:100%;height:100%;object-fit:cover;">` : `
+              ${d.primary_image ? `<img src="${(d.primary_image.startsWith('http') || d.primary_image.startsWith('../')) ? d.primary_image : ('../' + d.primary_image)}" alt="" style="width:100%;height:100%;object-fit:cover;">` : `
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>
               `}
             </div>

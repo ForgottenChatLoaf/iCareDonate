@@ -155,7 +155,7 @@
           localStorage.removeItem('icd_user');
           sessionStorage.clear();
         } catch(e) {}
-        const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+        const isSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
         window.location.href = isSubdir ? '../logout.html' : 'logout.html';
       });
 
@@ -198,7 +198,7 @@
     } catch(e) {}
 
     if (!token || !user) {
-      const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+      const isSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
       const page = window.location.pathname.split('/').pop() || 'dashboard.html';
       const target = isSubdir ? `user/${page}${window.location.search}` : page;
       window.location.href = isSubdir ? `../login.html?redirect=${encodeURIComponent(target)}` : `login.html?redirect=${encodeURIComponent(target)}`;
@@ -285,7 +285,7 @@
         localStorage.removeItem('icd_token');
         localStorage.removeItem('icd_user');
       } catch(e) {}
-      const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+      const isSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
       const page = window.location.pathname.split('/').pop() || 'dashboard.html';
       const target = isSubdir ? `user/${page}${window.location.search}` : page;
       window.location.href = isSubdir ? `../login.html?redirect=${encodeURIComponent(target)}` : `login.html?redirect=${encodeURIComponent(target)}`;

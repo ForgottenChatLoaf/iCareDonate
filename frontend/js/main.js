@@ -176,7 +176,7 @@
   // GLOBAL IMAGE FALLBACK SAFEGUARD
   // ============================================================
   function initImageFallbacks() {
-    const isInSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+    const isInSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
     const FALLBACK_SRC = isInSubdir ? '../assets/images/placeholder.svg' : 'assets/images/placeholder.svg';
     function attachFallback(img) {
       if (img.dataset.hasFallback) return;

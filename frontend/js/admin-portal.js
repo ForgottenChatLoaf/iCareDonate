@@ -161,7 +161,7 @@
           localStorage.removeItem('icd_user');
           sessionStorage.clear();
         } catch(e) {}
-        const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+        const isSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
         window.location.href = isSubdir ? '../logout.html' : 'logout.html';
       });
 
@@ -204,7 +204,7 @@
     } catch(e) {}
 
     if (!token || !user) {
-      const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+      const isSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
       const page = window.location.pathname.split('/').pop() || 'index.html';
       const target = isSubdir ? `admin/${page}${window.location.search}` : page;
       window.location.href = isSubdir ? `../login.html?redirect=${encodeURIComponent(target)}` : `login.html?redirect=${encodeURIComponent(target)}`;
@@ -212,7 +212,7 @@
     }
 
     if (user.role !== 'admin' && user.role !== 'superadmin') {
-      const isSubdir = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+      const isSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
       window.location.href = isSubdir ? '../user/dashboard.html' : 'user-dashboard.html';
       return false;
     }

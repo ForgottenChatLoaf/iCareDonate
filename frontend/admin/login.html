@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
+  <script>
+    (function() {
+      if (!document.querySelector('base')) {
+        var p = window.location.pathname;
+        var isSub = p.includes('/admin') || p.includes('/user');
+        if (isSub) {
+          var f = p.includes('/admin') ? 'admin' : 'user';
+          var i = p.indexOf('/' + f);
+          var b = document.createElement('base');
+          b.href = window.location.origin + p.substring(0, i) + '/' + f + '/';
+          document.head.prepend(b);
+        }
+      }
+    })();
+  </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Log In | iCareDonate</title>

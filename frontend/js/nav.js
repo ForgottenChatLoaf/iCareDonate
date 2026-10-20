@@ -113,7 +113,7 @@
       user = JSON.parse(localStorage.getItem('icd_user') || 'null');
     } catch(e) {}
 
-    const isSub = window.location.pathname.includes('/user/') || window.location.pathname.includes('/admin/');
+    const isSub = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
     const logoutTarget = isSub ? '../logout.html' : 'logout.html';
 
     const authBtns = document.querySelectorAll('.btn-pub-auth, .mobile-link--accent');
