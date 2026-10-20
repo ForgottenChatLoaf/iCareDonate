@@ -378,9 +378,44 @@ html.js-enabled .reveal-on-scroll:not(.is-visible) {
    GLOBAL PAGE-ENTRY ANIMATION & TRANSITIONS (Phase 2 & 3)
    ============================================================ */
 
-/* Modern View Transitions API for cross-document page navigations */
-@view-transition {
-  navigation: auto;
+/* View Transitions disabled — caused visible navigation delay in MPA architecture */
+/* @view-transition { navigation: auto; } */
+
+/* ============================================================
+   CUSTOM SCROLLBAR — Global (Chrome/Edge/Safari + Firefox)
+   ============================================================ */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--cobalt, #1F4FA3) transparent;
+}
+
+/* Chrome, Edge, Safari */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--cobalt, #1F4FA3);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--coral, #E8533A);
+  background-clip: padding-box;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 /* Subtle, smooth, zero-layout-jump page entry */
@@ -397,7 +432,7 @@ html.js-enabled .reveal-on-scroll:not(.is-visible) {
 .user-content,
 .admin-content,
 main {
-  animation: pageFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  animation: pageFadeIn 0.15s ease both;
 }
 
 /* ============================================================
