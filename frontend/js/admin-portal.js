@@ -246,12 +246,23 @@
   // ─────────────────────────────────────────────────────────────
   window.AdminAPI = {
     getBaseUrl: function(endpoint) {
-      // Determine root-relative path to actions/
-      const p = window.location.pathname;
-      if (p.includes('/frontend/admin') || p.includes('/admin')) {
-        return `../../actions/${endpoint}`;
+      if (typeof window.icd_actionsBase === 'function') {
+        const b = window.icd_actionsBase();
+        return `${b}/actions/${endpoint}`;
       }
-      return `actions/${endpoint}`;
+      const host = window.location.hostname;
+      if (host === 'localhost' || host === '127.0.0.1') {
+        const p = window.location.pathname;
+        const idx = p.indexOf('/frontend/');
+        if (idx !== -1) {
+          return `${p.substring(0, idx)}/actions/${endpoint}`;
+        }
+        if (p.includes('/admin')) {
+          return `../../actions/${endpoint}`;
+        }
+        return `actions/${endpoint}`;
+      }
+      return `https://icaredonate.onrender.com/actions/${endpoint}`;
     },
 
     request: async function(endpoint, options = {}) {
@@ -377,6 +388,27 @@
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
+      });
+    },
+
+    getSupportTickets: function(params = {}) {
+      const q = new URLSearchParams(params).toString();
+      return this.request(`support_tickets.php${q ? '?' + q : ''}`);
+    },
+
+    updateSupportTicket: function(id, action, reply = '') {
+      return this.request('support_tickets.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action, reply })
+      });
+    },
+
+    createAdmin: function(data) {
+      return this.request('admin_users.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       });
     }
   };

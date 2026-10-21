@@ -164,7 +164,7 @@
         </div>
 
         <!-- ── Quick Test Panel (dev / localhost only) ─────── -->
-        <div class="quick-test" id="quick-test-panel" role="region" aria-label="Quick test credentials">
+        <div class="quick-test" id="quick-test-panel" style="display:none;" role="region" aria-label="Quick test credentials">
           <div class="quick-test__label">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
               <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2.2"
@@ -425,6 +425,13 @@
         panel.style.borderColor = 'var(--cobalt)';
         setTimeout(function () { panel.style.borderColor = ''; }, 700);
       }
+    }
+
+    var panelEl = document.getElementById('quick-test-panel');
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      if (panelEl) panelEl.style.display = 'block';
+    } else {
+      if (panelEl) panelEl.remove();
     }
 
     document.querySelectorAll('.qt-btn[data-email]').forEach(function (btn) {

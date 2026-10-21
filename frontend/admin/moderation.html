@@ -286,10 +286,14 @@
     window.showAdminFlash('info', 'Problem report dismissed.');
   }
 
-  function archiveReportTarget(donationId) {
-    const res = window.MockStore.archiveDonation(donationId, 'Archived following community report validation.');
-    if (res.success) {
+  async function archiveReportTarget(donationId) {
+    try {
+      if (window.AdminAPI) {
+        await window.AdminAPI.updateDonation(donationId, 'archive', 'Archived following community report validation.');
+      }
       window.showAdminFlash('success', `Donation #${donationId} archived successfully.`);
+    } catch (err) {
+      window.showAdminFlash('error', err.message || `Failed to archive donation #${donationId}.`);
     }
   }
 </script>

@@ -265,11 +265,7 @@ async function loadLogs(page = 1) {
   if (to)     params.append('to', to);
 
   try {
-    const res = await fetch(`../../actions/admin_logs.php?${params.toString()}`);
-    if (!res.ok) {
-      throw new Error(`Server returned HTTP ${res.status}`);
-    }
-    const data = await res.json();
+    const data = await window.AdminAPI.getLogs(Object.fromEntries(params.entries()));
     if (!data.success) {
       throw new Error(data.message || 'Failed to load audit logs.');
     }
@@ -412,9 +408,8 @@ async function handleExportLogs() {
   if (to)     params.append('to', to);
 
   try {
-    const res = await fetch(`../../actions/admin_logs.php?${params.toString()}`);
-    if (!res.ok) throw new Error('Failed to fetch logs for export.');
-    const data = await res.json();
+    params.set('limit', '1000');
+    const data = await window.AdminAPI.getLogs(Object.fromEntries(params.entries()));
     const exportData = (data.logs && data.logs.length > 0) ? data.logs : currentLogs;
 
     if (!exportData || exportData.length === 0) {

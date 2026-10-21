@@ -182,8 +182,10 @@ $base = 'frontend/';
         <?php endif; ?>
 
         <!-- Quick Test Panel — local development only -->
-        <!-- IMPORTANT: This panel is for classroom demonstration only.          -->
-        <!-- Remove or gate with APP_ENV before any non-local deployment.        -->
+        <?php
+        $isLocalEnv = (getenv('APP_ENV') !== 'production' && !isset($_SERVER['RENDER']) && !isset($_SERVER['VERCEL']));
+        if ($isLocalEnv):
+        ?>
         <div class="quick-test" id="quick-test-panel" role="region" aria-label="Quick test credentials">
           <div class="quick-test__label">
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -221,6 +223,7 @@ $base = 'frontend/';
             </button>
           </div>
         </div>
+        <?php endif; ?>
 
         <!-- Login Form — POSTs to server, no JavaScript required to authenticate -->
         <form id="user-login-form" method="POST" action="actions/login_process.php" novalidate>

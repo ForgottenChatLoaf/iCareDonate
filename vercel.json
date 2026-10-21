@@ -15,5 +15,11 @@
     { "source": "/user/index.php", "destination": "/user/dashboard.html", "permanent": false },
     { "source": "/admin-dashboard.html", "destination": "/admin/index.html", "permanent": false },
     { "source": "/user-dashboard.html", "destination": "/user/dashboard.html", "permanent": false }
+  ],
+  "rewrites": [
+    {
+      "source": "/actions/:path*",
+      "destination": "https://icaredonate.onrender.com/actions/:path*"
+    }
   ]
 }

@@ -44,7 +44,7 @@ $pendingRequest  = null;
 
 try {
     // 1. Check for pending donations
-    $stmtDon = $pdo->prepare('SELECT id, title, status, created_at FROM donations WHERE donor_id = :uid AND status = "pending" LIMIT 1');
+    $stmtDon = $pdo->prepare("SELECT id, title, status, created_at FROM donations WHERE donor_id = :uid AND status = 'pending' LIMIT 1");
     $stmtDon->execute([':uid' => $userId]);
     $pendingDonation = $stmtDon->fetch();
 } catch (PDOException $e) {
@@ -53,13 +53,13 @@ try {
 
 try {
     // 2. Check for pending resource requests
-    $stmtReq = $pdo->prepare('
-        SELECT r.id, COALESCE(d.title, "Assistance Request") AS item_title, r.status, r.created_at
+    $stmtReq = $pdo->prepare("
+        SELECT r.id, COALESCE(d.title, 'Assistance Request') AS item_title, r.status, r.created_at
         FROM requests r
         LEFT JOIN donations d ON r.donation_id = d.id
-        WHERE r.requester_id = :uid AND r.status = "pending"
+        WHERE r.requester_id = :uid AND r.status = 'pending'
         LIMIT 1
-    ');
+    ");
     $stmtReq->execute([':uid' => $userId]);
     $pendingRequest = $stmtReq->fetch();
 } catch (PDOException $e) {

@@ -206,9 +206,7 @@ async function fetchAdmins() {
   tbody.innerHTML = `<tr><td colspan="6" style="padding:28px 16px;text-align:center;color:var(--color-text-muted);">Loading administrators...</td></tr>`;
 
   try {
-    const res = await fetch('../../actions/admin_users.php?role=admin');
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
+    const data = await window.AdminAPI.getUsers({ role: 'admin' });
     if (!data.success) throw new Error(data.message || 'Failed to load admins');
 
     ADMINS = data.users || [];
@@ -270,19 +268,14 @@ async function handleAddAdmin(e) {
   if (submitBtn) submitBtn.disabled = true;
 
   try {
-    const res = await fetch('../../actions/admin_users.php', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'create_admin',
-        name: `${first} ${last}`.trim(),
-        email: email,
-        password: pw
-      })
+    const data = await window.AdminAPI.createAdmin({
+      action: 'create_admin',
+      name: `${first} ${last}`.trim(),
+      email: email,
+      password: pw
     });
 
-    const data = await res.json();
-    if (!res.ok || !data.success) {
+    if (!data.success) {
       throw new Error(data.message || 'Failed to create admin account.');
     }
 

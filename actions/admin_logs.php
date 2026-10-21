@@ -39,7 +39,7 @@ try {
     $hasTable = false;
     try {
         $c = $pdo->query("SHOW TABLES LIKE 'audit_logs'");
-        $hasTable = ($c && $c->rowCount() > 0);
+        $hasTable = ($c && $c->fetch() !== false);
     } catch (PDOException $e) {}
 
     if (!$hasTable) {

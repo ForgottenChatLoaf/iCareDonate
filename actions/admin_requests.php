@@ -45,15 +45,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $stmtFind = $pdo->prepare('
-            SELECT r.*, r.requester_id, COALESCE(d.title, "Community Request") AS item_title,
+        $stmtFind = $pdo->prepare("
+            SELECT r.*, r.requester_id, COALESCE(d.title, 'Community Request') AS item_title,
                    u.name AS user_name, u.email AS user_email
             FROM requests r
             LEFT JOIN users u ON r.requester_id = u.id
             LEFT JOIN donations d ON r.donation_id = d.id
             WHERE r.id = :id
             LIMIT 1
-        ');
+        ");
         $stmtFind->execute([':id' => $requestId]);
         $request = $stmtFind->fetch();
 
@@ -154,12 +154,12 @@ $search   = trim((string)($_GET['q'] ?? ''));
 
 try {
     if ($singleId > 0) {
-        $stmtSingle = $pdo->prepare('
+        $stmtSingle = $pdo->prepare("
             SELECT r.*, r.requester_id AS user_id,
-                   COALESCE(d.title, "Community Request") AS item_title,
-                   "items" AS unit, "items" AS donation_unit,
+                   COALESCE(d.title, 'Community Request') AS item_title,
+                   'items' AS unit, 'items' AS donation_unit,
                    d.quantity AS donation_qty, d.title AS donation_title,
-                   COALESCE(d.city, "Metro Manila") AS city,
+                   COALESCE(d.city, 'Metro Manila') AS city,
                    r.message AS reason, r.proof_file_path AS proof_document_url,
                    u.name AS user_name, u.email AS user_email,
                    u.name AS beneficiary_name, u.name AS requester_name
@@ -168,7 +168,7 @@ try {
             LEFT JOIN donations d ON r.donation_id = d.id
             WHERE r.id = :id
             LIMIT 1
-        ');
+        ");
         $stmtSingle->execute([':id' => $singleId]);
         $row = $stmtSingle->fetch();
 

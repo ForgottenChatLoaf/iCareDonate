@@ -85,15 +85,15 @@ function logAdminAction(
     $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
 
     try {
-        $stmt = $pdo->prepare('
+        $stmt = $pdo->prepare("
             INSERT INTO audit_logs (
                 action, actor_id, actor_name, actor_role,
                 target_type, target_id, details, reason, ip_address, created_at
             ) VALUES (
-                :action, :actor_id, :actor_name, "admin",
+                :action, :actor_id, :actor_name, 'admin',
                 :target_type, :target_id, :details, :reason, :ip, NOW()
             )
-        ');
+        ");
         $stmt->execute([
             ':action'      => $action,
             ':actor_id'    => $actorId,

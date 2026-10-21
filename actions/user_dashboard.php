@@ -78,7 +78,7 @@ try {
 
     // Check donations table
     try {
-        $stmtDonations = $pdo->prepare('SELECT COUNT(*) AS total, SUM(CASE WHEN status IN ("pending", "approved") THEN 1 ELSE 0 END) AS in_prog, SUM(CASE WHEN status = "archived" THEN 1 ELSE 0 END) AS comp FROM donations WHERE donor_id = :uid');
+        $stmtDonations = $pdo->prepare("SELECT COUNT(*) AS total, SUM(CASE WHEN status IN ('pending', 'approved') THEN 1 ELSE 0 END) AS in_prog, SUM(CASE WHEN status = 'archived' THEN 1 ELSE 0 END) AS comp FROM donations WHERE donor_id = :uid");
         $stmtDonations->execute([':uid' => $userId]);
         $donRow = $stmtDonations->fetch();
         if ($donRow) {
@@ -92,7 +92,7 @@ try {
 
     // Check requests table
     try {
-        $stmtRequests = $pdo->prepare('SELECT COUNT(*) AS total, SUM(CASE WHEN status IN ("pending", "approved") THEN 1 ELSE 0 END) AS in_prog, SUM(CASE WHEN status = "completed" THEN 1 ELSE 0 END) AS comp FROM requests WHERE requester_id = :uid');
+        $stmtRequests = $pdo->prepare("SELECT COUNT(*) AS total, SUM(CASE WHEN status IN ('pending', 'approved') THEN 1 ELSE 0 END) AS in_prog, SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS comp FROM requests WHERE requester_id = :uid");
         $stmtRequests->execute([':uid' => $userId]);
         $reqRow = $stmtRequests->fetch();
         if ($reqRow) {
@@ -118,7 +118,7 @@ try {
 
     // User's recent donations
     try {
-        $stmtRecentDon = $pdo->prepare('SELECT id, title, status, "donation" AS type, created_at FROM donations WHERE donor_id = :uid ORDER BY created_at DESC LIMIT 5');
+        $stmtRecentDon = $pdo->prepare("SELECT id, title, status, 'donation' AS type, created_at FROM donations WHERE donor_id = :uid ORDER BY created_at DESC LIMIT 5");
         $stmtRecentDon->execute([':uid' => $userId]);
         while ($d = $stmtRecentDon->fetch()) {
             $statusLabel = match($d['status']) {
@@ -142,13 +142,13 @@ try {
 
     // User's recent requests
     try {
-        $stmtRecentReq = $pdo->prepare('
-            SELECT r.id, COALESCE(d.title, "Assistance Request") AS title, r.status, "request" AS type, r.created_at
+        $stmtRecentReq = $pdo->prepare("
+            SELECT r.id, COALESCE(d.title, 'Assistance Request') AS title, r.status, 'request' AS type, r.created_at
             FROM requests r
             LEFT JOIN donations d ON r.donation_id = d.id
             WHERE r.requester_id = :uid
             ORDER BY r.created_at DESC LIMIT 5
-        ');
+        ");
         $stmtRecentReq->execute([':uid' => $userId]);
         while ($r = $stmtRecentReq->fetch()) {
             $statusLabel = match($r['status']) {

@@ -8,6 +8,9 @@
 aiven-ca.pem
 run_migration.php
 test_conn.php
+scratch/
+cookies.txt
+test_cookie.txt
 
 # ── Operating System Clutter ─────────────────────────
 Thumbs.db

@@ -125,22 +125,22 @@
       <div class="stat-grid">
         <div class="stat-card" style="--card-accent:#1F4FA3;">
           <div class="stat-label">Total Registered Users</div>
-          <div class="stat-value">248</div>
+          <div class="stat-value" id="stat-total-users">248</div>
           <div class="stat-change stat-change--up">+12 this month</div>
         </div>
         <div class="stat-card" style="--card-accent:#F2B84B;">
           <div class="stat-label">Active Donations</div>
-          <div class="stat-value">42</div>
+          <div class="stat-value" id="stat-active-donations">42</div>
           <div class="stat-change stat-change--up">+5 this week</div>
         </div>
         <div class="stat-card" style="--card-accent:#16A34A;">
           <div class="stat-label">Fulfilled Transactions</div>
-          <div class="stat-value">173</div>
+          <div class="stat-value" id="stat-fulfilled-tx">173</div>
           <div class="stat-change stat-change--up">+29 this month</div>
         </div>
         <div class="stat-card" style="--card-accent:#9333EA;">
           <div class="stat-label">Beneficiaries Served</div>
-          <div class="stat-value">319</div>
+          <div class="stat-value" id="stat-beneficiaries">319</div>
           <div class="stat-change stat-change--up">+41 this month</div>
         </div>
       </div>
@@ -227,19 +227,19 @@
           <div style="display:flex;flex-direction:column;gap:10px;">
             <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FFF7ED;border:1px solid #FDE68A;border-radius:var(--radius-sm);">
               <span style="font-size:13px;font-weight:600;">Donations Awaiting Review</span>
-              <span style="font-size:20px;font-weight:800;color:#D97706;">7</span>
+              <span style="font-size:20px;font-weight:800;color:#D97706;" id="stat-pending-donations">0</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FFF7ED;border:1px solid #FDE68A;border-radius:var(--radius-sm);">
               <span style="font-size:13px;font-weight:600;">Proof Documents to Verify</span>
-              <span style="font-size:20px;font-weight:800;color:#D97706;">11</span>
+              <span style="font-size:20px;font-weight:800;color:#D97706;" id="stat-pending-proofs">0</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#FEF2F2;border:1px solid #FECACA;border-radius:var(--radius-sm);">
               <span style="font-size:13px;font-weight:600;">Interviews Unscheduled</span>
-              <span style="font-size:20px;font-weight:800;color:#DC2626;">4</span>
+              <span style="font-size:20px;font-weight:800;color:#DC2626;" id="stat-unscheduled-interviews">0</span>
             </div>
             <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 14px;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:var(--radius-sm);">
               <span style="font-size:13px;font-weight:600;">Transactions Ready to Close</span>
-              <span style="font-size:20px;font-weight:800;color:#16A34A;">6</span>
+              <span style="font-size:20px;font-weight:800;color:#16A34A;" id="stat-ready-transactions">0</span>
             </div>
           </div>
         </div>
@@ -300,6 +300,22 @@
     lbl.textContent = m.substring(0,1);
     labels.appendChild(lbl);
   });
+
+  // Hydrate with live database counts
+  if (window.AdminAPI) {
+    window.AdminAPI.getDashboard().then(res => {
+      if (res && res.counts) {
+        const u = document.getElementById('stat-total-users');
+        if (u && res.counts.total_members != null) u.textContent = res.counts.total_members;
+        const d = document.getElementById('stat-active-donations');
+        if (d && res.counts.active_transactions != null) d.textContent = res.counts.active_transactions;
+        const pd = document.getElementById('stat-pending-donations');
+        if (pd && res.counts.pending_donations != null) pd.textContent = res.counts.pending_donations;
+        const pr = document.getElementById('stat-pending-proofs');
+        if (pr && res.counts.pending_requests != null) pr.textContent = res.counts.pending_requests;
+      }
+    }).catch(err => console.warn('Statistics live load:', err));
+  }
 </script>
 
   <!-- Mobile sidebar toggle JS -->

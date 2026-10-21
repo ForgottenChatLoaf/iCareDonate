@@ -151,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 try {
     $hasTable = false;
     try {
-        $c = $pdo->query('SHOW TABLES LIKE "categories"');
+        $c = $pdo->query("SHOW TABLES LIKE 'categories'");
         $hasTable = ($c && $c->rowCount() > 0);
     } catch (PDOException $e) {}
 
@@ -169,12 +169,12 @@ try {
         $categories = $stmt->fetchAll();
     } else {
         // Fallback aggregation from distinct donations categories
-        $stmt = $pdo->query('
-            SELECT category AS name, category AS slug, "" AS description, 1 AS sort_order, 1 AS is_active,
+        $stmt = $pdo->query("
+            SELECT category AS name, category AS slug, '' AS description, 1 AS sort_order, 1 AS is_active,
                    COUNT(*) AS donation_count
             FROM donations
             GROUP BY category
-        ');
+        ");
         $categories = $stmt->fetchAll();
     }
 

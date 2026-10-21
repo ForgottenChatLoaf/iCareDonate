@@ -201,17 +201,7 @@ async function loadAdminTickets() {
   const countEl = document.getElementById('supportTicketCount');
 
   try {
-    const res = await fetch('../../actions/support_tickets.php?admin_view=1', {
-      credentials: 'same-origin',
-      headers: { 'Accept': 'application/json' }
-    });
-
-    if (res.status === 401 || res.status === 403) {
-      window.location.href = 'login.html';
-      return;
-    }
-
-    const data = await res.json();
+    const data = await window.AdminAPI.request('support_tickets.php?admin_view=1');
     if (data && data.success && Array.isArray(data.tickets)) {
       adminTickets = data.tickets;
     } else {
@@ -326,10 +316,9 @@ async function submitAdminReply(ticketId) {
   input.disabled = true;
 
   try {
-    const res = await fetch('../../actions/support_tickets.php', {
+    const data = await window.AdminAPI.request('support_tickets.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'same-origin',
       body: JSON.stringify({
         action: 'admin_reply',
         ticket_id: ticketId,
@@ -338,7 +327,6 @@ async function submitAdminReply(ticketId) {
       })
     });
 
-    const data = await res.json();
     if (data && data.success) {
       if (window.showAdminFlash) {
         window.showAdminFlash('success', 'Response saved and sent to user notification feed.');
@@ -347,7 +335,7 @@ async function submitAdminReply(ticketId) {
       }
       await loadAdminTickets();
     } else {
-      alert(data.error || 'Failed to submit response.');
+      alert((data && data.error) || 'Failed to submit response.');
     }
   } catch(err) {
     console.error(err);
@@ -359,10 +347,9 @@ async function submitAdminReply(ticketId) {
 
 async function updateTicketStatus(ticketId, newStatus) {
   try {
-    const res = await fetch('../../actions/support_tickets.php', {
+    const data = await window.AdminAPI.request('support_tickets.php', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      credentials: 'same-origin',
       body: JSON.stringify({
         action: 'update_status',
         ticket_id: ticketId,
@@ -370,7 +357,6 @@ async function updateTicketStatus(ticketId, newStatus) {
       })
     });
 
-    const data = await res.json();
     if (data && data.success) {
       if (window.showAdminFlash) {
         window.showAdminFlash('success', 'Ticket status updated to ' + newStatus);
