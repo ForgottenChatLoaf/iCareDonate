@@ -156,7 +156,7 @@
         <span>Profile &amp; Settings</span>
       </a>
 
-      <a href="../help-center.html" class="sidebar-link" data-nav="help">
+      <a href="help-center.html" class="sidebar-link" data-nav="help">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span>Help Center</span>
       </a>
@@ -184,7 +184,7 @@
 
       <div style="display:flex;align-items:center;gap:12px;">
         <button type="button" class="btn btn-primary" onclick="toggleSubmitTicketModal(true)" style="font-size:13.5px;padding:8px 16px;font-weight:600;">
-          + Submit a Problem
+          + Submit Support Request
         </button>
         <div class="topbar-dropdown-wrap">
           <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
@@ -197,7 +197,7 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               <span>Profile &amp; Settings</span>
             </a>
-            <a href="../help-center.html" role="menuitem">
+            <a href="help-center.html" role="menuitem">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               <span>Help Center</span>
             </a>
@@ -231,7 +231,7 @@
           </p>
         </div>
         <div>
-          <a href="../faqs.html" class="btn btn-outline" style="font-size: 12.5px; padding: 6px 14px; background: #fff;" target="_blank">
+          <a href="help-center.html" class="btn btn-outline" style="font-size: 12.5px; padding: 6px 14px; background: #fff;">
             Search FAQs &rarr;
           </a>
         </div>
@@ -250,6 +250,16 @@
       </div>
 
     </div>
+
+    <!-- Compact Mini Footer -->
+    <footer class="user-footer">
+      <div>&copy; 2026 iCareDonate. All rights reserved.</div>
+      <div class="user-footer-links">
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="help-center.html">Help Center</a>
+      </div>
+    </footer>
   </div>
 </div>
 
@@ -299,61 +309,8 @@
 <script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
-  // Initial support tickets matching Admin Support desk
-  const initialTickets = [
-    {
-      id: 'TK-204',
-      subject: 'How to update pickup schedule after matching?',
-      category: 'Logistics',
-      refId: 'Transaction #301',
-      date: 'Oct 12, 2026',
-      status: 'in_progress',
-      statusLabel: 'In Progress',
-      statusBadge: 'badge-warning',
-      description: 'Hello, I agreed with the beneficiary to move the backpack pickup by one day due to rainy weather. Does this need formal approval or can we proceed?',
-      replies: [
-        {
-          sender: 'Administrator Eleanor Vance',
-          role: 'admin',
-          time: 'Oct 12, 2026 at 2:15 PM',
-          text: 'Hello Maria! As long as both parties mutually agree on the new date and pickup venue within the approved claim deadline, you may proceed with the handover. We have updated your transaction notes.'
-        }
-      ]
-    },
-    {
-      id: 'TK-191',
-      subject: 'Barangay Indigency Document Upload Question',
-      category: 'Verification',
-      refId: 'Request #201',
-      date: 'Oct 07, 2026',
-      status: 'resolved',
-      statusLabel: 'Resolved',
-      statusBadge: 'badge-success',
-      description: 'Is a digital photo of the Barangay Indigency Certificate sufficient, or does it require a certified true copy seal?',
-      replies: [
-        {
-          sender: 'Administrator Eleanor Vance',
-          role: 'admin',
-          time: 'Oct 07, 2026 at 11:30 AM',
-          text: 'A clear, high-resolution photo showing the official dry seal and barangay captain signature is fully accepted. Thank you!'
-        }
-      ]
-    }
-  ];
-
-  let userTickets = initialTickets;
-  try {
-    const saved = localStorage.getItem('icd_user_tickets');
-    if (saved) userTickets = JSON.parse(saved);
-  } catch(e) {}
-
+  let userTickets = [];
   let activeFilter = 'all';
-
-  function saveTickets() {
-    try {
-      localStorage.setItem('icd_user_tickets', JSON.stringify(userTickets));
-    } catch(e) {}
-  }
 
   function filterTickets(filter) {
     activeFilter = filter;
@@ -363,13 +320,83 @@
     renderTickets();
   }
 
+  async function loadUserTickets() {
+    const container = document.getElementById('ticketsContainer');
+    if (container) {
+      container.innerHTML = `
+        <div style="padding:40px;text-align:center;color:#64748B;">
+          <div style="font-weight:600;margin-bottom:8px;">Loading your support tickets...</div>
+        </div>
+      `;
+    }
+
+    try {
+      const res = await fetch('../../actions/support_tickets.php', {
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.status === 401) {
+        window.location.href = '../login.html';
+        return;
+      }
+
+      const data = await res.json();
+      if (data && data.success && Array.isArray(data.tickets)) {
+        userTickets = data.tickets.map(t => {
+          let badgeClass = 'badge-warning';
+          let statusText = 'Open';
+          if (t.status === 'in_progress') {
+            badgeClass = 'badge-info';
+            statusText = 'In Progress';
+          } else if (t.status === 'resolved') {
+            badgeClass = 'badge-success';
+            statusText = 'Resolved';
+          } else if (t.status === 'closed') {
+            badgeClass = 'badge-neutral';
+            statusText = 'Closed';
+          }
+
+          let replies = [];
+          if (t.admin_reply && t.admin_reply.trim() !== '') {
+            replies.push({
+              sender: 'Community Support Team',
+              role: 'admin',
+              time: t.updated_at ? new Date(t.updated_at).toLocaleDateString() : 'Recent',
+              text: t.admin_reply
+            });
+          }
+
+          return {
+            id: t.id,
+            subject: t.subject,
+            category: t.category || 'General',
+            date: t.created_at ? new Date(t.created_at).toLocaleDateString() : 'N/A',
+            status: t.status,
+            statusLabel: statusText,
+            statusBadge: badgeClass,
+            description: t.message,
+            replies: replies
+          };
+        });
+      } else {
+        userTickets = [];
+      }
+    } catch(err) {
+      console.error('Error fetching support tickets:', err);
+      userTickets = [];
+    }
+
+    renderTickets();
+  }
+
   function renderTickets() {
     const container = document.getElementById('ticketsContainer');
     if (!container) return;
 
     const filtered = userTickets.filter(t => {
       if (activeFilter === 'open') return t.status === 'open' || t.status === 'in_progress';
-      if (activeFilter === 'resolved') return t.status === 'resolved';
+      if (activeFilter === 'resolved') return t.status === 'resolved' || t.status === 'closed';
       return true;
     });
 
@@ -410,7 +437,6 @@
               <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;">
                 <span class="badge ${t.statusBadge}">Status: ${escapeHtml(t.statusLabel)}</span>
                 <span style="font-size:12px;color:#64748B;">Ticket #${escapeHtml(t.id)} &bull; ${escapeHtml(t.date)}</span>
-                ${t.refId ? `<span class="badge badge-info" style="font-size:11px;">Ref: ${escapeHtml(t.refId)}</span>` : ''}
               </div>
               <h3 style="font-size:17px;font-weight:700;color:#1E293B;margin:0 0 6px;">${escapeHtml(t.subject)}</h3>
             </div>
@@ -418,17 +444,15 @@
               <span class="badge badge-neutral" style="font-size:11.5px;">${escapeHtml(t.category)}</span>
             </div>
           </div>
-          <p style="font-size:13.5px;color:#334155;background:#F8FAFC;padding:12px 14px;border-radius:8px;margin:0 0 10px;line-height:1.5;">
-            "${escapeHtml(t.description)}"
-          </p>
+          <p style="font-size:13.5px;color:#334155;background:#F8FAFC;padding:12px 14px;border-radius:8px;margin:0 0 10px;line-height:1.5;white-space:pre-wrap;">${escapeHtml(t.description)}</p>
 
           ${repliesHtml}
 
           <!-- Reply box if open/in progress -->
-          ${t.status !== 'resolved' ? `
+          ${t.status !== 'resolved' && t.status !== 'closed' ? `
             <div style="margin-top:14px;display:flex;gap:8px;">
               <input type="text" id="replyInput-${t.id}" class="form-input" placeholder="Type a follow-up reply..." style="height:36px;font-size:13px;flex:1;">
-              <button type="button" class="btn btn-primary btn-sm" onclick="sendTicketReply('${t.id}')" style="height:36px;padding:0 14px;">Send Reply</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="sendTicketReply(${t.id})" style="height:36px;padding:0 14px;">Send Reply</button>
             </div>
           ` : ''}
         </div>
@@ -441,61 +465,89 @@
     if (modal) modal.style.display = show ? 'flex' : 'none';
   }
 
-  function sendTicketReply(ticketId) {
+  async function sendTicketReply(ticketId) {
     const input = document.getElementById('replyInput-' + ticketId);
     if (!input || !input.value.trim()) return;
 
-    const ticket = userTickets.find(t => t.id === ticketId);
-    if (!ticket) return;
+    const replyText = input.value.trim();
+    input.disabled = true;
 
-    if (!ticket.replies) ticket.replies = [];
-    ticket.replies.push({
-      sender: 'You',
-      role: 'user',
-      time: 'Just now',
-      text: input.value.trim()
-    });
+    try {
+      const res = await fetch('../../actions/support_tickets.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          action: 'reply',
+          ticket_id: ticketId,
+          reply: replyText
+        })
+      });
 
-    input.value = '';
-    saveTickets();
-    renderTickets();
-
-    if (window.showPortalFlash) {
-      window.showPortalFlash('success', 'Your follow-up reply has been added to Ticket #' + ticketId);
+      const data = await res.json();
+      if (data && data.success) {
+        input.value = '';
+        if (window.showPortalFlash) {
+          window.showPortalFlash('success', 'Your follow-up reply has been added to Ticket #' + ticketId);
+        }
+        await loadUserTickets();
+      } else {
+        alert(data.error || 'Failed to submit follow-up reply.');
+      }
+    } catch(err) {
+      console.error(err);
+      alert('Network error submitting follow-up reply.');
+    } finally {
+      if (input) input.disabled = false;
     }
   }
 
-  document.getElementById('createTicketForm').addEventListener('submit', function(e) {
+  document.getElementById('createTicketForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const subject = document.getElementById('ticketSubject').value.trim();
     const category = document.getElementById('ticketCategory').value;
-    const refId = document.getElementById('ticketRef').value.trim();
+    const refId = document.getElementById('ticketRef') ? document.getElementById('ticketRef').value.trim() : '';
     const desc = document.getElementById('ticketDesc').value.trim();
 
-    if (!subject || !desc) return;
+    if (!subject || !desc) {
+      alert('Please fill out both the subject and description.');
+      return;
+    }
 
-    const newTicketId = 'TK-' + Math.floor(100 + Math.random() * 900);
-    const newTicket = {
-      id: newTicketId,
-      subject: subject,
-      category: category,
-      refId: refId || '',
-      date: 'Just now',
-      status: 'open',
-      statusLabel: 'Open',
-      statusBadge: 'badge-warning',
-      description: desc,
-      replies: []
-    };
+    const fullMessage = refId ? `[Reference: ${refId}]\n\n${desc}` : desc;
+    const submitBtn = this.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.disabled = true;
 
-    userTickets.unshift(newTicket);
-    saveTickets();
-    toggleSubmitTicketModal(false);
-    this.reset();
-    renderTickets();
+    try {
+      const res = await fetch('../../actions/support_tickets.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          action: 'create',
+          subject: subject,
+          category: category,
+          message: fullMessage,
+          priority: 'medium'
+        })
+      });
 
-    if (window.showPortalFlash) {
-      window.showPortalFlash('success', 'Support Ticket #' + newTicketId + ' logged successfully. An administrator will review it shortly.');
+      const data = await res.json();
+      if (data && data.success) {
+        toggleSubmitTicketModal(false);
+        this.reset();
+        if (window.showPortalFlash) {
+          window.showPortalFlash('success', 'Support Ticket #' + data.ticket_id + ' logged successfully in MySQL.');
+        }
+        await loadUserTickets();
+      } else {
+        alert(data.error || 'Failed to submit ticket.');
+      }
+    } catch(err) {
+      console.error(err);
+      alert('Network error submitting ticket.');
+    } finally {
+      if (submitBtn) submitBtn.disabled = false;
     }
   });
 
@@ -505,7 +557,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    renderTickets();
+    loadUserTickets();
   });
 </script>
 

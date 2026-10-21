@@ -160,10 +160,10 @@
       <!-- Status Filter Tabs & Export -->
       <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
         <div style="display:flex;gap:8px;flex-wrap:wrap;" id="tx-filter-buttons">
-          <button type="button" class="btn btn-primary" onclick="filterTx('all')">All (3)</button>
-          <button type="button" class="btn btn-outline" onclick="filterTx('created')">Scheduled Pickup (1)</button>
-          <button type="button" class="btn btn-outline" onclick="filterTx('claimed')">In Transit (1)</button>
-          <button type="button" class="btn btn-outline" onclick="filterTx('completed')">Completed (1)</button>
+          <button type="button" class="btn btn-primary" data-status="all" onclick="filterTx('all')">All (<span id="cnt-tx-all">0</span>)</button>
+          <button type="button" class="btn btn-outline" data-status="scheduled" onclick="filterTx('scheduled')">Scheduled (<span id="cnt-tx-sched">0</span>)</button>
+          <button type="button" class="btn btn-outline" data-status="claimed" onclick="filterTx('claimed')">Claimed / In Transit (<span id="cnt-tx-claimed">0</span>)</button>
+          <button type="button" class="btn btn-outline" data-status="completed" onclick="filterTx('completed')">Completed (<span id="cnt-tx-completed">0</span>)</button>
         </div>
         <button type="button" class="btn btn-outline" onclick="handleExportTransactions()" style="height:36px;font-size:12.5px;padding:0 14px;display:inline-flex;align-items:center;gap:6px;">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
@@ -185,87 +185,7 @@
             </tr>
           </thead>
           <tbody id="tx-tbody">
-            <!-- Row 1 -->
-            <tr data-status="created" style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">TX-2026-801</td>
-              <td style="padding:14px 16px;">
-                <div style="font-weight:700;color:var(--color-text);">Elementary Backpacks &amp; Notebook Bundle</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Qty: 1 set</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <div>Maria Santos</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Quezon City</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <div>Carlos Mendoza</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Quezon City</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <span class="badge badge-neutral">Community Drop-off</span>
-              </td>
-              <td style="padding:14px 16px;">
-                <span class="badge badge-warning" id="tx-badge-801">Scheduled Pickup</span>
-              </td>
-              <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-                <button type="button" class="btn btn-primary" style="font-size:12px;padding:4px 10px;" onclick="markTxCompleted(801)">
-                  Confirm Handover
-                </button>
-              </td>
-            </tr>
-
-            <!-- Row 2 -->
-            <tr data-status="claimed" style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">TX-2026-789</td>
-              <td style="padding:14px 16px;">
-                <div style="font-weight:700;color:var(--color-text);">Family Rice &amp; Canned Goods Care Packs</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Qty: 2 packs</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <div>David Tan</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Pasig City</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <div>Rosalina Ramos</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Pasig City</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <span class="badge badge-neutral">Courier Dispatch</span>
-              </td>
-              <td style="padding:14px 16px;">
-                <span class="badge badge-info" id="tx-badge-789">In Transit</span>
-              </td>
-              <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-                <button type="button" class="btn btn-primary" style="font-size:12px;padding:4px 10px;" onclick="markTxCompleted(789)">
-                  Confirm Delivery
-                </button>
-              </td>
-            </tr>
-
-            <!-- Row 3 -->
-            <tr data-status="completed">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">TX-2026-642</td>
-              <td style="padding:14px 16px;">
-                <div style="font-weight:700;color:var(--color-text);">Secondary School Science Textbooks</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Qty: 3 books</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <div>Elena Cruz</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Manila</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <div>Teresa Lim</div>
-                <div style="font-size:12px;color:var(--color-text-muted);">Taguig City</div>
-              </td>
-              <td style="padding:14px 16px;">
-                <span class="badge badge-neutral">Direct Handover</span>
-              </td>
-              <td style="padding:14px 16px;">
-                <span class="badge badge-success">Completed &bull; Verified</span>
-              </td>
-              <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-                <span style="font-size:12px;color:var(--color-text-muted);">Signed Receipt #R-902</span>
-              </td>
-            </tr>
+            <!-- Dynamically populated via AdminAPI -->
           </tbody>
         </table>
       </div>
@@ -274,45 +194,157 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
+  let currentTxStatus = 'all';
+  let allLoadedTx = [];
+
   function filterTx(status) {
-    document.querySelectorAll('#tx-tbody tr').forEach(row => {
-      if (status === 'all' || row.getAttribute('data-status') === status) {
-        row.style.display = '';
+    currentTxStatus = status;
+    document.querySelectorAll('#tx-filter-buttons button').forEach(btn => {
+      if (btn.getAttribute('data-status') === status) {
+        btn.className = 'btn btn-primary';
       } else {
-        row.style.display = 'none';
+        btn.className = 'btn btn-outline';
       }
     });
+    fetchAndRenderTransactions();
   }
 
-  function markTxCompleted(id) {
-    const badge = document.getElementById(`tx-badge-${id}`);
-    if (badge) {
-      badge.className = 'badge badge-success';
-      badge.textContent = 'Completed • Verified';
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function fetchAndRenderTransactions() {
+    const tbody = document.getElementById('tx-tbody');
+    if (tbody) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="padding:32px;text-align:center;color:var(--color-text-muted);">
+            Retrieving transaction &amp; claim handovers from database...
+          </td>
+        </tr>
+      `;
     }
-    window.showAdminFlash('success', `Transaction #${id} handover confirmed and verified in audit records.`);
+
+    try {
+      const res = await window.AdminAPI.getTransactions({
+        status: currentTxStatus
+      });
+
+      if (res && res.counts) {
+        document.getElementById('cnt-tx-all').textContent = res.counts.all ?? 0;
+        document.getElementById('cnt-tx-sched').textContent = res.counts.scheduled ?? 0;
+        document.getElementById('cnt-tx-claimed').textContent = res.counts.claimed ?? 0;
+        document.getElementById('cnt-tx-completed').textContent = res.counts.completed ?? 0;
+      }
+
+      allLoadedTx = (res && (res.transactions || res.data)) || [];
+      renderTxRows();
+    } catch (err) {
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7" style="padding:32px;text-align:center;color:#DC2626;">
+              <strong>Error loading transaction records:</strong> ${escapeHtml(err.message)}
+            </td>
+          </tr>
+        `;
+      }
+    }
+  }
+
+  function renderTxRows() {
+    const tbody = document.getElementById('tx-tbody');
+    if (!tbody) return;
+
+    if (allLoadedTx.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="padding:36px;text-align:center;color:var(--color-text-muted);">
+            No transaction or handover records found in the database for this status.
+          </td>
+        </tr>
+      `;
+      return;
+    }
+
+    tbody.innerHTML = allLoadedTx.map(tx => {
+      const isCompleted = tx.handover_status === 'completed' || tx.request_status === 'completed';
+      const isClaimed = tx.handover_status === 'claimed' || tx.request_status === 'approved';
+      const badgeClass = isCompleted ? 'badge-success' : isClaimed ? 'badge-info' : 'badge-warning';
+      const badgeText = isCompleted ? 'Completed • Verified' : isClaimed ? 'In Transit / Claimed' : 'Scheduled Pickup';
+
+      return `
+        <tr style="border-bottom:1px solid var(--color-border-light);">
+          <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">${escapeHtml(tx.tx_code || ('TX-' + tx.tx_id))}</td>
+          <td style="padding:14px 16px;">
+            <div style="font-weight:700;color:var(--color-text);">${escapeHtml(tx.item_title)}</div>
+            <div style="font-size:12px;color:var(--color-text-muted);">Qty: ${tx.quantity || 1} ${escapeHtml(tx.unit || 'pcs')}</div>
+          </td>
+          <td style="padding:14px 16px;">
+            <div>${escapeHtml(tx.donor_name || 'Community Donor')}</div>
+          </td>
+          <td style="padding:14px 16px;">
+            <div>${escapeHtml(tx.beneficiary_name || 'Community Member')}</div>
+            <div style="font-size:12px;color:var(--color-text-muted);">${escapeHtml(tx.beneficiary_city || 'Metro Manila')}</div>
+          </td>
+          <td style="padding:14px 16px;">
+            <span class="badge badge-neutral">${escapeHtml(tx.pickup_method || 'Drop-off / Handover')}</span>
+          </td>
+          <td style="padding:14px 16px;">
+            <span class="badge ${badgeClass}">${badgeText}</span>
+          </td>
+          <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
+            ${!isCompleted ? `
+              <button type="button" class="btn btn-primary" style="font-size:12px;padding:4px 10px;" onclick="confirmHandover(${tx.tx_id})">
+                Confirm Handover
+              </button>
+            ` : `
+              <span style="font-size:12px;color:var(--color-success);font-weight:600;">&#10003; Handed Over</span>
+            `}
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  async function confirmHandover(id) {
+    if (!confirm(`Confirm verified handover for transaction #${id}? This will mark the goods as released in the database.`)) return;
+
+    try {
+      const res = await window.AdminAPI.confirmTransaction(id);
+      if (res && res.success) {
+        window.showAdminFlash('success', res.message || `Transaction #${id} handover confirmed.`);
+        fetchAndRenderTransactions();
+      } else {
+        alert((res && res.message) || 'Failed to confirm handover.');
+      }
+    } catch (err) {
+      alert(`Error confirming handover: ${err.message}`);
+    }
   }
 
   function handleExportTransactions() {
-    const rows = [];
-    document.querySelectorAll('#tx-tbody tr').forEach(tr => {
-      const tds = tr.querySelectorAll('td');
-      if (tds.length >= 6) {
-        rows.push([
-          tds[0].innerText.trim(),
-          tds[1].innerText.replace(/\n/g, ' - ').trim(),
-          tds[2].innerText.replace(/\n/g, ' - ').trim(),
-          tds[3].innerText.replace(/\n/g, ' - ').trim(),
-          tds[4].innerText.trim(),
-          tds[5].innerText.trim()
-        ]);
-      }
-    });
+    if (allLoadedTx.length === 0) {
+      alert('No transaction records available to export.');
+      return;
+    }
 
-    const cols = ['Transaction Code', 'Donation Item', 'Donor', 'Beneficiary', 'Handover Method', 'Status'];
+    const cols = ['Transaction Code', 'Donation Item', 'Donor', 'Beneficiary', 'Handover Method', 'Status', 'Date'];
+    const rows = allLoadedTx.map(tx => [
+      tx.tx_code || `TX-${tx.tx_id}`,
+      tx.item_title,
+      tx.donor_name || 'Community Donor',
+      tx.beneficiary_name || 'Community Member',
+      tx.pickup_method || 'Handover',
+      tx.handover_status,
+      (tx.created_at || '').split(' ')[0]
+    ]);
+
     const csv = [
       cols.join(','),
       ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
@@ -323,7 +355,7 @@
     const a    = document.createElement('a');
     const now  = new Date().toISOString().slice(0, 10);
     a.href = url;
-    a.download = `iCareDonate_Transactions_${now}.csv`;
+    a.download = `iCareDonate_Transactions_${currentTxStatus}_${now}.csv`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -332,6 +364,10 @@
       window.showAdminFlash('success', `CSV downloaded: ${rows.length} transaction record${rows.length !== 1 ? 's' : ''}`);
     }
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    fetchAndRenderTransactions();
+  });
 </script>
 
 

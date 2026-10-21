@@ -213,154 +213,264 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
-// ── Mock audit log data ────────────────────────────────────────────────────────
-const ALL_LOGS = [
-  { id:1048, ts:'2025-10-13 08:31:22', action:'ADMIN_LOGIN',           actor:'Head Admin', role:'head_admin', target:'—',               reason:'Successful login',          ip:'192.168.1.1' },
-  { id:1047, ts:'2025-10-13 08:10:05', action:'DONATION_APPROVED',     actor:'Head Admin', role:'head_admin', target:'donation #42',     reason:'Listing verified',          ip:'192.168.1.1' },
-  { id:1046, ts:'2025-10-12 17:45:10', action:'REQUEST_PROOF_APPROVED',actor:'Maria Reyes',role:'admin',      target:'request #91',      reason:'Certificate valid',         ip:'192.168.1.8' },
-  { id:1045, ts:'2025-10-12 16:22:33', action:'USER_SUSPENDED',        actor:'Head Admin', role:'head_admin', target:'user #17',         reason:'Fraudulent listing',        ip:'192.168.1.1' },
-  { id:1044, ts:'2025-10-12 15:09:01', action:'DONATION_ARCHIVED',     actor:'Head Admin', role:'head_admin', target:'donation #38',     reason:'Donor account suspended',   ip:'192.168.1.1' },
-  { id:1043, ts:'2025-10-12 14:33:47', action:'FAQ_CREATED',           actor:'Maria Reyes',role:'admin',      target:'faq #5',          reason:'New Shipping FAQ added',    ip:'192.168.1.8' },
-  { id:1042, ts:'2025-10-12 13:15:29', action:'DONATION_REJECTED',     actor:'Juan Cruz',  role:'admin',      target:'donation #36',     reason:'Expired food items',        ip:'192.168.1.12' },
-  { id:1041, ts:'2025-10-12 11:04:12', action:'REQUEST_PROOF_REJECTED',actor:'Head Admin', role:'head_admin', target:'request #88',      reason:'Blurry, illegible document',ip:'192.168.1.1' },
-  { id:1040, ts:'2025-10-11 16:50:00', action:'CATEGORY_CREATED',      actor:'Head Admin', role:'head_admin', target:'category #6',      reason:'Toys & Leisure added',      ip:'192.168.1.1' },
-  { id:1039, ts:'2025-10-11 14:22:18', action:'DONATION_RESTORED',     actor:'Head Admin', role:'head_admin', target:'donation #33',     reason:'Donor appeal accepted',     ip:'192.168.1.1' },
-  { id:1038, ts:'2025-10-11 12:00:55', action:'USER_BANNED',           actor:'Head Admin', role:'head_admin', target:'user #22',         reason:'Repeat policy violation',   ip:'192.168.1.1' },
-  { id:1037, ts:'2025-10-11 09:45:30', action:'ADMIN_LOGIN',           actor:'Juan Cruz',  role:'admin',      target:'—',               reason:'Successful login',          ip:'192.168.1.12' },
-  { id:1036, ts:'2025-10-10 17:30:10', action:'FAQ_DELETED',           actor:'Maria Reyes',role:'admin',      target:'faq #3',          reason:'Outdated entry removed',    ip:'192.168.1.8' },
-  { id:1035, ts:'2025-10-10 15:12:44', action:'DONATION_APPROVED',     actor:'Juan Cruz',  role:'admin',      target:'donation #29',     reason:'Items confirmed in-stock',  ip:'192.168.1.12' },
-  { id:1034, ts:'2025-10-10 13:00:00', action:'USER_RESTORED',         actor:'Head Admin', role:'head_admin', target:'user #14',         reason:'Suspension period expired', ip:'192.168.1.1' },
-];
-
+// ── Live Audit Log Integration ────────────────────────────────────────────────
 const ACTION_CLASS = {
   DONATION_APPROVED:'log-approve', DONATION_REJECTED:'log-delete', DONATION_ARCHIVED:'log-archive',
   DONATION_RESTORED:'log-update',  REQUEST_PROOF_APPROVED:'log-approve', REQUEST_PROOF_REJECTED:'log-delete',
   USER_SUSPENDED:'log-archive', USER_BANNED:'log-delete', USER_RESTORED:'log-update',
   ADMIN_LOGIN:'log-login', FAQ_CREATED:'log-create', FAQ_DELETED:'log-delete',
-  CATEGORY_CREATED:'log-create',
+  CATEGORY_CREATED:'log-create', TICKET_REPLIED:'log-update', TICKET_STATUS_UPDATED:'log-update',
+  HANDOVER_COMPLETED:'log-approve', HANDOVER_SCHEDULED:'log-login'
 };
 
-const PER_PAGE = 10;
+const PER_PAGE = 15;
 let currentPage = 1;
-let filteredLogs = [...ALL_LOGS];
+let totalPages = 1;
+let totalCount = 0;
+let currentLogs = [];
+let isLoading = false;
 
-function renderLogs() {
-  const start = (currentPage - 1) * PER_PAGE;
-  const page  = filteredLogs.slice(start, start + PER_PAGE);
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+async function loadLogs(page = 1) {
+  if (isLoading) return;
+  isLoading = true;
+  currentPage = page;
+
   const tbody = document.getElementById('log-tbody');
+  tbody.innerHTML = `<tr><td colspan="7" style="padding:28px 14px;text-align:center;color:var(--color-text-muted);">Loading audit logs...</td></tr>`;
 
-  document.getElementById('log-count').textContent = `${filteredLogs.length} entries`;
-  document.getElementById('pager-info').textContent = `Showing ${start + 1}–${Math.min(start + PER_PAGE, filteredLogs.length)} of ${filteredLogs.length}`;
+  const action = document.getElementById('filter-action').value;
+  const actor  = document.getElementById('filter-actor').value.trim();
+  const from   = document.getElementById('filter-from').value;
+  const to     = document.getElementById('filter-to').value;
 
-  tbody.innerHTML = page.map(l => {
+  const params = new URLSearchParams({
+    page: String(currentPage),
+    limit: String(PER_PAGE)
+  });
+  if (action) params.append('action', action);
+  if (actor)  params.append('actor', actor);
+  if (from)   params.append('from', from);
+  if (to)     params.append('to', to);
+
+  try {
+    const res = await fetch(`../../actions/admin_logs.php?${params.toString()}`);
+    if (!res.ok) {
+      throw new Error(`Server returned HTTP ${res.status}`);
+    }
+    const data = await res.json();
+    if (!data.success) {
+      throw new Error(data.message || 'Failed to load audit logs.');
+    }
+
+    currentLogs = data.logs || [];
+    totalCount  = data.total || 0;
+    totalPages  = data.total_pages || 1;
+    currentPage = data.page || page;
+
+    renderLogsTable();
+    renderPager();
+  } catch (err) {
+    console.error('Audit logs fetch error:', err);
+    tbody.innerHTML = `<tr><td colspan="7" style="padding:24px 14px;text-align:center;color:var(--color-danger, #e53e3e);">
+      Failed to load audit logs. ${escapeHtml(err.message)}
+    </td></tr>`;
+    document.getElementById('log-count').textContent = '0 entries';
+    document.getElementById('pager-info').textContent = 'Error loading logs';
+    document.getElementById('pager-buttons').innerHTML = '';
+  } finally {
+    isLoading = false;
+  }
+}
+
+function renderLogsTable() {
+  const tbody = document.getElementById('log-tbody');
+  document.getElementById('log-count').textContent = `${totalCount} entries`;
+
+  if (currentLogs.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="7" style="padding:32px 14px;text-align:center;color:var(--color-text-muted);">
+      No audit log records found matching your filters.
+    </td></tr>`;
+    document.getElementById('pager-info').textContent = 'Showing 0 of 0';
+    return;
+  }
+
+  const startRecord = (currentPage - 1) * PER_PAGE + 1;
+  const endRecord   = Math.min(currentPage * PER_PAGE, totalCount);
+  document.getElementById('pager-info').textContent = `Showing ${startRecord}–${endRecord} of ${totalCount}`;
+
+  tbody.innerHTML = currentLogs.map(l => {
     const cls = ACTION_CLASS[l.action] || 'log-system';
+    const targetDisplay = l.target_type ? `${escapeHtml(l.target_type)} #${escapeHtml(l.target_id || '')}`.trim() : escapeHtml(l.target || '—');
+    const reasonDisplay = escapeHtml(l.reason || l.details || '—');
+
     return `<tr style="border-bottom:1px solid var(--color-border-light);">
-      <td style="padding:11px 14px;" class="log-mono">#${l.id}</td>
-      <td style="padding:11px 14px;" class="log-mono">${l.ts}</td>
-      <td style="padding:11px 14px;"><span class="log-action-badge ${cls}">${l.action}</span></td>
+      <td style="padding:11px 14px;" class="log-mono">#${escapeHtml(l.id)}</td>
+      <td style="padding:11px 14px;" class="log-mono">${escapeHtml(l.created_at || l.ts || '—')}</td>
+      <td style="padding:11px 14px;"><span class="log-action-badge ${cls}">${escapeHtml(l.action)}</span></td>
       <td style="padding:11px 14px;">
-        <div style="font-weight:600;">${l.actor}</div>
-        <div style="font-size:11.5px;color:var(--color-text-muted);">${l.role}</div>
+        <div style="font-weight:600;">${escapeHtml(l.actor_name || l.actor || 'System')}</div>
+        <div style="font-size:11.5px;color:var(--color-text-muted);">${escapeHtml(l.actor_role || l.role || '—')}</div>
       </td>
-      <td style="padding:11px 14px;color:var(--color-text-muted);">${l.target}</td>
-      <td style="padding:11px 14px;max-width:220px;color:var(--color-text-muted);">${l.reason}</td>
-      <td style="padding:11px 14px;" class="log-mono">${l.ip}</td>
+      <td style="padding:11px 14px;color:var(--color-text-muted);">${targetDisplay}</td>
+      <td style="padding:11px 14px;max-width:220px;color:var(--color-text-muted);word-break:break-word;">${reasonDisplay}</td>
+      <td style="padding:11px 14px;" class="log-mono">${escapeHtml(l.ip_address || l.ip || '—')}</td>
     </tr>`;
   }).join('');
-
-  renderPager();
 }
 
 function renderPager() {
-  const totalPages = Math.ceil(filteredLogs.length / PER_PAGE);
-  const container  = document.getElementById('pager-buttons');
+  const container = document.getElementById('pager-buttons');
   container.innerHTML = '';
+  if (totalPages <= 1) return;
 
   const prev = document.createElement('button');
   prev.className = 'pager-btn';
   prev.textContent = 'Prev';
   prev.disabled = currentPage <= 1;
-  prev.onclick = () => { currentPage--; renderLogs(); };
+  prev.onclick = () => { if (currentPage > 1) loadLogs(currentPage - 1); };
   container.appendChild(prev);
 
-  for (let i = 1; i <= totalPages; i++) {
+  let startP = Math.max(1, currentPage - 2);
+  let endP   = Math.min(totalPages, currentPage + 2);
+
+  if (startP > 1) {
+    const b = document.createElement('button');
+    b.className = 'pager-btn';
+    b.textContent = '1';
+    b.onclick = () => loadLogs(1);
+    container.appendChild(b);
+    if (startP > 2) {
+      const ell = document.createElement('span');
+      ell.style.padding = '0 4px';
+      ell.textContent = '…';
+      container.appendChild(ell);
+    }
+  }
+
+  for (let i = startP; i <= endP; i++) {
     const btn = document.createElement('button');
     btn.className = 'pager-btn' + (i === currentPage ? ' active' : '');
     btn.textContent = i;
-    btn.onclick = () => { currentPage = i; renderLogs(); };
+    btn.onclick = () => loadLogs(i);
     container.appendChild(btn);
+  }
+
+  if (endP < totalPages) {
+    if (endP < totalPages - 1) {
+      const ell = document.createElement('span');
+      ell.style.padding = '0 4px';
+      ell.textContent = '…';
+      container.appendChild(ell);
+    }
+    const b = document.createElement('button');
+    b.className = 'pager-btn';
+    b.textContent = totalPages;
+    b.onclick = () => loadLogs(totalPages);
+    container.appendChild(b);
   }
 
   const next = document.createElement('button');
   next.className = 'pager-btn';
   next.textContent = 'Next';
   next.disabled = currentPage >= totalPages;
-  next.onclick = () => { currentPage++; renderLogs(); };
+  next.onclick = () => { if (currentPage < totalPages) loadLogs(currentPage + 1); };
   container.appendChild(next);
 }
 
 function applyFilters(e) {
-  e.preventDefault();
-  const action = document.getElementById('filter-action').value;
-  const actor  = document.getElementById('filter-actor').value.toLowerCase().trim();
-  const from   = document.getElementById('filter-from').value;
-  const to     = document.getElementById('filter-to').value;
-
-  filteredLogs = ALL_LOGS.filter(l => {
-    if (action && l.action !== action) return false;
-    if (actor && !l.actor.toLowerCase().includes(actor)) return false;
-    if (from && l.ts.slice(0, 10) < from) return false;
-    if (to   && l.ts.slice(0, 10) > to)   return false;
-    return true;
-  });
-  currentPage = 1;
-  renderLogs();
+  if (e) e.preventDefault();
+  loadLogs(1);
 }
 
 function clearFilters() {
   document.getElementById('log-filter-form').reset();
-  filteredLogs = [...ALL_LOGS];
-  currentPage = 1;
-  renderLogs();
+  loadLogs(1);
 }
 
-function handleExportLogs() {
-  const cols = ['Log ID', 'Timestamp', 'Action', 'Actor', 'Role', 'Target', 'Reason / Note', 'IP Address'];
-  const data = (filteredLogs && filteredLogs.length > 0) ? filteredLogs : ALL_LOGS;
+async function handleExportLogs() {
+  const action = document.getElementById('filter-action').value;
+  const actor  = document.getElementById('filter-actor').value.trim();
+  const from   = document.getElementById('filter-from').value;
+  const to     = document.getElementById('filter-to').value;
 
-  const rows = data.map(l => [
-    l.id,
-    l.ts,
-    l.action,
-    l.actor,
-    l.role,
-    l.target,
-    l.reason,
-    l.ip
-  ]);
+  const params = new URLSearchParams({ page: '1', limit: '1000' });
+  if (action) params.append('action', action);
+  if (actor)  params.append('actor', actor);
+  if (from)   params.append('from', from);
+  if (to)     params.append('to', to);
 
-  const csv = [
-    cols.join(','),
-    ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
-  ].join('\n');
+  try {
+    const res = await fetch(`../../actions/admin_logs.php?${params.toString()}`);
+    if (!res.ok) throw new Error('Failed to fetch logs for export.');
+    const data = await res.json();
+    const exportData = (data.logs && data.logs.length > 0) ? data.logs : currentLogs;
 
-  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-  const url  = URL.createObjectURL(blob);
-  const a    = document.createElement('a');
-  const now  = new Date().toISOString().slice(0, 10);
-  a.href = url;
-  a.download = `iCareDonate_Audit_Logs_${now}.csv`;
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  window.showAdminFlash('success', `CSV downloaded: ${rows.length} audit log record${rows.length !== 1 ? 's' : ''}`);
+    if (!exportData || exportData.length === 0) {
+      if (typeof window.showAdminFlash === 'function') {
+        window.showAdminFlash('info', 'No logs available to export.');
+      } else {
+        alert('No logs available to export.');
+      }
+      return;
+    }
+
+    const cols = ['Log ID', 'Timestamp', 'Action', 'Actor Name', 'Role', 'Target Type', 'Target ID', 'Reason / Details', 'IP Address'];
+    const rows = exportData.map(l => [
+      l.id,
+      l.created_at || l.ts || '',
+      l.action || '',
+      l.actor_name || l.actor || 'System',
+      l.actor_role || l.role || '',
+      l.target_type || '',
+      l.target_id || '',
+      l.reason || l.details || '',
+      l.ip_address || l.ip || ''
+    ]);
+
+    const csv = [
+      cols.join(','),
+      ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
+    ].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    const now  = new Date().toISOString().slice(0, 10);
+    a.href = url;
+    a.download = `iCareDonate_Audit_Logs_${now}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+
+    if (typeof window.showAdminFlash === 'function') {
+      window.showAdminFlash('success', `CSV exported: ${rows.length} log record${rows.length !== 1 ? 's' : ''}`);
+    }
+  } catch (err) {
+    console.error('Export error:', err);
+    if (typeof window.showAdminFlash === 'function') {
+      window.showAdminFlash('danger', 'Failed to generate CSV export.');
+    } else {
+      alert('Failed to generate CSV export.');
+    }
+  }
 }
 
-renderLogs();
+document.addEventListener('DOMContentLoaded', () => {
+  loadLogs(1);
+});
 </script>
 
   <!-- Mobile sidebar toggle JS -->

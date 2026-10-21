@@ -114,7 +114,7 @@
         <span>Profile &amp; Settings</span>
       </a>
 
-      <a href="../help-center.html" class="sidebar-link" data-nav="help">
+      <a href="help-center.html" class="sidebar-link" data-nav="help">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span>Help Center</span>
       </a>
@@ -152,7 +152,7 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               <span>Profile &amp; Settings</span>
             </a>
-            <a href="../help-center.html" role="menuitem">
+            <a href="help-center.html" role="menuitem">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               <span>Help Center</span>
             </a>
@@ -201,8 +201,134 @@
       </div>
 
     </div>
+
+    <!-- Mini Footer -->
+    <footer class="user-footer">
+      <div>&copy; 2026 iCareDonate. All rights reserved.</div>
+      <div class="user-footer-links">
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="help-center.html">Help Center</a>
+      </div>
+    </footer>
   </div>
 </div>
+
+<!-- Item Details Modal Overlay -->
+<div id="itemDetailsModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalItemTitle" aria-hidden="true" style="display:none;">
+  <div class="modal" id="modalDialog" style="max-width:760px;width:100%;max-height:90vh;overflow-y:auto;padding:0;border-radius:14px;box-shadow:0 20px 50px rgba(15,23,42,0.25);border:1px solid var(--border,#E2E8F0);background:#fff;position:relative;">
+
+    <!-- Modal Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 24px;border-bottom:1px solid var(--border,#E2E8F0);position:sticky;top:0;background:#fff;z-index:2;">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span id="modalCategoryBadge" class="badge badge-neutral" style="font-size:12px;font-weight:600;">Resource Details</span>
+        <span id="modalVerificationBadge" class="badge" style="background:var(--sky, #DCE8F7);color:var(--cobalt, #1F4FA3);font-size:11.5px;font-weight:600;display:inline-flex;align-items:center;gap:4px;" title="Identity and proof reviewed by the iCareDonate admin team.">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+          Verified Donor
+        </span>
+      </div>
+      <button type="button" class="modal-close" id="modalCloseBtn" aria-label="Close details dialog" style="background:none;border:none;font-size:24px;line-height:1;color:#64748B;cursor:pointer;padding:4px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:all 0.15s ease;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <!-- Modal Body: Loading State -->
+    <div id="modalLoadingState" style="padding:60px 24px;text-align:center;display:none;">
+      <div class="btn-spinner" style="display:inline-block;width:32px;height:32px;border:3px solid #CBD5E1;border-top-color:var(--color-primary,#1F4FA3);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px;"></div>
+      <div style="font-size:14px;color:#64748B;">Loading donation details...</div>
+    </div>
+
+    <!-- Modal Body: Error State -->
+    <div id="modalErrorState" style="padding:60px 24px;text-align:center;display:none;">
+      <div style="width:48px;height:48px;border-radius:50%;background:#FEE2E2;color:#DC2626;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <h3 style="font-size:17px;font-weight:700;color:#1E293B;margin-bottom:6px;">Donation details unavailable</h3>
+      <p style="color:#64748B;font-size:13.5px;margin:0 0 16px;">This donation record may have been updated, fully claimed, or removed.</p>
+      <button type="button" class="btn btn-outline" id="modalErrorCloseBtn" style="font-size:13px;padding:6px 16px;">Close</button>
+    </div>
+
+    <!-- Modal Body: Content State -->
+    <div id="modalContentState" style="padding:24px;">
+      <div style="display:grid;grid-template-columns:1fr 1.15fr;gap:24px;align-items:start;" id="modalGridWrap">
+
+        <!-- Left: Image & Gallery -->
+        <div>
+          <div style="height:260px;background:#F8FAFC;border-radius:10px;overflow:hidden;border:1px solid #E2E8F0;display:flex;align-items:center;justify-content:center;position:relative;">
+            <img id="modalItemImage" src="../assets/images/placeholder.svg" alt="Item photo" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='../assets/images/placeholder.svg';">
+          </div>
+          <div id="modalThumbStrip" style="display:none;gap:8px;margin-top:10px;overflow-x:auto;padding-bottom:4px;"></div>
+        </div>
+
+        <!-- Right: Info & Logistics -->
+        <div>
+          <h2 id="modalItemTitle" style="font-size:20px;font-weight:700;color:var(--text,#1E293B);line-height:1.3;margin:0 0 10px;">
+            Item Title
+          </h2>
+
+          <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:10px;padding:14px 16px;margin-bottom:16px;display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;">Available Quantity</div>
+              <div id="modalItemQty" style="font-size:18px;font-weight:700;color:var(--color-primary,#1F4FA3);margin-top:2px;">0 units</div>
+            </div>
+            <div>
+              <div style="font-size:11px;font-weight:600;color:#64748B;text-transform:uppercase;">Item Condition</div>
+              <div id="modalItemCondition" style="font-size:14px;font-weight:600;color:var(--text,#1E293B);margin-top:4px;">Good</div>
+            </div>
+          </div>
+
+          <!-- Logistics Info List -->
+          <div style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:#334155;margin-bottom:18px;">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary,#1F4FA3)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div><strong style="color:#475569;">Location:</strong> <span id="modalItemLocation">Metro Manila</span></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary,#1F4FA3)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+              <div><strong style="color:#475569;">Handover Method:</strong> <span id="modalItemHandover">Pick-up</span></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary,#1F4FA3)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
+              <div><strong style="color:#475569;">Posted Date:</strong> <span id="modalItemPosted">Recently</span></div>
+            </div>
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary,#1F4FA3)" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              <div><strong style="color:#475569;">Donor:</strong> <span id="modalItemDonor">Verified Community Member</span></div>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div style="margin-bottom:20px;">
+            <div style="font-size:12px;font-weight:700;text-transform:uppercase;color:#64748B;margin-bottom:6px;">Description</div>
+            <p id="modalItemDescription" style="font-size:13.5px;color:#334155;line-height:1.6;margin:0;white-space:pre-line;background:#FAFBFD;padding:12px 14px;border-radius:8px;border:1px solid #F1F5F9;">
+              No detailed description provided.
+            </p>
+          </div>
+
+          <!-- Actions Wrap -->
+          <div style="display:flex;gap:10px;align-items:center;">
+            <a id="modalRequestBtn" href="request-donation.html" class="btn btn-primary" style="flex:1;text-align:center;padding:10px 18px;font-size:14px;font-weight:600;">
+              Request Item
+            </a>
+            <button type="button" class="btn btn-outline" id="modalBottomCloseBtn" style="padding:10px 18px;font-size:14px;">
+              Close
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  @media (max-width: 680px) {
+    #modalGridWrap {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
 
 <script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
@@ -211,7 +337,7 @@
     const query = document.getElementById('browse-search').value.trim();
     const catId = Number(document.getElementById('browse-category').value);
     const container = document.getElementById('browse-donations-grid');
-    
+
     // Only approved and active donations are displayed to users
     const items = window.MockStore.getDonations('approved', query, catId);
 
@@ -258,19 +384,236 @@
             <a href="request-donation.html?id=${item.id}" class="btn btn-primary" style="flex:1;text-align:center;font-size:13px;padding:8px 12px;">
               Request Item
             </a>
-            <a href="../donation-details.html?id=${item.id}" target="_blank" class="btn btn-outline" style="font-size:13px;padding:8px 12px;" title="Public Details">
+            <button type="button" class="btn btn-outline btn-view-item" data-id="${item.id}" style="font-size:13px;padding:8px 14px;" title="View donation details" aria-haspopup="dialog">
               View
-            </a>
+            </button>
           </div>
         </div>
       </div>
     `).join('');
   }
 
-  document.getElementById('browse-filter-btn').addEventListener('click', renderBrowseDonations);
-  document.getElementById('browse-search').addEventListener('input', renderBrowseDonations);
-  document.getElementById('browse-category').addEventListener('change', renderBrowseDonations);
-  document.addEventListener('DOMContentLoaded', renderBrowseDonations);
+  // ══════════════════════════════════════════════════════════
+  // ITEM DETAILS MODAL LOGIC
+  // ══════════════════════════════════════════════════════════
+  let lastFocusedElement = null;
+
+  function condLabel(c) {
+    const m = { new: 'Brand New', like_new: 'Like New', good: 'Good Condition', fair: 'Fair Condition', poor: 'Needs Repair' };
+    return m[c] || c || 'Good Condition';
+  }
+
+  function formatPickup(m) {
+    if (!m) return 'Pick-up';
+    if (m === 'both') return 'Pick-up or Delivery Available';
+    if (m === 'delivery') return 'Delivery Only';
+    return 'Pick-up Only';
+  }
+
+  function formatDate(s) {
+    if (!s) return 'Recently posted';
+    const d = new Date(s);
+    if (isNaN(d.getTime())) return s;
+    return d.toLocaleDateString('en-PH', { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  function resolveItemImage(rawImg) {
+    if (!rawImg) return '../assets/images/placeholder.svg';
+    if (rawImg.startsWith('http://') || rawImg.startsWith('https://') || rawImg.startsWith('/')) {
+      return rawImg;
+    }
+    // Relative paths from user/ directory
+    if (rawImg.startsWith('../')) {
+      return rawImg;
+    }
+    return '../' + rawImg;
+  }
+
+  function openItemModal(itemId) {
+    lastFocusedElement = document.activeElement;
+    const modal = document.getElementById('itemDetailsModal');
+    const loading = document.getElementById('modalLoadingState');
+    const error = document.getElementById('modalErrorState');
+    const content = document.getElementById('modalContentState');
+
+    if (!modal) return;
+
+    modal.style.display = 'flex';
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    // Show loading state initially
+    loading.style.display = 'block';
+    error.style.display = 'none';
+    content.style.display = 'none';
+
+    // Trigger CSS animation
+    requestAnimationFrame(() => {
+      modal.classList.add('open');
+    });
+
+    // Resolve donation item by ID
+    let item = null;
+    if (window.MockStore && typeof window.MockStore.getDonationById === 'function') {
+      item = window.MockStore.getDonationById(itemId);
+    }
+
+    if (!item) {
+      // Try resolving from API if available
+      const apiBase = window.location.pathname.includes('/CommunityDono/')
+        ? window.location.origin + '/CommunityDono/api/v1'
+        : '/api/v1';
+
+      fetch(`${apiBase}/public/donations.php?id=${encodeURIComponent(itemId)}`)
+        .then(res => res.ok ? res.json() : null)
+        .then(data => {
+          const d = data ? (data.data || data) : null;
+          if (d && d.id) {
+            populateModal(d);
+          } else {
+            showModalError();
+          }
+        })
+        .catch(() => showModalError());
+      return;
+    }
+
+    populateModal(item);
+  }
+
+  function populateModal(item) {
+    const loading = document.getElementById('modalLoadingState');
+    const error = document.getElementById('modalErrorState');
+    const content = document.getElementById('modalContentState');
+
+    const available = item.available_quantity ?? ((item.quantity_total || 0) - (item.quantity_reserved || 0) - (item.quantity_claimed || 0));
+
+    // Populate fields
+    document.getElementById('modalCategoryBadge').textContent = item.category_name || 'Community Resource';
+    document.getElementById('modalItemTitle').textContent = item.title || 'Donation Item';
+    document.getElementById('modalItemQty').textContent = `${available} ${item.unit || 'units'}`;
+    document.getElementById('modalItemCondition').textContent = condLabel(item.condition_type);
+    document.getElementById('modalItemLocation').textContent = `${item.pickup_barangay ? item.pickup_barangay + ', ' : ''}${item.pickup_city || 'Metro Manila'}`;
+    document.getElementById('modalItemHandover').textContent = formatPickup(item.pickup_method);
+    document.getElementById('modalItemPosted').textContent = formatDate(item.created_at);
+    document.getElementById('modalItemDonor').textContent = item.donor_name ? `${item.donor_name} (Verified)` : 'Verified Community Member';
+    document.getElementById('modalItemDescription').textContent = item.description || 'No detailed description provided.';
+
+    // Main Image
+    const mainImg = document.getElementById('modalItemImage');
+    const rawImg = item.image_url || item.primary_image || (item.images && item.images[0] ? item.images[0].file_path : '');
+    mainImg.src = resolveItemImage(rawImg);
+
+    // Thumbnails
+    const thumbStrip = document.getElementById('modalThumbStrip');
+    if (item.images && item.images.length > 1) {
+      thumbStrip.style.display = 'flex';
+      thumbStrip.innerHTML = item.images.map(img => {
+        const thumbSrc = resolveItemImage(img.file_path);
+        return `<img src="${thumbSrc}" alt="Thumbnail" style="width:52px;height:52px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid transparent;flex-shrink:0;" onclick="document.getElementById('modalItemImage').src='${thumbSrc}';">`;
+      }).join('');
+    } else {
+      thumbStrip.style.display = 'none';
+      thumbStrip.innerHTML = '';
+    }
+
+    // Request Button
+    const reqBtn = document.getElementById('modalRequestBtn');
+    if (available <= 0) {
+      reqBtn.removeAttribute('href');
+      reqBtn.textContent = 'Unavailable (Fully Claimed)';
+      reqBtn.className = 'btn btn-outline';
+      reqBtn.style.opacity = '0.6';
+      reqBtn.style.pointerEvents = 'none';
+    } else {
+      reqBtn.href = `request-donation.html?id=${item.id}`;
+      reqBtn.textContent = 'Request Item';
+      reqBtn.className = 'btn btn-primary';
+      reqBtn.style.opacity = '1';
+      reqBtn.style.pointerEvents = 'auto';
+    }
+
+    loading.style.display = 'none';
+    error.style.display = 'none';
+    content.style.display = 'block';
+
+    const closeBtn = document.getElementById('modalCloseBtn');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function showModalError() {
+    document.getElementById('modalLoadingState').style.display = 'none';
+    document.getElementById('modalContentState').style.display = 'none';
+    document.getElementById('modalErrorState').style.display = 'block';
+  }
+
+  function closeItemModal() {
+    const modal = document.getElementById('itemDetailsModal');
+    if (!modal) return;
+
+    modal.classList.remove('open');
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.style.overflow = '';
+
+    setTimeout(() => {
+      modal.style.display = 'none';
+      if (lastFocusedElement && typeof lastFocusedElement.focus === 'function') {
+        lastFocusedElement.focus();
+      }
+    }, 200);
+  }
+
+  // Event Listeners for Modal & Controls
+  function initItemModalEvents() {
+    const grid = document.getElementById('browse-donations-grid');
+    if (grid) {
+      grid.addEventListener('click', function(e) {
+        const viewBtn = e.target.closest('.btn-view-item');
+        if (viewBtn) {
+          e.preventDefault();
+          const itemId = viewBtn.getAttribute('data-id');
+          if (itemId) openItemModal(itemId);
+        }
+      });
+    }
+
+    const c1 = document.getElementById('modalCloseBtn');
+    if (c1) c1.addEventListener('click', closeItemModal);
+    const c2 = document.getElementById('modalBottomCloseBtn');
+    if (c2) c2.addEventListener('click', closeItemModal);
+    const c3 = document.getElementById('modalErrorCloseBtn');
+    if (c3) c3.addEventListener('click', closeItemModal);
+
+    const m = document.getElementById('itemDetailsModal');
+    if (m) {
+      m.addEventListener('click', function(e) {
+        if (e.target === this) {
+          closeItemModal();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        const modal = document.getElementById('itemDetailsModal');
+        if (modal && modal.classList.contains('open')) {
+          closeItemModal();
+        }
+      }
+    });
+
+    const filterBtn = document.getElementById('browse-filter-btn');
+    if (filterBtn) filterBtn.addEventListener('click', renderBrowseDonations);
+    const searchInput = document.getElementById('browse-search');
+    if (searchInput) searchInput.addEventListener('input', renderBrowseDonations);
+    const catSelect = document.getElementById('browse-category');
+    if (catSelect) catSelect.addEventListener('change', renderBrowseDonations);
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    renderBrowseDonations();
+    initItemModalEvents();
+  });
 </script>
 
   <!-- Mobile sidebar toggle JS -->

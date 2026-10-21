@@ -224,10 +224,10 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
   let activeUserFilter = 'all';
+  let allLoadedUsers = [];
 
   function setUserFilter(status) {
     activeUserFilter = status;
@@ -238,54 +238,94 @@
         btn.className = 'btn btn-outline';
       }
     });
-    renderUserTable();
+    fetchAndRenderUsers();
   }
 
-  function updateUserCounts() {
-    if (!window.MockStore) return;
-    const counts = window.MockStore.getUserCounts();
-    document.getElementById('user-cnt-all').textContent = counts.all;
-    document.getElementById('user-cnt-active').textContent = counts.active;
-    document.getElementById('user-cnt-pending').textContent = counts.pending_verification;
-    document.getElementById('user-cnt-suspended').textContent = counts.suspended;
-    document.getElementById('user-cnt-banned').textContent = counts.banned;
-  }
-
-  function renderUserTable() {
-    const q = (document.getElementById('userSearchInput').value || '').trim();
-    const users = window.MockStore ? window.MockStore.getUsers(activeUserFilter, q) : [];
+  async function fetchAndRenderUsers() {
     const tbody = document.getElementById('users-table-body');
-    if (!tbody) return;
-
-    if (users.length === 0) {
+    if (tbody) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="8" style="padding:36px;text-align:center;color:var(--color-text-muted);">
-            No user accounts found matching the criteria.
+          <td colspan="8" style="padding:32px;text-align:center;color:var(--color-text-muted);">
+            Retrieving user accounts from database...
           </td>
         </tr>
       `;
-      updateUserCounts();
+    }
+
+    const q = (document.getElementById('userSearchInput').value || '').trim();
+
+    try {
+      const res = await window.AdminAPI.getUsers({
+        status: activeUserFilter,
+        q: q
+      });
+
+      if (res && res.counts) {
+        document.getElementById('user-cnt-all').textContent = res.counts.all ?? 0;
+        document.getElementById('user-cnt-active').textContent = res.counts.active ?? 0;
+        document.getElementById('user-cnt-pending').textContent = res.counts.pending_verification ?? 0;
+        document.getElementById('user-cnt-suspended').textContent = res.counts.suspended ?? 0;
+        document.getElementById('user-cnt-banned').textContent = res.counts.banned ?? 0;
+      }
+
+      allLoadedUsers = (res && (res.users || res.data)) || [];
+      renderUserTableRows();
+    } catch (err) {
+      if (tbody) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="8" style="padding:32px;text-align:center;color:#DC2626;">
+              <strong>Error loading user accounts:</strong> ${escapeHtml(err.message)}
+            </td>
+          </tr>
+        `;
+      }
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderUserTableRows() {
+    const tbody = document.getElementById('users-table-body');
+    if (!tbody) return;
+
+    if (allLoadedUsers.length === 0) {
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="8" style="padding:36px;text-align:center;color:var(--color-text-muted);">
+            No user accounts found matching the criteria in the database.
+          </td>
+        </tr>
+      `;
       return;
     }
 
-    tbody.innerHTML = users.map(u => {
-      const badgeClass = u.status === 'active' ? 'badge-success' : u.status === 'suspended' ? 'badge-warning' : u.status === 'banned' ? 'badge-danger' : 'badge-neutral';
-      const statusText = u.status === 'active' ? 'Active' : u.status === 'suspended' ? 'Suspended' : u.status === 'banned' ? 'Banned' : 'Pending Verification';
+    tbody.innerHTML = allLoadedUsers.map(u => {
+      const uStatus = (u.status || 'active').toLowerCase();
+      const badgeClass = uStatus === 'active' ? 'badge-success' : uStatus === 'suspended' ? 'badge-warning' : uStatus === 'banned' ? 'badge-danger' : 'badge-neutral';
+      const statusText = uStatus === 'active' ? 'Active' : uStatus === 'suspended' ? 'Suspended' : uStatus === 'banned' ? 'Banned' : 'Pending Verification';
+      const displayName = u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim() || 'Community Member';
+      const registeredDate = (u.created_at || u.joined || u.registered || '').split(' ')[0] || 'Recently';
 
       return `
         <tr style="border-bottom:1px solid var(--color-border-light);">
           <td style="padding:14px 16px;font-weight:600;color:var(--color-text-muted);">#${u.id}</td>
           <td style="padding:14px 16px;">
             <a href="user-detail.html?id=${u.id}" style="font-weight:700;color:var(--color-primary);text-decoration:none;">
-              ${u.firstName} ${u.lastName}
+              ${escapeHtml(displayName)}
             </a>
           </td>
-          <td style="padding:14px 16px;color:var(--color-text);">${u.email}</td>
-          <td style="padding:14px 16px;color:var(--color-text);">${u.city || 'Metro Manila'}</td>
-          <td style="padding:14px 16px;"><span class="badge badge-info" style="font-size:11px;">${u.role}</span></td>
+          <td style="padding:14px 16px;color:var(--color-text);">${escapeHtml(u.email || '')}</td>
+          <td style="padding:14px 16px;color:var(--color-text);">${escapeHtml(u.city || 'Metro Manila')}</td>
+          <td style="padding:14px 16px;"><span class="badge badge-info" style="font-size:11px;">${escapeHtml(u.role || 'user')}</span></td>
           <td style="padding:14px 16px;"><span class="badge ${badgeClass}" style="font-size:11px;">${statusText}</span></td>
-          <td style="padding:14px 16px;color:var(--color-text-muted);font-size:12.5px;">${u.joined || u.registered || '2026-01-15'}</td>
+          <td style="padding:14px 16px;color:var(--color-text-muted);font-size:12.5px;">${registeredDate}</td>
           <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
             <a href="user-detail.html?id=${u.id}" class="btn btn-outline" style="font-size:12px;padding:4px 10px;">
               Manage &bull; Moderate
@@ -294,23 +334,28 @@
         </tr>
       `;
     }).join('');
+  }
 
-    updateUserCounts();
+  function renderUserTable() {
+    fetchAndRenderUsers();
   }
 
   function handleExportUsers() {
-    const q = (document.getElementById('userSearchInput').value || '').trim();
-    const users = window.MockStore ? window.MockStore.getUsers(activeUserFilter, q) : [];
+    if (allLoadedUsers.length === 0) {
+      alert('No user accounts available to export.');
+      return;
+    }
+
     const cols = ['User ID', 'Full Name', 'Email', 'City', 'Barangay', 'Role', 'Status', 'Registered Date'];
-    const rows = users.map(u => [
+    const rows = allLoadedUsers.map(u => [
       u.id,
-      `${u.firstName} ${u.lastName}`,
-      u.email,
+      u.name || `${u.firstName || ''} ${u.lastName || ''}`.trim(),
+      u.email || '',
       u.city || '',
       u.barangay || '',
       u.role || 'user',
-      u.status,
-      u.joined || u.registered || '2026-01-15'
+      u.status || 'active',
+      (u.created_at || u.joined || '').split(' ')[0]
     ]);
 
     const csv = [
@@ -334,7 +379,7 @@
   }
 
   document.addEventListener('DOMContentLoaded', function() {
-    renderUserTable();
+    fetchAndRenderUsers();
   });
 </script>
 

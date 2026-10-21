@@ -220,7 +220,7 @@
 
         <!-- Right: Moderation Actions & Stats -->
         <div style="display:flex;flex-direction:column;gap:20px;">
-          
+
           <!-- Summary Counters -->
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
             <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
@@ -311,7 +311,7 @@
 <dialog id="suspend-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:480px;width:92%;">
   <div class="card" style="padding:32px;border-radius:var(--radius-lg);background:#FFFFFF;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border:1px solid var(--color-border);">
     <h2 style="font-size:18px;font-weight:700;margin:0 0 8px;color:#DC2626;">Suspend User Account</h2>
-    
+
     <div class="alert alert-warning" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
       <span><strong>Cascade Notice:</strong> Suspending this account will automatically archive all of their currently active donation offers to safeguard the community.</span>
@@ -335,7 +335,7 @@
 <dialog id="ban-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:480px;width:92%;">
   <div class="card" style="padding:32px;border-radius:var(--radius-lg);background:#FFFFFF;box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);border:1px solid var(--color-border);">
     <h2 style="font-size:18px;font-weight:700;margin:0 0 8px;color:#111827;">Permanent Account Ban</h2>
-    
+
     <div class="alert alert-warning" style="display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;font-size:13px;margin-bottom:16px;background:#FFFBEB;border:1px solid #FDE68A;color:#92400E;">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;margin-top:2px;"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" x2="12" y1="9" y2="13"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>
       <span><strong>Cascade Notice:</strong> Banning this account permanently archives all associated donations immediately.</span>
@@ -355,103 +355,147 @@
   </div>
 </dialog>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
   let targetUser = null;
+  let userDonations = [];
+  let userRequests = [];
 
-  function loadUserProfile() {
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  async function loadUserProfile() {
     const urlParams = new URLSearchParams(window.location.search);
-    const userId = Number(urlParams.get('id') || 12);
+    const userId = urlParams.get('id');
 
-    targetUser = window.MockStore ? window.MockStore.getUserById(userId) : null;
-    if (!targetUser && window.MockStore) {
-      targetUser = window.MockStore.getUsers('all', '')[0];
+    if (!userId) {
+      showUserNotFound('No user account ID specified.');
+      return;
     }
+
+    try {
+      const res = await window.AdminAPI.getUser(userId);
+      if (!res || !res.success || !res.user) {
+        showUserNotFound(res ? res.message : 'User account record not found.');
+        return;
+      }
+
+      targetUser = res.user;
+      userDonations = res.donations || [];
+      userRequests = res.requests || [];
+      renderUserDetails();
+    } catch (err) {
+      showUserNotFound(`Failed to fetch user record: ${err.message}`);
+    }
+  }
+
+  function showUserNotFound(msg) {
+    const content = document.querySelector('.admin-content');
+    if (content) {
+      content.innerHTML = `
+        <div class="card" style="padding:64px 24px;text-align:center;border:1px solid var(--color-border);border-radius:12px;background:#fff;">
+          <div style="width:54px;height:54px;border-radius:50%;background:#FEE2E2;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#DC2626;">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <h3 style="font-size:17px;font-weight:700;margin:0 0 6px;">User Account Not Found</h3>
+          <p style="color:var(--color-text-muted);font-size:13.5px;max-width:380px;line-height:1.5;margin:0 auto 20px;">${escapeHtml(msg || 'The requested user ID does not exist in the database.')}</p>
+          <a href="users.html" class="btn btn-primary" style="font-size:13px;padding:8px 18px;">&larr; Back to Users Directory</a>
+        </div>
+      `;
+    }
+  }
+
+  function renderUserDetails() {
     if (!targetUser) return;
 
-    document.getElementById('user-header-name').textContent = `${targetUser.firstName} ${targetUser.lastName}`;
+    const fullName = targetUser.name || `${targetUser.firstName || ''} ${targetUser.lastName || ''}`.trim() || 'Community Member';
+    document.getElementById('user-header-name').textContent = fullName;
     document.getElementById('user-header-id').textContent = targetUser.id;
-    document.getElementById('u-name').textContent = `${targetUser.firstName} ${targetUser.lastName}`;
-    document.getElementById('u-email').textContent = targetUser.email;
+    document.getElementById('u-name').textContent = fullName;
+    document.getElementById('u-email').textContent = targetUser.email || 'None';
     document.getElementById('u-phone').textContent = targetUser.phone || 'None provided';
-    document.getElementById('u-location').textContent = `${targetUser.barangay || ''}, ${targetUser.city || ''}`;
-    document.getElementById('u-joined').textContent = targetUser.joined || targetUser.registered || 'Jan 15, 2026';
+
+    const locParts = [targetUser.barangay, targetUser.city].filter(Boolean);
+    document.getElementById('u-location').textContent = locParts.length ? locParts.join(', ') : 'Metro Manila';
+    document.getElementById('u-joined').textContent = (targetUser.created_at || 'Recently').split(' ')[0];
+
+    const roleElem = document.getElementById('u-role');
+    if (roleElem) {
+      roleElem.innerHTML = `<span class="badge badge-info">${escapeHtml(targetUser.role || 'user')}</span>`;
+    }
 
     renderUserStatus();
     renderUserDonations();
   }
 
   function renderUserStatus() {
+    if (!targetUser) return;
     const badge = document.getElementById('user-status-badge');
     const noteBox = document.getElementById('u-moderation-note-box');
     const noteText = document.getElementById('u-moderation-note-text');
     const activeActions = document.getElementById('active-moderation-actions');
     const reactivateActions = document.getElementById('reactivate-moderation-actions');
+    const uStatus = (targetUser.status || 'active').toLowerCase();
 
-    if (targetUser.status === 'active') {
+    if (uStatus === 'active') {
       badge.className = 'badge badge-success';
       badge.textContent = 'Active';
       noteBox.style.display = 'none';
       activeActions.style.display = 'flex';
       reactivateActions.style.display = 'none';
-    } else if (targetUser.status === 'suspended') {
+    } else if (uStatus === 'suspended') {
       badge.className = 'badge badge-warning';
       badge.textContent = 'Suspended';
       noteBox.style.display = 'block';
-      noteText.textContent = targetUser.moderation_note || 'Account suspended for policy evaluation.';
+      noteText.textContent = targetUser.status_reason || targetUser.moderation_note || 'Account suspended for policy evaluation.';
       activeActions.style.display = 'none';
       reactivateActions.style.display = 'block';
-    } else if (targetUser.status === 'banned') {
+    } else if (uStatus === 'banned') {
       badge.className = 'badge badge-danger';
       badge.textContent = 'Banned';
       noteBox.style.display = 'block';
-      noteText.textContent = targetUser.moderation_note || 'Permanently banned from iCareDonate.';
+      noteText.textContent = targetUser.status_reason || targetUser.moderation_note || 'Permanently banned from iCareDonate.';
       activeActions.style.display = 'none';
       reactivateActions.style.display = 'block';
+    } else {
+      badge.className = 'badge badge-neutral';
+      badge.textContent = 'Pending Verification';
+      noteBox.style.display = 'none';
+      activeActions.style.display = 'flex';
+      reactivateActions.style.display = 'none';
     }
   }
 
   function renderUserDonations() {
     const container = document.getElementById('user-donations-container');
-    if (!container || !window.MockStore) return;
+    if (!container) return;
 
-    // Filter donations owned by this user
-    const donations = window.MockStore.getDonations('archived', '').concat(window.MockStore.getDonations('all', ''))
-      .filter(d => d.donor_id === targetUser.id);
+    document.getElementById('cnt-donations').textContent = userDonations.length;
 
-    // Remove duplicates if any
-    const unique = [];
-    const seen = new Set();
-    donations.forEach(d => {
-      if (!seen.has(d.id)) {
-        seen.add(d.id);
-        unique.push(d);
-      }
-    });
-
-    document.getElementById('cnt-donations').textContent = unique.length;
-
-    if (unique.length === 0) {
-      container.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px;margin:0;">No donations created by this account.</p>';
+    if (userDonations.length === 0) {
+      container.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px;margin:0;">No donations recorded for this account in the database.</p>';
       return;
     }
 
-    container.innerHTML = unique.map(d => {
-      const isArchived = d.status === 'archived';
-      const badgeClass = d.status === 'approved' ? 'badge-success' : isArchived ? 'badge-danger' : 'badge-warning';
-      const label = d.status === 'approved' ? 'Approved' : isArchived ? 'Archived' : 'Pending Verification';
+    container.innerHTML = userDonations.map(d => {
+      const isArchived = d.status === 'archived' || d.status === 'cancelled' || d.status === 'rejected';
+      const isApproved = d.status === 'approved' || d.status === 'available';
+      const badgeClass = isApproved ? 'badge-success' : isArchived ? 'badge-danger' : 'badge-warning';
+      const label = isApproved ? 'Approved' : isArchived ? 'Archived' : 'Pending Verification';
 
       return `
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:${isArchived ? '#FEF2F2' : '#F8FAFC'};border:1px solid ${isArchived ? '#FCA5A5' : 'var(--color-border)'};border-radius:8px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:${isArchived ? '#FEF2F2' : '#F8FAFC'};border:1px solid ${isArchived ? '#FCA5A5' : 'var(--color-border)'};border-radius:8px;margin-bottom:8px;">
           <div>
             <div style="display:flex;gap:8px;align-items:center;margin-bottom:3px;">
-              <span style="font-weight:700;font-size:14px;color:var(--color-text);">#${d.id} &mdash; ${d.title}</span>
+              <span style="font-weight:700;font-size:14px;color:var(--color-text);">#${d.id} &mdash; ${escapeHtml(d.title)}</span>
               <span class="badge ${badgeClass}" style="font-size:11px;">${label}</span>
             </div>
             <div style="font-size:12.5px;color:var(--color-text-muted);">
-              Category: ${d.category_name} &bull; Qty: ${d.quantity_total} ${d.unit}
-              ${isArchived ? ` &bull; <span style="color:#DC2626;font-weight:600;">Reason: ${d.archive_reason}</span>` : ''}
+              Category: ${escapeHtml(d.category || 'General')} &bull; Qty: ${d.quantity || 1} ${escapeHtml(d.unit || 'pcs')}
             </div>
           </div>
           <div>
@@ -465,24 +509,34 @@
   function handleIssueWarning(e) {
     e.preventDefault();
     const reason = document.getElementById('warning-input').value.trim();
-    if (!reason) return;
+    if (!reason || !targetUser) return;
     document.getElementById('warning-input').value = '';
-    window.showAdminFlash('info', `Official warning issued to ${targetUser.firstName} ${targetUser.lastName}: "${reason}"`);
+    window.showAdminFlash('info', `Official warning noted for ${targetUser.name || 'user'}: "${reason}"`);
   }
 
   function openSuspendModal() {
     document.getElementById('suspend-dialog').showModal();
   }
 
-  function handleSuspendSubmit(e) {
+  async function handleSuspendSubmit(e) {
     e.preventDefault();
     const reason = document.getElementById('suspend-reason').value.trim();
-    const res = window.MockStore.moderateUser(targetUser.id, 'suspend', reason);
-    document.getElementById('suspend-dialog').close();
-    if (res.success) {
-      window.showAdminFlash('success', res.message);
-      renderUserStatus();
-      renderUserDonations();
+    if (!reason || !targetUser) return;
+
+    try {
+      const res = await window.AdminAPI.updateUser(targetUser.id, 'suspend', reason);
+      document.getElementById('suspend-dialog').close();
+      if (res && res.success) {
+        targetUser.status = 'suspended';
+        targetUser.status_reason = reason;
+        window.showAdminFlash('success', res.message || 'User suspended successfully.');
+        renderUserStatus();
+        loadUserProfile();
+      } else {
+        alert((res && res.message) || 'Failed to suspend user.');
+      }
+    } catch (err) {
+      alert(`Error suspending user: ${err.message}`);
     }
   }
 
@@ -490,24 +544,45 @@
     document.getElementById('ban-dialog').showModal();
   }
 
-  function handleBanSubmit(e) {
+  async function handleBanSubmit(e) {
     e.preventDefault();
     const reason = document.getElementById('ban-reason').value.trim();
-    const res = window.MockStore.moderateUser(targetUser.id, 'ban', reason);
-    document.getElementById('ban-dialog').close();
-    if (res.success) {
-      window.showAdminFlash('success', res.message);
-      renderUserStatus();
-      renderUserDonations();
+    if (!reason || !targetUser) return;
+
+    try {
+      const res = await window.AdminAPI.updateUser(targetUser.id, 'ban', reason);
+      document.getElementById('ban-dialog').close();
+      if (res && res.success) {
+        targetUser.status = 'banned';
+        targetUser.status_reason = reason;
+        window.showAdminFlash('success', res.message || 'User banned successfully.');
+        renderUserStatus();
+        loadUserProfile();
+      } else {
+        alert((res && res.message) || 'Failed to ban user.');
+      }
+    } catch (err) {
+      alert(`Error banning user: ${err.message}`);
     }
   }
 
-  function handleReactivateUser() {
-    const res = window.MockStore.moderateUser(targetUser.id, 'activate', '');
-    if (res.success) {
-      window.showAdminFlash('success', res.message);
-      renderUserStatus();
-      renderUserDonations();
+  async function handleReactivateUser() {
+    if (!targetUser) return;
+    if (!confirm(`Reactivate account #${targetUser.id}?`)) return;
+
+    try {
+      const res = await window.AdminAPI.updateUser(targetUser.id, 'activate');
+      if (res && res.success) {
+        targetUser.status = 'active';
+        targetUser.status_reason = '';
+        window.showAdminFlash('success', res.message || 'User reactivated successfully.');
+        renderUserStatus();
+        loadUserProfile();
+      } else {
+        alert((res && res.message) || 'Failed to reactivate user.');
+      }
+    } catch (err) {
+      alert(`Error reactivating user: ${err.message}`);
     }
   }
 

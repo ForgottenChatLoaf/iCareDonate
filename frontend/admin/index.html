@@ -329,22 +329,8 @@
               <a href="requests.html?status=pending" style="font-size:12px;color:var(--coral, #E0553D);font-weight:600;text-decoration:none;">Queue (2) &rarr;</a>
             </div>
 
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="padding:10px 12px;border-radius:8px;background:#FFF0EC;border:1px solid #FECACA;display:flex;justify-content:space-between;align-items:center;">
-                <div>
-                  <div style="font-size:13px;font-weight:700;color:#991B1B;">Carlos Mendoza (#501)</div>
-                  <div style="font-size:11.5px;color:#7F1D1D;">Indigency Cert &bull; High Urgency</div>
-                </div>
-                <a href="request-review.html?id=501" class="btn btn-primary" style="font-size:11.5px;padding:4px 10px;background:var(--coral, #E0553D);border-color:var(--coral, #E0553D);">Review</a>
-              </div>
-
-              <div style="padding:10px 12px;border-radius:8px;background:#FFF0EC;border:1px solid #FECACA;display:flex;justify-content:space-between;align-items:center;">
-                <div>
-                  <div style="font-size:13px;font-weight:700;color:#991B1B;">Rosalina Ramos (#502)</div>
-                  <div style="font-size:11.5px;color:#7F1D1D;">Barangay Cert &bull; Medium Urgency</div>
-                </div>
-                <a href="request-review.html?id=502" class="btn btn-primary" style="font-size:11.5px;padding:4px 10px;background:var(--coral, #E0553D);border-color:var(--coral, #E0553D);">Review</a>
-              </div>
+            <div style="display:flex;flex-direction:column;gap:10px;" id="pending-proofs-queue">
+              <div style="padding:14px;text-align:center;color:var(--text-muted, #64748B);font-size:13px;">Loading pending proofs...</div>
             </div>
           </div>
 
@@ -355,25 +341,11 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--cobalt, #1F4FA3)" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>
                 New Donations Awaiting Approval
               </h3>
-              <a href="donations.html?status=pending_verification" style="font-size:12px;color:var(--cobalt, #1F4FA3);font-weight:600;text-decoration:none;">Queue (2) &rarr;</a>
+              <a href="donations.html?status=pending" style="font-size:12px;color:var(--cobalt, #1F4FA3);font-weight:600;text-decoration:none;" id="queue-donations-link">Queue (0) &rarr;</a>
             </div>
 
-            <div style="display:flex;flex-direction:column;gap:10px;">
-              <div style="padding:10px 12px;border-radius:8px;background:#F0F7FF;border:1px solid #C4D9F8;display:flex;justify-content:space-between;align-items:center;">
-                <div>
-                  <div style="font-size:13px;font-weight:700;color:#1E4DA1;">School Backpacks (#101)</div>
-                  <div style="font-size:11.5px;color:#3B82F6;">Maria Santos &bull; School Supplies</div>
-                </div>
-                <a href="donation-review.html?id=101" class="btn btn-primary" style="font-size:11.5px;padding:4px 10px;">Inspect</a>
-              </div>
-
-              <div style="padding:10px 12px;border-radius:8px;background:#F0F7FF;border:1px solid #C4D9F8;display:flex;justify-content:space-between;align-items:center;">
-                <div>
-                  <div style="font-size:13px;font-weight:700;color:#1E4DA1;">Family Rice Packs (#102)</div>
-                  <div style="font-size:11.5px;color:#3B82F6;">David Tan &bull; Food &amp; Groceries</div>
-                </div>
-                <a href="donation-review.html?id=102" class="btn btn-primary" style="font-size:11.5px;padding:4px 10px;">Inspect</a>
-              </div>
+            <div style="display:flex;flex-direction:column;gap:10px;" id="pending-donations-queue">
+              <div style="padding:14px;text-align:center;color:var(--text-muted, #64748B);font-size:13px;">Loading pending donations...</div>
             </div>
           </div>
 
@@ -385,8 +357,158 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
+
+<script>
+// Hydrate Dashboard with Real Database Analytics
+(async function initDashboard() {
+  const statDonations = document.getElementById('stat-pending-donations');
+  const statRequests  = document.getElementById('stat-pending-requests');
+  const statTx        = document.getElementById('stat-active-transactions');
+  const statConcerns  = document.getElementById('stat-open-concerns');
+  const btnDonations  = document.getElementById('btn-count-donations');
+  const btnRequests   = document.getElementById('btn-count-requests');
+  const activityList  = document.getElementById('admin-activity-list');
+  const proofsQueue   = document.getElementById('pending-proofs-queue');
+  const donQueue      = document.getElementById('pending-donations-queue');
+
+  try {
+    const res = await window.AdminAPI.getDashboard();
+    if (!res || !res.success) {
+      throw new Error(res ? res.error : 'Failed to retrieve metrics');
+    }
+
+    const c = res.counts || {};
+    if (statDonations) statDonations.textContent = c.pending_donations ?? 0;
+    if (statRequests)  statRequests.textContent  = c.pending_requests ?? 0;
+    if (statTx)        statTx.textContent        = c.active_transactions ?? 0;
+    if (statConcerns)  statConcerns.textContent  = 0;
+
+    if (btnDonations) btnDonations.textContent = c.pending_donations ?? 0;
+    if (btnRequests)  btnRequests.textContent  = c.pending_requests ?? 0;
+
+    const queueReqLink = document.getElementById('queue-requests-link');
+    if (queueReqLink) queueReqLink.textContent = `Queue (${c.pending_requests ?? 0}) →`;
+    const queueDonLink = document.getElementById('queue-donations-link');
+    if (queueDonLink) queueDonLink.textContent = `Queue (${c.pending_donations ?? 0}) →`;
+
+    // 1. Render Urgent Beneficiary Proofs Queue
+    if (proofsQueue) {
+      const urgentReqs = res.urgent_requests || [];
+      if (urgentReqs.length === 0) {
+        proofsQueue.innerHTML = `
+          <div style="padding:16px;text-align:center;color:var(--text-muted, #64748B);font-size:13px;background:#F8FAFC;border-radius:8px;border:1px dashed #CBD5E1;">
+            No beneficiary requests currently pending proof verification.
+          </div>
+        `;
+      } else {
+        proofsQueue.innerHTML = urgentReqs.map(r => `
+          <div style="padding:10px 12px;border-radius:8px;background:#FFF0EC;border:1px solid #FECACA;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <div style="min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:#991B1B;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${escapeHtml(r.requester_name || 'Beneficiary')} (#${r.id})
+              </div>
+              <div style="font-size:11.5px;color:#7F1D1D;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${escapeHtml(r.proof_type || 'Proof Document')} &bull; ${escapeHtml(r.urgency || 'High')} Urgency
+              </div>
+            </div>
+            <a href="request-review.html?id=${r.id}" class="btn btn-primary" style="font-size:11.5px;padding:4px 10px;background:var(--coral, #E0553D);border-color:var(--coral, #E0553D);flex-shrink:0;">
+              Review
+            </a>
+          </div>
+        `).join('');
+      }
+    }
+
+    // 2. Render Urgent Donations Awaiting Approval Queue
+    if (donQueue) {
+      const urgentDons = res.urgent_donations || [];
+      if (urgentDons.length === 0) {
+        donQueue.innerHTML = `
+          <div style="padding:16px;text-align:center;color:var(--text-muted, #64748B);font-size:13px;background:#F8FAFC;border-radius:8px;border:1px dashed #CBD5E1;">
+            No donations currently pending administrator review.
+          </div>
+        `;
+      } else {
+        donQueue.innerHTML = urgentDons.map(d => `
+          <div style="padding:10px 12px;border-radius:8px;background:#F0F7FF;border:1px solid #C4D9F8;display:flex;justify-content:space-between;align-items:center;gap:10px;">
+            <div style="min-width:0;">
+              <div style="font-size:13px;font-weight:700;color:#1E4DA1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${escapeHtml(d.title)} (#${d.id})
+              </div>
+              <div style="font-size:11.5px;color:#3B82F6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                ${escapeHtml(d.donor_name || 'Community Donor')} &bull; ${escapeHtml(d.category || 'Goods')}
+              </div>
+            </div>
+            <a href="donation-review.html?id=${d.id}" class="btn btn-primary" style="font-size:11.5px;padding:4px 10px;flex-shrink:0;">
+              Inspect
+            </a>
+          </div>
+        `).join('');
+      }
+    }
+
+    // 3. Render Recent System Operations
+    if (activityList) {
+      const ops = res.recent_operations || [];
+      if (ops.length === 0) {
+        activityList.innerHTML = `
+          <div style="padding:24px;text-align:center;color:var(--text-muted, #64748B);font-size:13.5px;background:#F8FAFC;border-radius:8px;border:1px dashed #CBD5E1;">
+            No recent system operations recorded yet.
+          </div>
+        `;
+      } else {
+        activityList.innerHTML = ops.map(op => {
+          const actionText = op.details || op.action;
+          const timeText = op.created_at ? new Date(op.created_at).toLocaleString() : 'Recent';
+          return `
+            <div style="padding:12px 14px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;gap:12px;">
+              <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+                <div style="width:32px;height:32px;border-radius:50%;background:#DCFCE7;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#16A34A" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                </div>
+                <div style="min-width:0;">
+                  <span style="font-size:13.5px;font-weight:600;color:var(--text, #1E293B);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+                    ${escapeHtml(actionText)}
+                  </span>
+                  <div style="font-size:11.5px;color:#64748B;">
+                    Actor: ${escapeHtml(op.actor_name || 'System')} ${op.reason ? '&middot; ' + escapeHtml(op.reason) : ''}
+                  </div>
+                </div>
+              </div>
+              <span style="font-size:11.5px;color:#64748B;white-space:nowrap;flex-shrink:0;">${timeText}</span>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+  } catch (err) {
+    if (window.showAdminFlash) {
+      window.showAdminFlash('error', 'Live database connection failed: ' + err.message);
+    }
+    if (proofsQueue) {
+      proofsQueue.innerHTML = '<div style="padding:16px;text-align:center;color:#DC2626;font-size:13px;">Unable to load pending requests from database.</div>';
+    }
+    if (donQueue) {
+      donQueue.innerHTML = '<div style="padding:16px;text-align:center;color:#DC2626;font-size:13px;">Unable to load pending donations from database.</div>';
+    }
+    if (activityList) {
+      activityList.innerHTML = '<div style="padding:16px;text-align:center;color:#DC2626;font-size:13px;">Unable to load audit logs from database.</div>';
+    }
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+})();
+</script>
 
 <!-- Mobile sidebar toggle JS -->
 <script>

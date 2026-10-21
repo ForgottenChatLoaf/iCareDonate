@@ -296,11 +296,11 @@
   </div>
 </dialog>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
   let currentFilter = 'pending_verification';
   let activeRestoreId = null;
+  let allLoadedDonations = [];
 
   // Read URL params if provided
   const urlParams = new URLSearchParams(window.location.search);
@@ -308,15 +308,20 @@
     currentFilter = urlParams.get('status');
   }
 
-  function initCategories() {
+  async function initCategories() {
     const sel = document.getElementById('categoryFilter');
-    if (window.MockStore && window.MockStore.categories) {
-      window.MockStore.categories.forEach(cat => {
-        const opt = document.createElement('option');
-        opt.value = cat.name;
-        opt.textContent = cat.name;
-        sel.appendChild(opt);
-      });
+    try {
+      const res = await window.AdminAPI.getCategories();
+      if (res && res.success && Array.isArray(res.categories)) {
+        res.categories.forEach(cat => {
+          const opt = document.createElement('option');
+          opt.value = cat.name;
+          opt.textContent = cat.name;
+          sel.appendChild(opt);
+        });
+      }
+    } catch (e) {
+      console.warn('Could not load categories:', e);
     }
   }
 
@@ -336,51 +341,80 @@
       banner.style.display = status === 'archived' ? 'flex' : 'none';
     }
 
-    applyFilters();
+    fetchAndRenderDonations();
   }
 
-  function applyFilters() {
-    const query = (document.getElementById('searchInput').value || '').trim().toLowerCase();
+  async function fetchAndRenderDonations() {
+    const container = document.getElementById('donations-list-container');
+    if (container) {
+      container.innerHTML = `
+        <div class="card" style="padding:48px 24px;text-align:center;border:1px solid var(--color-border);border-radius:12px;background:#fff;">
+          <div style="font-size:14px;color:var(--color-text-muted);">Retrieving donations from database...</div>
+        </div>
+      `;
+    }
+
+    // Map UI filter to backend status query
+    let apiStatus = currentFilter;
+    if (currentFilter === 'pending_verification') apiStatus = 'pending';
+    else if (currentFilter === 'all') apiStatus = 'all_active';
+
     const cat = document.getElementById('categoryFilter').value;
+    const search = (document.getElementById('searchInput').value || '').trim();
+
+    try {
+      const res = await window.AdminAPI.getDonations({
+        status: apiStatus,
+        category: cat,
+        search: search
+      });
+
+      if (res && res.counts) {
+        document.getElementById('count-pending').textContent = res.counts.pending ?? 0;
+        document.getElementById('count-approved').textContent = res.counts.approved ?? 0;
+        document.getElementById('count-archived').textContent = res.counts.archived ?? 0;
+        document.getElementById('count-all').textContent = res.counts.all ?? 0;
+      }
+
+      allLoadedDonations = (res && (res.donations || res.data)) || [];
+      applyClientSortAndRender();
+    } catch (err) {
+      if (container) {
+        container.innerHTML = `
+          <div class="card" style="padding:48px 24px;text-align:center;border:1px solid #FECACA;border-radius:12px;background:#FEF2F2;">
+            <div style="color:#DC2626;font-weight:700;margin-bottom:6px;">Unable to load donations</div>
+            <div style="font-size:13px;color:#991B1B;">${escapeHtml(err.message)}</div>
+            <button type="button" class="btn btn-outline" style="margin-top:14px;font-size:12.5px;" onclick="fetchAndRenderDonations()">Try Again</button>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function applyClientSortAndRender() {
+    let items = [...allLoadedDonations];
     const sort = document.getElementById('sortFilter').value;
 
-    let items = window.MockStore ? window.MockStore.getDonations(currentFilter, '') : [];
-
-    // Filter by search
-    if (query) {
-      items = items.filter(d => 
-        d.title.toLowerCase().includes(query) ||
-        d.donor_name.toLowerCase().includes(query) ||
-        (d.description || '').toLowerCase().includes(query) ||
-        (d.pickup_city || '').toLowerCase().includes(query)
-      );
-    }
-
-    // Filter by category
-    if (cat) {
-      items = items.filter(d => d.category_name === cat);
-    }
-
-    // Sort
     if (sort === 'oldest') {
       items.sort((a,b) => new Date(a.created_at) - new Date(b.created_at));
     } else if (sort === 'title') {
-      items.sort((a,b) => a.title.localeCompare(b.title));
+      items.sort((a,b) => (a.title || '').localeCompare(b.title || ''));
     } else {
       items.sort((a,b) => new Date(b.created_at) - new Date(a.created_at));
     }
 
     renderDonations(items);
-    updateTabCounts();
   }
 
-  function updateTabCounts() {
-    if (!window.MockStore) return;
-    const counts = window.MockStore.getDonationCounts();
-    document.getElementById('count-pending').textContent = counts.pending_verification;
-    document.getElementById('count-approved').textContent = counts.approved;
-    document.getElementById('count-archived').textContent = counts.archived;
-    document.getElementById('count-all').textContent = counts.all;
+  function applyFilters() {
+    fetchAndRenderDonations();
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
   }
 
   function renderDonations(items) {
@@ -393,17 +427,19 @@
           <div style="width:54px;height:54px;border-radius:50%;background:#F1F5F9;display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-muted)" stroke-width="1.8"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
           </div>
-          <h3 style="font-size:16px;font-weight:700;color:var(--color-text);margin:0 0 6px;">No Donations to Review</h3>
-          <p style="color:var(--color-text-muted);font-size:13.5px;max-width:380px;line-height:1.5;margin:0;">There are currently no donation items matching the selected filters or search query.</p>
+          <h3 style="font-size:16px;font-weight:700;color:var(--color-text);margin:0 0 6px;">No Donations Found</h3>
+          <p style="color:var(--color-text-muted);font-size:13.5px;max-width:380px;line-height:1.5;margin:0;">There are currently no donation items matching the selected filters or search query in the database.</p>
         </div>
       `;
       return;
     }
 
     container.innerHTML = items.map(d => {
-      const isArchived = d.status === 'archived';
-      const badgeClass = d.status === 'approved' ? 'badge-success' : d.status === 'archived' ? 'badge-danger' : 'badge-warning';
-      const statusLabel = d.status === 'approved' ? 'Approved' : d.status === 'archived' ? 'Archived' : 'Pending Verification';
+      const isArchived = d.status === 'archived' || d.status === 'cancelled' || d.status === 'rejected';
+      const isApproved = d.status === 'approved' || d.status === 'available';
+      const badgeClass = isApproved ? 'badge-success' : isArchived ? 'badge-danger' : 'badge-warning';
+      const statusLabel = isApproved ? 'Approved' : isArchived ? 'Archived' : 'Pending Verification';
+      const imgPath = d.primary_image || d.image_path || '';
 
       return `
         <div class="card" style="padding:22px;border-radius:var(--radius-lg);border:1px solid ${isArchived ? '#FCA5A5' : 'var(--color-border)'};${isArchived ? 'opacity:0.92;background:#FAFAFA;' : ''}">
@@ -411,7 +447,7 @@
             
             <!-- Thumbnail Image -->
             <div style="width:120px;height:100px;background:#F1F5F9;border-radius:var(--radius-md);overflow:hidden;display:flex;align-items:center;justify-content:center;">
-              ${d.primary_image ? `<img src="${(d.primary_image.startsWith('http') || d.primary_image.startsWith('../')) ? d.primary_image : ('../' + d.primary_image)}" alt="" style="width:100%;height:100%;object-fit:cover;">` : `
+              ${imgPath ? `<img src="${(imgPath.startsWith('http') || imgPath.startsWith('../') || imgPath.startsWith('/')) ? imgPath : ('../' + imgPath)}" alt="" style="width:100%;height:100%;object-fit:cover;">` : `
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>
               `}
             </div>
@@ -419,35 +455,33 @@
             <!-- Donation Details -->
             <div>
               <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
-                <span class="badge badge-neutral" style="font-size:11px;">${d.category_name}</span>
+                <span class="badge badge-neutral" style="font-size:11px;">${escapeHtml(d.category_name || d.category || 'General')}</span>
                 <span class="badge ${badgeClass}" style="font-size:11px;">${statusLabel}</span>
                 <span style="font-size:12px;color:var(--color-text-muted);">
-                  Donor: <strong>${d.donor_name}</strong> (${d.donor_email})
+                  Donor: <strong>${escapeHtml(d.donor_name || 'Community Donor')}</strong> (${escapeHtml(d.donor_email || 'No email')})
                 </span>
               </div>
 
               <h3 style="font-size:17px;font-weight:700;color:var(--color-text);margin:0 0 6px;">
-                ${d.title}
+                ${escapeHtml(d.title)}
               </h3>
 
               <p style="font-size:13.5px;color:var(--color-text-muted);margin:0 0 10px;line-height:1.5;">
-                ${d.description || 'No detailed description provided.'}
+                ${escapeHtml(d.description || 'No detailed description provided.')}
               </p>
 
               <div style="font-size:12.5px;color:var(--color-text);display:flex;gap:18px;flex-wrap:wrap;">
-                <div>Qty: <strong>${d.quantity_total} ${d.unit}</strong></div>
-                <div>Condition: <strong>${d.condition_type}</strong></div>
-                <div>Pickup: <strong>${d.pickup_method} (${d.pickup_city})</strong></div>
-                <div>Date: <strong>${d.created_at.split(' ')[0]}</strong></div>
+                <div>Qty: <strong>${d.quantity_total || d.quantity || 1} ${escapeHtml(d.unit || 'items')}</strong></div>
+                <div>Condition: <strong>${escapeHtml(d.condition_type || d.condition_notes || 'Gently Used')}</strong></div>
+                <div>Pickup: <strong>${escapeHtml(d.pickup_method || 'Drop-off')} (${escapeHtml(d.pickup_city || d.location || 'Local')})</strong></div>
+                <div>Date: <strong>${(d.created_at || '').split(' ')[0]}</strong></div>
               </div>
 
               <!-- Archival Banner Detail -->
               ${isArchived ? `
                 <div style="margin-top:12px;font-size:12px;color:#991B1B;display:flex;flex-wrap:wrap;gap:14px;background:#FEF2F2;padding:10px 14px;border-radius:8px;border:1px solid #FEE2E2;">
-                  <span><strong>Archived:</strong> ${d.archived_at || 'Recently'}</span>
-                  <span><strong>By:</strong> ${d.archived_by || 'Administrator'}</span>
-                  <span><strong>Prev Status:</strong> ${d.archived_prev_status || 'pending_verification'}</span>
-                  <span style="width:100%;"><strong>Reason:</strong> ${d.archive_reason || 'Archived by administrative team'}</span>
+                  <span><strong>Archived:</strong> ${escapeHtml(d.updated_at || d.created_at)}</span>
+                  <span style="width:100%;"><strong>Reason:</strong> ${escapeHtml(d.rejection_reason || d.archive_reason || 'Archived by administrative team')}</span>
                 </div>
               ` : ''}
             </div>
@@ -464,22 +498,19 @@
           <!-- Action Bar -->
           <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--color-border);display:flex;justify-content:flex-end;gap:10px;align-items:center;">
             ${isArchived ? `
-              <button type="button" class="btn btn-outline" style="font-size:12.5px;padding:6px 14px;color:#15803D;border-color:#86EFAC;display:inline-flex;align-items:center;gap:6px;" onclick="openRestoreModal(${d.id}, '${d.title.replace(/'/g, "\\'")}', '${d.archived_prev_status || 'pending_verification'}')">
+              <button type="button" class="btn btn-outline" style="font-size:12.5px;padding:6px 14px;color:#15803D;border-color:#86EFAC;display:inline-flex;align-items:center;gap:6px;" onclick="openRestoreModal(${d.id}, '${escapeHtml(d.title).replace(/'/g, "\\'")}')">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
                 <span>Restore Donation</span>
               </button>
             ` : `
-              ${d.status === 'pending_verification' ? `
+              ${d.status === 'pending' || d.status === 'pending_verification' ? `
                 <button type="button" class="btn btn-primary" style="font-size:12.5px;padding:6px 16px;display:inline-flex;align-items:center;gap:6px;" onclick="approveDonation(${d.id})">
                   <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
                   <span>Approve Listing</span>
                 </button>
-                <button type="button" class="btn btn-outline" style="font-size:12.5px;padding:6px 14px;color:#DC2626;border-color:#FCA5A5;" onclick="openArchiveModal(${d.id}, '${d.title.replace(/'/g, "\\'")}')">
-                  Reject &amp; Archive
-                </button>
               ` : ''}
               
-              <button type="button" class="btn btn-outline" style="font-size:12.5px;padding:6px 14px;color:#92400E;border-color:#FCD34D;display:inline-flex;align-items:center;gap:6px;" onclick="openArchiveModal(${d.id}, '${d.title.replace(/'/g, "\\'")}')">
+              <button type="button" class="btn btn-outline" style="font-size:12.5px;padding:6px 14px;color:#92400E;border-color:#FCD34D;display:inline-flex;align-items:center;gap:6px;" onclick="openArchiveModal(${d.id}, '${escapeHtml(d.title).replace(/'/g, "\\'")}')">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="5" x="2" y="3" rx="1"/><path d="M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8"/><path d="M10 12h4"/></svg>
                 <span>Archive Listing</span>
               </button>
@@ -491,12 +522,18 @@
   }
 
   // Quick Approve Helper
-  function approveDonation(id) {
-    const d = window.MockStore.getDonations('all', '').find(item => item.id === id);
-    if (d) {
-      d.status = 'approved';
-      window.showAdminFlash('success', `Donation #${id} ("${d.title}") has been approved and published.`);
-      applyFilters();
+  async function approveDonation(id) {
+    if (!confirm(`Are you sure you want to approve donation #${id}?`)) return;
+    try {
+      const res = await window.AdminAPI.updateDonation(id, 'approve');
+      if (res && res.success) {
+        window.showAdminFlash('success', res.message || `Donation #${id} approved successfully.`);
+        fetchAndRenderDonations();
+      } else {
+        alert((res && res.message) || 'Failed to approve donation.');
+      }
+    } catch (err) {
+      alert(`Error approving donation: ${err.message}`);
     }
   }
 
@@ -526,7 +563,7 @@
     }
   }
 
-  function handleArchiveSubmit(e) {
+  async function handleArchiveSubmit(e) {
     e.preventDefault();
     const id = document.getElementById('archive-donation-id').value;
     const sel = document.getElementById('archive-reason-select');
@@ -538,22 +575,25 @@
       return;
     }
 
-    const res = window.MockStore.archiveDonation(id, reason);
-    closeArchiveModal();
+    try {
+      const res = await window.AdminAPI.updateDonation(id, 'archive', reason);
+      closeArchiveModal();
 
-    if (res.success) {
-      window.showAdminFlash('success', res.message);
-      applyFilters();
-    } else {
-      window.showAdminFlash('error', res.message);
+      if (res && res.success) {
+        window.showAdminFlash('success', res.message || `Donation #${id} has been archived.`);
+        fetchAndRenderDonations();
+      } else {
+        window.showAdminFlash('error', (res && res.message) || 'Failed to archive donation.');
+      }
+    } catch (err) {
+      alert(`Error archiving donation: ${err.message}`);
     }
   }
 
   // Restore Modal Handlers
-  function openRestoreModal(id, title, prevStatus) {
+  function openRestoreModal(id, title) {
     activeRestoreId = id;
     document.getElementById('restore-modal-title').textContent = title;
-    document.getElementById('restore-modal-target-status').textContent = prevStatus;
     document.getElementById('restore-dialog').showModal();
   }
 
@@ -562,16 +602,20 @@
     activeRestoreId = null;
   }
 
-  function handleRestoreConfirm() {
+  async function handleRestoreConfirm() {
     if (!activeRestoreId) return;
-    const res = window.MockStore.restoreDonation(activeRestoreId);
-    closeRestoreModal();
+    try {
+      const res = await window.AdminAPI.updateDonation(activeRestoreId, 'restore');
+      closeRestoreModal();
 
-    if (res.success) {
-      window.showAdminFlash('success', res.message);
-      applyFilters();
-    } else {
-      window.showAdminFlash('error', res.message);
+      if (res && res.success) {
+        window.showAdminFlash('success', res.message || `Donation #${activeRestoreId} restored.`);
+        fetchAndRenderDonations();
+      } else {
+        window.showAdminFlash('error', (res && res.message) || 'Failed to restore donation.');
+      }
+    } catch (err) {
+      alert(`Error restoring donation: ${err.message}`);
     }
   }
 
@@ -579,37 +623,27 @@
     document.getElementById('searchInput').value = '';
     document.getElementById('categoryFilter').value = '';
     document.getElementById('sortFilter').value = 'newest';
-    applyFilters();
+    fetchAndRenderDonations();
   }
 
   function handleExportDonations() {
-    const query = (document.getElementById('searchInput').value || '').toLowerCase().trim();
-    const cat = document.getElementById('categoryFilter').value;
-    let items = window.MockStore ? window.MockStore.getDonations(currentFilter, '') : [];
-
-    if (query) {
-      items = items.filter(d => 
-        d.title.toLowerCase().includes(query) ||
-        (d.donor_name || '').toLowerCase().includes(query) ||
-        (d.description || '').toLowerCase().includes(query) ||
-        (d.pickup_city || '').toLowerCase().includes(query)
-      );
-    }
-    if (cat) {
-      items = items.filter(d => d.category_name === cat);
+    const items = allLoadedDonations;
+    if (!items || items.length === 0) {
+      alert('No donation records available to export.');
+      return;
     }
 
     const cols = ['Donation ID', 'Title', 'Category', 'Donor Name', 'Total Qty', 'Unit', 'Condition', 'Status', 'City', 'Created Date'];
     const rows = items.map(d => [
       d.id,
       d.title,
-      d.category_name,
+      d.category_name || d.category || '',
       d.donor_name || '',
-      d.quantity_total,
-      d.unit,
-      d.condition_type,
+      d.quantity_total || d.quantity || 1,
+      d.unit || 'pcs',
+      d.condition_type || d.condition_notes || '',
       d.status,
-      d.pickup_city || '',
+      d.pickup_city || d.location || '',
       d.created_at
     ]);
 

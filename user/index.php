@@ -28,6 +28,8 @@ $pages = [
     'support'          => 'support.html',
     'profile'          => 'profile.html',
     'settings'         => 'settings.html',
+    'help-center'      => 'help-center.html',
+    'help'             => 'help-center.html',
 ];
 
 $page = $_GET['page'] ?? 'dashboard';

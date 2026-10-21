@@ -165,93 +165,114 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
-      <div class="grid grid--2col" style="gap:24px;align-items:start;">
-
+      <div class="grid grid--2col">
         <!-- Left: Statement of Need, Item Target, Supporting Proof Document -->
-        <div style="display:flex;flex-direction:column;gap:20px;">
-          
-          <div class="card" style="padding:24px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#fff;">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;">
-              <span class="badge badge-danger" id="req-urgency-badge">Urgency: High</span>
-              <span style="font-size:12.5px;color:var(--color-text-muted);" id="req-filed-date">Filed: Oct 11, 2026</span>
+        <div style="display:flex;flex-direction:column;gap:20px;min-width:0;">
+
+          <div class="review-card">
+            <div class="review-card__header">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:12px;flex-wrap:wrap;">
+                <span class="badge badge-danger" id="req-urgency-badge">Urgency: High</span>
+                <span style="font-size:12.5px;color:var(--color-text-muted);" id="req-filed-date">Filed: Oct 11, 2026</span>
+              </div>
+              <h2 class="review-card__header-title" id="req-target-item">
+                Target: Elementary Backpacks &amp; Notebook Bundle
+              </h2>
+              <div class="review-card__header-sub" id="req-qty-info">
+                Requested: <strong>2 sets</strong> &bull; Total Available in Donation: <strong>4 sets</strong>
+              </div>
             </div>
 
-            <h2 style="font-size:18px;font-weight:700;color:var(--color-text);margin:0 0 6px;" id="req-target-item">
-              Target: Elementary Backpacks &amp; Notebook Bundle
-            </h2>
-            <div style="font-size:13px;color:var(--color-text-muted);margin-bottom:16px;" id="req-qty-info">
-              Requested: <strong>2 sets</strong> &bull; Total Available in Donation: <strong>4 sets</strong>
-            </div>
+            <!-- Scrollable Information Area -->
+            <div class="review-card__content">
+              <div style="background:#F8FAFC;padding:16px;border-radius:var(--radius-md);border:1px solid var(--border-light, #E2E8F0);font-size:14px;line-height:1.6;margin-bottom:16px;">
+                <strong style="color:var(--color-primary);display:block;margin-bottom:6px;">Beneficiary Statement of Need:</strong>
+                <span id="req-need-statement">"We have two young siblings entering Grade 3 and Grade 5 whose parents are displaced tricycle drivers currently without daily income following the recent storm. They lack school supplies and bags."</span>
+              </div>
 
-            <div style="background:#F8FAFC;padding:16px;border-radius:var(--radius-md);border:1px solid var(--color-border-light);font-size:14px;line-height:1.6;margin-bottom:16px;">
-              <strong style="color:var(--color-primary);display:block;margin-bottom:4px;">Beneficiary Statement of Need:</strong>
-              <span id="req-need-statement">"We have two young siblings entering Grade 3 and Grade 5 whose parents are displaced tricycle drivers currently without daily income following the recent storm. They lack school supplies and bags."</span>
-            </div>
-
-            <div style="font-size:13px;color:var(--color-text);">
-              <div>Fulfillment Address: <strong id="req-fulfillment-address">Block 12 Lot 4, Barangay Central, Quezon City</strong></div>
+              <div style="font-size:13px;color:var(--color-text);line-height:1.6;">
+                <div>Fulfillment City: <strong id="req-fulfillment-city">Quezon City</strong></div>
+                <div>Fulfillment Address: <strong id="req-fulfillment-address">Block 12 Lot 4, Barangay Central, Quezon City</strong></div>
+              </div>
             </div>
           </div>
 
           <!-- Proof Document Card -->
-          <div class="card" style="padding:24px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#fff;">
-            <h3 style="font-size:16px;font-weight:700;margin:0 0 12px;color:var(--color-text);">Supporting Proof Document</h3>
-            
-            <div style="display:flex;align-items:center;justify-content:space-between;background:#F0F7FF;padding:16px;border-radius:var(--radius-md);border:1px solid #C8E1FF;margin-bottom:16px;">
-              <div style="display:flex;align-items:center;gap:12px;">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
-                <div>
-                  <div style="font-weight:700;font-size:14px;color:var(--color-primary);" id="req-proof-filename">Barangay_Indigency_Certificate_Mendoza.pdf</div>
-                  <div style="font-size:12px;color:var(--color-text-muted);" id="req-proof-filedesc">Uploaded Oct 11, 2026 &bull; Signed by Barangay Captain</div>
-                </div>
-              </div>
-              <button type="button" class="btn btn-outline" style="font-size:12px;padding:6px 12px;background:#fff;" onclick="openProofModal()">
-                Inspect Document
-              </button>
+          <div class="review-card">
+            <div class="review-card__header">
+              <h3 class="review-card__header-title">Supporting Proof Document</h3>
+              <div class="review-card__header-sub">Documentary evidence submitted by beneficiary</div>
             </div>
 
-            <div style="font-size:12.5px;color:var(--color-text-muted);line-height:1.5;">
-              Proof documents are strictly accessible to authorized administrators and kept confidential in compliance with privacy guidelines.
+            <div class="review-card__content">
+              <div style="display:flex;align-items:center;justify-content:space-between;background:#F0F7FF;padding:16px;border-radius:var(--radius-md);border:1px solid #C8E1FF;margin-bottom:16px;gap:14px;flex-wrap:wrap;">
+                <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="flex-shrink:0;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+                  <div style="min-width:0;">
+                    <div style="font-weight:700;font-size:14px;color:var(--color-primary);word-break:break-all;" id="req-proof-filename">Barangay_Indigency_Certificate_Mendoza.pdf</div>
+                    <div style="font-size:12px;color:var(--color-text-muted);" id="req-proof-filedesc">Uploaded &bull; Barangay Certificate</div>
+                  </div>
+                </div>
+                <button type="button" class="btn btn-outline" style="font-size:12px;padding:6px 12px;background:#fff;white-space:nowrap;" onclick="openProofModal()">
+                  Inspect Document
+                </button>
+              </div>
+
+              <div style="font-size:12.5px;color:var(--color-text-muted);line-height:1.5;">
+                Proof documents are strictly accessible to authorized administrators and kept confidential in compliance with the Philippine Data Privacy Act.
+              </div>
             </div>
           </div>
 
         </div>
 
         <!-- Right: Requester Profile & Verification Decisions -->
-        <div style="display:flex;flex-direction:column;gap:20px;">
-          
+        <div style="display:flex;flex-direction:column;gap:20px;min-width:0;">
+
           <!-- Beneficiary Details -->
-          <div class="card" style="padding:22px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#fff;">
-            <h3 style="font-size:15px;font-weight:700;margin:0 0 14px;color:var(--color-text);">Beneficiary Profile</h3>
-            <div style="font-size:13.5px;display:flex;flex-direction:column;gap:8px;">
-              <div>Name: <strong id="req-beneficiary-name">Carlos Mendoza</strong></div>
-              <div>Phone: <strong id="req-beneficiary-phone">0918-223-1122</strong></div>
-              <div>Location: <strong id="req-beneficiary-location">Quezon City, Metro Manila</strong></div>
-              <div>Previous Claims Completed: <strong id="req-previous-claims">0</strong></div>
+          <div class="review-card">
+            <div class="review-card__header">
+              <h3 class="review-card__header-title">Beneficiary Profile</h3>
+              <div class="review-card__header-sub">Account credibility and past activity records</div>
             </div>
-            <a href="user-detail.html?id=14" id="req-user-link" class="btn btn-outline" style="font-size:12px;padding:6px 12px;margin-top:14px;width:100%;text-align:center;">
-              View Beneficiary Account History
-            </a>
+
+            <div class="review-card__content">
+              <div style="font-size:13.5px;display:flex;flex-direction:column;gap:10px;">
+                <div>Name: <strong id="req-beneficiary-name">Carlos Mendoza</strong></div>
+                <div>Contact: <strong id="req-beneficiary-phone">0918-223-1122</strong></div>
+                <div>Email: <strong id="req-beneficiary-email">carlos@example.com</strong></div>
+                <div>Location: <strong id="req-beneficiary-location">Quezon City, Metro Manila</strong></div>
+                <div>Previous Claims Completed: <strong id="req-previous-claims">0</strong></div>
+              </div>
+            </div>
+
+            <div class="review-card__actions" style="margin-top:16px;padding-top:14px;">
+              <a href="users.html" id="req-user-link" class="btn btn-outline" style="font-size:12px;padding:8px 12px;width:100%;text-align:center;">
+                View Beneficiary Account History
+              </a>
+            </div>
           </div>
 
           <!-- Moderation Decision Box -->
-          <div class="card" style="padding:24px;border-radius:var(--radius-lg);border:1px solid var(--color-border);background:#F8FAFC;">
-            <h3 style="font-size:16px;font-weight:700;margin:0 0 12px;color:var(--color-text);">Proof Verification Decision</h3>
-            <p style="font-size:13px;color:var(--color-text-muted);margin:0 0 18px;">
-              Verify that the submitted documentation establishes legitimate community need.
-            </p>
+          <div class="review-card review-card--highlight">
+            <div class="review-card__header">
+              <h3 class="review-card__header-title">Proof Verification Decision</h3>
+              <div class="review-card__header-sub">
+                Verify that submitted evidence establishes legitimate community need.
+              </div>
+            </div>
 
-            <div style="display:flex;flex-direction:column;gap:12px;">
+            <div class="review-card__actions" style="border-top:none;margin-top:0;padding-top:0;">
               <button type="button" class="btn btn-primary" id="btn-approve-proof" style="font-size:13px;padding:10px 16px;display:flex;align-items:center;justify-content:center;gap:8px;" onclick="approveRequestProof()">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                <span>Verify Proof &amp; Match to Donation</span>
+                <span>Verify Proof &amp; Approve Request</span>
               </button>
 
               <button type="button" class="btn btn-outline" style="font-size:13px;padding:8px 16px;" onclick="scheduleInterview()">
                 Schedule Verification Interview
               </button>
 
-              <button type="button" class="btn btn-outline" style="font-size:13px;padding:8px 16px;color:#DC2626;border-color:#FCA5A5;" onclick="rejectRequestProof()">
+              <button type="button" class="btn btn-outline" style="font-size:13px;padding:8px 16px;color:#DC2626;border-color:#FCA5A5;" onclick="openRejectDialog()">
                 Reject Request &bull; Insufficient Proof
               </button>
             </div>
@@ -266,171 +287,193 @@
 </div>
 
 <!-- Proof Inspection Dialog Modal -->
-<dialog id="proof-modal" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:540px;width:92%;">
-  <div class="card" style="padding:28px;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+<dialog id="proof-modal" class="admin-modal">
+  <div class="admin-modal-card">
     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
       <h3 style="font-size:17px;font-weight:700;margin:0;">Verification Document Preview</h3>
       <button type="button" onclick="document.getElementById('proof-modal').close()" style="background:none;border:none;font-size:24px;cursor:pointer;line-height:1;color:var(--color-text-muted);">&times;</button>
     </div>
-    <div style="background:#F1F5F9;border:1px dashed #CBD5E1;border-radius:8px;padding:24px;text-align:center;margin-bottom:18px;">
-      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.8" style="margin-bottom:10px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
-      <div style="font-weight:700;font-size:15px;color:var(--color-text);margin-bottom:4px;" id="modal-doc-filename">Barangay_Indigency_Certificate_Mendoza.pdf</div>
-      <div style="font-size:12.5px;color:var(--color-text-muted);" id="modal-doc-meta">Status: Signed &amp; Sealed &bull; Verified Jurisdiction</div>
+
+    <div class="admin-modal-body">
+      <div class="proof-preview-frame" style="margin-bottom:18px;">
+        <div style="text-align:center;padding:20px;">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="1.8" style="margin-bottom:10px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+          <div style="font-weight:700;font-size:15px;color:var(--color-text);margin-bottom:4px;word-break:break-all;" id="modal-doc-filename">Barangay_Indigency_Certificate_Mendoza.pdf</div>
+          <div style="font-size:12.5px;color:var(--color-text-muted);" id="modal-doc-meta">Status: Signed &amp; Sealed &bull; Verified Jurisdiction</div>
+        </div>
+      </div>
+      <div style="font-size:13px;color:var(--color-text-muted);line-height:1.5;background:#F8FAFC;padding:14px;border-radius:6px;border:1px solid var(--border, #E2E8F0);">
+        Official verification policy: Proof documents are restricted to authorized reviewers and retained securely under Philippine Data Privacy Act provisions.
+      </div>
     </div>
-    <div style="font-size:13px;color:var(--color-text-muted);line-height:1.5;margin-bottom:20px;background:#F8FAFC;padding:12px;border-radius:6px;border:1px solid var(--color-border-light);">
-      Official verification policy: Proof documents are restricted to authorized reviewers and retained securely under Philippine Data Privacy Act provisions.
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:10px;">
+
+    <div style="display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;">
       <button type="button" class="btn btn-outline" onclick="document.getElementById('proof-modal').close()" style="font-size:13px;padding:8px 18px;">Close</button>
       <button type="button" class="btn btn-primary" onclick="approveRequestProof(); document.getElementById('proof-modal').close();" style="font-size:13px;padding:8px 18px;">Approve Proof</button>
     </div>
   </div>
 </dialog>
 
-<script src="../js/mock-data.js"></script>
+<!-- Rejection Reason Dialog Modal -->
+<dialog id="reject-modal" class="admin-modal">
+  <div class="admin-modal-card">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="font-size:17px;font-weight:700;margin:0;color:#DC2626;">Reject Assistance Request</h3>
+      <button type="button" onclick="document.getElementById('reject-modal').close()" style="background:none;border:none;font-size:24px;cursor:pointer;line-height:1;color:var(--color-text-muted);">&times;</button>
+    </div>
+
+    <div class="admin-modal-body">
+      <p style="font-size:13.5px;color:var(--color-text-muted);margin:0 0 14px;">
+        Please state the reason for rejection. This explanation will be logged and communicated to the beneficiary:
+      </p>
+      <textarea id="reject-reason-input" class="form-input" rows="3" style="width:100%;font-size:13px;padding:10px;resize:vertical;" placeholder="e.g. Uploaded certificate is expired or illegible..."></textarea>
+    </div>
+
+    <div style="display:flex;justify-content:flex-end;gap:10px;flex-shrink:0;">
+      <button type="button" class="btn btn-outline" onclick="document.getElementById('reject-modal').close()" style="font-size:13px;padding:8px 18px;">Cancel</button>
+      <button type="button" class="btn btn-danger" style="background:#DC2626;color:#fff;border:none;font-size:13px;padding:8px 18px;" onclick="confirmRejectRequest()">Confirm Rejection</button>
+    </div>
+  </div>
+</dialog>
+
 <script src="../js/admin-portal.js"></script>
 <script>
-  const requestCatalog = {
-    501: {
-      id: 501,
-      user_id: 14,
-      urgency: 'High',
-      urgencyClass: 'badge-danger',
-      filedDate: 'Oct 11, 2026',
-      targetItem: 'Elementary Backpacks & Notebook Bundle',
-      qtyRequested: '2 sets',
-      qtyAvailable: '4 sets',
-      needStatement: '"We have two young siblings entering Grade 3 and Grade 5 whose parents are displaced tricycle drivers currently without daily income following the recent storm. They lack school supplies and bags."',
-      fulfillmentAddress: 'Block 12 Lot 4, Barangay Central, Quezon City',
-      proofFileName: 'Barangay_Indigency_Certificate_Mendoza.pdf',
-      proofFileDesc: 'Uploaded Oct 11, 2026 • Signed by Barangay Captain',
-      proofStatusBadge: 'Proof Review',
-      proofStatusClass: 'badge-warning',
-      beneficiaryName: 'Carlos Mendoza',
-      beneficiaryPhone: '0918-223-1122',
-      beneficiaryLocation: 'Quezon City, Metro Manila',
-      previousClaims: '0'
-    },
-    502: {
-      id: 502,
-      user_id: 15,
-      urgency: 'Medium',
-      urgencyClass: 'badge-warning',
-      filedDate: 'Oct 12, 2026',
-      targetItem: 'Children Medical Vitamins & First Aid Kit',
-      qtyRequested: '1 pack',
-      qtyAvailable: '3 packs',
-      needStatement: '"Prescribed pediatric multivitamins and basic antiseptic supplies for 3 young children recovering from waterborne respiratory illnesses after evacuation."',
-      fulfillmentAddress: 'San Joaquin Evacuation Shelter, Pasig City',
-      proofFileName: 'Barangay_Certificate_Ramos.pdf',
-      proofFileDesc: 'Uploaded Oct 12, 2026 • Endorsed by Barangay Health Worker',
-      proofStatusBadge: 'Proof Review',
-      proofStatusClass: 'badge-warning',
-      beneficiaryName: 'Rosalina Ramos',
-      beneficiaryPhone: '0920-555-8833',
-      beneficiaryLocation: 'Pasig City, Metro Manila',
-      previousClaims: '1'
-    },
-    503: {
-      id: 503,
-      user_id: 16,
-      urgency: 'Low',
-      urgencyClass: 'badge-neutral',
-      filedDate: 'Oct 09, 2026',
-      targetItem: 'Adult Men Work Shoes (Size 9)',
-      qtyRequested: '1 pair',
-      qtyAvailable: '2 pairs',
-      needStatement: '"Needed safety footwear for daily municipal construction duty after previous boots were damaged on-site."',
-      fulfillmentAddress: 'Area 3, Barangay 178, Caloocan City',
-      proofFileName: 'Worker_ID_Santos.jpg',
-      proofFileDesc: 'Uploaded Oct 09, 2026 • Municipal Worker Badge',
-      proofStatusBadge: 'Proof Verified',
-      proofStatusClass: 'badge-success',
-      beneficiaryName: 'Mark Santos',
-      beneficiaryPhone: '0917-889-1122',
-      beneficiaryLocation: 'Caloocan City, Metro Manila',
-      previousClaims: '2'
-    },
-    504: {
-      id: 504,
-      user_id: 17,
-      urgency: 'Normal',
-      urgencyClass: 'badge-neutral',
-      filedDate: 'Oct 08, 2026',
-      targetItem: 'High School Algebra Textbooks',
-      qtyRequested: '3 books',
-      qtyAvailable: '5 books',
-      needStatement: '"Required curriculum mathematics textbooks for Grade 9 students whose family cannot afford private publisher sets."',
-      fulfillmentAddress: 'South Signal Village, Taguig City',
-      proofFileName: 'Public_School_Enrollment_Lim.pdf',
-      proofFileDesc: 'Uploaded Oct 08, 2026 • Taguig High School Registrar',
-      proofStatusBadge: 'Completed',
-      proofStatusClass: 'badge-success',
-      beneficiaryName: 'Teresa Lim',
-      beneficiaryPhone: '0928-112-4433',
-      beneficiaryLocation: 'Taguig City, Metro Manila',
-      previousClaims: '0'
-    }
-  };
+  let activeRequestId = 0;
+  let activeRequestData = null;
 
-  let activeRequest = requestCatalog[501];
-
-  function loadRequest() {
+  async function loadRequest() {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = Number(urlParams.get('id') || 501);
-    activeRequest = requestCatalog[id] || requestCatalog[501];
+    activeRequestId = Number(urlParams.get('id') || 1);
 
-    document.getElementById('page-title').textContent = `Assistance Request Review #${activeRequest.id}`;
-    const badge = document.getElementById('req-status-badge');
-    badge.className = `badge ${activeRequest.proofStatusClass}`;
-    badge.textContent = activeRequest.proofStatusBadge;
+    try {
+      const res = await window.AdminAPI.getRequest(activeRequestId);
+      if (!res || !res.success || !res.request) {
+        throw new Error(res ? res.message : 'Record not found');
+      }
 
-    const urgencyBadge = document.getElementById('req-urgency-badge');
-    urgencyBadge.className = `badge ${activeRequest.urgencyClass}`;
-    urgencyBadge.textContent = `Urgency: ${activeRequest.urgency}`;
+      const r = res.request;
+      activeRequestData = r;
 
-    document.getElementById('req-filed-date').textContent = `Filed: ${activeRequest.filedDate}`;
-    document.getElementById('req-target-item').textContent = `Target: ${activeRequest.targetItem}`;
-    document.getElementById('req-qty-info').innerHTML = `Requested: <strong>${activeRequest.qtyRequested}</strong> &bull; Total Available in Donation: <strong>${activeRequest.qtyAvailable}</strong>`;
-    document.getElementById('req-need-statement').textContent = activeRequest.needStatement;
-    document.getElementById('req-fulfillment-address').textContent = activeRequest.fulfillmentAddress;
+      document.getElementById('page-title').textContent = `Assistance Request Review #${r.id}`;
 
-    document.getElementById('req-proof-filename').textContent = activeRequest.proofFileName;
-    document.getElementById('req-proof-filedesc').textContent = activeRequest.proofFileDesc;
-    document.getElementById('modal-doc-filename').textContent = activeRequest.proofFileName;
+      const badge = document.getElementById('req-status-badge');
+      if (badge) {
+        badge.className = `badge ${r.status === 'approved' ? 'badge-success' : r.status === 'rejected' ? 'badge-danger' : 'badge-warning'}`;
+        badge.textContent = r.status.replace('_', ' ').toUpperCase();
+      }
 
-    document.getElementById('req-beneficiary-name').textContent = activeRequest.beneficiaryName;
-    document.getElementById('req-beneficiary-phone').textContent = activeRequest.beneficiaryPhone;
-    document.getElementById('req-beneficiary-location').textContent = activeRequest.beneficiaryLocation;
-    document.getElementById('req-previous-claims').textContent = activeRequest.previousClaims;
-    document.getElementById('req-user-link').href = `user-detail.html?id=${activeRequest.user_id}`;
+      const urgencyBadge = document.getElementById('req-urgency-badge');
+      if (urgencyBadge) {
+        const u = r.urgency || 'High';
+        urgencyBadge.className = `badge ${u === 'Critical' || u === 'High' ? 'badge-danger' : 'badge-warning'}`;
+        urgencyBadge.textContent = `Urgency: ${u}`;
+      }
+
+      document.getElementById('req-filed-date').textContent = `Filed: ${r.created_at ? new Date(r.created_at).toLocaleDateString() : 'N/A'}`;
+      document.getElementById('req-target-item').textContent = `Target: ${r.item_title}`;
+      document.getElementById('req-qty-info').innerHTML = `Requested: <strong>${r.quantity} ${r.unit || 'items'}</strong> &bull; Total In Donation: <strong>${r.donation_qty || r.quantity} ${r.donation_unit || r.unit || 'items'}</strong>`;
+
+      document.getElementById('req-need-statement').textContent = r.reason ? `"${r.reason}"` : 'No statement provided.';
+      document.getElementById('req-fulfillment-city').textContent = r.city || 'Metro Manila';
+      document.getElementById('req-fulfillment-address').textContent = r.complete_address || `${r.barangay || ''}, ${r.city || 'Metro Manila'}`;
+
+      const proofDocName = r.proof_type || 'Barangay_Indigency_Certificate.pdf';
+      document.getElementById('req-proof-filename').textContent = proofDocName;
+      document.getElementById('modal-doc-filename').textContent = proofDocName;
+      document.getElementById('req-proof-filedesc').textContent = `Document Type: ${r.proof_type || 'Proof of Indigency'}`;
+
+      document.getElementById('req-beneficiary-name').textContent = r.beneficiary_name || r.user_name || 'Community Member';
+      document.getElementById('req-beneficiary-phone').textContent = r.contact_number || 'N/A';
+      document.getElementById('req-beneficiary-email').textContent = r.user_email || 'N/A';
+      document.getElementById('req-beneficiary-location').textContent = `${r.barangay ? r.barangay + ', ' : ''}${r.city || 'Metro Manila'}`;
+      document.getElementById('req-previous-claims').textContent = r.previous_claims_count ?? 0;
+
+      const userLink = document.getElementById('req-user-link');
+      if (userLink && r.user_id) {
+        userLink.href = `user-detail.html?id=${r.user_id}`;
+      }
+
+    } catch (err) {
+      if (window.showAdminFlash) {
+        window.showAdminFlash('error', `Failed to load request #${activeRequestId}: ${err.message}`);
+      }
+    }
   }
 
   function openProofModal() {
     const modal = document.getElementById('proof-modal');
     if (modal && typeof modal.showModal === 'function') {
       modal.showModal();
-    } else {
-      alert(`Inspecting Proof Document: ${activeRequest.proofFileName}\n${activeRequest.proofFileDesc}`);
     }
   }
 
-  function approveRequestProof() {
-    const badge = document.getElementById('req-status-badge');
-    badge.className = 'badge badge-success';
-    badge.textContent = 'Matched & Approved';
-    window.showAdminFlash('success', `Request #${activeRequest.id} proof verified successfully. Stock allocated and matching transaction created.`);
+  function openRejectDialog() {
+    const modal = document.getElementById('reject-modal');
+    if (modal && typeof modal.showModal === 'function') {
+      modal.showModal();
+    }
   }
 
-  function scheduleInterview() {
-    window.location.href = `interviews.html?request_id=${activeRequest.id}&user_id=${activeRequest.user_id}`;
+  async function approveRequestProof() {
+    if (!confirm('Approve proof documentation for this request and update its persistent database status?')) {
+      return;
+    }
+    try {
+      const res = await window.AdminAPI.updateRequest(activeRequestId, 'approve_proof');
+      if (res && res.success) {
+        const badge = document.getElementById('req-status-badge');
+        if (badge) {
+          badge.className = 'badge badge-success';
+          badge.textContent = 'APPROVED';
+        }
+        window.showAdminFlash('success', res.message || 'Request verified and approved.');
+      } else {
+        throw new Error(res ? res.message : 'Approval failed');
+      }
+    } catch (err) {
+      window.showAdminFlash('error', err.message);
+    }
   }
 
-  function rejectRequestProof() {
-    const badge = document.getElementById('req-status-badge');
-    badge.className = 'badge badge-danger';
-    badge.textContent = 'Rejected';
-    window.showAdminFlash('error', `Request #${activeRequest.id} has been rejected. Notification sent to beneficiary.`);
+  async function confirmRejectRequest() {
+    const reason = (document.getElementById('reject-reason-input').value || '').trim();
+    const modal = document.getElementById('reject-modal');
+    if (modal) modal.close();
+
+    try {
+      const res = await window.AdminAPI.updateRequest(activeRequestId, 'reject_proof', reason);
+      if (res && res.success) {
+        const badge = document.getElementById('req-status-badge');
+        if (badge) {
+          badge.className = 'badge badge-danger';
+          badge.textContent = 'REJECTED';
+        }
+        window.showAdminFlash('error', res.message || 'Request rejected.');
+      } else {
+        throw new Error(res ? res.message : 'Rejection failed');
+      }
+    } catch (err) {
+      window.showAdminFlash('error', err.message);
+    }
+  }
+
+  async function scheduleInterview() {
+    const note = prompt('Enter a scheduling note or preferred time for the verification interview:');
+    if (note === null) return;
+
+    try {
+      const res = await window.AdminAPI.updateRequest(activeRequestId, 'schedule_interview', note);
+      if (res && res.success) {
+        const badge = document.getElementById('req-status-badge');
+        if (badge) {
+          badge.className = 'badge badge-warning';
+          badge.textContent = 'UNDER REVIEW';
+        }
+        window.showAdminFlash('info', res.message || 'Interview scheduled.');
+      }
+    } catch (err) {
+      window.showAdminFlash('error', err.message);
+    }
   }
 
   document.addEventListener('DOMContentLoaded', loadRequest);

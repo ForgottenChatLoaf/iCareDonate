@@ -137,7 +137,7 @@ try {
     $pdo->beginTransaction();
 
     // Check for existing pending donations
-    $stmtCheckDon = $pdo->prepare('SELECT id, title FROM donations WHERE user_id = :uid AND status = "pending" FOR UPDATE');
+    $stmtCheckDon = $pdo->prepare("SELECT id, title FROM donations WHERE donor_id = :uid AND status = 'pending' FOR UPDATE");
     $stmtCheckDon->execute([':uid' => $userId]);
     $pendingDon = $stmtCheckDon->fetch();
 
@@ -152,8 +152,14 @@ try {
         exit;
     }
 
-    // Check for existing pending/under_review requests
-    $stmtCheckReq = $pdo->prepare('SELECT id, item_title FROM requests WHERE user_id = :uid AND status IN ("pending", "under_review") FOR UPDATE');
+    // Check for existing pending requests
+    $stmtCheckReq = $pdo->prepare("
+        SELECT r.id, COALESCE(d.title, 'Assistance Request') AS item_title
+        FROM requests r
+        LEFT JOIN donations d ON r.donation_id = d.id
+        WHERE r.requester_id = :uid AND r.status = 'pending'
+        FOR UPDATE
+    ");
     $stmtCheckReq->execute([':uid' => $userId]);
     $pendingReq = $stmtCheckReq->fetch();
 
@@ -168,69 +174,50 @@ try {
         exit;
     }
 
-    // 5. Insert the Donation Record
-    // Dynamically check if image_url column exists in donations
-    $hasImageCol = false;
-    try {
-        $colCheck = $pdo->query("SHOW COLUMNS FROM donations LIKE 'image_url'");
-        $hasImageCol = ($colCheck && $colCheck->rowCount() > 0);
-    } catch (PDOException $e) {}
+    // Normalize condition enum ('new','like_new','good','fair','poor')
+    $condLower = strtolower(str_replace([' ', '-'], '_', $conditionType));
+    $validConditions = ['new', 'like_new', 'good', 'fair', 'poor'];
+    $condition = in_array($condLower, $validConditions, true) ? $condLower : 'good';
 
-    if ($hasImageCol && $imageUrl !== null) {
-        $insertStmt = $pdo->prepare('
-            INSERT INTO donations (
-                user_id, title, category, description, image_url, quantity, unit,
-                condition_type, status, pickup_method, pickup_city, pickup_barangay, created_at
-            ) VALUES (
-                :uid, :title, :cat, :desc, :img, :qty, :unit,
-                :cond, "pending", :method, :city, :brgy, NOW()
-            )
-        ');
-        $insertStmt->execute([
-            ':uid'    => $userId,
-            ':title'  => $title,
-            ':cat'    => $category,
-            ':desc'   => $description,
-            ':img'    => $imageUrl,
-            ':qty'    => $quantity,
-            ':unit'   => $unit ?: 'pcs',
-            ':cond'   => $conditionType,
-            ':method' => $pickupMethod ?: 'both',
-            ':city'   => $pickupCity,
-            ':brgy'   => $pickupBarangay,
-        ]);
-    } else {
-        $insertStmt = $pdo->prepare('
-            INSERT INTO donations (
-                user_id, title, category, description, quantity, unit,
-                condition_type, status, pickup_method, pickup_city, pickup_barangay, created_at
-            ) VALUES (
-                :uid, :title, :cat, :desc, :qty, :unit,
-                :cond, "pending", :method, :city, :brgy, NOW()
-            )
-        ');
-        $insertStmt->execute([
-            ':uid'    => $userId,
-            ':title'  => $title,
-            ':cat'    => $category,
-            ':desc'   => $description,
-            ':qty'    => $quantity,
-            ':unit'   => $unit ?: 'pcs',
-            ':cond'   => $conditionType,
-            ':method' => $pickupMethod ?: 'both',
-            ':city'   => $pickupCity,
-            ':brgy'   => $pickupBarangay,
-        ]);
-    }
+    // Normalize handover_method enum ('pickup','meetup','delivery')
+    $methodLower = strtolower($pickupMethod);
+    $validMethods = ['pickup', 'meetup', 'delivery'];
+    $handoverMethod = in_array($methodLower, $validMethods, true) ? $methodLower : 'pickup';
+
+    $location = trim($pickupBarangay . ', ' . $pickupCity);
+
+    // 5. Insert the Donation Record
+    $insertStmt = $pdo->prepare("
+        INSERT INTO donations (
+            donor_id, title, category, description, image_url, quantity,
+            `condition`, location, barangay, city, handover_method, status, created_at
+        ) VALUES (
+            :uid, :title, :cat, :desc, :img, :qty,
+            :cond, :loc, :brgy, :city, :method, 'pending', NOW()
+        )
+    ");
+    $insertStmt->execute([
+        ':uid'    => $userId,
+        ':title'  => $title,
+        ':cat'    => $category,
+        ':desc'   => $description,
+        ':img'    => $imageUrl,
+        ':qty'    => $quantity,
+        ':cond'   => $condition,
+        ':loc'    => $location,
+        ':brgy'   => $pickupBarangay,
+        ':city'   => $pickupCity,
+        ':method' => $handoverMethod,
+    ]);
 
     $newDonationId = (int)$pdo->lastInsertId();
 
     // 5. Generate Automated System Notification for Donor
     try {
-        $stmtNotif = $pdo->prepare('
+        $stmtNotif = $pdo->prepare("
             INSERT INTO notifications (user_id, title, message, type, is_read, created_at)
-            VALUES (:uid, :title, :msg, "donation", 0, NOW())
-        ');
+            VALUES (:uid, :title, :msg, 'donation', 0, NOW())
+        ");
         $stmtNotif->execute([
             ':uid'   => $userId,
             ':title' => 'Donation Listing Submitted',

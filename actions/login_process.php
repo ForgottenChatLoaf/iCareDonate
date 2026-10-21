@@ -12,7 +12,6 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/database.php';
-require_once __DIR__ . '/../includes/demo_accounts.php';
 
 $isJson = (
     (!empty($_SERVER['HTTP_ACCEPT']) && str_contains($_SERVER['HTTP_ACCEPT'], 'application/json')) ||
@@ -82,22 +81,7 @@ if ($pdo !== null) {
         $row = $stmt->fetch();
 
         if ($row && !empty($row['password_hash'])) {
-            $isValid = password_verify($password, $row['password_hash']);
-            // Fallback: support both @1234 and Pass123! variants for demo defense testing
-            if (!$isValid) {
-                $demoVariants = [
-                    'donor@icaredonate.test'     => ['Donor@1234', 'DonorPass123!'],
-                    'requester@icaredonate.test' => ['Requester@1234', 'RequestPass123!'],
-                    'admin@icaredonate.test'     => ['Admin@1234', 'AdminPass123!'],
-                    'user@icaredonate.test'      => ['User@1234', 'UserPass123!'],
-                ];
-                $emKey = strtolower($email);
-                if (isset($demoVariants[$emKey]) && in_array($password, $demoVariants[$emKey], true)) {
-                    $isValid = true;
-                }
-            }
-
-            if ($isValid) {
+            if (password_verify($password, $row['password_hash'])) {
                 $nameParts = explode(' ', trim($row['name']));
                 $firstName = $nameParts[0] ?? 'User';
                 $lastName  = implode(' ', array_slice($nameParts, 1)) ?: '';
@@ -116,39 +100,13 @@ if ($pdo !== null) {
         }
     } catch (PDOException $e) {
         error_log('Database query error in login_process: ' . $e->getMessage());
-        if ($isProduction) {
-            sendLoginResponse(false, 'Database service is currently unavailable. Please try again shortly.', '', null, $isJson);
-        }
+        sendLoginResponse(false, 'Database service is currently unavailable. Please try again shortly.', '', null, $isJson);
     }
-} elseif ($isProduction) {
+} else {
     sendLoginResponse(false, 'Database service is currently unavailable. Please try again shortly.', '', null, $isJson);
 }
 
-// ── 2. Fallback to Demo Accounts array ONLY in local development ───────────────
-if (!$isProduction && $matched === null && !empty($DEMO_ACCOUNTS)) {
-    foreach ($DEMO_ACCOUNTS as $account) {
-        if (strtolower($account['email']) === strtolower($email)) {
-            if (password_verify($password, $account['hash'])) {
-                $nameParts = explode(' ', trim($account['name']));
-                $firstName = $nameParts[0] ?? 'User';
-                $lastName  = implode(' ', array_slice($nameParts, 1)) ?: '';
-
-                $matched = [
-                    'id'         => 900 + crc32($account['email']) % 99,
-                    'email'      => $account['email'],
-                    'role'       => $account['role'],
-                    'name'       => $account['name'],
-                    'first_name' => $firstName,
-                    'last_name'  => $lastName,
-                    'initials'   => $account['initials'] ?? 'US',
-                ];
-                break;
-            }
-        }
-    }
-}
-
-// ── 3. Reject if invalid ──────────────────────────────────────────────────
+// ── 2. Reject if invalid ──────────────────────────────────────────────────
 if ($matched === null) {
     sendLoginResponse(false, 'Invalid email or password. Please try again.', '', null, $isJson);
 }

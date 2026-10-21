@@ -168,68 +168,143 @@
   </div>
 </dialog>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
-const ADMINS = [
-  { id:1, name:'Head Admin', email:'admin@icaredonate.ph', role:'head_admin', active:true, lastLogin:'Oct 13, 2025, 8:32 AM' },
-  { id:2, name:'Maria Reyes', email:'mreyes@icaredonate.ph', role:'admin', active:true, lastLogin:'Oct 12, 2025, 3:15 PM' },
-  { id:3, name:'Juan Cruz', email:'jcruz@icaredonate.ph', role:'admin', active:true, lastLogin:'Oct 11, 2025, 10:00 AM' },
-  { id:4, name:'Ana Santos', email:'asantos@icaredonate.ph', role:'admin', active:false, lastLogin:'Sep 20, 2025, 2:00 PM' },
-];
+let ADMINS = [];
+let isLoadingAdmins = false;
 
-function roleLabel(r) { return r === 'head_admin' ? '<span class="badge" style="background:#FFF7ED;color:#D97706;border:1px solid #FDE68A;">Head Admin</span>' : '<span class="badge badge-neutral">Admin</span>'; }
-
-function renderAdmins() {
-  document.getElementById('admins-tbody').innerHTML = ADMINS.map(a=>`
-    <tr style="border-bottom:1px solid var(--color-border-light);">
-      <td style="padding:14px 16px;">
-        <div style="display:flex;align-items:center;gap:12px;">
-          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1F4FA3,#2563EB);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">
-            ${a.name.split(' ').map(p=>p[0]).join('').substring(0,2).toUpperCase()}
-          </div>
-          <div style="font-weight:700;">${a.name}${a.id===1?' <span style="font-size:11px;color:var(--color-text-muted);">(You)</span>':''}</div>
-        </div>
-      </td>
-      <td style="padding:14px 16px;color:var(--color-text-muted);">${a.email}</td>
-      <td style="padding:14px 16px;">${roleLabel(a.role)}</td>
-      <td style="padding:14px 16px;text-align:center;"><span class="badge ${a.active ? 'badge-success' : 'badge-danger'}">${a.active ? 'Active' : 'Inactive'}</span></td>
-      <td style="padding:14px 16px;font-size:12.5px;color:var(--color-text-muted);">${a.lastLogin}</td>
-      <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-        ${a.id===1 ? '<span style="font-size:12px;color:var(--color-text-muted);">No actions</span>' : `
-          <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;margin-right:5px;" onclick="editAdmin(${a.id})">Edit</button>
-          <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;${a.active?'color:#DC2626;border-color:#FCA5A5;':''}" onclick="toggleAdmin(${a.id})">
-            ${a.active ? 'Deactivate' : 'Reactivate'}
-          </button>
-        `}
-      </td>
-    </tr>
-  `).join('');
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }
 
-function handleAddAdmin(e) {
+function roleLabel(r) {
+  return r === 'head_admin'
+    ? '<span class="badge" style="background:#FFF7ED;color:#D97706;border:1px solid #FDE68A;">Head Admin</span>'
+    : '<span class="badge badge-neutral">Admin</span>';
+}
+
+function formatAdminDate(dateStr) {
+  if (!dateStr) return 'Recently';
+  try {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  } catch(e) {
+    return dateStr;
+  }
+}
+
+async function fetchAdmins() {
+  if (isLoadingAdmins) return;
+  isLoadingAdmins = true;
+  const tbody = document.getElementById('admins-tbody');
+  tbody.innerHTML = `<tr><td colspan="6" style="padding:28px 16px;text-align:center;color:var(--color-text-muted);">Loading administrators...</td></tr>`;
+
+  try {
+    const res = await fetch('../../actions/admin_users.php?role=admin');
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const data = await res.json();
+    if (!data.success) throw new Error(data.message || 'Failed to load admins');
+
+    ADMINS = data.users || [];
+    renderAdmins();
+  } catch (err) {
+    console.error('Fetch admins error:', err);
+    tbody.innerHTML = `<tr><td colspan="6" style="padding:24px 16px;text-align:center;color:var(--color-danger, #e53e3e);">
+      Failed to load administrator accounts. ${escapeHtml(err.message)}
+    </td></tr>`;
+  } finally {
+    isLoadingAdmins = false;
+  }
+}
+
+function renderAdmins() {
+  const tbody = document.getElementById('admins-tbody');
+  if (ADMINS.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6" style="padding:32px 16px;text-align:center;color:var(--color-text-muted);">
+      No administrator accounts found.
+    </td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = ADMINS.map(a => {
+    const initials = (a.name || 'Admin').split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
+    const joined = formatAdminDate(a.created_at);
+    const isActive = a.status !== 'suspended' && a.status !== 'banned';
+
+    return `
+      <tr style="border-bottom:1px solid var(--color-border-light);">
+        <td style="padding:14px 16px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1F4FA3,#2563EB);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">
+              ${escapeHtml(initials)}
+            </div>
+            <div style="font-weight:700;">${escapeHtml(a.name)}</div>
+          </div>
+        </td>
+        <td style="padding:14px 16px;color:var(--color-text-muted);">${escapeHtml(a.email)}</td>
+        <td style="padding:14px 16px;">${roleLabel(a.role)}</td>
+        <td style="padding:14px 16px;text-align:center;"><span class="badge ${isActive ? 'badge-success' : 'badge-danger'}">${isActive ? 'Active' : 'Inactive'}</span></td>
+        <td style="padding:14px 16px;font-size:12.5px;color:var(--color-text-muted);">${escapeHtml(joined)}</td>
+        <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
+          <span style="font-size:12px;color:var(--color-text-muted);padding:4px 8px;background:var(--color-bg-subtle,#f1f5f9);border-radius:4px;">Verified</span>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+async function handleAddAdmin(e) {
   e.preventDefault();
   const first = document.getElementById('new-adm-first').value.trim();
   const last  = document.getElementById('new-adm-last').value.trim();
   const email = document.getElementById('new-adm-email').value.trim();
-  const role  = document.getElementById('new-adm-role').value;
-  ADMINS.push({ id:ADMINS.length+1, name:`${first} ${last}`, email, role, active:true, lastLogin:'Never' });
-  renderAdmins();
-  document.getElementById('add-admin-dialog').close();
-  e.target.reset();
-  window.showAdminFlash('success', `Admin account for ${first} ${last} created. A temporary password has been set.`);
+  const pw    = document.getElementById('new-adm-pw').value;
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+
+  if (submitBtn) submitBtn.disabled = true;
+
+  try {
+    const res = await fetch('../../actions/admin_users.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'create_admin',
+        name: `${first} ${last}`.trim(),
+        email: email,
+        password: pw
+      })
+    });
+
+    const data = await res.json();
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Failed to create admin account.');
+    }
+
+    document.getElementById('add-admin-dialog').close();
+    e.target.reset();
+    if (typeof window.showAdminFlash === 'function') {
+      window.showAdminFlash('success', data.message || `Admin account created.`);
+    } else {
+      alert(data.message || 'Admin account created.');
+    }
+    fetchAdmins();
+  } catch (err) {
+    console.error('Error creating admin:', err);
+    alert(err.message || 'Failed to create admin.');
+  } finally {
+    if (submitBtn) submitBtn.disabled = false;
+  }
 }
-function editAdmin(id) { window.showAdminFlash('info', `Edit panel for admin #${id} would open here in production.`); }
-function toggleAdmin(id) {
-  const a = ADMINS.find(x=>x.id===id);
-  if (!a) return;
-  const wasActive = a.active;
-  if (wasActive && !confirm(`Deactivate ${a.name}'s admin account? They will be unable to log in.`)) return;
-  a.active = !a.active;
-  renderAdmins();
-  window.showAdminFlash('success', `${a.name}'s account has been ${a.active ? 'reactivated' : 'deactivated'}.`);
-}
-renderAdmins();
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetchAdmins();
+});
 </script>
 
   <!-- Mobile sidebar toggle JS -->

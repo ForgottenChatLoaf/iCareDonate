@@ -201,193 +201,167 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
 const REPORT_COLUMNS = {
-  donations:    ['ID','Title','Category','Donor','Qty Total','Reserved','Claimed','Status','Posted'],
-  requests:     ['ID','Donation','Requester','Qty Requested','Qty Matched','Urgency','Status','Submitted'],
-  transactions: ['Txn ID','Donation','Donor','Requester','Qty','Pickup Method','Status','Date'],
-  claims:       ['Txn ID','Claim Code','Donation','Requester','Qty','Deadline','Status'],
+  donations:    ['ID', 'Title', 'Category', 'Donor', 'Qty Total', 'Status', 'Posted Date'],
+  requests:     ['ID', 'Item Requested', 'Requester', 'Qty Requested', 'Urgency', 'Status', 'Submitted Date'],
+  transactions: ['TX Code', 'Donation Item', 'Donor', 'Beneficiary', 'Qty', 'Handover Method', 'Status', 'Date'],
+  claims:       ['TX Code', 'Claim Code', 'Donation Item', 'Beneficiary', 'Qty', 'Status', 'Date'],
 };
 
-// Column index of the date field for each report type (-1 = not filterable)
-const DATE_COL = { donations: 8, requests: 7, transactions: 7, claims: -1 };
-
-// Column index of the status field for badge rendering
-const STATUS_COL = { donations: 7, requests: 6, transactions: 6, claims: 6 };
-
-// Column index of the urgency field for badge rendering
-const URGENCY_COL = { requests: 5 };
+const STATUS_COL = { donations: 5, requests: 5, transactions: 6, claims: 5 };
+const URGENCY_COL = { requests: 4 };
 
 const BADGE_MAP = {
-  active:'badge-success', claimed:'badge-neutral', archived:'badge-danger',
-  approved:'badge-success', fulfilled:'badge-success', pending:'badge-warning',
-  completed:'badge-success', High:'badge-danger', Critical:'badge-danger',
-  Medium:'badge-warning', Low:'badge-neutral',
+  active: 'badge-success', available: 'badge-success', claimed: 'badge-neutral', archived: 'badge-danger',
+  approved: 'badge-success', completed: 'badge-success', fulfilled: 'badge-success', pending: 'badge-warning',
+  High: 'badge-danger', Critical: 'badge-danger', Medium: 'badge-warning', Low: 'badge-neutral',
 };
 
 function badge(val) {
-  return `<span class="badge ${BADGE_MAP[val]||'badge-neutral'}" style="font-size:11px;">${val}</span>`;
+  return `<span class="badge ${BADGE_MAP[val] || 'badge-neutral'}" style="font-size:11px;">${escapeHtml(String(val))}</span>`;
 }
 
-const REPORT_MOCK = {
-  donations: [
-    [101,'Elementary Backpacks Bundle','School Supplies','Juan dela Cruz',10,4,2,'active','2026-10-01'],
-    [102,'Medical Vitamins Pack','Medical & First Aid','Maria Santos',5,5,5,'claimed','2026-10-03'],
-    [103,'Rice Sack 10kg','Food & Groceries','Pedro Reyes',20,8,6,'active','2026-10-05'],
-    [104,'Children Clothing Set','Clothing & Shoes','Ana Gomez',30,12,10,'active','2026-10-07'],
-    [105,'Notebook & Pen Bundle','School Supplies','Luis Ramos',15,15,0,'archived','2026-10-09'],
-    [106,'First Aid Kit','Medical & First Aid','Rosa Cruz',8,3,3,'active','2026-10-10'],
-    [107,'Used Adult Shoes (Size 9)','Clothing & Shoes','Carlo Santos',4,4,4,'claimed','2026-10-11'],
-    [108,'Algebra Textbook Set','Books & Educational','Teresa Lim',6,2,0,'active','2026-10-12'],
-    [109,'Canned Goods Assortment','Food & Groceries','Ben Aquino',40,10,10,'active','2026-10-13'],
-    [110,'Baby Diapers (Newborn)','Household Essentials','Alma Pascual',3,3,3,'claimed','2026-10-14'],
-  ],
-  requests: [
-    [501,'Elementary Backpacks Bundle','Carlos Mendoza',2,2,'High','approved','2026-10-02'],
-    [502,'Medical Vitamins Pack','Rosalina Ramos',1,1,'High','fulfilled','2026-10-04'],
-    [503,'Rice Sack 10kg','Mark Santos',5,5,'Critical','approved','2026-10-06'],
-    [504,'Children Clothing Set','Teresa Lim',3,3,'Medium','fulfilled','2026-10-08'],
-    [505,'Notebook & Pen Bundle','Carlos Tan',6,0,'Medium','pending','2026-10-10'],
-    [506,'First Aid Kit','Juana Reyes',2,2,'High','approved','2026-10-11'],
-    [507,'Algebra Textbook Set','Pedro Cruz',3,0,'Low','pending','2026-10-12'],
-    [508,'Canned Goods Assortment','Ana Lim',10,10,'Critical','fulfilled','2026-10-13'],
-  ],
-  transactions: [
-    ['TXN-001','Elementary Backpacks Bundle','Juan dela Cruz','Carlos Mendoza',2,'Pickup','completed','2026-10-03'],
-    ['TXN-002','Rice Sack 10kg','Pedro Reyes','Mark Santos',5,'Delivery','completed','2026-10-07'],
-    ['TXN-003','Medical Vitamins Pack','Maria Santos','Rosalina Ramos',1,'Pickup','completed','2026-10-05'],
-    ['TXN-004','Children Clothing Set','Ana Gomez','Teresa Lim',3,'Pickup','completed','2026-10-09'],
-    ['TXN-005','First Aid Kit','Rosa Cruz','Juana Reyes',2,'Pickup','pending','2026-10-12'],
-    ['TXN-006','Canned Goods Assortment','Ben Aquino','Ana Lim',10,'Delivery','completed','2026-10-14'],
-  ],
-  claims: [
-    ['TXN-001','IC-0001-D101','Elementary Backpacks Bundle','Carlos Mendoza',2,'2026-10-10','claimed'],
-    ['TXN-002','IC-0002-D103','Rice Sack 10kg','Mark Santos',5,'2026-10-14','claimed'],
-    ['TXN-003','IC-0003-D102','Medical Vitamins Pack','Rosalina Ramos',1,'2026-10-12','claimed'],
-    ['TXN-004','IC-0004-D104','Children Clothing Set','Teresa Lim',3,'2026-10-16','claimed'],
-    ['TXN-006','IC-0006-D109','Canned Goods Assortment','Ana Lim',10,'2026-10-18','claimed'],
-  ],
-};
-
-function getFilteredRows(type) {
-  const start = document.getElementById('rpt-start').value;
-  const end   = document.getElementById('rpt-end').value;
-  const catFilter = document.getElementById('rpt-cat').value;
-  const CAT_MAP = {'1':'Food & Groceries','2':'Clothing & Shoes','3':'School Supplies','4':'Medical & First Aid','5':'Household Essentials'};
-
-  let rows = REPORT_MOCK[type].slice();
-
-  const dcol = DATE_COL[type];
-  if (dcol >= 0 && (start || end)) {
-    rows = rows.filter(r => {
-      const d = r[dcol];
-      if (start && d < start) return false;
-      if (end   && d > end)   return false;
-      return true;
-    });
-  }
-
-  if (catFilter && type === 'donations') {
-    const catName = CAT_MAP[catFilter] || '';
-    if (catName) rows = rows.filter(r => String(r[2]) === catName);
-  }
-
-  return rows;
+function escapeHtml(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
-function renderReport(type) {
-  const cols = REPORT_COLUMNS[type];
-  const rows = getFilteredRows(type);
+let currentReportData = [];
+
+async function initReportCategories() {
+  const sel = document.getElementById('rpt-cat');
+  try {
+    const res = await window.AdminAPI.getCategories();
+    if (res && res.success && Array.isArray(res.categories)) {
+      sel.innerHTML = '<option value="">All Categories</option>';
+      res.categories.forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat.name;
+        opt.textContent = cat.name;
+        sel.appendChild(opt);
+      });
+    }
+  } catch (e) {
+    console.warn('Could not load categories for reports:', e);
+  }
+}
+
+async function renderReport(type) {
+  const cols = REPORT_COLUMNS[type] || REPORT_COLUMNS.donations;
   const thead = document.getElementById('report-thead');
-  const tbody  = document.getElementById('report-tbody');
+  const tbody = document.getElementById('report-tbody');
 
   thead.innerHTML = cols.map(c =>
     `<th style="padding:11px 14px;font-weight:700;color:var(--color-text-muted);text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:0.04em;white-space:nowrap;">${c}</th>`
   ).join('');
 
-  if (rows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="${cols.length}" style="padding:60px 24px;text-align:center;">
-      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--color-text-muted);">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span style="font-size:14px;font-weight:600;">No records match the selected filters</span>
-        <span style="font-size:12.5px;">Try adjusting the date range, report type, or category</span>
-      </div>
+  tbody.innerHTML = `<tr><td colspan="${cols.length}" style="padding:48px 24px;text-align:center;color:var(--color-text-muted);">
+    Loading report data from database...
+  </td></tr>`;
+
+  const startDate = document.getElementById('rpt-start').value;
+  const endDate = document.getElementById('rpt-end').value;
+  const cat = document.getElementById('rpt-cat').value;
+
+  try {
+    const res = await window.AdminAPI.getReports({
+      type: type,
+      start_date: startDate,
+      end_date: endDate,
+      category: cat
+    });
+
+    if (res && res.kpis) {
+      document.getElementById('kpi-donations').textContent = res.kpis.donations ?? 0;
+      document.getElementById('kpi-requests').textContent = res.kpis.requests ?? 0;
+      document.getElementById('kpi-transactions').textContent = res.kpis.transactions ?? 0;
+      document.getElementById('kpi-served').textContent = res.kpis.served ?? 0;
+    }
+
+    const rows = (res && res.rows) || [];
+    currentReportData = rows;
+
+    if (rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="${cols.length}" style="padding:60px 24px;text-align:center;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--color-text-muted);">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.3;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <span style="font-size:14px;font-weight:600;">No records match the selected report parameters in MySQL</span>
+          <span style="font-size:12.5px;">Try adjusting the date range or category filter</span>
+        </div>
+      </td></tr>`;
+    } else {
+      const sCo = STATUS_COL[type];
+      const uCo = URGENCY_COL[type];
+      tbody.innerHTML = rows.map((r, idx) =>
+        `<tr style="${idx % 2 === 1 ? 'background:#FAFBFC;' : ''}">${
+          r.map((cell, ci) => {
+            let display = escapeHtml(String(cell ?? ''));
+            if (ci === sCo || ci === uCo) display = badge(String(cell));
+            return `<td style="padding:12px 14px;border-bottom:1px solid var(--color-border-light,#F1F5F9);white-space:nowrap;">${display}</td>`;
+          }).join('')
+        }</tr>`
+      ).join('');
+    }
+
+    document.getElementById('report-heading').textContent =
+      type.charAt(0).toUpperCase() + type.slice(1) + ' Report';
+    document.getElementById('report-count').textContent =
+      `${rows.length} record${rows.length !== 1 ? 's' : ''}`;
+
+  } catch (err) {
+    tbody.innerHTML = `<tr><td colspan="${cols.length}" style="padding:48px 24px;text-align:center;color:#DC2626;">
+      <strong>Failed to query report records:</strong> ${escapeHtml(err.message)}
     </td></tr>`;
-  } else {
-    const sCo = STATUS_COL[type];
-    const uCo = URGENCY_COL[type];
-    tbody.innerHTML = rows.map((r, idx) =>
-      `<tr style="${idx % 2 === 1 ? 'background:#FAFBFC;' : ''}">${
-        r.map((cell, ci) => {
-          let display = cell;
-          if (ci === sCo || ci === uCo) display = badge(String(cell));
-          return `<td style="padding:12px 14px;border-bottom:1px solid var(--color-border-light,#F1F5F9);white-space:nowrap;">${display}</td>`;
-        }).join('')
-      }</tr>`
-    ).join('');
   }
-
-  document.getElementById('report-heading').textContent =
-    type.charAt(0).toUpperCase() + type.slice(1) + ' Report';
-  document.getElementById('report-count').textContent =
-    `${rows.length} record${rows.length !== 1 ? 's' : ''}`;
-
-  // Update KPI cards
-  const dCount = getFilteredRows('donations').length;
-  const rCount = getFilteredRows('requests').length;
-  const tRows  = getFilteredRows('transactions');
-  const cCount = getFilteredRows('claims').length;
-  document.getElementById('kpi-donations').textContent    = dCount;
-  document.getElementById('kpi-requests').textContent     = rCount;
-  document.getElementById('kpi-transactions').textContent = tRows.filter(r => r[6] === 'completed').length;
-  document.getElementById('kpi-served').textContent       = cCount;
 }
 
 function applyReportFilters(e) {
   e.preventDefault();
   const type = document.getElementById('rpt-type').value;
   renderReport(type);
-  window.showAdminFlash('success', `Report generated: ${type}`);
+  if (window.showAdminFlash) {
+    window.showAdminFlash('info', `Generating ${type} report...`);
+  }
 }
 
 function handleExport() {
-  const type  = document.getElementById('rpt-type').value;
-  let rows    = getFilteredRows(type);
-  const cols  = REPORT_COLUMNS[type];
-  const start = document.getElementById('rpt-start').value || 'all';
-  const end   = document.getElementById('rpt-end').value   || 'all';
+  const type = document.getElementById('rpt-type').value;
+  const cols = REPORT_COLUMNS[type] || REPORT_COLUMNS.donations;
+  const rows = currentReportData;
 
-  // If date filters matched 0 rows, fallback to all available records for this report
   if (!rows || rows.length === 0) {
-    rows = REPORT_MOCK[type] ? REPORT_MOCK[type].slice() : [];
+    alert('No report records available to export for the selected filter.');
+    return;
   }
 
-  // Strip HTML badges from exported data
   const csv = [
     cols.join(','),
-    ...rows.map(r => r.map(c => `"${String(c).replace(/<[^>]+>/g,'').replace(/"/g,'""')}"`).join(','))
+    ...rows.map(r => r.map(c => `"${String(c ?? '').replace(/"/g, '""')}"`).join(','))
   ].join('\n');
 
   const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
   const url  = URL.createObjectURL(blob);
   const a    = document.createElement('a');
+  const now  = new Date().toISOString().slice(0, 10);
   a.href = url;
-  a.download = `iCareDonate_${type}_${start}_to_${end}.csv`;
+  a.download = `iCareDonate_Report_${type}_${now}.csv`;
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  window.showAdminFlash('success', `CSV downloaded: ${rows.length} ${type} record${rows.length !== 1 ? 's' : ''}`);
+  if (window.showAdminFlash) {
+    window.showAdminFlash('success', `CSV downloaded: ${rows.length} ${type} record${rows.length !== 1 ? 's' : ''}`);
+  }
 }
 
-// Init: set default dates to include 2026 records and render
-(function() {
-  document.getElementById('rpt-start').value = '2026-10-01';
-  document.getElementById('rpt-end').value   = '2026-10-31';
+document.addEventListener('DOMContentLoaded', function() {
+  initReportCategories();
   renderReport('donations');
-})();
+});
 </script>
 
   <!-- Mobile sidebar toggle JS -->

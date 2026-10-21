@@ -149,7 +149,7 @@
 
         <!-- Monthly Donations Chart -->
         <div class="card" style="padding:22px;border:1px solid var(--color-border);border-radius:var(--radius-md);">
-          <div style="font-size:14px;font-weight:700;margin-bottom:16px;">Monthly Donations (2025)</div>
+          <div style="font-size:14px;font-weight:700;margin-bottom:16px;">Monthly Donations (<span id="statsYearLabel">2026</span>)</div>
           <div id="bar-chart" style="display:flex;align-items:flex-end;gap:8px;height:120px;"></div>
           <div id="bar-labels" style="display:flex;gap:8px;margin-top:6px;"></div>
         </div>
@@ -279,6 +279,8 @@
 <script src="../js/admin-portal.js"></script>
 <script>
   document.getElementById('stats-date').textContent = new Date().toLocaleDateString('en-PH', {month:'long',day:'numeric',year:'numeric'});
+  const yLabel = document.getElementById('statsYearLabel');
+  if (yLabel) yLabel.textContent = new Date().getFullYear();
 
   // Render mini bar chart
   const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];

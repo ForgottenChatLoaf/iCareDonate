@@ -5,6 +5,9 @@
 .env.*
 *.env
 !.env.example
+aiven-ca.pem
+run_migration.php
+test_conn.php
 
 # ── Operating System Clutter ─────────────────────────
 Thumbs.db

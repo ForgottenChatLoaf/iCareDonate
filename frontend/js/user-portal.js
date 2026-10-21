@@ -19,7 +19,8 @@
           (page === 'settings' && navKey === 'profile') ||
           (page === 'request-details' && navKey === 'requests') ||
           (page === 'request-donation' && navKey === 'requests') ||
-          (page === 'edit-donation' && navKey === 'donations')) {
+          (page === 'edit-donation' && navKey === 'donations') ||
+          (page === 'help-center' && navKey === 'help')) {
         link.classList.add('sidebar-link--active');
       } else {
         link.classList.remove('sidebar-link--active');

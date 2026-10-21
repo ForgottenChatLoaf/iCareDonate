@@ -123,7 +123,7 @@ try {
     $pdo->beginTransaction();
 
     // Check for existing pending donations
-    $stmtCheckDon = $pdo->prepare('SELECT id, title FROM donations WHERE user_id = :uid AND status = "pending" FOR UPDATE');
+    $stmtCheckDon = $pdo->prepare("SELECT id, title FROM donations WHERE donor_id = :uid AND status = 'pending' FOR UPDATE");
     $stmtCheckDon->execute([':uid' => $userId]);
     $pendingDon = $stmtCheckDon->fetch();
 
@@ -138,8 +138,14 @@ try {
         exit;
     }
 
-    // Check for existing pending/under_review requests
-    $stmtCheckReq = $pdo->prepare('SELECT id, item_title FROM requests WHERE user_id = :uid AND status IN ("pending", "under_review") FOR UPDATE');
+    // Check for existing pending requests
+    $stmtCheckReq = $pdo->prepare("
+        SELECT r.id, COALESCE(d.title, 'Assistance Request') AS item_title
+        FROM requests r
+        LEFT JOIN donations d ON r.donation_id = d.id
+        WHERE r.requester_id = :uid AND r.status = 'pending'
+        FOR UPDATE
+    ");
     $stmtCheckReq->execute([':uid' => $userId]);
     $pendingReq = $stmtCheckReq->fetch();
 
@@ -154,40 +160,65 @@ try {
         exit;
     }
 
-    // 7. Insert the Assistance Request with Requester Personal Details
-    $insertStmt = $pdo->prepare('
+    // Handle optional proof file upload
+    $proofFilePath = null;
+    $proofFile = $_FILES['proof_file'] ?? ($_FILES['proof'] ?? null);
+    if ($proofFile && is_array($proofFile) && !empty($proofFile['name']) && $proofFile['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = __DIR__ . '/../uploads/proofs';
+        if (!is_dir($uploadDir)) {
+            @mkdir($uploadDir, 0755, true);
+            @file_put_contents($uploadDir . '/.htaccess', "Options -ExecCGI\nphp_flag engine off\n<FilesMatch \"\.(php|phtml|php5|php7|php8)$\">\nOrder allow,deny\nDeny from all\n</FilesMatch>");
+        }
+        $ext = strtolower(pathinfo($proofFile['name'], PATHINFO_EXTENSION));
+        if (in_array($ext, ['pdf', 'png', 'jpg', 'jpeg', 'webp'], true)) {
+            $safeName = 'proof_' . $userId . '_' . bin2hex(random_bytes(8)) . '.' . $ext;
+            if (move_uploaded_file($proofFile['tmp_name'], $uploadDir . '/' . $safeName)) {
+                $proofFilePath = 'uploads/proofs/' . $safeName;
+            }
+        }
+    }
+
+    // If no donationId passed, associate with an available donation or 1
+    $finalDonationId = ($donationId !== null && $donationId > 0) ? $donationId : 1;
+    if ($finalDonationId === 1) {
+        $checkDid = $pdo->query('SELECT id FROM donations ORDER BY id ASC LIMIT 1');
+        $foundDid = $checkDid ? (int)$checkDid->fetchColumn() : 0;
+        if ($foundDid > 0) {
+            $finalDonationId = $foundDid;
+        }
+    }
+
+    $compiledMessage = $reason;
+    if ($requesterName !== '' || $contactNumber !== '') {
+        $compiledMessage .= "\n\n[Contact: " . $requesterName . " | " . $contactNumber . " | " . $barangay . ", " . $city . " | " . $completeAddress . "]";
+    }
+
+    // 7. Insert the Assistance Request into MySQL
+    $insertStmt = $pdo->prepare("
         INSERT INTO requests (
-            user_id, donation_id, item_title, quantity, unit, reason, proof_type, status,
-            requester_name, contact_number, barangay, city, complete_address, created_at
+            requester_id, donation_id, message, quantity, urgency, proof_type, proof_file_path, status, created_at
         ) VALUES (
-            :uid, :did, :title, :qty, :unit, :reason, :proof, "pending",
-            :req_name, :phone, :brgy, :city, :addr, NOW()
+            :uid, :did, :msg, :qty, 'Medium', :proof, :file_path, 'pending', NOW()
         )
-    ');
+    ");
 
     $insertStmt->execute([
-        ':uid'      => $userId,
-        ':did'      => ($donationId > 0) ? $donationId : null,
-        ':title'    => $itemTitle,
-        ':qty'      => $quantity,
-        ':unit'     => $unit ?: 'items',
-        ':reason'   => $reason,
-        ':proof'    => $proofType ?: 'Certificate of Indigency',
-        ':req_name' => $requesterName,
-        ':phone'    => $contactNumber,
-        ':brgy'     => $barangay,
-        ':city'     => $city,
-        ':addr'     => $completeAddress,
+        ':uid'       => $userId,
+        ':did'       => $finalDonationId,
+        ':msg'       => $compiledMessage,
+        ':qty'       => $quantity,
+        ':proof'     => $proofType ?: 'Certificate of Indigency',
+        ':file_path' => $proofFilePath,
     ]);
 
     $newRequestId = (int)$pdo->lastInsertId();
 
     // 8. Generate Automated System Notification for Requester
     try {
-        $stmtNotif = $pdo->prepare('
+        $stmtNotif = $pdo->prepare("
             INSERT INTO notifications (user_id, title, message, type, is_read, created_at)
-            VALUES (:uid, :title, :msg, "request", 0, NOW())
-        ');
+            VALUES (:uid, :title, :msg, 'request', 0, NOW())
+        ");
         $stmtNotif->execute([
             ':uid'   => $userId,
             ':title' => 'Assistance Request Submitted',

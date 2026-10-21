@@ -11,7 +11,7 @@
   function setupAdminNav() {
     const path = window.location.pathname;
     const page = path.split('/').pop().replace('.html', '') || 'index';
-    
+
     document.querySelectorAll('.sidebar-link[data-nav]').forEach(link => {
       const navKey = link.getAttribute('data-nav');
       if (navKey === page || (page === 'index' && navKey === 'dashboard')) {
@@ -75,7 +75,7 @@
     flash.id = 'admin-flash-msg';
     flash.className = `alert alert-${type === 'success' ? 'success' : type === 'info' ? 'info' : 'error'}`;
     flash.style.cssText = 'margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; padding: 12px 18px; border-radius: 8px; font-size: 13.5px; z-index: 100;';
-    
+
     let iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>';
     if (type === 'info') {
       iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="16" y2="12"/><line x1="12" x2="12.01" y1="8" y2="8"/></svg>';
@@ -240,6 +240,146 @@
   try {
     checkAdminSession();
   } catch(e) {}
+
+  // ─────────────────────────────────────────────────────────────
+  // Real Admin Backend API Client (MySQL / Aiven / PHP Actions)
+  // ─────────────────────────────────────────────────────────────
+  window.AdminAPI = {
+    getBaseUrl: function(endpoint) {
+      // Determine root-relative path to actions/
+      const p = window.location.pathname;
+      if (p.includes('/frontend/admin') || p.includes('/admin')) {
+        return `../../actions/${endpoint}`;
+      }
+      return `actions/${endpoint}`;
+    },
+
+    request: async function(endpoint, options = {}) {
+      const url = this.getBaseUrl(endpoint);
+      const token = localStorage.getItem('icd_token') || '';
+
+      const defaultHeaders = {
+        'Accept': 'application/json',
+      };
+      if (token) {
+        defaultHeaders['Authorization'] = `Bearer ${token}`;
+      }
+
+      const config = {
+        credentials: 'include',
+        headers: {
+          ...defaultHeaders,
+          ...(options.headers || {})
+        },
+        ...options
+      };
+
+      try {
+        const response = await fetch(url, config);
+        const data = await response.json().catch(() => null);
+
+        if (!response.ok) {
+          const errMsg = (data && (data.message || data.error)) || `HTTP ${response.status} Error`;
+          throw new Error(errMsg);
+        }
+
+        return data;
+      } catch (err) {
+        console.warn(`[AdminAPI Error: ${endpoint}]`, err);
+        throw err;
+      }
+    },
+
+    getDashboard: function() {
+      return this.request('admin_dashboard.php');
+    },
+
+    getDonations: function(params = {}) {
+      const q = new URLSearchParams(params).toString();
+      return this.request(`admin_donations.php${q ? '?' + q : ''}`);
+    },
+
+    getDonation: function(id) {
+      return this.request(`admin_donations.php?id=${encodeURIComponent(id)}`);
+    },
+
+    updateDonation: function(id, action, reason = '') {
+      return this.request('admin_donations.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action, reason })
+      });
+    },
+
+    getRequests: function(params = {}) {
+      const q = new URLSearchParams(params).toString();
+      return this.request(`admin_requests.php${q ? '?' + q : ''}`);
+    },
+
+    getRequest: function(id) {
+      return this.request(`admin_requests.php?id=${encodeURIComponent(id)}`);
+    },
+
+    updateRequest: function(id, action, reason = '') {
+      return this.request('admin_requests.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action, reason })
+      });
+    },
+
+    getUsers: function(params = {}) {
+      const q = new URLSearchParams(params).toString();
+      return this.request(`admin_users.php${q ? '?' + q : ''}`);
+    },
+
+    getUser: function(id) {
+      return this.request(`admin_users.php?id=${encodeURIComponent(id)}`);
+    },
+
+    updateUser: function(id, action, reason = '') {
+      return this.request('admin_users.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action, reason })
+      });
+    },
+
+    getTransactions: function(params = {}) {
+      const q = new URLSearchParams(params).toString();
+      return this.request(`admin_transactions.php${q ? '?' + q : ''}`);
+    },
+
+    confirmTransaction: function(id) {
+      return this.request('admin_transactions.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, action: 'confirm_handover' })
+      });
+    },
+
+    getReports: function(params = {}) {
+      const q = new URLSearchParams(params).toString();
+      return this.request(`admin_reports.php${q ? '?' + q : ''}`);
+    },
+
+    getLogs: function(params = {}) {
+      const q = new URLSearchParams(params).toString();
+      return this.request(`admin_logs.php${q ? '?' + q : ''}`);
+    },
+
+    getCategories: function() {
+      return this.request('admin_categories.php');
+    },
+
+    updateCategory: function(payload) {
+      return this.request('admin_categories.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+    }
+  };
 
   document.addEventListener('DOMContentLoaded', function() {
     if (checkAdminSession()) {

@@ -187,7 +187,7 @@
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <span style="color:#64748B;">Account Created:</span>
-                <strong style="color:#1E293B;">October 2025</strong>
+                <strong id="admin-joined-date" style="color:#1E293B;">Active</strong>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <span style="color:#64748B;">Authentication:</span>
@@ -393,6 +393,15 @@ document.addEventListener('DOMContentLoaded', function() {
       if (full) document.getElementById('display-name').textContent = full;
       const ini = ((u.first_name ? u.first_name[0] : '') + (u.last_name ? u.last_name[0] : '')).toUpperCase();
       if (ini) document.getElementById('avatar-initials').textContent = ini;
+      if (u.created_at) {
+        try {
+          document.getElementById('admin-joined-date').textContent = new Date(u.created_at).toLocaleDateString(undefined, {month:'long', year:'numeric'});
+        } catch(e) {}
+      } else {
+        document.getElementById('admin-joined-date').textContent = new Date().toLocaleDateString(undefined, {month:'long', year:'numeric'});
+      }
+    } else {
+      document.getElementById('admin-joined-date').textContent = new Date().toLocaleDateString(undefined, {month:'long', year:'numeric'});
     }
   } catch(e) {}
 });

@@ -96,7 +96,7 @@
         <span>Activity Log</span>
       </a>
 
-      <a href="notifications.html" class="sidebar-link" data-nav="notifications">
+      <a href="notifications.html" class="sidebar-link sidebar-link--active" data-nav="notifications">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
         <span>Notifications</span>
         <span class="sidebar-badge" id="sidebarNotifBadge" style="display:none;">0</span>
@@ -114,7 +114,7 @@
         <span>Profile &amp; Settings</span>
       </a>
 
-      <a href="../help-center.html" class="sidebar-link" data-nav="help">
+      <a href="help-center.html" class="sidebar-link" data-nav="help">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <span>Help Center</span>
       </a>
@@ -140,7 +140,7 @@
       </div>
 
       <div style="display:flex;align-items:center;gap:12px;">
-        <button type="button" class="btn btn-outline" id="markAllReadBtn" style="font-size:13.5px;padding:6px 14px;" onclick="handleMarkAllRead()">Mark All as Read</button>
+        <button type="button" class="btn btn-outline" id="markAllReadBtn" style="font-size:13.5px;padding:6px 14px;" onclick="handleMarkAllRead()">Mark all as read</button>
         <div class="topbar-dropdown-wrap">
           <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
             <span class="user-avatar-circle" id="topbarUserInitials">&nbsp;</span>
@@ -152,7 +152,7 @@
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
               <span>Profile &amp; Settings</span>
             </a>
-            <a href="../help-center.html" role="menuitem">
+            <a href="help-center.html" role="menuitem">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
               <span>Help Center</span>
             </a>
@@ -176,6 +176,16 @@
       </div>
 
     </div>
+
+    <!-- Mini Footer -->
+    <footer class="user-footer">
+      <div>&copy; 2026 iCareDonate. All rights reserved.</div>
+      <div class="user-footer-links">
+        <a href="../privacy.html">Privacy Policy</a>
+        <a href="../terms.html">Terms of Service</a>
+        <a href="help-center.html">Help Center</a>
+      </div>
+    </footer>
   </div>
 </div>
 

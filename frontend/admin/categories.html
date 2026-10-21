@@ -139,7 +139,7 @@
     <form onsubmit="handleAddCategory(event)">
       <div style="margin-bottom:13px;">
         <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Category Name <span style="color:#DC2626;">*</span></label>
-        <input type="text" id="new-cat-name" class="form-input" placeholder="e.g. Toys & Leisure" style="width:100%;height:36px;font-size:13px;" required>
+        <input type="text" id="new-cat-name" class="form-input" placeholder="e.g. Toys & Books" style="width:100%;height:36px;font-size:13px;" required>
       </div>
       <div style="margin-bottom:13px;">
         <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Description</label>
@@ -151,74 +151,214 @@
       </div>
       <div style="display:flex;justify-content:flex-end;gap:10px;">
         <button type="button" class="btn btn-outline" onclick="document.getElementById('add-cat-dialog').close()" style="font-size:13px;padding:7px 16px;">Cancel</button>
-        <button type="submit" class="btn btn-primary" style="font-size:13px;padding:7px 18px;">Save Category</button>
+        <button type="submit" class="btn btn-primary" id="btn-save-new-cat" style="font-size:13px;padding:7px 18px;">Save Category</button>
       </div>
     </form>
   </div>
 </dialog>
 
-<script src="../js/mock-data.js"></script>
+<!-- EDIT CATEGORY DIALOG -->
+<dialog id="edit-cat-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:480px;width:92%;">
+  <div class="card" style="padding:28px;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <h2 style="font-size:17px;font-weight:700;margin:0 0 18px;">Edit Donation Category</h2>
+    <form onsubmit="handleEditCategorySubmit(event)">
+      <input type="hidden" id="edit-cat-id">
+      <div style="margin-bottom:13px;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Category Name <span style="color:#DC2626;">*</span></label>
+        <input type="text" id="edit-cat-name" class="form-input" style="width:100%;height:36px;font-size:13px;" required>
+      </div>
+      <div style="margin-bottom:13px;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Description</label>
+        <textarea id="edit-cat-desc" class="form-input" rows="2" style="width:100%;font-size:13px;"></textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Sort Order</label>
+          <input type="number" id="edit-cat-order" class="form-input" min="1" style="width:100%;height:36px;font-size:13px;">
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Status</label>
+          <select id="edit-cat-active" class="form-input" style="width:100%;height:36px;font-size:13px;">
+            <option value="1">Active</option>
+            <option value="0">Inactive</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('edit-cat-dialog').close()" style="font-size:13px;padding:7px 16px;">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="btn-update-cat" style="font-size:13px;padding:7px 18px;">Update Category</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
 <script src="../js/admin-portal.js"></script>
 <script>
-const CATEGORIES = [
-  { id:1, order:1, name:'Food & Groceries',    desc:'Non-perishable food items, canned goods, rice, and basic groceries.', count:14, active:true },
-  { id:2, order:2, name:'Clothing',            desc:'Shirts, pants, shoes, and other wearable items for all ages.',         count:9,  active:true },
-  { id:3, order:3, name:'School Supplies',     desc:'Notebooks, pens, bags, and educational materials for students.',      count:11, active:true },
-  { id:4, order:4, name:'Medical Supplies',    desc:'First-aid kits, medicines, hygiene products, and PPE.',               count:6,  active:true },
-  { id:5, order:5, name:'Household Items',     desc:'Kitchenware, furniture, blankets, and home utilities.',               count:5,  active:true },
-  { id:6, order:6, name:'Toys & Leisure',      desc:'Toys, books, and recreational items for children.',                   count:3,  active:false },
-];
+let currentCategories = [];
 
-function renderCategories() {
+async function loadCategories() {
   const grid = document.getElementById('categories-grid');
   const tbody = document.getElementById('cat-tbody');
 
-  grid.innerHTML = CATEGORIES.map(c=>`
-    <div class="card" style="padding:20px;border:1px solid var(--color-border);border-radius:var(--radius-md);position:relative;">
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
-        <div style="font-size:15px;font-weight:700;color:var(--color-text);">${c.name}</div>
-        <span class="badge ${c.active ? 'badge-success' : 'badge-neutral'}">${c.active ? 'Active' : 'Inactive'}</span>
-      </div>
-      <div style="font-size:12.5px;color:var(--color-text-muted);margin-bottom:14px;">${c.desc}</div>
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:22px;font-weight:800;color:var(--color-primary);">${c.count}</span>
-        <span style="font-size:11.5px;color:var(--color-text-muted);">donations listed</span>
-      </div>
-    </div>
-  `).join('');
+  grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--color-text-muted);">Loading categories from database...</div>';
+  tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--color-text-muted);">Loading...</td></tr>';
 
-  tbody.innerHTML = CATEGORIES.map(c=>`
-    <tr style="border-bottom:1px solid var(--color-border-light);">
-      <td style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);">${c.order}</td>
-      <td style="padding:12px 16px;font-weight:600;">${c.name}</td>
-      <td style="padding:12px 16px;color:var(--color-text-muted);font-size:12.5px;">${c.desc}</td>
-      <td style="padding:12px 16px;text-align:center;font-weight:700;">${c.count}</td>
-      <td style="padding:12px 16px;text-align:center;"><span class="badge ${c.active ? 'badge-success' : 'badge-neutral'}">${c.active ? 'Active' : 'Inactive'}</span></td>
-      <td style="padding:12px 16px;text-align:right;white-space:nowrap;">
-        <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;margin-right:5px;" onclick="editCategory(${c.id})">Edit</button>
-        <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;color:#DC2626;border-color:#FCA5A5;" onclick="deleteCategory(${c.id})">Delete</button>
-      </td>
-    </tr>
-  `).join('');
-}
+  try {
+    const res = await window.AdminAPI.getCategories();
+    if (!res || !res.success || !res.categories) {
+      throw new Error(res.message || 'Unable to retrieve categories');
+    }
 
-function handleAddCategory(e) {
-  e.preventDefault();
-  const name = document.getElementById('new-cat-name').value.trim();
-  CATEGORIES.push({ id:CATEGORIES.length+1, order:CATEGORIES.length+1, name, desc:document.getElementById('new-cat-desc').value, count:0, active:true });
-  renderCategories();
-  document.getElementById('add-cat-dialog').close();
-  e.target.reset();
-  window.showAdminFlash('success', `Category "${name}" created successfully.`);
-}
-function editCategory(id) { window.showAdminFlash('info', `Edit panel for category #${id} would open here in production.`); }
-function deleteCategory(id) {
-  if (confirm('Delete this category? Existing donations will need to be re-assigned.')) {
-    const idx = CATEGORIES.findIndex(c=>c.id===id);
-    if (idx>-1) { const n = CATEGORIES[idx].name; CATEGORIES.splice(idx,1); renderCategories(); window.showAdminFlash('success',`Category "${n}" deleted.`); }
+    currentCategories = res.categories;
+
+    if (currentCategories.length === 0) {
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--color-text-muted);">No categories defined yet.</div>';
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:24px;color:var(--color-text-muted);">No categories available.</td></tr>';
+      return;
+    }
+
+    grid.innerHTML = currentCategories.map(c => `
+      <div class="card" style="padding:20px;border:1px solid var(--color-border);border-radius:var(--radius-md);position:relative;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+          <div style="font-size:15px;font-weight:700;color:var(--color-text);">${c.name}</div>
+          <span class="badge ${c.is_active ? 'badge-success' : 'badge-neutral'}">${c.is_active ? 'Active' : 'Inactive'}</span>
+        </div>
+        <div style="font-size:12.5px;color:var(--color-text-muted);margin-bottom:14px;min-height:36px;">${c.description || 'No description provided.'}</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="font-size:22px;font-weight:800;color:var(--color-primary);">${c.donation_count || 0}</span>
+          <span style="font-size:11.5px;color:var(--color-text-muted);">donations listed</span>
+        </div>
+      </div>
+    `).join('');
+
+    tbody.innerHTML = currentCategories.map(c => `
+      <tr style="border-bottom:1px solid var(--color-border-light);">
+        <td style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);">${c.sort_order || c.id}</td>
+        <td style="padding:12px 16px;font-weight:600;">${c.name}</td>
+        <td style="padding:12px 16px;color:var(--color-text-muted);font-size:12.5px;">${c.description || '—'}</td>
+        <td style="padding:12px 16px;text-align:center;font-weight:700;">${c.donation_count || 0}</td>
+        <td style="padding:12px 16px;text-align:center;"><span class="badge ${c.is_active ? 'badge-success' : 'badge-neutral'}">${c.is_active ? 'Active' : 'Inactive'}</span></td>
+        <td style="padding:12px 16px;text-align:right;white-space:nowrap;">
+          <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;margin-right:5px;" onclick="openEditCategory(${c.id})">Edit</button>
+          <button type="button" class="btn btn-outline" style="font-size:12px;padding:3px 10px;color:#DC2626;border-color:#FCA5A5;" onclick="deleteCategory(${c.id}, '${c.name.replace(/'/g, "\\'")}')">Delete</button>
+        </td>
+      </tr>
+    `).join('');
+
+  } catch (err) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:#DC2626;">Error: ${err.message}</div>`;
+    tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:24px;color:#DC2626;">Failed to load categories.</td></tr>`;
   }
 }
-renderCategories();
+
+async function handleAddCategory(e) {
+  e.preventDefault();
+  const name = document.getElementById('new-cat-name').value.trim();
+  const desc = document.getElementById('new-cat-desc').value.trim();
+  const order = parseInt(document.getElementById('new-cat-order').value, 10) || 99;
+
+  const btn = document.getElementById('btn-save-new-cat');
+  btn.disabled = true;
+  btn.innerText = 'Saving...';
+
+  try {
+    const res = await window.AdminAPI.updateCategory({
+      action: 'create',
+      name: name,
+      description: desc,
+      sort_order: order,
+      is_active: 1
+    });
+
+    if (res && res.success) {
+      document.getElementById('add-cat-dialog').close();
+      e.target.reset();
+      window.showAdminFlash('success', res.message || `Category "${name}" created successfully.`);
+      await loadCategories();
+    } else {
+      alert((res && res.message) || 'Failed to create category.');
+    }
+  } catch (err) {
+    alert(err.message || 'Error creating category.');
+  } finally {
+    btn.disabled = false;
+    btn.innerText = 'Save Category';
+  }
+}
+
+function openEditCategory(id) {
+  const cat = currentCategories.find(c => c.id === id);
+  if (!cat) return;
+
+  document.getElementById('edit-cat-id').value = cat.id;
+  document.getElementById('edit-cat-name').value = cat.name;
+  document.getElementById('edit-cat-desc').value = cat.description || '';
+  document.getElementById('edit-cat-order').value = cat.sort_order || cat.id;
+  document.getElementById('edit-cat-active').value = cat.is_active ? '1' : '0';
+
+  document.getElementById('edit-cat-dialog').showModal();
+}
+
+async function handleEditCategorySubmit(e) {
+  e.preventDefault();
+  const id = parseInt(document.getElementById('edit-cat-id').value, 10);
+  const name = document.getElementById('edit-cat-name').value.trim();
+  const desc = document.getElementById('edit-cat-desc').value.trim();
+  const order = parseInt(document.getElementById('edit-cat-order').value, 10) || 99;
+  const isActive = parseInt(document.getElementById('edit-cat-active').value, 10);
+
+  const btn = document.getElementById('btn-update-cat');
+  btn.disabled = true;
+  btn.innerText = 'Updating...';
+
+  try {
+    const res = await window.AdminAPI.updateCategory({
+      action: 'update',
+      id: id,
+      name: name,
+      description: desc,
+      sort_order: order,
+      is_active: isActive
+    });
+
+    if (res && res.success) {
+      document.getElementById('edit-cat-dialog').close();
+      window.showAdminFlash('success', res.message || `Category "${name}" updated successfully.`);
+      await loadCategories();
+    } else {
+      alert((res && res.message) || 'Failed to update category.');
+    }
+  } catch (err) {
+    alert(err.message || 'Error updating category.');
+  } finally {
+    btn.disabled = false;
+    btn.innerText = 'Update Category';
+  }
+}
+
+async function deleteCategory(id, name) {
+  if (!confirm(`Are you sure you want to delete the category "${name}"?\nExisting listings associated with this category will prevent deletion.`)) {
+    return;
+  }
+
+  try {
+    const res = await window.AdminAPI.updateCategory({
+      action: 'delete',
+      id: id
+    });
+
+    if (res && res.success) {
+      window.showAdminFlash('success', res.message || `Category "${name}" deleted.`);
+      await loadCategories();
+    } else {
+      alert((res && res.message) || 'Failed to delete category.');
+    }
+  } catch (err) {
+    alert(err.message || 'Error deleting category.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadCategories);
 </script>
 
   <!-- Mobile sidebar toggle JS -->
