@@ -61,15 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         switch ($action) {
             case 'approve':
-                $stmtUpdate = $pdo->prepare('UPDATE donations SET status = "approved", updated_at = NOW() WHERE id = :id');
+                $stmtUpdate = $pdo->prepare("UPDATE donations SET status = 'approved', updated_at = NOW() WHERE id = :id");
                 $stmtUpdate->execute([':id' => $donationId]);
 
                 // Create notification for donor
                 try {
-                    $stmtNotif = $pdo->prepare('
+                    $stmtNotif = $pdo->prepare("
                         INSERT INTO notifications (user_id, title, message, type, is_read, created_at)
-                        VALUES (:uid, "Donation Listing Approved", :msg, "donation", 0, NOW())
-                    ');
+                        VALUES (:uid, 'Donation Listing Approved', :msg, 'donation', 0, NOW())
+                    ");
                     $stmtNotif->execute([
                         ':uid' => $donorId,
                         ':msg' => 'Your donation listing "' . $title . '" has been verified and published to the public directory.'
@@ -90,15 +90,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $reason = 'Listing did not meet donation verification guidelines.';
                 }
 
-                $stmtUpdate = $pdo->prepare('UPDATE donations SET status = "rejected", rejection_reason = :reason, updated_at = NOW() WHERE id = :id');
+                $stmtUpdate = $pdo->prepare("UPDATE donations SET status = 'rejected', rejection_reason = :reason, updated_at = NOW() WHERE id = :id");
                 $stmtUpdate->execute([':reason' => $reason, ':id' => $donationId]);
 
                 // Notify donor
                 try {
-                    $stmtNotif = $pdo->prepare('
+                    $stmtNotif = $pdo->prepare("
                         INSERT INTO notifications (user_id, title, message, type, is_read, created_at)
-                        VALUES (:uid, "Donation Review Update", :msg, "donation", 0, NOW())
-                    ');
+                        VALUES (:uid, 'Donation Review Update', :msg, 'donation', 0, NOW())
+                    ");
                     $stmtNotif->execute([
                         ':uid' => $donorId,
                         ':msg' => 'Your donation listing "' . $title . '" could not be approved at this time: ' . $reason
@@ -119,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $reason = 'Archived by administrator.';
                 }
 
-                $stmtUpdate = $pdo->prepare('UPDATE donations SET status = "archived", archived_reason = :reason, updated_at = NOW() WHERE id = :id');
+                $stmtUpdate = $pdo->prepare("UPDATE donations SET status = 'archived', archived_reason = :reason, updated_at = NOW() WHERE id = :id");
                 $stmtUpdate->execute([':reason' => $reason, ':id' => $donationId]);
 
                 logAdminAction($pdo, 'DONATION_ARCHIVED', $admin['id'], $admin['name'], 'donation', $donationId, "Archived listing {$title}", $reason);
@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
 
             case 'restore':
-                $stmtUpdate = $pdo->prepare('UPDATE donations SET status = "approved", updated_at = NOW() WHERE id = :id');
+                $stmtUpdate = $pdo->prepare("UPDATE donations SET status = 'approved', updated_at = NOW() WHERE id = :id");
                 $stmtUpdate->execute([':id' => $donationId]);
 
                 logAdminAction($pdo, 'DONATION_RESTORED', $admin['id'], $admin['name'], 'donation', $donationId, "Restored listing {$title}", 'Listing restored to active circulation');
@@ -168,15 +168,15 @@ $search   = trim((string)($_GET['q'] ?? ''));
 try {
     // Single donation inspection
     if ($singleId > 0) {
-        $stmtSingle = $pdo->prepare('
-            SELECT d.*, d.donor_id AS user_id, "pcs" AS unit,
-                   d.condition AS condition_type, COALESCE(d.city, d.location, "Metro Manila") AS pickup_city,
+        $stmtSingle = $pdo->prepare("
+            SELECT d.*, d.donor_id AS user_id, 'pcs' AS unit,
+                   d.condition AS condition_type, COALESCE(d.city, d.location, 'Metro Manila') AS pickup_city,
                    u.name AS donor_name, u.email AS donor_email
             FROM donations d
             LEFT JOIN users u ON d.donor_id = u.id
             WHERE d.id = :id
             LIMIT 1
-        ');
+        ");
         $stmtSingle->execute([':id' => $singleId]);
         $row = $stmtSingle->fetch();
 
@@ -191,26 +191,26 @@ try {
     }
 
     // List donations with filters
-    $sql = '
-        SELECT d.*, d.donor_id AS user_id, "pcs" AS unit,
-               d.condition AS condition_type, COALESCE(d.city, d.location, "Metro Manila") AS pickup_city,
+    $sql = "
+        SELECT d.*, d.donor_id AS user_id, 'pcs' AS unit,
+               d.condition AS condition_type, COALESCE(d.city, d.location, 'Metro Manila') AS pickup_city,
                u.name AS donor_name, u.email AS donor_email
         FROM donations d
         LEFT JOIN users u ON d.donor_id = u.id
         WHERE 1=1
-    ';
+    ";
     $params = [];
 
     if ($status === 'pending') {
-        $sql .= ' AND d.status = "pending"';
+        $sql .= " AND d.status = 'pending'";
     } elseif ($status === 'approved') {
-        $sql .= ' AND d.status = "approved"';
+        $sql .= " AND d.status = 'approved'";
     } elseif ($status === 'archived') {
-        $sql .= ' AND d.status = "archived"';
+        $sql .= " AND d.status = 'archived'";
     } elseif ($status === 'rejected') {
-        $sql .= ' AND d.status = "rejected"';
+        $sql .= " AND d.status = 'rejected'";
     } elseif ($status === 'all_active') {
-        $sql .= ' AND d.status IN ("pending", "approved")';
+        $sql .= " AND d.status IN ('pending', 'approved')";
     }
 
     if ($category !== '') {
@@ -238,15 +238,15 @@ try {
         'all'       => 0,
     ];
     try {
-        $cStmt = $pdo->query('
+        $cStmt = $pdo->query("
             SELECT
-                SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) AS pending,
-                SUM(CASE WHEN status = "approved" THEN 1 ELSE 0 END) AS approved,
-                SUM(CASE WHEN status = "archived" THEN 1 ELSE 0 END) AS archived,
-                SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) AS rejected,
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
+                SUM(CASE WHEN status = 'approved' THEN 1 ELSE 0 END) AS approved,
+                SUM(CASE WHEN status = 'archived' THEN 1 ELSE 0 END) AS archived,
+                SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) AS rejected,
                 COUNT(*) AS total
             FROM donations
-        ');
+        ");
         $cRow = $cStmt->fetch();
         if ($cRow) {
             $counts = [

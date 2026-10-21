@@ -68,15 +68,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         switch ($action) {
             case 'approve_proof':
-                $stmtUpdate = $pdo->prepare('UPDATE requests SET status = "approved", updated_at = NOW() WHERE id = :id');
+                $stmtUpdate = $pdo->prepare("UPDATE requests SET status = 'approved', updated_at = NOW() WHERE id = :id");
                 $stmtUpdate->execute([':id' => $requestId]);
 
                 // Create notification for beneficiary
                 try {
-                    $stmtNotif = $pdo->prepare('
+                    $stmtNotif = $pdo->prepare("
                         INSERT INTO notifications (user_id, title, message, type, is_read, created_at)
-                        VALUES (:uid, "Assistance Request Approved", :msg, "match", 0, NOW())
-                    ');
+                        VALUES (:uid, 'Assistance Request Approved', :msg, 'match', 0, NOW())
+                    ");
                     $stmtNotif->execute([
                         ':uid' => $requesterId,
                         ':msg' => 'Your request for "' . $itemTitle . '" has been verified and approved by administration.'
@@ -97,15 +97,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $reason = 'Submitted verification documentation did not substantiate the request.';
                 }
 
-                $stmtUpdate = $pdo->prepare('UPDATE requests SET status = "rejected", rejection_reason = :reason, updated_at = NOW() WHERE id = :id');
+                $stmtUpdate = $pdo->prepare("UPDATE requests SET status = 'rejected', rejection_reason = :reason, updated_at = NOW() WHERE id = :id");
                 $stmtUpdate->execute([':reason' => $reason, ':id' => $requestId]);
 
                 // Notify beneficiary
                 try {
-                    $stmtNotif = $pdo->prepare('
+                    $stmtNotif = $pdo->prepare("
                         INSERT INTO notifications (user_id, title, message, type, is_read, created_at)
-                        VALUES (:uid, "Request Review Notice", :msg, "system", 0, NOW())
-                    ');
+                        VALUES (:uid, 'Request Review Notice', :msg, 'system', 0, NOW())
+                    ");
                     $stmtNotif->execute([
                         ':uid' => $requesterId,
                         ':msg' => 'Your assistance request for "' . $itemTitle . '" could not be approved: ' . $reason
@@ -181,7 +181,7 @@ try {
         // Count previous completed claims for this beneficiary
         $prevClaims = 0;
         try {
-            $prevStmt = $pdo->prepare('SELECT COUNT(*) FROM requests WHERE requester_id = :uid AND status = "completed" AND id != :rid');
+            $prevStmt = $pdo->prepare("SELECT COUNT(*) FROM requests WHERE requester_id = :uid AND status = 'completed' AND id != :rid");
             $prevStmt->execute([':uid' => $row['requester_id'], ':rid' => $singleId]);
             $prevClaims = (int)$prevStmt->fetchColumn();
         } catch (PDOException $e) {}
@@ -192,10 +192,10 @@ try {
         exit;
     }
 
-    $sql = '
+    $sql = "
         SELECT r.*, r.requester_id AS user_id,
-               COALESCE(d.title, "Community Request") AS item_title,
-               "items" AS unit, COALESCE(d.city, "Metro Manila") AS city,
+               COALESCE(d.title, 'Community Request') AS item_title,
+               'items' AS unit, COALESCE(d.city, 'Metro Manila') AS city,
                r.message AS reason, r.proof_file_path AS proof_document_url,
                u.name AS user_name, u.email AS user_email,
                u.name AS beneficiary_name, u.name AS requester_name,
@@ -204,19 +204,19 @@ try {
         LEFT JOIN users u ON r.requester_id = u.id
         LEFT JOIN donations d ON r.donation_id = d.id
         WHERE 1=1
-    ';
+    ";
     $params = [];
 
     if ($status === 'pending') {
-        $sql .= ' AND r.status = "pending"';
+        $sql .= " AND r.status = 'pending'";
     } elseif ($status === 'matched') {
-        $sql .= ' AND r.status = "approved" AND r.donation_id IS NOT NULL';
+        $sql .= " AND r.status = 'approved' AND r.donation_id IS NOT NULL";
     } elseif ($status === 'approved') {
-        $sql .= ' AND r.status = "approved"';
+        $sql .= " AND r.status = 'approved'";
     } elseif ($status === 'completed') {
-        $sql .= ' AND r.status = "completed"';
+        $sql .= " AND r.status = 'completed'";
     } elseif ($status === 'rejected') {
-        $sql .= ' AND r.status = "rejected"';
+        $sql .= " AND r.status = 'rejected'";
     }
 
     if ($search !== '') {
@@ -239,15 +239,15 @@ try {
         'all'       => 0,
     ];
     try {
-        $cStmt = $pdo->query('
+        $cStmt = $pdo->query("
             SELECT
-                SUM(CASE WHEN status = "pending" THEN 1 ELSE 0 END) AS pending,
-                SUM(CASE WHEN status = "approved" AND donation_id IS NOT NULL THEN 1 ELSE 0 END) AS matched,
-                SUM(CASE WHEN status = "completed" THEN 1 ELSE 0 END) AS completed,
-                SUM(CASE WHEN status = "rejected" THEN 1 ELSE 0 END) AS rejected,
+                SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END) AS pending,
+                SUM(CASE WHEN status = 'approved' AND donation_id IS NOT NULL THEN 1 ELSE 0 END) AS matched,
+                SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END) AS completed,
+                SUM(CASE WHEN status = 'rejected' THEN 1 ELSE 0 END) AS rejected,
                 COUNT(*) AS total
             FROM requests
-        ');
+        ");
         $cRow = $cStmt->fetch();
         if ($cRow) {
             $counts = [
@@ -256,6 +256,7 @@ try {
                 'completed' => (int)($cRow['completed'] ?? 0),
                 'rejected'  => (int)($cRow['rejected'] ?? 0),
                 'all'       => (int)($cRow['total'] ?? 0),
+            ];
         }
     } catch (PDOException $e) {}
 

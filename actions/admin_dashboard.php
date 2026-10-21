@@ -37,41 +37,41 @@ try {
 
     // Count pending donations
     try {
-        $stmtDon = $pdo->query('SELECT COUNT(*) FROM donations WHERE status = "pending"');
+        $stmtDon = $pdo->query("SELECT COUNT(*) FROM donations WHERE status = 'pending'");
         $pendingDonations = (int)$stmtDon->fetchColumn();
     } catch (PDOException $e) {}
 
     // Count pending requests (pending or under_review)
     try {
-        $stmtReq = $pdo->query('SELECT COUNT(*) FROM requests WHERE status IN ("pending", "under_review")');
+        $stmtReq = $pdo->query("SELECT COUNT(*) FROM requests WHERE status IN ('pending', 'under_review')");
         $pendingRequests = (int)$stmtReq->fetchColumn();
     } catch (PDOException $e) {}
 
     // Count active handovers / matched transactions
     try {
-        $stmtTx = $pdo->query('SELECT COUNT(*) FROM donations WHERE status IN ("approved", "claimed")');
+        $stmtTx = $pdo->query("SELECT COUNT(*) FROM donations WHERE status IN ('approved', 'claimed')");
         $activeTransactions = (int)$stmtTx->fetchColumn();
     } catch (PDOException $e) {}
 
     // Count registered users
     try {
-        $stmtUsers = $pdo->query('SELECT COUNT(*) FROM users WHERE role != "admin"');
+        $stmtUsers = $pdo->query("SELECT COUNT(*) FROM users WHERE role != 'admin'");
         $totalMembers = (int)$stmtUsers->fetchColumn();
     } catch (PDOException $e) {}
 
     // 2. Urgent Attention Queues: Pending Donations
     $urgentDonations = [];
     try {
-        $stmtUrgentDon = $pdo->prepare('
-            SELECT d.id, d.title, d.category, d.quantity, "pcs" AS unit,
-                   d.condition AS condition_type, COALESCE(d.city, d.location, "Metro Manila") AS pickup_city,
+        $stmtUrgentDon = $pdo->prepare("
+            SELECT d.id, d.title, d.category, d.quantity, 'pcs' AS unit,
+                   d.condition AS condition_type, COALESCE(d.city, d.location, 'Metro Manila') AS pickup_city,
                    d.created_at, u.name AS donor_name, u.email AS donor_email
             FROM donations d
             LEFT JOIN users u ON d.donor_id = u.id
-            WHERE d.status = "pending"
+            WHERE d.status = 'pending'
             ORDER BY d.created_at ASC
             LIMIT 5
-        ');
+        ");
         $stmtUrgentDon->execute();
         $urgentDonations = $stmtUrgentDon->fetchAll();
     } catch (PDOException $e) {
@@ -81,19 +81,19 @@ try {
     // 3. Urgent Attention Queues: Pending Beneficiary Proofs / Requests
     $urgentRequests = [];
     try {
-        $stmtUrgentReq = $pdo->prepare('
-            SELECT r.id, r.requester_id AS user_id, COALESCE(d.title, "Community Request") AS item_title,
-                   r.quantity, "items" AS unit, r.proof_type, r.status,
-                   COALESCE(r.urgency, "High") AS urgency,
+        $stmtUrgentReq = $pdo->prepare("
+            SELECT r.id, r.requester_id AS user_id, COALESCE(d.title, 'Community Request') AS item_title,
+                   r.quantity, 'items' AS unit, r.proof_type, r.status,
+                   COALESCE(r.urgency, 'High') AS urgency,
                    u.name AS requester_name,
-                   COALESCE(d.city, "Metro Manila") AS city, r.created_at
+                   COALESCE(d.city, 'Metro Manila') AS city, r.created_at
             FROM requests r
             LEFT JOIN users u ON r.requester_id = u.id
             LEFT JOIN donations d ON r.donation_id = d.id
-            WHERE r.status IN ("pending", "under_review")
+            WHERE r.status IN ('pending', 'under_review')
             ORDER BY r.created_at ASC
             LIMIT 5
-        ');
+        ");
         $stmtUrgentReq->execute();
         $urgentRequests = $stmtUrgentReq->fetchAll();
     } catch (PDOException $e) {
@@ -103,30 +103,30 @@ try {
     // 4. Recent System Operations (from audit_logs or recent donations/requests)
     $recentOperations = [];
     try {
-        $stmtLogs = $pdo->query('
+        $stmtLogs = $pdo->query("
             SELECT id, action, actor_name, target_type, target_id, details, reason, created_at
             FROM audit_logs
             ORDER BY created_at DESC
             LIMIT 6
-        ');
+        ");
         $recentOperations = $stmtLogs->fetchAll();
     } catch (PDOException $e) {}
 
     // If audit_logs is empty, generate from real recent donations and requests
     if (empty($recentOperations)) {
         try {
-            $stmtFallback = $pdo->query('
-                (SELECT d.id, "DONATION_SUBMITTED" AS action, u.name AS actor_name, "donation" AS target_type,
-                        d.id AS target_id, CONCAT(u.name, " listed ", d.title) AS details,
-                        CONCAT("Status: ", d.status) AS reason, d.created_at
+            $stmtFallback = $pdo->query("
+                (SELECT d.id, 'DONATION_SUBMITTED' AS action, u.name AS actor_name, 'donation' AS target_type,
+                        d.id AS target_id, CONCAT(u.name, ' listed ', d.title) AS details,
+                        CONCAT('Status: ', d.status) AS reason, d.created_at
                  FROM donations d JOIN users u ON d.donor_id = u.id ORDER BY d.created_at DESC LIMIT 3)
                 UNION ALL
-                (SELECT r.id, "REQUEST_SUBMITTED" AS action, u.name AS actor_name, "request" AS target_type,
-                        r.id AS target_id, CONCAT(u.name, " requested item #", r.donation_id) AS details,
-                        CONCAT("Status: ", r.status) AS reason, r.created_at
+                (SELECT r.id, 'REQUEST_SUBMITTED' AS action, u.name AS actor_name, 'request' AS target_type,
+                        r.id AS target_id, CONCAT(u.name, ' requested item #', r.donation_id) AS details,
+                        CONCAT('Status: ', r.status) AS reason, r.created_at
                  FROM requests r JOIN users u ON r.requester_id = u.id ORDER BY r.created_at DESC LIMIT 3)
                 ORDER BY created_at DESC LIMIT 6
-            ');
+            ");
             $recentOperations = $stmtFallback->fetchAll();
         } catch (PDOException $e) {}
     }
