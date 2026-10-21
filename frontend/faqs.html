@@ -142,7 +142,7 @@
       </div>
 
       <!-- Accessible Accordion -->
-      <div class="faq-accordion" role="region" aria-label="Frequently Asked Questions">
+      <div class="faq-accordion" id="public-faq-accordion" role="region" aria-label="Frequently Asked Questions">
 
         <details class="faq-item">
           <summary class="faq-summary">
@@ -401,7 +401,37 @@
   <script src="js/nav.js"></script>
   <script src="js/main.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => { if(window.lucide) lucide.createIcons(); });
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      if (window.lucide) lucide.createIcons();
+      try {
+        const stored = localStorage.getItem('icd_admin_faqs');
+        if (stored) {
+          const list = JSON.parse(stored);
+          const active = list.filter(f => f.status !== 'Draft');
+          if (active.length > 0) {
+            const acc = document.getElementById('public-faq-accordion');
+            if (acc) {
+              acc.innerHTML = active.map((f, i) => `
+                <details class="faq-item">
+                  <summary class="faq-summary">
+                    <span>${i + 1}. ${escapeHtml(f.question)}</span>
+                    <svg class="faq-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                  </summary>
+                  <div class="faq-content">
+                    <p>${escapeHtml(f.answer)}</p>
+                  </div>
+                </details>
+              `).join('');
+            }
+          }
+        }
+      } catch (e) {}
+    });
   </script>
 </body>
 </html>

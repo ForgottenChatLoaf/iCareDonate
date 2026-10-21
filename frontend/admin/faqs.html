@@ -104,70 +104,40 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
-      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);">
+      <!-- Search and Filter Bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:260px;">
+          <div style="position:relative;flex:1;max-width:320px;">
+            <input type="search" id="faq-search" class="form-input" placeholder="Search questions or keywords..." style="width:100%;height:38px;padding-left:34px;font-size:13px;" oninput="filterFaqs()">
+            <svg style="position:absolute;left:10px;top:11px;color:var(--color-text-muted);pointer-events:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          </div>
+          <select id="faq-category-filter" class="form-input" style="height:38px;font-size:13px;padding:0 12px;min-width:150px;" onchange="filterFaqs()">
+            <option value="all">All Categories</option>
+            <option value="General">General</option>
+            <option value="Donors">Donors</option>
+            <option value="Beneficiaries">Beneficiaries</option>
+            <option value="Privacy">Privacy</option>
+            <option value="Safety">Safety & Moderation</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span id="faq-count-badge" class="badge badge-neutral" style="font-size:12px;padding:6px 12px;font-weight:700;">16 FAQs Listed</span>
+        </div>
+      </div>
+
+      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         <table class="table" style="width:100%;margin:0;border-collapse:collapse;font-size:13.5px;">
           <thead style="background:#F8FAFC;border-bottom:1px solid var(--color-border);">
             <tr>
-              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Order</th>
-              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Question</th>
-              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Category</th>
-              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Status</th>
-              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:right;">Actions</th>
+              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;width:60px;">Order</th>
+              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Question &amp; Answer Summary</th>
+              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;width:130px;">Category</th>
+              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:center;width:90px;">Status</th>
+              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:right;width:140px;">Actions</th>
             </tr>
           </thead>
           <tbody id="faq-tbody">
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-text-muted);">1</td>
-              <td style="padding:14px 16px;">
-                <div style="font-weight:700;color:var(--color-text);">How do I list a donation on iCareDonate?</div>
-                <div style="font-size:12.5px;color:var(--color-text-muted);margin-top:3px;">Register, verify your email, then click "Offer Donation" and fill in the item details...</div>
-              </td>
-              <td style="padding:14px 16px;"><span class="badge badge-neutral">Donors</span></td>
-              <td style="padding:14px 16px;"><span class="badge badge-success">Active</span></td>
-              <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;margin-right:6px;" onclick="editFaq(1)">Edit</button>
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;color:#DC2626;border-color:#FCA5A5;" onclick="deleteFaq(1)">Delete</button>
-              </td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-text-muted);">2</td>
-              <td style="padding:14px 16px;">
-                <div style="font-weight:700;color:var(--color-text);">How does a beneficiary request assistance?</div>
-                <div style="font-size:12.5px;color:var(--color-text-muted);margin-top:3px;">Browse available donations, click "Request", upload your barangay or indigency certificate...</div>
-              </td>
-              <td style="padding:14px 16px;"><span class="badge badge-neutral">Beneficiaries</span></td>
-              <td style="padding:14px 16px;"><span class="badge badge-success">Active</span></td>
-              <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;margin-right:6px;" onclick="editFaq(2)">Edit</button>
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;color:#DC2626;border-color:#FCA5A5;" onclick="deleteFaq(2)">Delete</button>
-              </td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-text-muted);">3</td>
-              <td style="padding:14px 16px;">
-                <div style="font-weight:700;color:var(--color-text);">What types of items can be donated?</div>
-                <div style="font-size:12.5px;color:var(--color-text-muted);margin-top:3px;">Food, clothing, school supplies, medical kits, toys, electronics, and household essentials...</div>
-              </td>
-              <td style="padding:14px 16px;"><span class="badge badge-neutral">General</span></td>
-              <td style="padding:14px 16px;"><span class="badge badge-success">Active</span></td>
-              <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;margin-right:6px;" onclick="editFaq(3)">Edit</button>
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;color:#DC2626;border-color:#FCA5A5;" onclick="deleteFaq(3)">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-text-muted);">4</td>
-              <td style="padding:14px 16px;">
-                <div style="font-weight:700;color:var(--color-text);">Is my personal information kept private?</div>
-                <div style="font-size:12.5px;color:var(--color-text-muted);margin-top:3px;">Yes. All personal data and uploaded documents are encrypted and accessible only to administrators...</div>
-              </td>
-              <td style="padding:14px 16px;"><span class="badge badge-neutral">Privacy</span></td>
-              <td style="padding:14px 16px;"><span class="badge badge-warning">Draft</span></td>
-              <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;margin-right:6px;" onclick="editFaq(4)">Edit</button>
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:4px 10px;color:#DC2626;border-color:#FCA5A5;" onclick="deleteFaq(4)">Delete</button>
-              </td>
-            </tr>
+            <!-- Dynamically populated via JavaScript -->
           </tbody>
         </table>
       </div>
@@ -177,27 +147,39 @@
 </div>
 
 <!-- ADD FAQ DIALOG -->
-<dialog id="add-faq-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:540px;width:92%;">
-  <div class="card" style="padding:32px;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
-    <h2 style="font-size:18px;font-weight:700;margin:0 0 20px;">Add New FAQ Entry</h2>
+<dialog id="add-faq-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:560px;width:92%;">
+  <div class="card" style="padding:28px 30px;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <h2 style="font-size:18px;font-weight:700;margin:0;">Add New FAQ Entry</h2>
+      <button type="button" onclick="document.getElementById('add-faq-dialog').close()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--color-text-muted);">&times;</button>
+    </div>
     <form onsubmit="handleAddFaq(event)">
-      <div style="margin-bottom:14px;">
-        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">FAQ Category</label>
-        <select class="form-input" style="width:100%;height:38px;font-size:13px;">
-          <option>General</option>
-          <option>Donors</option>
-          <option>Beneficiaries</option>
-          <option>Privacy</option>
-          <option>Technical</option>
-        </select>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">FAQ Category</label>
+          <select id="new-faq-category" class="form-input" style="width:100%;height:38px;font-size:13px;" required>
+            <option value="General">General</option>
+            <option value="Donors">Donors</option>
+            <option value="Beneficiaries">Beneficiaries</option>
+            <option value="Privacy">Privacy</option>
+            <option value="Safety">Safety & Moderation</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">Status</label>
+          <select id="new-faq-status" class="form-input" style="width:100%;height:38px;font-size:13px;" required>
+            <option value="Active">Active (Published)</option>
+            <option value="Draft">Draft (Hidden)</option>
+          </select>
+        </div>
       </div>
       <div style="margin-bottom:14px;">
         <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">Question <span style="color:#DC2626;">*</span></label>
-        <input type="text" class="form-input" placeholder="Enter the question..." style="width:100%;height:38px;font-size:13px;" required>
+        <input type="text" id="new-faq-question" class="form-input" placeholder="e.g., How do I donate an item?" style="width:100%;height:38px;font-size:13px;" required>
       </div>
       <div style="margin-bottom:20px;">
-        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">Answer <span style="color:#DC2626;">*</span></label>
-        <textarea class="form-input" rows="4" placeholder="Provide a clear, helpful answer..." style="width:100%;font-size:13px;" required></textarea>
+        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">Detailed Answer <span style="color:#DC2626;">*</span></label>
+        <textarea id="new-faq-answer" class="form-input" rows="4" placeholder="Provide a complete and clear answer..." style="width:100%;font-size:13px;" required></textarea>
       </div>
       <div style="display:flex;justify-content:flex-end;gap:10px;">
         <button type="button" class="btn btn-outline" onclick="document.getElementById('add-faq-dialog').close()" style="font-size:13px;padding:8px 18px;">Cancel</button>
@@ -207,20 +189,231 @@
   </div>
 </dialog>
 
-<script src="../js/mock-data.js"></script>
+<!-- EDIT FAQ DIALOG -->
+<dialog id="edit-faq-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:560px;width:92%;">
+  <div class="card" style="padding:28px 30px;border-radius:var(--radius-lg);background:#fff;border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;">
+      <h2 style="font-size:18px;font-weight:700;margin:0;">Edit FAQ Entry #<span id="edit-faq-id-display"></span></h2>
+      <button type="button" onclick="document.getElementById('edit-faq-dialog').close()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--color-text-muted);">&times;</button>
+    </div>
+    <form onsubmit="handleEditFaq(event)">
+      <input type="hidden" id="edit-faq-id">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;">
+        <div>
+          <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">FAQ Category</label>
+          <select id="edit-faq-category" class="form-input" style="width:100%;height:38px;font-size:13px;" required>
+            <option value="General">General</option>
+            <option value="Donors">Donors</option>
+            <option value="Beneficiaries">Beneficiaries</option>
+            <option value="Privacy">Privacy</option>
+            <option value="Safety">Safety & Moderation</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">Status</label>
+          <select id="edit-faq-status" class="form-input" style="width:100%;height:38px;font-size:13px;" required>
+            <option value="Active">Active (Published)</option>
+            <option value="Draft">Draft (Hidden)</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">Question <span style="color:#DC2626;">*</span></label>
+        <input type="text" id="edit-faq-question" class="form-input" style="width:100%;height:38px;font-size:13px;" required>
+      </div>
+      <div style="margin-bottom:20px;">
+        <label style="display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;">Detailed Answer <span style="color:#DC2626;">*</span></label>
+        <textarea id="edit-faq-answer" class="form-input" rows="4" style="width:100%;font-size:13px;" required></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('edit-faq-dialog').close()" style="font-size:13px;padding:8px 18px;">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="font-size:13px;padding:8px 20px;">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
 <script src="../js/admin-portal.js"></script>
 <script>
+  // 16 Canonical FAQs synchronized with frontend/faqs.html
+  const DEFAULT_FAQS = [
+    { id: 1, order: 1, question: "What is iCareDonate?", answer: "iCareDonate is an item-based donation platform that connects people who want to donate useful items with individuals or communities who need support.", category: "General", status: "Active" },
+    { id: 2, order: 2, question: "Who can use iCareDonate?", answer: "iCareDonate is for people who want to donate useful items and individuals who need assistance. Users must have an active account to participate in donations and requests.", category: "General", status: "Active" },
+    { id: 3, order: 3, question: "How can I donate an item?", answer: "After creating and verifying your account, you can post a donation by providing the required information about the item, including its title, category, quantity, condition, pickup method, and pickup location.", category: "Donors", status: "Active" },
+    { id: 4, order: 4, question: "Are donations immediately visible on the website?", answer: "No. Submitted donations are reviewed by an administrator first. A donation becomes available for others to browse only after it has been approved.", category: "Donors", status: "Active" },
+    { id: 5, order: 5, question: "How can I request a donated item?", answer: "You can request an approved donation that has available quantity. You must provide the required request information and upload proof of need for administrator review.", category: "Beneficiaries", status: "Active" },
+    { id: 6, order: 6, question: "Why do I need to provide proof of need?", answer: "Proof of need allows administrators to review requests and help ensure that support is provided appropriately. Proof documents are kept private and are not publicly displayed.", category: "Beneficiaries", status: "Active" },
+    { id: 7, order: 7, question: "Can I request more items than what is available?", answer: "No. A request cannot exceed the available quantity of the donation.", category: "Beneficiaries", status: "Active" },
+    { id: 8, order: 8, question: "Can I request the same donation more than once?", answer: "You cannot have multiple active requests for the same donation.", category: "Beneficiaries", status: "Active" },
+    { id: 9, order: 9, question: "What happens after I submit a request?", answer: "Your request is reviewed by an administrator. If it is approved and a match is made, the donation quantity is reserved and the donation process can proceed toward claiming and completion.", category: "General", status: "Active" },
+    { id: 10, order: 10, question: "How does iCareDonate protect my personal information?", answer: "iCareDonate limits the visibility of personal information. For example, contact information is not publicly displayed and is only shared with matched parties when the match has been confirmed.", category: "Privacy", status: "Active" },
+    { id: 11, order: 11, question: "Can I edit my donation?", answer: "You can edit a donation while it is in draft or when additional information has been requested. A donation cannot be edited while it is pending verification.", category: "Donors", status: "Active" },
+    { id: 12, order: 12, question: "What happens if my donation is rejected?", answer: "If an administrator rejects a donation, the donor is notified and the reason for the rejection is provided.", category: "Donors", status: "Active" },
+    { id: 13, order: 13, question: "Can I report a donation?", answer: "Yes. Active users can report donations that they believe are inappropriate, fraudulent, or misleading. Administrators review reported content and may take appropriate moderation action.", category: "Safety", status: "Active" },
+    { id: 14, order: 14, question: "Can my account be suspended or banned?", answer: "Yes. Administrators may issue warnings, remove content, suspend accounts, or ban users when moderation rules are violated.", category: "Safety", status: "Active" },
+    { id: 15, order: 15, question: "Can I delete my account?", answer: "Yes. Users can request account deletion. Personal information is anonymized while necessary transaction records may be preserved for accountability.", category: "Privacy", status: "Active" },
+    { id: 16, order: 16, question: "What should I do if I need help?", answer: "You can contact iCareDonate through the available contact or support channels provided on the website.", category: "General", status: "Active" }
+  ];
+
+  let FAQS = [];
+
+  function loadFaqs() {
+    try {
+      const stored = localStorage.getItem('icd_admin_faqs');
+      if (stored) {
+        FAQS = JSON.parse(stored);
+      } else {
+        FAQS = [...DEFAULT_FAQS];
+        localStorage.setItem('icd_admin_faqs', JSON.stringify(FAQS));
+      }
+    } catch (e) {
+      FAQS = [...DEFAULT_FAQS];
+    }
+    renderFaqs(FAQS);
+  }
+
+  function saveFaqs() {
+    try {
+      localStorage.setItem('icd_admin_faqs', JSON.stringify(FAQS));
+    } catch (e) {}
+  }
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+
+  function renderFaqs(list) {
+    const tbody = document.getElementById('faq-tbody');
+    const badge = document.getElementById('faq-count-badge');
+    if (badge) badge.textContent = `${list.length} FAQs Listed`;
+
+    if (list.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" style="padding:32px 16px;text-align:center;color:var(--color-text-muted);">No FAQs found matching your filter criteria.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = list.map((item, idx) => {
+      const isDraft = item.status === 'Draft';
+      const statusBadge = isDraft 
+        ? `<span class="badge badge-warning" style="font-size:11.5px;padding:3px 8px;">Draft</span>`
+        : `<span class="badge badge-success" style="font-size:11.5px;padding:3px 8px;">Active</span>`;
+
+      return `
+        <tr style="border-bottom:1px solid var(--color-border-light);">
+          <td style="padding:14px 16px;font-weight:700;color:var(--color-text-muted);">${item.order || (idx + 1)}</td>
+          <td style="padding:14px 16px;">
+            <div style="font-weight:700;color:var(--color-text);font-size:14px;margin-bottom:3px;">${escapeHtml(item.question)}</div>
+            <div style="font-size:12.5px;color:var(--color-text-muted);line-height:1.45;">${escapeHtml(item.answer.length > 120 ? item.answer.substring(0, 117) + '...' : item.answer)}</div>
+          </td>
+          <td style="padding:14px 16px;">
+            <span class="badge badge-neutral" style="font-size:11.5px;padding:3px 8px;font-weight:600;">${escapeHtml(item.category)}</span>
+          </td>
+          <td style="padding:14px 16px;text-align:center;">
+            ${statusBadge}
+          </td>
+          <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
+            <button type="button" class="btn btn-outline" style="font-size:12px;padding:5px 12px;margin-right:6px;font-weight:600;border-radius:6px;" onclick="editFaq(${item.id})">Edit</button>
+            <button type="button" class="btn btn-outline" style="font-size:12px;padding:5px 10px;color:#DC2626;border-color:#FCA5A5;font-weight:600;border-radius:6px;" onclick="deleteFaq(${item.id})">Delete</button>
+          </td>
+        </tr>
+      `;
+    }).join('');
+  }
+
+  function filterFaqs() {
+    const q = (document.getElementById('faq-search').value || '').trim().toLowerCase();
+    const cat = document.getElementById('faq-category-filter').value;
+
+    const filtered = FAQS.filter(item => {
+      const matchCat = (cat === 'all' || item.category === cat);
+      const matchQuery = !q || (item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q));
+      return matchCat && matchQuery;
+    });
+
+    renderFaqs(filtered);
+  }
+
   function handleAddFaq(e) {
     e.preventDefault();
+    const cat = document.getElementById('new-faq-category').value;
+    const status = document.getElementById('new-faq-status').value;
+    const question = document.getElementById('new-faq-question').value.trim();
+    const answer = document.getElementById('new-faq-answer').value.trim();
+
+    if (!question || !answer) return;
+
+    const newId = FAQS.length > 0 ? Math.max(...FAQS.map(f => f.id)) + 1 : 1;
+    const newFaq = {
+      id: newId,
+      order: FAQS.length + 1,
+      question: question,
+      answer: answer,
+      category: cat,
+      status: status
+    };
+
+    FAQS.push(newFaq);
+    saveFaqs();
     document.getElementById('add-faq-dialog').close();
-    window.showAdminFlash('success', 'New FAQ entry saved and published to the help center.');
-  }
-  function editFaq(id) { window.showAdminFlash('info', `Edit panel for FAQ #${id} — would open inline editor in production.`); }
-  function deleteFaq(id) {
-    if (confirm(`Remove FAQ #${id} from the help center?`)) {
-      window.showAdminFlash('success', `FAQ #${id} deleted.`);
+    e.target.reset();
+    filterFaqs();
+
+    if (typeof window.showAdminFlash === 'function') {
+      window.showAdminFlash('success', `FAQ #${newId} ("${question.substring(0, 30)}...") created and published.`);
     }
   }
+
+  function editFaq(id) {
+    const item = FAQS.find(f => f.id === id);
+    if (!item) return;
+
+    document.getElementById('edit-faq-id').value = item.id;
+    document.getElementById('edit-faq-id-display').textContent = item.id;
+    document.getElementById('edit-faq-category').value = item.category || 'General';
+    document.getElementById('edit-faq-status').value = item.status || 'Active';
+    document.getElementById('edit-faq-question').value = item.question || '';
+    document.getElementById('edit-faq-answer').value = item.answer || '';
+
+    const dlg = document.getElementById('edit-faq-dialog');
+    if (dlg) dlg.showModal();
+  }
+
+  function handleEditFaq(e) {
+    e.preventDefault();
+    const id = parseInt(document.getElementById('edit-faq-id').value, 10);
+    const item = FAQS.find(f => f.id === id);
+    if (!item) return;
+
+    item.category = document.getElementById('edit-faq-category').value;
+    item.status = document.getElementById('edit-faq-status').value;
+    item.question = document.getElementById('edit-faq-question').value.trim();
+    item.answer = document.getElementById('edit-faq-answer').value.trim();
+
+    saveFaqs();
+    document.getElementById('edit-faq-dialog').close();
+    filterFaqs();
+
+    if (typeof window.showAdminFlash === 'function') {
+      window.showAdminFlash('success', `FAQ #${id} updated successfully.`);
+    }
+  }
+
+  function deleteFaq(id) {
+    const item = FAQS.find(f => f.id === id);
+    if (!item) return;
+
+    if (confirm(`Are you sure you want to delete FAQ #${id}: "${item.question}"?`)) {
+      FAQS = FAQS.filter(f => f.id !== id);
+      saveFaqs();
+      filterFaqs();
+      if (typeof window.showAdminFlash === 'function') {
+        window.showAdminFlash('info', `FAQ #${id} has been removed.`);
+      }
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', loadFaqs);
 </script>
 
   <!-- Mobile sidebar toggle JS -->
