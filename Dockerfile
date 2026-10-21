@@ -49,7 +49,8 @@ RUN { \
     echo 'log_errors = On'; \
     echo 'error_log = /dev/stderr'; \
     echo 'session.cookie_httponly = 1'; \
-    echo 'session.cookie_samesite = Strict'; \
+    echo 'session.cookie_samesite = None'; \
+    echo 'session.cookie_secure = 1'; \
     echo 'expose_php = Off'; \
 } > /usr/local/etc/php/conf.d/icaredonate.ini
 
