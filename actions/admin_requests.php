@@ -150,7 +150,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // ─────────────────────────────────────────────────────────────
 $singleId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $status   = trim((string)($_GET['status'] ?? 'all'));
-$search   = trim((string)($_GET['q'] ?? ''));
+$search   = trim((string)($_GET['search'] ?? $_GET['q'] ?? ''));
 
 try {
     if ($singleId > 0) {

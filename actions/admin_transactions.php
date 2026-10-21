@@ -122,7 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // GET: Query Transactions & Claims
 // ─────────────────────────────────────────────────────────────
 $status = trim((string)($_GET['status'] ?? 'all'));
-$search = trim((string)($_GET['q'] ?? ''));
+$search = trim((string)($_GET['search'] ?? $_GET['q'] ?? ''));
 
 try {
     // Matched requests and claims from requests joined with donations & users

@@ -104,20 +104,17 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
-      <!-- Search and Filter Bar -->
+      <!-- Category Filter Bar -->
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
-        <div style="display:flex;align-items:center;gap:10px;flex:1;min-width:260px;">
-          <div style="position:relative;flex:1;max-width:320px;">
-            <input type="search" id="faq-search" class="form-input" placeholder="Search questions or keywords..." style="width:100%;height:38px;padding-left:34px;font-size:13px;" oninput="filterFaqs()">
-            <svg style="position:absolute;left:10px;top:11px;color:var(--color-text-muted);pointer-events:none;" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          </div>
-          <select id="faq-category-filter" class="form-input" style="height:38px;font-size:13px;padding:0 12px;min-width:150px;" onchange="filterFaqs()">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <label for="faq-category-filter" style="font-size:13px;font-weight:600;color:var(--color-text-muted);">Filter by Category:</label>
+          <select id="faq-category-filter" class="form-input" style="height:38px;font-size:13px;padding:0 12px;min-width:180px;" onchange="filterFaqs()">
             <option value="all">All Categories</option>
             <option value="General">General</option>
             <option value="Donors">Donors</option>
             <option value="Beneficiaries">Beneficiaries</option>
             <option value="Privacy">Privacy</option>
-            <option value="Safety">Safety & Moderation</option>
+            <option value="Safety">Safety &amp; Moderation</option>
           </select>
         </div>
         <div style="display:flex;align-items:center;gap:8px;">
@@ -322,13 +319,11 @@
   }
 
   function filterFaqs() {
-    const q = (document.getElementById('faq-search').value || '').trim().toLowerCase();
-    const cat = document.getElementById('faq-category-filter').value;
+    const catSelect = document.getElementById('faq-category-filter');
+    const cat = catSelect ? catSelect.value : 'all';
 
     const filtered = FAQS.filter(item => {
-      const matchCat = (cat === 'all' || item.category === cat);
-      const matchQuery = !q || (item.question.toLowerCase().includes(q) || item.answer.toLowerCase().includes(q));
-      return matchCat && matchQuery;
+      return (cat === 'all' || item.category === cat);
     });
 
     renderFaqs(filtered);
