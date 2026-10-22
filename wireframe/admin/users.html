@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] User Accounts Management — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[User Accounts Management]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Moderation Cascade Policy Notice -->
+      <div class="wf-card" style="background:var(--wf-surface-alt);border-left:4px solid var(--wf-border-black);padding:12px 18px;margin-bottom:20px;">
+        <span style="font-size:13px;">
+          <strong>[Policy Note:]</strong> [Suspending or banning an account cascades to automatically archive all associated active donations. Reactivating an account does not auto-republish donations (they must be reviewed individually).]
+        </span>
+      </div>
+
+      <!-- Toolbar: Filter tabs + Search bar + Export -->
+      <div class="wf-card" style="padding:14px 18px;margin-bottom:20px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div class="wf-tabs" style="margin-bottom:0;">
+            <button class="wf-tab is-active">[All (4)]</button>
+            <button class="wf-tab">[Active (2)]</button>
+            <button class="wf-tab">[Pending (1)]</button>
+            <button class="wf-tab">[Suspended (1)]</button>
+            <button class="wf-tab">[Banned (0)]</button>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;flex:1;max-width:440px;">
+            <input type="text" class="wf-input" placeholder="[Search name, email, city...]" style="flex:1;">
+            <button type="button" class="wf-btn wf-btn--outline" style="white-space:nowrap;height:35px;">[Export CSV]</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Users Table Container -->
+      <div class="wf-card" style="padding:0;overflow:hidden;">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;">[ID]</th>
+              <th style="padding:12px 16px;">[User Name]</th>
+              <th style="padding:12px 16px;">[Email]</th>
+              <th style="padding:12px 16px;">[Location]</th>
+              <th style="padding:12px 16px;">[Role]</th>
+              <th style="padding:12px 16px;">[Status]</th>
+              <th style="padding:12px 16px;">[Registered]</th>
+              <th style="padding:12px 16px;text-align:right;">[Actions]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#12]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Maria Santos]</div>
+              </td>
+              <td style="padding:14px 16px;">[maria.santos@example.com]</td>
+              <td style="padding:14px 16px;">[Quezon City, Metro Manila]</td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[Donor]</span></td>
+              <td style="padding:14px 16px;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:14px 16px;">[2026-01-15]</td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="user-detail.html?id=12" class="wf-btn wf-btn--sm wf-btn--outline">[Manage Profile]</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#14]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Carlos Mendoza]</div>
+              </td>
+              <td style="padding:14px 16px;">[carlos@example.com]</td>
+              <td style="padding:14px 16px;">[Quezon City, Metro Manila]</td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[Beneficiary]</span></td>
+              <td style="padding:14px 16px;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:14px 16px;">[2026-02-02]</td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="user-detail.html?id=14" class="wf-btn wf-btn--sm wf-btn--outline">[Manage Profile]</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#18]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Juan Dela Cruz]</div>
+              </td>
+              <td style="padding:14px 16px;">[juan.dc@example.com]</td>
+              <td style="padding:14px 16px;">[Pasig City]</td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[Beneficiary]</span></td>
+              <td style="padding:14px 16px;"><span class="wf-badge wf-badge--dashed">[Pending Verification]</span></td>
+              <td style="padding:14px 16px;">[2026-10-10]</td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="user-detail.html?id=18" class="wf-btn wf-btn--sm wf-btn--outline">[Manage Profile]</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#22]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Robert Garcia]</div>
+              </td>
+              <td style="padding:14px 16px;">[robert.g@example.com]</td>
+              <td style="padding:14px 16px;">[Manila City]</td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[Donor]</span></td>
+              <td style="padding:14px 16px;"><span class="wf-badge wf-badge--dashed">[Suspended]</span></td>
+              <td style="padding:14px 16px;">[2025-11-20]</td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="user-detail.html?id=22" class="wf-btn wf-btn--sm wf-btn--outline">[Manage Profile]</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Guides &amp; Tutorials — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+  <style>
+    .wf-guide-step-card {
+      background: var(--wf-surface);
+      border: 1px solid var(--wf-border);
+      border-radius: var(--wf-radius);
+      padding: 24px 28px;
+      margin-bottom: 24px;
+    }
+    .wf-guide-step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--wf-border-black);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+      margin-right: 12px;
+      flex-shrink: 0;
+    }
+    .wf-guide-nav-pills {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--wf-border);
+    }
+    .wf-guide-pill {
+      white-space: nowrap;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--wf-surface-alt);
+      color: var(--wf-text);
+      text-decoration: none;
+      font-size: 12.5px;
+      font-weight: 600;
+      border: 1px solid var(--wf-border);
+    }
+    .wf-guide-pill:hover,
+    .wf-guide-pill.is-active {
+      background: var(--wf-border-black);
+      color: #fff;
+      border-color: var(--wf-border-black);
+    }
+  </style>
+</head>
+<body style="background:var(--wf-surface-muted);">
+
+  <!-- ── PUBLIC HEADER (WIREFRAME) ─────────────────────────── -->
+  <header class="wf-public-nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="../index.html" style="font-weight:800;font-size:16px;text-decoration:none;color:var(--wf-text);">
+        [iCareDonate Wireframe]
+      </a>
+      <span class="wf-badge">[PUBLIC PAGE]</span>
+    </div>
+
+    <nav class="wf-public-links">
+      <a href="#">[Home]</a>
+      <a href="#">[About us]</a>
+      <a href="#">[Ways to Help]</a>
+      <a href="#">[How it works]</a>
+      <a href="#">[Contact us]</a>
+    </nav>
+
+    <div style="display:flex;gap:8px;">
+      <a href="../user/dashboard.html" class="wf-btn wf-btn--outline wf-btn--sm">[User Portal Demo]</a>
+      <a href="../admin/dashboard.html" class="wf-btn wf-btn--primary wf-btn--sm">[Admin Portal Demo]</a>
+    </div>
+  </header>
+
+  <!-- ── MAIN CONTENT ──────────────────────────────────────── -->
+  <main style="max-width:960px;margin:32px auto 60px;padding:0 20px;">
+
+    <!-- Breadcrumbs -->
+    <div style="font-size:12.5px;color:var(--wf-text-muted);margin-bottom:20px;">
+      [Home] &rsaquo; [Help Center] &rsaquo; <strong>[Platform Guides &amp; Tutorials]</strong>
+    </div>
+
+    <!-- Page Header -->
+    <div style="text-align:center;margin-bottom:36px;">
+      <span class="wf-badge" style="margin-bottom:10px;">[Step-by-Step Instructions]</span>
+      <h1 style="font-size:28px;margin-bottom:8px;">[Platform Guides &amp; Tutorials]</h1>
+      <p style="font-size:15px;max-width:600px;margin:0 auto;">
+        [Clear, practical walkthroughs for every step of your giving and receiving journey on iCareDonate.]
+      </p>
+    </div>
+
+    <!-- Jump Navigation Pills -->
+    <div class="wf-guide-nav-pills">
+      <a href="#guide-post-donation" class="wf-guide-pill">[Posting a Donation]</a>
+      <a href="#guide-browse-resources" class="wf-guide-pill">[Browsing Resources]</a>
+      <a href="#guide-submit-request" class="wf-guide-pill">[Requesting Assistance]</a>
+      <a href="#guide-upload-proof" class="wf-guide-pill">[Uploading Proof]</a>
+      <a href="#guide-tracking-request" class="wf-guide-pill">[Tracking Requests]</a>
+      <a href="#guide-claims-pickup" class="wf-guide-pill">[Claim Codes &amp; Pickup]</a>
+      <a href="#guide-profile-settings" class="wf-guide-pill">[Account &amp; Security]</a>
+    </div>
+
+    <!-- Guide 1: Posting a Donation -->
+    <article id="guide-post-donation" class="wf-guide-step-card">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="wf-guide-step-badge">1</div>
+        <h2 style="font-size:18px;margin:0;">[How to Post an Item Donation]</h2>
+      </div>
+      <p style="font-size:13.5px;margin-bottom:14px;">
+        [Overview placeholder: Donating surplus essentials helps low-income students, families, and community shelters across Metro Manila and surrounding provinces.]
+      </p>
+      <ol style="padding-left:22px;font-size:13px;line-height:1.7;margin-bottom:16px;">
+        <li>[Log in to your account and click the prominent Post Donation button in your sidebar navigation.]</li>
+        <li>[Enter a descriptive title, e.g. "5 Elementary School Backpacks with Notebooks".]</li>
+        <li>[Choose an accurate category such as School Supplies, Food &amp; Groceries, or Clothing &amp; Shoes.]</li>
+        <li>[Specify total quantity available, unit of measurement, item condition, and expiration date if perishable.]</li>
+        <li>[Upload clear, well-lit photos showing actual items and any packaging labels.]</li>
+        <li>[Specify preferred handover arrangement: Public Pickup at community hub or direct delivery.]</li>
+        <li>[Review and submit. Listing enters Pending Verification while moderators inspect it.]</li>
+      </ol>
+      <div class="wf-banner" style="margin-bottom:0;">
+        <strong>[Tip]:</strong> [You will receive an automated notification once your listing is approved and visible in the public catalog.]
+      </div>
+    </article>
+
+    <!-- Guide 2: Browsing Resources -->
+    <article id="guide-browse-resources" class="wf-guide-step-card">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="wf-guide-step-badge">2</div>
+        <h2 style="font-size:18px;margin:0;">[Browsing and Searching Available Resources]</h2>
+      </div>
+      <p style="font-size:13.5px;margin-bottom:14px;">
+        [Overview placeholder: Only verified, active listings are displayed in the resource directory.]
+      </p>
+      <ol style="padding-left:22px;font-size:13px;line-height:1.7;margin-bottom:0;">
+        <li>[From user navigation, select Browse Resources.]</li>
+        <li>[Use the search bar to query specific keywords, item types, or donor cities.]</li>
+        <li>[Filter by Category or Condition to find exactly what you need.]</li>
+        <li>[Inspect each resource card to check quantity remaining, condition, and location.]</li>
+        <li>[Click on any card to view detailed specifications and initiate request.]</li>
+      </ol>
+    </article>
+
+    <!-- Guide 3: Submitting Request -->
+    <article id="guide-submit-request" class="wf-guide-step-card">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="wf-guide-step-badge">3</div>
+        <h2 style="font-size:18px;margin:0;">[Submitting an Assistance Request]</h2>
+      </div>
+      <p style="font-size:13.5px;margin-bottom:14px;">
+        [Overview placeholder: Requests must be justified with transparent information to ensure fair allocation to verified beneficiaries.]
+      </p>
+      <ol style="padding-left:22px;font-size:13px;line-height:1.7;margin-bottom:0;">
+        <li>[On an available resource listing, click Request This Item.]</li>
+        <li>[Specify the exact quantity you require. Never request more than immediate student/family need.]</li>
+        <li>[Provide a genuine justification explaining who the beneficiary is and why assistance is needed.]</li>
+        <li>[Select urgency level: Low, Moderate, or High / Urgent.]</li>
+        <li>[Attach required proof of need document.]</li>
+        <li>[Submit application to receive official Request Reference ID (e.g. #REQ-201).]</li>
+      </ol>
+    </article>
+
+    <!-- Guide 4: Uploading Proof -->
+    <article id="guide-upload-proof" class="wf-guide-step-card">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="wf-guide-step-badge">4</div>
+        <h2 style="font-size:18px;margin:0;">[Uploading Verification Documents (Proof of Need)]</h2>
+      </div>
+      <p style="font-size:13.5px;margin-bottom:14px;">
+        [Overview placeholder: To prevent scalping and ensure genuine community impact, assistance requests require standard Philippine supporting documents:]
+      </p>
+      <ul style="padding-left:22px;font-size:13px;line-height:1.7;margin-bottom:14px;">
+        <li><strong>[Barangay Certificate of Indigency]</strong> &mdash; [Issued by local barangay office.]</li>
+        <li><strong>[Solo Parent ID]</strong> &mdash; [Issued by City/Municipal Social Welfare and Development Office.]</li>
+        <li><strong>[Public School Student ID / Enrollment Form]</strong> &mdash; [For educational items, tablets, uniforms.]</li>
+        <li><strong>[Disability (PWD) / Senior Citizen ID]</strong> &mdash; [For specialized food packs or medical aids.]</li>
+      </ul>
+      <p style="font-size:12.5px;color:var(--wf-text-muted);margin:0;">
+        [All uploaded files are access-controlled and reviewed strictly by authorized coordinators.]
+      </p>
+    </article>
+
+    <!-- Guide 5: Tracking Lifecycle -->
+    <article id="guide-tracking-request" class="wf-guide-step-card">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="wf-guide-step-badge">5</div>
+        <h2 style="font-size:18px;margin:0;">[Tracking Request Lifecycle &amp; Coordinator Reviews]</h2>
+      </div>
+      <p style="font-size:13.5px;margin-bottom:14px;">
+        [Overview placeholder: Your request moves through an organized verification and matching lifecycle:]
+      </p>
+      
+      <div class="wf-grid-4" style="margin-bottom:14px;">
+        <div style="padding:10px 12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);font-size:12px;">
+          <strong>[1. Submitted]</strong><br><span class="wf-hint">[Application logged]</span>
+        </div>
+        <div style="padding:10px 12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);font-size:12px;">
+          <strong>[2. Under Review]</strong><br><span class="wf-hint">[Proof inspected]</span>
+        </div>
+        <div style="padding:10px 12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);font-size:12px;">
+          <strong>[3. Matched &amp; Pass]</strong><br><span class="wf-hint">[Claim code issued]</span>
+        </div>
+        <div style="padding:10px 12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);font-size:12px;">
+          <strong>[4. Handover Done]</strong><br><span class="wf-hint">[Physical receipt]</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Guide 6: Claim Codes & Pickup -->
+    <article id="guide-claims-pickup" class="wf-guide-step-card">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="wf-guide-step-badge">6</div>
+        <h2 style="font-size:18px;margin:0;">[Claim Codes, Handover Protocols, and Safe Pickup]</h2>
+      </div>
+      <p style="font-size:13.5px;margin-bottom:14px;">
+        [Overview placeholder: Once a request is matched to an available donation, a formal Transaction &amp; Claim pass record is generated:]
+      </p>
+      <ol style="padding-left:22px;font-size:13px;line-height:1.7;margin-bottom:0;">
+        <li>[Navigate to Claims &amp; Handovers in your user navigation.]</li>
+        <li>[Open active transaction to view designated meeting venue and pickup deadline.]</li>
+        <li>[Locate unique 6-digit Secure Claim Code, e.g. ICD-849201.]</li>
+        <li>[Never share claim code online. Only present in person to hub coordinator during physical handover.]</li>
+        <li>[Both parties confirm handover in app to mark transaction complete.]</li>
+      </ol>
+    </article>
+
+    <!-- Guide 7: Account Settings -->
+    <article id="guide-profile-settings" class="wf-guide-step-card">
+      <div style="display:flex;align-items:center;margin-bottom:14px;">
+        <div class="wf-guide-step-badge">7</div>
+        <h2 style="font-size:18px;margin:0;">[Managing Profile, Privacy, and Account Security]</h2>
+      </div>
+      <p style="font-size:13.5px;margin-bottom:14px;">
+        [Overview placeholder: Keep your information up to date through the comprehensive Profile &amp; Settings center:]
+      </p>
+      <ul style="padding-left:22px;font-size:13px;line-height:1.7;margin-bottom:0;">
+        <li><strong>[Personal Information]:</strong> [Update full name, phone contact, and barangay location.]</li>
+        <li><strong>[Account Verification]:</strong> [Inspect verified status and view interview schedules.]</li>
+        <li><strong>[Security]:</strong> [Change password securely and review active login sessions.]</li>
+        <li><strong>[Notification Preferences]:</strong> [Toggle alerts for match events and pickup reminders.]</li>
+      </ul>
+    </article>
+
+    <!-- Help CTA Box -->
+    <div class="wf-card" style="text-align:center;padding:36px 20px;border:2px solid var(--wf-border-black);">
+      <h3 style="font-size:20px;margin-bottom:8px;">[Still have specific questions?]</h3>
+      <p style="font-size:14px;max-width:500px;margin:0 auto 20px;">
+        [Our community support team is available to assist you with proof submissions, listings, and hub pickup scheduling.]
+      </p>
+      <div style="display:flex;justify-content:center;gap:12px;">
+        <a href="../user/help-center.html" class="wf-btn wf-btn--outline">[Search FAQs &rarr;]</a>
+        <a href="../user/support.html" class="wf-btn wf-btn--primary">[Contact Support Team]</a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── UPDATED 4-COLUMN PUBLIC FOOTER (WIREFRAME) ────────── -->
+  <footer class="wf-public-footer">
+    <div class="wf-public-footer__grid">
+      <!-- Col 1: Brand & Social -->
+      <div class="wf-public-footer__col">
+        <a href="../index.html" style="font-size:16px;font-weight:800;color:var(--wf-text);text-decoration:none;display:block;margin-bottom:6px;">
+          [iCareDonate Wireframe]
+        </a>
+        <p style="font-size:12px;margin-bottom:12px;">[Give what you can. Help where it matters.]</p>
+        <div style="display:flex;gap:8px;">
+          <span class="wf-badge">[Facebook]</span>
+          <span class="wf-badge">[Instagram]</span>
+        </div>
+      </div>
+
+      <!-- Col 2: Explore -->
+      <div class="wf-public-footer__col">
+        <h4>[Explore]</h4>
+        <ul>
+          <li><a href="../user/browse-donations.html">[Community Donations]</a></li>
+          <li><a href="../user/browse-donations.html">[Ways to Help]</a></li>
+          <li><a href="#">[How It Works]</a></li>
+          <li><a href="../user/offer-donation.html">[Start Donating]</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: About -->
+      <div class="wf-public-footer__col">
+        <h4>[About]</h4>
+        <ul>
+          <li><a href="#">[About Us]</a></li>
+          <li><a href="#">[Why iCareDonate?]</a></li>
+          <li><a href="#">[Careers &amp; Volunteers]</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Help & Legal -->
+      <div class="wf-public-footer__col">
+        <h4>[Help &amp; Legal]</h4>
+        <ul>
+          <li><a href="../user/help-center.html">[Help Center]</a></li>
+          <li><a href="guides.html" style="font-weight:700;">[Guides &amp; Tutorials]</a></li>
+          <li><a href="../user/help-center.html">[Frequently Asked Questions]</a></li>
+          <li><a href="../user/support.html">[Contact Support]</a></li>
+          <li><a href="#">[Terms of Service]</a></li>
+          <li><a href="#">[Privacy Policy]</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="wf-public-footer__bottom">
+      <span>[&copy; 2026 iCareDonate. All rights reserved.]</span>
+      <span>[Official Contact: icaredonate.team@gmail.com]</span>
+    </div>
+  </footer>
+
+  <script src="../assets/wireframe.js"></script>
+</body>
+</html>

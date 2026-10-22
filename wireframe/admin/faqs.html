@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] FAQ Knowledge Base Management — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[FAQ Knowledge Base Management]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <button type="button" class="wf-btn wf-btn--primary" onclick="wfOpenModal('wfModalAddFAQ')">
+          [+ Add New FAQ]
+        </button>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Category Filter Bar -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:20px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <label style="font-size:13px;font-weight:700;">[Filter by Category:]</label>
+          <select class="wf-select" style="min-width:180px;">
+            <option>[All Categories]</option>
+            <option>[General]</option>
+            <option>[Donors]</option>
+            <option>[Beneficiaries]</option>
+            <option>[Privacy]</option>
+            <option>[Safety &amp; Moderation]</option>
+          </select>
+        </div>
+        <div>
+          <span class="wf-badge wf-badge--dark">[16 FAQs Listed]</span>
+        </div>
+      </div>
+
+      <!-- FAQ Table -->
+      <div class="wf-card" style="padding:0;overflow:hidden;">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;width:60px;">[Order]</th>
+              <th style="padding:12px 16px;">[Question &amp; Answer Summary]</th>
+              <th style="padding:12px 16px;width:140px;">[Category]</th>
+              <th style="padding:12px 16px;text-align:center;width:100px;">[Status]</th>
+              <th style="padding:12px 16px;text-align:right;width:140px;">[Actions]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[1]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;margin-bottom:4px;">[What is iCareDonate and how does it operate?]</div>
+                <div class="wf-hint">[iCareDonate is a community-driven donation matching platform facilitating direct transfers of goods...]</div>
+              </td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[General]</span></td>
+              <td style="padding:14px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:14px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddFAQ')">[Edit]</button>
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: FAQ deleted]')">[Delete]</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[2]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;margin-bottom:4px;">[How are beneficiary proof documents verified?]</div>
+                <div class="wf-hint">[All indigency certificates and IDs are inspected confidentially by staff prior to request approval...]</div>
+              </td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[Beneficiaries]</span></td>
+              <td style="padding:14px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:14px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddFAQ')">[Edit]</button>
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: FAQ deleted]')">[Delete]</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[3]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;margin-bottom:4px;">[Can donors designate preferred drop-off hubs?]</div>
+                <div class="wf-hint">[Yes, donors can select authorized partner barangay halls during donation listing submission...]</div>
+              </td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[Donors]</span></td>
+              <td style="padding:14px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:14px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddFAQ')">[Edit]</button>
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: FAQ deleted]')">[Delete]</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- ADD / EDIT FAQ DIALOG MODAL -->
+<div class="wf-modal-backdrop" id="wfModalAddFAQ" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Add / Edit FAQ Entry]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalAddFAQ')">&times;</button>
+    </div>
+    <div>
+      <div class="wf-grid-2">
+        <div class="wf-form-group">
+          <label class="wf-label">[Category *]</label>
+          <select class="wf-select">
+            <option>[General]</option>
+            <option>[Donors]</option>
+            <option>[Beneficiaries]</option>
+            <option>[Privacy]</option>
+            <option>[Safety &amp; Moderation]</option>
+          </select>
+        </div>
+        <div class="wf-form-group">
+          <label class="wf-label">[Status *]</label>
+          <select class="wf-select">
+            <option>[Active (Published)]</option>
+            <option>[Draft (Hidden)]</option>
+          </select>
+        </div>
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Question Title *]</label>
+        <input type="text" class="wf-input" placeholder="[Enter question title...]">
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Answer Content *]</label>
+        <textarea class="wf-textarea" rows="4" placeholder="[Detailed answer statement...]"></textarea>
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalAddFAQ')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: FAQ saved]');wfCloseModal('wfModalAddFAQ')">[Save FAQ]</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

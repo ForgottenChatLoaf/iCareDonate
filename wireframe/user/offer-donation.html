@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Post a Donation — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── USER SIDEBAR ──────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill">[USER]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Donations &amp; Requests]</div>
+
+      <a href="offer-donation.html" class="wf-sidebar__link is-active wf-sidebar__link--accent">
+        <span class="wf-sidebar__icon">+</span>
+        <span>[Post Donation]</span>
+      </a>
+
+      <a href="browse-donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9740;</span>
+        <span>[Browse Donations]</span>
+      </a>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[My Donations]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[My Requests]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Claims &amp; Handovers]</span>
+      </a>
+
+      <a href="history.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[History]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Communication]</div>
+
+      <a href="activity-log.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9201;</span>
+        <span>[Activity Log]</span>
+      </a>
+
+      <a href="notifications.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Notifications]</span>
+        <span class="wf-sidebar__badge">[3]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9888;</span>
+        <span>[Support &amp; Help]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Account]</div>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Profile]</span>
+      </a>
+
+      <a href="settings.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9881;</span>
+        <span>[Account Settings]</span>
+      </a>
+
+      <a href="help-center.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[Help Center]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Post a Donation]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="donations.html" class="wf-btn wf-btn--outline wf-btn--sm">[&larr; My Donations]</a>
+      </div>
+    </header>
+
+    <div class="wf-content" style="max-width:840px;margin:0 auto;">
+
+      <!-- Pending Restriction Warning Banner -->
+      <div class="wf-banner" style="margin-bottom:20px;">
+        <div class="wf-banner__title">[Submission Pending Review Notice]</div>
+        <p>[If you have an existing submission awaiting admin verification, new submissions may be held until active reviews are resolved.]</p>
+      </div>
+
+      <!-- Form Container -->
+      <div class="wf-card" style="padding:28px;">
+        <div style="margin-bottom:24px;text-align:center;">
+          <h2 style="font-size:22px;font-weight:700;margin-bottom:4px;">[Share Surplus Resources]</h2>
+          <p class="wf-hint">[Provide clear details so community members and moderators can verify your listing.]</p>
+        </div>
+
+        <form action="#" method="post">
+
+          <!-- 1. Donation Information -->
+          <div style="margin-bottom:24px;">
+            <h3 style="font-size:14px;font-weight:700;border-bottom:1px solid var(--wf-border);padding-bottom:8px;margin-bottom:16px;">
+              [1. Donation Information]
+            </h3>
+
+            <div class="wf-form-group" style="margin-bottom:14px;">
+              <label class="wf-label">[Donation Title / Item Name *]</label>
+              <input type="text" class="wf-input" placeholder="[e.g. 5 Elementary School Backpacks with Notebooks]">
+            </div>
+
+            <div class="wf-grid-2" style="margin-bottom:14px;">
+              <div class="wf-form-group">
+                <label class="wf-label">[Category *]</label>
+                <select class="wf-select">
+                  <option>[Select Category]</option>
+                  <option>[Food &amp; Groceries]</option>
+                  <option>[School Supplies]</option>
+                  <option>[Clothing &amp; Shoes]</option>
+                  <option>[Medical &amp; First Aid]</option>
+                  <option>[Household Essentials]</option>
+                  <option>[Books &amp; Educational]</option>
+                  <option>[Electronics &amp; Devices]</option>
+                </select>
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[Condition *]</label>
+                <select class="wf-select">
+                  <option>[Select Condition]</option>
+                  <option>[New (Unopened / Unused)]</option>
+                  <option>[Like New (Barely used, pristine)]</option>
+                  <option selected>[Good (Fully functional, minor wear)]</option>
+                  <option>[Fair (Well-loved, working condition)]</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="wf-grid-3" style="margin-bottom:14px;">
+              <div class="wf-form-group">
+                <label class="wf-label">[Quantity *]</label>
+                <input type="number" class="wf-input" placeholder="[1]" value="1">
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[Unit *]</label>
+                <input type="text" class="wf-input" placeholder="[pcs, packs, sets, kg]" value="pcs">
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[Expiration (If Food/Meds)]</label>
+                <input type="date" class="wf-input">
+              </div>
+            </div>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Item Description &amp; Specifications]</label>
+              <textarea class="wf-textarea" rows="4" placeholder="[Detail item specifications, size, condition notes, and community packaging details...]"></textarea>
+            </div>
+          </div>
+
+          <!-- 2. Personal & Contact Information -->
+          <div style="margin-bottom:24px;">
+            <h3 style="font-size:14px;font-weight:700;border-bottom:1px solid var(--wf-border);padding-bottom:8px;margin-bottom:16px;">
+              [2. Personal &amp; Contact Details]
+            </h3>
+
+            <div class="wf-grid-2">
+              <div class="wf-form-group">
+                <label class="wf-label">[Donor Contact Name *]</label>
+                <input type="text" class="wf-input" placeholder="[Maria Santos]" value="[Maria Santos]">
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[Contact Phone Number *]</label>
+                <input type="tel" class="wf-input" placeholder="[0917-555-0192]" value="[0917-555-0192]">
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Delivery Method, Location & Handover -->
+          <div style="margin-bottom:24px;">
+            <h3 style="font-size:14px;font-weight:700;border-bottom:1px solid var(--wf-border);padding-bottom:8px;margin-bottom:16px;">
+              [3. Delivery Method, Location &amp; Handover]
+            </h3>
+
+            <div class="wf-form-group" style="margin-bottom:14px;">
+              <label class="wf-label">[Delivery / Handover Method *]</label>
+              <select class="wf-select">
+                <option selected>[Pick-up or Delivery Available]</option>
+                <option>[Pick-up Only (Community Meeting Venue / Barangay Hall)]</option>
+                <option>[Delivery Only (Local Courier / Courier App)]</option>
+              </select>
+            </div>
+
+            <div class="wf-grid-2">
+              <div class="wf-form-group">
+                <label class="wf-label">[City / Municipality *]</label>
+                <input type="text" class="wf-input" placeholder="[Quezon City]" value="[Quezon City]">
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[Barangay *]</label>
+                <input type="text" class="wf-input" placeholder="[Barangay Central]" value="[Barangay Central]">
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Photo Upload -->
+          <div style="margin-bottom:28px;">
+            <h3 style="font-size:14px;font-weight:700;border-bottom:1px solid var(--wf-border);padding-bottom:8px;margin-bottom:16px;">
+              [4. Item Photo]
+            </h3>
+
+            <div class="wf-img-placeholder" style="height:120px;border-style:dashed;margin-bottom:12px;">
+              <span>[Click to choose photo or drag &amp; drop &bull; JPG, PNG, or WEBP up to 5MB]</span>
+            </div>
+
+            <!-- Preview Card Placeholder -->
+            <div class="wf-card" style="display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--wf-surface-muted);">
+              <div class="wf-img-placeholder" style="width:48px;height:48px;flex-shrink:0;">
+                <span style="font-size:9px;">[Thumb]</span>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:13px;font-weight:600;">[sample-photo-item.jpg]</div>
+                <div class="wf-hint" style="font-size:11px;">[1.2 MB &bull; Ready for upload]</div>
+              </div>
+              <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" style="font-size:11px;">[&times; Remove Photo]</button>
+            </div>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div style="display:flex;justify-content:flex-end;gap:10px;border-top:1px solid var(--wf-border);padding-top:16px;">
+            <a href="donations.html" class="wf-btn wf-btn--outline">[Cancel]</a>
+            <button type="submit" class="wf-btn wf-btn--primary" style="padding:10px 24px;">
+              [Submit Donation for Verification]
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Authenticated Mini Footer -->
+    <footer class="wf-footer">
+      <div>[&copy; 2026 iCareDonate. All rights reserved.]</div>
+      <div class="wf-footer__links">
+        <a href="../../frontend/privacy.html">[Privacy Policy]</a>
+        <a href="../../frontend/terms.html">[Terms of Service]</a>
+        <a href="help-center.html">[Help Center]</a>
+      </div>
+    </footer>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

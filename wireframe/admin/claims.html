@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Claim &amp; Release Pass Monitoring — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Claim &amp; Release Pass Monitoring]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="transactions.html" class="wf-btn wf-btn--outline">[All Transactions]</a>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Fast Lookup Card -->
+      <div class="wf-card" style="border:2px solid var(--wf-border-black);padding:22px;margin-bottom:20px;">
+        <h2 style="font-size:17px;font-weight:700;margin:0 0 6px;">[Hub Desk Claim Code Verification]</h2>
+        <p class="wf-hint" style="font-size:13px;margin:0 0 14px;">[Enter beneficiary claim code or scan claim QR pass presented at the community pickup desk.]</p>
+        
+        <div style="display:flex;gap:10px;max-width:520px;">
+          <input type="text" class="wf-input" value="ICD-849201" style="font-family:monospace;font-size:15px;letter-spacing:0.1em;font-weight:700;">
+          <button type="button" class="wf-btn wf-btn--primary" style="padding:0 20px;">[Verify Pass]</button>
+        </div>
+      </div>
+
+      <!-- Verified Pass Result Display -->
+      <div class="wf-card" style="border-left:4px solid var(--wf-border-black);margin-bottom:20px;">
+        <div class="wf-card__header">
+          <div>
+            <span class="wf-badge wf-badge--dark">[Valid Pass Confirmed]</span>
+            <h3 style="font-size:16px;margin:6px 0 0;">[Claim Pass: ICD-849201 &bull; Txn #TXN-90214]</h3>
+          </div>
+          <span class="wf-badge">[Status: Ready for Handover]</span>
+        </div>
+
+        <div class="wf-grid-2" style="align-items:start;">
+          <div>
+            <div class="wf-table-wrap" style="margin-bottom:0;">
+              <table class="wf-table">
+                <tbody>
+                  <tr>
+                    <td style="font-weight:700;width:150px;">[Beneficiary Name]</td>
+                    <td>[Carlos Mendoza]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Verified Proof]</td>
+                    <td>[Barangay Certificate of Indigency &bull; Verified]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Allocated Resource]</td>
+                    <td>[Elementary Math Workbooks (02 sets)]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Donor Name]</td>
+                    <td>[Maria Santos &bull; Verified Community Donor]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="background:var(--wf-surface-alt);border:1px solid var(--wf-border);padding:16px;border-radius:4px;">
+            <h4 style="margin:0 0 6px;">[Staff Handover Confirmation]</h4>
+            <p style="font-size:12px;margin:0 0 12px;line-height:1.5;">[Verify recipient ID against the name listed above before releasing physical goods.]</p>
+            <button type="button" class="wf-btn wf-btn--primary" style="width:100%;" onclick="alert('[Wireframe Demo: Handover recorded as completed in platform!]')">
+              [&check; Confirm Handover &amp; Release Goods]
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Claim Transactions -->
+      <div class="wf-card" style="padding:0;overflow:hidden;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--wf-border);font-weight:700;font-size:14px;">
+          [Recent Handover Pass Records]
+        </div>
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;">[Pass Code]</th>
+              <th style="padding:12px 16px;">[Recipient]</th>
+              <th style="padding:12px 16px;">[Resource Item]</th>
+              <th style="padding:12px 16px;">[Designated Venue]</th>
+              <th style="padding:12px 16px;">[Status]</th>
+              <th style="padding:12px 16px;text-align:right;">[Action]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:12px 16px;font-weight:700;">[ICD-849201]</td>
+              <td style="padding:12px 16px;">[Carlos Mendoza]</td>
+              <td style="padding:12px 16px;">[Elementary Math Workbooks (2 sets)]</td>
+              <td style="padding:12px 16px;">[Barangay Central Hall]</td>
+              <td style="padding:12px 16px;"><span class="wf-badge wf-badge--dashed">[Pending Pickup]</span></td>
+              <td style="padding:12px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--primary" onclick="alert('[Handover recorded]')">[Handover]</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;font-weight:700;">[ICD-551982]</td>
+              <td style="padding:12px 16px;">[Rosalina Ramos]</td>
+              <td style="padding:12px 16px;">[Family Canned Goods &amp; Rice (5 packs)]</td>
+              <td style="padding:12px 16px;">[District 2 Community Hub]</td>
+              <td style="padding:12px 16px;"><span class="wf-badge wf-badge--dark">[Completed]</span></td>
+              <td style="padding:12px 16px;text-align:right;">
+                <span class="wf-hint" style="font-size:12px;">[&check; Released]</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

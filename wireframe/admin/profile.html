@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Admin Profile &amp; Security — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Admin Profile &amp; Security]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- 2-Column Grid (1fr 1.6fr) -->
+      <div class="wf-grid-2" style="grid-template-columns:1fr 1.6fr;align-items:start;">
+
+        <!-- Left Column: Administrator Identity, Security Info, Recent Actions -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+
+          <!-- Identity Card -->
+          <div class="wf-card" style="text-align:center;">
+            <div class="wf-user-avatar" style="width:64px;height:64px;font-size:20px;display:grid;place-items:center;margin:0 auto 12px;">
+              [HA]
+            </div>
+            <h2 style="font-size:17px;font-weight:700;margin:0 0 4px;">[Head Admin]</h2>
+            <div class="wf-hint" style="margin-bottom:12px;">[admin@icaredonate.ph]</div>
+
+            <div style="display:flex;justify-content:center;gap:6px;margin-bottom:16px;">
+              <span class="wf-badge wf-badge--dark">[Administrator]</span>
+              <span class="wf-badge">[Active Session]</span>
+            </div>
+
+            <div class="wf-table-wrap" style="text-align:left;margin-bottom:0;">
+              <table class="wf-table">
+                <tbody>
+                  <tr>
+                    <td style="font-weight:700;">[Role Level:]</td>
+                    <td>[Lead Administrator]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Access Permissions:]</td>
+                    <td>[Full Platform Access]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Account Created:]</td>
+                    <td>[Active]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Authentication:]</td>
+                    <td><span class="wf-badge wf-badge--dark">[Verified Session]</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Recent Account Actions -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h3 class="wf-card__title">[Recent Account Actions]</h3>
+              <a href="logs.html" class="wf-btn wf-btn--sm wf-btn--outline">[All Logs &rarr;]</a>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:12.5px;">
+              <div style="padding:8px 10px;background:var(--wf-surface-alt);border-radius:4px;">
+                <div style="font-weight:700;">[Approved Donation #102]</div>
+                <div class="wf-hint">[Family Rice Packs &bull; Yesterday]</div>
+              </div>
+              <div style="padding:8px 10px;background:var(--wf-surface-alt);border-radius:4px;">
+                <div style="font-weight:700;">[Verified Beneficiary Proof #501]</div>
+                <div class="wf-hint">[Indigency Certificate &bull; 2 days ago]</div>
+              </div>
+              <div style="padding:8px 10px;background:var(--wf-surface-alt);border-radius:4px;">
+                <div style="font-weight:700;">[Exported Q3 Moderation Report]</div>
+                <div class="wf-hint">[Platform Statistics &bull; 4 days ago]</div>
+              </div>
+            </div>
+
+            <a href="logs.html" class="wf-btn wf-btn--outline" style="width:100%;text-align:center;margin-top:12px;">
+              [View Full Audit Ledger]
+            </a>
+          </div>
+
+          <!-- Account Security Guidance -->
+          <div class="wf-card" style="background:var(--wf-surface-alt);">
+            <h4 style="font-size:13px;font-weight:700;margin:0 0 4px;">[Security Recommendation]</h4>
+            <p style="font-size:12px;line-height:1.5;margin:0;">
+              [Use strong, unique passwords for administrator access and ensure you log out after concluding moderation sessions on shared terminals.]
+            </p>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Edit Profile & Password Change Forms -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+
+          <!-- Personal Information Form -->
+          <div class="wf-card">
+            <h3 class="wf-card__title" style="margin-bottom:4px;">[Personal Information]</h3>
+            <div class="wf-hint" style="margin-bottom:16px;">
+              [Update your administrator identity and operational contact details.]
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('[Wireframe Demo: Profile details saved]');">
+              <div class="wf-grid-2" style="margin-bottom:12px;">
+                <div class="wf-form-group" style="margin-bottom:0;">
+                  <label class="wf-label">[First Name *]</label>
+                  <input type="text" class="wf-input" value="[Head]">
+                </div>
+                <div class="wf-form-group" style="margin-bottom:0;">
+                  <label class="wf-label">[Last Name *]</label>
+                  <input type="text" class="wf-input" value="[Admin]">
+                </div>
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[Official Administrative Email *]</label>
+                <input type="email" class="wf-input" value="[admin@icaredonate.ph]">
+              </div>
+
+              <div class="wf-grid-2" style="margin-bottom:16px;">
+                <div class="wf-form-group" style="margin-bottom:0;">
+                  <label class="wf-label">[Emergency Contact / Mobile]</label>
+                  <input type="tel" class="wf-input" value="[+63 900 000 0000]">
+                </div>
+                <div class="wf-form-group" style="margin-bottom:0;">
+                  <label class="wf-label">[Department / Sector]</label>
+                  <input type="text" class="wf-input" value="[Community Verification &amp; Ops]">
+                </div>
+              </div>
+
+              <div style="display:flex;justify-content:flex-end;">
+                <button type="submit" class="wf-btn wf-btn--primary">[Save Profile Changes]</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Password Change Form -->
+          <div class="wf-card">
+            <h3 class="wf-card__title" style="margin-bottom:4px;">[Change Account Password]</h3>
+            <div class="wf-hint" style="margin-bottom:16px;">
+              [Update your password regularly to safeguard administrator access privileges.]
+            </div>
+
+            <form onsubmit="event.preventDefault(); alert('[Wireframe Demo: Password updated successfully]');">
+              <div class="wf-form-group">
+                <label class="wf-label">[Current Password *]</label>
+                <input type="password" class="wf-input" placeholder="[Enter current password...]">
+              </div>
+
+              <div class="wf-grid-2" style="margin-bottom:16px;">
+                <div class="wf-form-group" style="margin-bottom:0;">
+                  <label class="wf-label">[New Password *]</label>
+                  <input type="password" class="wf-input" placeholder="[Min 8 characters...]">
+                </div>
+                <div class="wf-form-group" style="margin-bottom:0;">
+                  <label class="wf-label">[Confirm New Password *]</label>
+                  <input type="password" class="wf-input" placeholder="[Re-enter new password...]">
+                </div>
+              </div>
+
+              <div style="display:flex;justify-content:flex-end;">
+                <button type="submit" class="wf-btn wf-btn--primary">[Update Password]</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

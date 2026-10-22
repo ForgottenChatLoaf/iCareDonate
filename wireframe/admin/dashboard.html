@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Admin Dashboard — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Dashboard]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Welcome Banner -->
+      <div class="wf-card" style="padding:20px 24px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+        <div>
+          <h2 style="font-size:18px;font-weight:800;margin:0 0 4px;">[iCareDonate Admin Portal]</h2>
+          <div class="wf-hint">[Operational Overview &bull; Moderation Queues &bull; Verification &bull; Audit Trail]</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="donations.html" class="wf-btn wf-btn--outline">[Review Donations (02)]</a>
+          <a href="requests.html" class="wf-btn wf-btn--outline">[Review Requests (02)]</a>
+        </div>
+      </div>
+
+      <!-- 4 Stat Cards -->
+      <div class="wf-grid-4" style="margin-bottom:20px;">
+        <a href="donations.html" class="wf-stat-box" style="text-decoration:none;color:inherit;">
+          <span class="wf-stat-box__label">[Pending Donations]</span>
+          <span class="wf-stat-box__value">[02]</span>
+          <span class="wf-stat-box__sub">[Needs verification]</span>
+        </a>
+        <a href="requests.html" class="wf-stat-box" style="text-decoration:none;color:inherit;">
+          <span class="wf-stat-box__label">[Pending Requests]</span>
+          <span class="wf-stat-box__value">[02]</span>
+          <span class="wf-stat-box__sub">[Proof review queue]</span>
+        </a>
+        <a href="transactions.html" class="wf-stat-box" style="text-decoration:none;color:inherit;">
+          <span class="wf-stat-box__label">[Active Transactions]</span>
+          <span class="wf-stat-box__value">[03]</span>
+          <span class="wf-stat-box__sub">[In coordination]</span>
+        </a>
+        <a href="support.html" class="wf-stat-box" style="text-decoration:none;color:inherit;">
+          <span class="wf-stat-box__label">[Open Inquiries]</span>
+          <span class="wf-stat-box__value">[01]</span>
+          <span class="wf-stat-box__sub">[Support tickets]</span>
+        </a>
+      </div>
+
+      <!-- Quick Administrative Shortcuts (6 cards) -->
+      <div style="margin-bottom:24px;">
+        <h3 style="font-size:14px;font-weight:700;margin-bottom:10px;">[Quick Administrative Actions]</h3>
+        <div class="wf-grid-6">
+          <a href="donations.html" class="wf-card" style="padding:14px 10px;text-align:center;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <span style="font-size:20px;">&#9635;</span>
+            <span style="font-size:12px;font-weight:700;">[Review Donations]</span>
+          </a>
+          <a href="requests.html" class="wf-card" style="padding:14px 10px;text-align:center;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <span style="font-size:20px;">&#9702;</span>
+            <span style="font-size:12px;font-weight:700;">[Proof Review]</span>
+          </a>
+          <a href="users.html" class="wf-card" style="padding:14px 10px;text-align:center;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <span style="font-size:20px;">&#9675;</span>
+            <span style="font-size:12px;font-weight:700;">[Manage Users]</span>
+          </a>
+          <a href="transactions.html" class="wf-card" style="padding:14px 10px;text-align:center;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <span style="font-size:20px;">&#8646;</span>
+            <span style="font-size:12px;font-weight:700;">[Transactions]</span>
+          </a>
+          <a href="admins.html" class="wf-card" style="padding:14px 10px;text-align:center;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <span style="font-size:20px;">&#9733;</span>
+            <span style="font-size:12px;font-weight:700;">[Admin Management]</span>
+          </a>
+          <a href="logs.html" class="wf-card" style="padding:14px 10px;text-align:center;text-decoration:none;color:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;">
+            <span style="font-size:20px;">&#9778;</span>
+            <span style="font-size:12px;font-weight:700;">[Audit Logs]</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Action Center Split View (1.35fr 1fr) -->
+      <div class="wf-grid-2" style="grid-template-columns:1.35fr 1fr;align-items:start;">
+
+        <!-- Left Column: Recent System Operations -->
+        <div class="wf-card">
+          <div class="wf-card__header">
+            <h2 class="wf-card__title">[Recent System Operations]</h2>
+            <a href="logs.html" class="wf-btn wf-btn--sm wf-btn--outline">[View Full Audit Trail &rarr;]</a>
+          </div>
+
+          <div class="wf-table-wrap">
+            <table class="wf-table">
+              <thead>
+                <tr>
+                  <th>[Timestamp]</th>
+                  <th>[Actor]</th>
+                  <th>[Action]</th>
+                  <th>[Details]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><small class="wf-hint">[YYYY-MM-DD HH:MM]</small></td>
+                  <td><strong>[Admin User #1]</strong></td>
+                  <td><span class="wf-badge wf-badge--dark">[DONATION_APPROVED]</span></td>
+                  <td>[Approved listing #102: Family Rice Packs]</td>
+                </tr>
+                <tr>
+                  <td><small class="wf-hint">[YYYY-MM-DD HH:MM]</small></td>
+                  <td><strong>[Admin User #1]</strong></td>
+                  <td><span class="wf-badge">[REQUEST_PROOF_APPROVED]</span></td>
+                  <td>[Verified indigency proof for Request #501]</td>
+                </tr>
+                <tr>
+                  <td><small class="wf-hint">[YYYY-MM-DD HH:MM]</small></td>
+                  <td><strong>[SuperAdmin]</strong></td>
+                  <td><span class="wf-badge wf-badge--dashed">[USER_SUSPENDED]</span></td>
+                  <td>[Suspended user #12 with donation cascade archival]</td>
+                </tr>
+                <tr>
+                  <td><small class="wf-hint">[YYYY-MM-DD HH:MM]</small></td>
+                  <td><strong>[Coordinator #2]</strong></td>
+                  <td><span class="wf-badge">[HANDOVER_CONFIRMED]</span></td>
+                  <td>[Released goods for Transaction TX-90214]</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right Column: Immediate Attention Queues -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+
+          <!-- Action Required: Pending Beneficiary Proofs -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h3 class="wf-card__title">[Pending Beneficiary Proofs]</h3>
+              <a href="requests.html" class="wf-btn wf-btn--sm wf-btn--outline">[Queue &rarr;]</a>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="padding:10px 12px;border:1px solid var(--wf-border);border-radius:4px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div style="font-weight:700;">[Carlos Mendoza &bull; Req #501]</div>
+                  <div class="wf-hint">[Elementary Backpacks &amp; Notebook Bundle &bull; Qty: 2]</div>
+                </div>
+                <a href="request-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Inspect Proof]</a>
+              </div>
+              <div style="padding:10px 12px;border:1px solid var(--wf-border);border-radius:4px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div style="font-weight:700;">[Rosalina Ramos &bull; Req #490]</div>
+                  <div class="wf-hint">[Family Food Assistance Pack &bull; Qty: 1]</div>
+                </div>
+                <a href="request-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Inspect Proof]</a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Donation Approvals -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h3 class="wf-card__title">[New Donations Awaiting Approval]</h3>
+              <a href="donations.html" class="wf-btn wf-btn--sm wf-btn--outline">[Queue &rarr;]</a>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="padding:10px 12px;border:1px solid var(--wf-border);border-radius:4px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div style="font-weight:700;">[Assorted Children Storybooks]</div>
+                  <div class="wf-hint">[School Supplies &bull; Qty: 10 sets &bull; Donor: Maria Santos]</div>
+                </div>
+                <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Review]</a>
+              </div>
+              <div style="padding:10px 12px;border:1px solid var(--wf-border);border-radius:4px;display:flex;justify-content:space-between;align-items:center;">
+                <div>
+                  <div style="font-weight:700;">[Family Canned Goods &amp; Rice]</div>
+                  <div class="wf-hint">[Food &amp; Groceries &bull; Qty: 20 packs &bull; Donor: David Tan]</div>
+                </div>
+                <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Review]</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

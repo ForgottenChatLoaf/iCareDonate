@@ -197,6 +197,65 @@ try {
     }
     unset($item);
 
+    // 6. Gather Active Listings & Claims for Authenticated User
+    $activeListings = [];
+
+    // Active donations (pending verification or approved/active)
+    try {
+        $stmtActiveDon = $pdo->prepare("
+            SELECT id, title, category, quantity, unit, status, created_at
+            FROM donations
+            WHERE donor_id = :uid AND status IN ('pending', 'approved')
+            ORDER BY created_at DESC
+            LIMIT 5
+        ");
+        $stmtActiveDon->execute([':uid' => $userId]);
+        while ($d = $stmtActiveDon->fetch()) {
+            $unitStr = !empty($d['unit']) ? ' ' . $d['unit'] : ' units';
+            $activeListings[] = [
+                'id'          => (int)$d['id'],
+                'ref_code'    => 'DON-' . str_pad((string)$d['id'], 5, '0', STR_PAD_LEFT),
+                'title'       => $d['title'],
+                'category'    => $d['category'] ?? 'General',
+                'quantity'    => ($d['quantity'] ?? 1) . $unitStr,
+                'status'      => $d['status'],
+                'type'        => 'donation',
+                'created_at'  => $d['created_at'],
+                'action_label'=> $d['status'] === 'pending' ? 'Edit' : 'Manage',
+                'action_url'  => $d['status'] === 'pending' ? 'edit-donation.html?id=' . $d['id'] : 'donations.html',
+            ];
+        }
+    } catch (PDOException $e) {}
+
+    // Active claims / requests (pending or approved)
+    try {
+        $stmtActiveReq = $pdo->prepare("
+            SELECT r.id, r.donation_id, COALESCE(d.title, 'Requested Resource') AS title,
+                   COALESCE(d.category, 'General') AS category, r.quantity_requested, r.status, r.created_at,
+                   r.claim_code
+            FROM requests r
+            LEFT JOIN donations d ON r.donation_id = d.id
+            WHERE r.requester_id = :uid AND r.status IN ('pending', 'approved')
+            ORDER BY r.created_at DESC
+            LIMIT 5
+        ");
+        $stmtActiveReq->execute([':uid' => $userId]);
+        while ($r = $stmtActiveReq->fetch()) {
+            $activeListings[] = [
+                'id'          => (int)$r['id'],
+                'ref_code'    => 'REQ-' . str_pad((string)$r['id'], 5, '0', STR_PAD_LEFT),
+                'title'       => $r['title'],
+                'category'    => $r['category'] ?? 'General',
+                'quantity'    => ($r['quantity_requested'] ?? 1) . ' units',
+                'status'      => $r['status'],
+                'type'        => 'claim',
+                'created_at'  => $r['created_at'],
+                'action_label'=> $r['status'] === 'approved' ? 'Claim Pass' : 'Details',
+                'action_url'  => $r['status'] === 'approved' ? 'transactions.html' : 'request-details.html?id=' . $r['id'],
+            ];
+        }
+    } catch (PDOException $e) {}
+
     http_response_code(200);
     echo json_encode([
         'success' => true,
@@ -209,6 +268,7 @@ try {
             'unread_notifications' => $unreadNotifs,
         ],
         'recent_activity' => $activityItems,
+        'active_listings' => $activeListings,
     ]);
 
 } catch (PDOException $e) {

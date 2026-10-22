@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Updated Public Footer Component — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body style="background:var(--wf-surface-muted);">
+
+  <!-- ── PUBLIC HEADER ─────────────────────────────────────── -->
+  <header class="wf-public-nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <a href="../index.html" style="font-weight:800;font-size:16px;text-decoration:none;color:var(--wf-text);">
+        [iCareDonate Wireframe]
+      </a>
+      <span class="wf-badge">[COMPONENT SHOWCASE]</span>
+    </div>
+    <div style="display:flex;gap:8px;">
+      <a href="guides.html" class="wf-btn wf-btn--outline wf-btn--sm">[View Guides Wireframe]</a>
+      <a href="../index.html" class="wf-btn wf-btn--primary wf-btn--sm">[All Wireframes Index]</a>
+    </div>
+  </header>
+
+  <main style="max-width:1040px;margin:32px auto 60px;padding:0 20px;">
+
+    <!-- Overview Card -->
+    <div class="wf-card" style="margin-bottom:28px;">
+      <span class="wf-badge" style="margin-bottom:8px;">[Standardized Component Specification]</span>
+      <h1 style="font-size:24px;margin-bottom:8px;">[Updated 4-Column Public Page Footer Wireframe]</h1>
+      <p style="font-size:14px;margin-bottom:14px;">
+        [This wireframe represents the updated, unified 4-column public footer structure implemented across all public pages, error screens, and auth pages in iCareDonate (including guides.html, index.html, about.html, etc.).]
+      </p>
+
+      <div class="wf-grid-3" style="margin-bottom:0;">
+        <div style="padding:10px 12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);">
+          <strong>[Desktop (1024px+)]</strong>
+          <p style="font-size:11.5px;margin:2px 0 0;">[Full 4-column grid: 2fr brand column + three 1fr/1.5fr link columns]</p>
+        </div>
+        <div style="padding:10px 12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);">
+          <strong>[Tablet (768px - 991px)]</strong>
+          <p style="font-size:11.5px;margin:2px 0 0;">[Adaptive 2x2 grid with comfortable tap targets]</p>
+        </div>
+        <div style="padding:10px 12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);">
+          <strong>[Mobile (&lt; 768px)]</strong>
+          <p style="font-size:11.5px;margin:2px 0 0;">[Single stacked column with clean spacing and full touch areas]</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Live Wireframe Component Preview -->
+    <div style="border:2px dashed var(--wf-border-black);border-radius:var(--wf-radius);overflow:hidden;background:#fff;margin-bottom:32px;">
+      <div style="background:var(--wf-surface-muted);padding:8px 14px;border-bottom:1px solid var(--wf-border);font-size:11.5px;font-weight:700;display:flex;justify-content:space-between;">
+        <span>[Component Live Preview: .wf-public-footer]</span>
+        <span class="wf-badge">[Monochrome Grayscale]</span>
+      </div>
+
+      <footer class="wf-public-footer" style="margin-top:0;">
+        <div class="wf-public-footer__grid">
+          <!-- Col 1: Brand & Social -->
+          <div class="wf-public-footer__col">
+            <a href="../index.html" style="font-size:16px;font-weight:800;color:var(--wf-text);text-decoration:none;display:block;margin-bottom:6px;">
+              [iCareDonate Logo]
+            </a>
+            <p style="font-size:12px;margin-bottom:12px;">[Give what you can. Help where it matters.]</p>
+            <div style="display:flex;gap:8px;">
+              <span class="wf-badge">[Facebook]</span>
+              <span class="wf-badge">[Instagram]</span>
+            </div>
+          </div>
+
+          <!-- Col 2: Explore -->
+          <div class="wf-public-footer__col">
+            <h4>[Explore]</h4>
+            <ul>
+              <li><a href="../user/browse-donations.html">[Community Donations]</a></li>
+              <li><a href="../user/browse-donations.html">[Ways to Help]</a></li>
+              <li><a href="#">[How It Works]</a></li>
+              <li><a href="../user/offer-donation.html">[Start Donating]</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 3: About -->
+          <div class="wf-public-footer__col">
+            <h4>[About]</h4>
+            <ul>
+              <li><a href="#">[About Us]</a></li>
+              <li><a href="#">[Why iCareDonate?]</a></li>
+              <li><a href="#">[Careers &amp; Volunteers]</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 4: Help & Legal -->
+          <div class="wf-public-footer__col">
+            <h4>[Help &amp; Legal]</h4>
+            <ul>
+              <li><a href="../user/help-center.html">[Help Center]</a></li>
+              <li><a href="guides.html" style="font-weight:700;">[Guides &amp; Tutorials]</a></li>
+              <li><a href="../user/help-center.html">[Frequently Asked Questions]</a></li>
+              <li><a href="../user/support.html">[Contact Support]</a></li>
+              <li><a href="#">[Terms of Service]</a></li>
+              <li><a href="#">[Privacy Policy]</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="wf-public-footer__bottom">
+          <span>[&copy; 2026 iCareDonate. All rights reserved.]</span>
+          <span>[Official Contact: icaredonate.team@gmail.com]</span>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Column Architecture Breakdown Table -->
+    <div class="wf-card">
+      <div class="wf-card__header">
+        <h3 class="wf-card__title">[Architecture Specification Breakdown]</h3>
+      </div>
+
+      <div class="wf-table-wrap">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th>[Section / Column]</th>
+              <th>[Target Width]</th>
+              <th>[Elements Included]</th>
+              <th>[Destination Routes Placeholder]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>[Column 1: Brand &amp; Social]</strong></td>
+              <td>[2fr (30% desktop)]</td>
+              <td>[Brand logo wordmark, official mission tagline, social channel badges]</td>
+              <td>[Home: index.html &bull; Facebook &bull; Instagram]</td>
+            </tr>
+            <tr>
+              <td><strong>[Column 2: Explore]</strong></td>
+              <td>[1fr (20% desktop)]</td>
+              <td>[4 navigation links to community catalog and onboarding]</td>
+              <td>[donations.html, categories.html, how-it-works.html, signup.html]</td>
+            </tr>
+            <tr>
+              <td><strong>[Column 3: About]</strong></td>
+              <td>[1fr (20% desktop)]</td>
+              <td>[3 navigation links for organizational mission and story]</td>
+              <td>[about.html, why-icare-donate.html, careers.html]</td>
+            </tr>
+            <tr>
+              <td><strong>[Column 4: Help &amp; Legal]</strong></td>
+              <td>[1.5fr (30% desktop)]</td>
+              <td>[6 navigation links including newly integrated Guides &amp; Tutorials]</td>
+              <td>[help-center.html, guides.html, faqs.html, contact.html, terms.html, privacy.html]</td>
+            </tr>
+            <tr>
+              <td><strong>[Bottom Bar]</strong></td>
+              <td>[100% full width]</td>
+              <td>[Copyright assertion and official support contact email]</td>
+              <td>[mailto:icaredonate.team@gmail.com]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="../assets/wireframe.js"></script>
+</body>
+</html>

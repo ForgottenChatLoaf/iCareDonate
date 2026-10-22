@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Profile &amp; Settings — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── USER SIDEBAR ──────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill">[USER]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Donations &amp; Requests]</div>
+
+      <a href="offer-donation.html" class="wf-sidebar__link wf-sidebar__link--accent">
+        <span class="wf-sidebar__icon">+</span>
+        <span>[Post Donation]</span>
+      </a>
+
+      <a href="browse-donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9740;</span>
+        <span>[Browse Donations]</span>
+      </a>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[My Donations]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[My Requests]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Claims &amp; Handovers]</span>
+      </a>
+
+      <a href="history.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[History]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Communication]</div>
+
+      <a href="activity-log.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9201;</span>
+        <span>[Activity Log]</span>
+      </a>
+
+      <a href="notifications.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Notifications]</span>
+        <span class="wf-sidebar__badge">[3]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9888;</span>
+        <span>[Support &amp; Help]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Account]</div>
+
+      <a href="profile.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Profile &amp; Settings]</span>
+      </a>
+
+      <a href="help-center.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[Help Center]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Profile &amp; Settings]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="dashboard.html" class="wf-btn wf-btn--outline wf-btn--sm">[&larr; Dashboard]</a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Settings Tab Navigation (Matching Website Tabs) -->
+      <div style="display:flex;gap:4px;flex-wrap:wrap;border-bottom:2px solid var(--wf-border);margin-bottom:24px;padding-bottom:0;">
+        <button type="button" class="wf-tab is-active" onclick="switchTab('personal', this)">[Personal Information]</button>
+        <button type="button" class="wf-tab" onclick="switchTab('verification', this)">[Verification]</button>
+        <button type="button" class="wf-tab" onclick="switchTab('security', this)">[Security]</button>
+        <button type="button" class="wf-tab" onclick="switchTab('privacy', this)">[Privacy &amp; Location]</button>
+        <button type="button" class="wf-tab" onclick="switchTab('notifs', this)">[Notifications]</button>
+        <button type="button" class="wf-tab" onclick="switchTab('locale', this)">[Language &amp; Region]</button>
+        <button type="button" class="wf-tab" onclick="switchTab('account', this)">[Account Status]</button>
+      </div>
+
+      <!-- SECTION A: Personal Information -->
+      <div id="tab-personal" class="wf-card">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Personal Information]</h2>
+          <span class="wf-hint">[Update your community identity and contact details]</span>
+        </div>
+
+        <!-- Profile Avatar Row -->
+        <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--wf-surface-alt);">
+          <div class="wf-img-placeholder" style="width:64px;height:64px;border-radius:50%;flex-shrink:0;">
+            <span style="font-size:9px;">[Photo]</span>
+          </div>
+          <div>
+            <div style="font-size:15px;font-weight:700;">[User Full Name Placeholder]</div>
+            <div class="wf-hint" style="font-size:12.5px;">[Member since Jan 2026 &middot; Role: Community Member]</div>
+          </div>
+        </div>
+
+        <form action="#" method="post">
+          <div class="wf-grid-2">
+            <div class="wf-form-group">
+              <label class="wf-label">[First Name *]</label>
+              <input type="text" class="wf-input" value="[First Name Placeholder]">
+            </div>
+            <div class="wf-form-group">
+              <label class="wf-label">[Last Name *]</label>
+              <input type="text" class="wf-input" value="[Last Name Placeholder]">
+            </div>
+          </div>
+
+          <div class="wf-grid-2">
+            <div class="wf-form-group">
+              <label class="wf-label">[Email Address *]</label>
+              <input type="email" class="wf-input" value="[user.email@placeholder.com]">
+            </div>
+            <div class="wf-form-group">
+              <label class="wf-label">[Mobile Phone *]</label>
+              <input type="text" class="wf-input" value="[+63 9XX XXX XXXX]">
+            </div>
+          </div>
+
+          <div class="wf-grid-2">
+            <div class="wf-form-group">
+              <label class="wf-label">[City / Municipality]</label>
+              <input type="text" class="wf-input" value="[Quezon City]">
+            </div>
+            <div class="wf-form-group">
+              <label class="wf-label">[Barangay / Locality]</label>
+              <input type="text" class="wf-input" value="[Barangay Central]">
+            </div>
+          </div>
+
+          <button type="submit" class="wf-btn wf-btn--primary">[Save Changes]</button>
+        </form>
+      </div>
+
+      <!-- SECTION B: Verification -->
+      <div id="tab-verification" class="wf-card" style="display:none;">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Account Verification Status]</h2>
+          <span class="wf-hint">[Proof of identity enables priority assistance request allocation]</span>
+        </div>
+
+        <div style="background:var(--wf-surface-muted);border:1px solid var(--wf-border);border-radius:var(--wf-radius);padding:18px;margin-bottom:18px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <div style="font-weight:700;font-size:14px;">[Beneficiary Identity Verified]</div>
+            <span class="wf-badge wf-badge--dark">[Approved]</span>
+          </div>
+          <div class="wf-hint" style="font-size:12.5px;line-height:1.5;">[Approved via Barangay Certificate of Indigency &middot; Submitted Oct 11, 2026 &middot; Verified by Community Coordinator]</div>
+        </div>
+
+        <div style="border:1px dashed var(--wf-border);border-radius:var(--wf-radius);padding:18px;text-align:center;">
+          <div style="font-weight:600;font-size:13px;margin-bottom:4px;">[Need to update your verification documents?]</div>
+          <p class="wf-hint" style="font-size:12.5px;margin-bottom:12px;">[Upload an updated certificate or government ID if your eligibility documents have changed.]</p>
+          <button type="button" class="wf-btn wf-btn--outline wf-btn--sm" onclick="alert('[Wireframe Demo: File Upload Dialog]')">[Upload Updated Certificate / ID]</button>
+        </div>
+      </div>
+
+      <!-- SECTION C: Security -->
+      <div id="tab-security" class="wf-card" style="display:none;">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Security &amp; Password]</h2>
+          <span class="wf-hint">[Keep credentials protected &mdash; minimum 8 characters]</span>
+        </div>
+
+        <form action="#" method="post" style="margin-bottom:24px;">
+          <div class="wf-form-group">
+            <label class="wf-label">[Current Password *]</label>
+            <input type="password" class="wf-input" placeholder="[Enter current password]">
+          </div>
+          <div class="wf-grid-2">
+            <div class="wf-form-group">
+              <label class="wf-label">[New Password *]</label>
+              <input type="password" class="wf-input" placeholder="[At least 8 characters]">
+            </div>
+            <div class="wf-form-group">
+              <label class="wf-label">[Confirm New Password *]</label>
+              <input type="password" class="wf-input" placeholder="[Re-type new password]">
+            </div>
+          </div>
+          <button type="submit" class="wf-btn wf-btn--primary">[Update Password]</button>
+        </form>
+
+        <!-- Active Sessions -->
+        <div style="border-top:1px solid var(--wf-surface-alt);padding-top:20px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <h3 style="margin:0;">[Active Login Sessions]</h3>
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Terminated all other sessions]')">[Log Out Other Devices]</button>
+          </div>
+          <div class="wf-table-wrap">
+            <table class="wf-table">
+              <thead>
+                <tr>
+                  <th>[Device / Browser]</th>
+                  <th>[Location]</th>
+                  <th>[Last Active]</th>
+                  <th style="text-align:right;">[Status]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>[Chrome Desktop / Windows]</strong></td>
+                  <td>[Quezon City, Metro Manila]</td>
+                  <td>[Current Active Session]</td>
+                  <td style="text-align:right;"><span class="wf-badge wf-badge--dark">[Current]</span></td>
+                </tr>
+                <tr>
+                  <td><strong>[Safari Mobile / iOS]</strong></td>
+                  <td>[Quezon City, Metro Manila]</td>
+                  <td>[2 days ago]</td>
+                  <td style="text-align:right;"><button class="wf-btn wf-btn--sm wf-btn--subtle" onclick="alert('[Revoking session]')">[Revoke]</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION D: Privacy & Location -->
+      <div id="tab-privacy" class="wf-card" style="display:none;">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Privacy &amp; Location]</h2>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:20px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <input type="checkbox" checked style="margin-top:3px;">
+            <div>
+              <div style="font-weight:600;font-size:13px;">[Share Mobile Contact with Matched Partner]</div>
+              <p class="wf-hint" style="font-size:12px;margin:2px 0 0;">[Allows verified counterpart to call or SMS you for safe hub coordination.]</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <input type="checkbox" checked style="margin-top:3px;">
+            <div>
+              <div style="font-weight:600;font-size:13px;">[Show Approximate Location to Donors / Requesters]</div>
+              <p class="wf-hint" style="font-size:12px;margin:2px 0 0;">[Only barangay/city is shared, never your full address.]</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="border-top:1px solid var(--wf-surface-alt);padding-top:16px;">
+          <h4 style="color:var(--wf-border-black);margin-bottom:6px;">[Deactivate or Close Account]</h4>
+          <p class="wf-hint" style="font-size:12px;margin-bottom:10px;">[Permanently delete your profile and withdraw all active donation listings.]</p>
+          <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Account deletion confirmation]')">[Request Account Deletion]</button>
+        </div>
+      </div>
+
+      <!-- SECTION E: Notifications -->
+      <div id="tab-notifs" class="wf-card" style="display:none;">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Notification Preferences]</h2>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:16px;margin-bottom:20px;">
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <input type="checkbox" id="prefMatches" checked style="margin-top:3px;">
+            <div>
+              <label for="prefMatches" style="font-weight:600;font-size:13px;">[Match Alerts &amp; Approvals]</label>
+              <p class="wf-hint" style="font-size:12px;margin:2px 0 0;">[In-app and email alerts when a request is matched or listing approved.]</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <input type="checkbox" id="prefPickup" checked style="margin-top:3px;">
+            <div>
+              <label for="prefPickup" style="font-weight:600;font-size:13px;">[Handover Pickup Reminders]</label>
+              <p class="wf-hint" style="font-size:12px;margin:2px 0 0;">[SMS alerts 24 hours prior to scheduled hub handover deadlines.]</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:10px;">
+            <input type="checkbox" id="prefNewsletter" style="margin-top:3px;">
+            <div>
+              <label for="prefNewsletter" style="font-weight:600;font-size:13px;">[Community Impact Reports &amp; News]</label>
+              <p class="wf-hint" style="font-size:12px;margin:2px 0 0;">[Monthly newsletter highlighting community aid metrics.]</p>
+            </div>
+          </div>
+        </div>
+        <button type="button" class="wf-btn wf-btn--outline" onclick="alert('[Wireframe Demo: Preferences saved]')">[Save Preferences]</button>
+      </div>
+
+      <!-- SECTION F: Language & Region -->
+      <div id="tab-locale" class="wf-card" style="display:none;">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Language &amp; Region]</h2>
+        </div>
+        <div class="wf-grid-2">
+          <div class="wf-form-group">
+            <label class="wf-label">[Display Language]</label>
+            <select class="wf-select">
+              <option>[English (Philippines)]</option>
+              <option>[Filipino (Tagalog)]</option>
+            </select>
+          </div>
+          <div class="wf-form-group">
+            <label class="wf-label">[Region / Province]</label>
+            <select class="wf-select">
+              <option>[Metro Manila / NCR]</option>
+              <option>[Region III &mdash; Central Luzon]</option>
+              <option>[Region IV-A &mdash; CALABARZON]</option>
+            </select>
+          </div>
+        </div>
+        <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Locale saved]')">[Save Preferences]</button>
+      </div>
+
+      <!-- SECTION G: Account Status -->
+      <div id="tab-account" class="wf-card" style="display:none;">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Account Status]</h2>
+        </div>
+
+        <div style="display:flex;gap:10px;align-items:center;margin-bottom:14px;">
+          <span class="wf-badge wf-badge--dark">[Status: Active &amp; Verified]</span>
+          <span class="wf-hint">[Account in good standing]</span>
+        </div>
+
+        <div style="background:var(--wf-surface-muted);border:1px solid var(--wf-border);border-radius:var(--wf-radius);padding:14px;margin-bottom:14px;">
+          <div class="wf-label">[Account Created]</div>
+          <p class="wf-hint">[YYYY-MM-DD]</p>
+          <div class="wf-label">[Role]</div>
+          <p class="wf-hint">[Community Member]</p>
+          <div class="wf-label">[Total Completed Handovers]</div>
+          <p class="wf-hint">[04 verified handovers]</p>
+        </div>
+
+        <div style="border-top:1px solid var(--wf-surface-alt);padding-top:16px;">
+          <p class="wf-hint" style="font-size:12.5px;margin-bottom:10px;">[To request account closure or dispute a platform decision, contact the Support Desk.]</p>
+          <a href="support.html" class="wf-btn wf-btn--outline wf-btn--sm">[Contact Support Desk]</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Authenticated Mini Footer -->
+    <footer class="wf-footer">
+      <div>[Authenticated User Portal] &bull; &copy; 2026 iCareDonate</div>
+      <div class="wf-footer__links">
+        <a href="../../frontend/privacy.html">[Privacy Policy]</a>
+        <a href="../../frontend/terms.html">[Terms of Service]</a>
+        <a href="help-center.html">[Help Center]</a>
+      </div>
+    </footer>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+<script>
+function switchTab(tabId, btn) {
+  // Hide all tab panels
+  document.querySelectorAll('[id^="tab-"]').forEach(function(el) {
+    el.style.display = 'none';
+  });
+  // Remove active from all tab buttons
+  document.querySelectorAll('.wf-tab').forEach(function(b) {
+    b.classList.remove('is-active');
+  });
+  // Show selected, mark active
+  var panel = document.getElementById('tab-' + tabId);
+  if (panel) panel.style.display = 'block';
+  if (btn) btn.classList.add('is-active');
+}
+</script>
+</body>
+</html>

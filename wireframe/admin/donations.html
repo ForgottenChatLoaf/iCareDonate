@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Donation Moderation Queue — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Donation Moderation Queue]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Status Tabs Navigation -->
+      <div class="wf-tabs">
+        <button class="wf-tab is-active">[Pending (02)]</button>
+        <button class="wf-tab">[Approved (28)]</button>
+        <button class="wf-tab">[Archived (04)]</button>
+        <button class="wf-tab">[All Active (30)]</button>
+      </div>
+
+      <!-- Live Search & Filter Bar -->
+      <div class="wf-card" style="padding:14px 18px;margin-bottom:20px;">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px;align-items:end;">
+          <div>
+            <label class="wf-label">[Search Listings]</label>
+            <input type="text" class="wf-input" placeholder="[Title, donor name, description...]">
+          </div>
+          <div>
+            <label class="wf-label">[Category]</label>
+            <select class="wf-select">
+              <option>[All Categories]</option>
+              <option>[School Supplies]</option>
+              <option>[Food &amp; Groceries]</option>
+              <option>[Clothing]</option>
+              <option>[Medical Supplies]</option>
+              <option>[Household Items]</option>
+            </select>
+          </div>
+          <div>
+            <label class="wf-label">[Sort Order]</label>
+            <select class="wf-select">
+              <option>[Newest First]</option>
+              <option>[Oldest First]</option>
+              <option>[Title A-Z]</option>
+            </select>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="wf-btn wf-btn--outline" style="height:35px;">[Reset]</button>
+            <button class="wf-btn wf-btn--outline" style="height:35px;">[Export CSV]</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Archived Notice Banner (shown when filtered by archived) -->
+      <div class="wf-card" style="display:none;background:var(--wf-surface-alt);border-left:4px solid var(--wf-border-black);padding:12px 16px;margin-bottom:20px;">
+        <span style="font-size:13px;">[Archived listings are hidden from public browsing. You can review the recorded archival reason below and restore any listing back to active circulation.]</span>
+      </div>
+
+      <!-- Donations Card List Container -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- Donation Card 1 (Pending) -->
+        <div class="wf-card" style="padding:20px;">
+          <div style="display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:start;">
+            
+            <!-- Thumbnail Image Placeholder -->
+            <div class="wf-img-placeholder" style="width:120px;height:100px;min-height:0;">
+              <span>[Photo]</span>
+            </div>
+
+            <!-- Donation Details -->
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
+                <span class="wf-badge">[School Supplies]</span>
+                <span class="wf-badge wf-badge--dashed">[Pending Verification]</span>
+                <span class="wf-hint">[Donor: <strong>Maria Santos</strong> (maria@example.com)]</span>
+              </div>
+
+              <h3 style="font-size:16.5px;font-weight:700;margin:0 0 6px;">
+                [Assorted Children Storybooks &amp; Workbooks]
+              </h3>
+
+              <p style="font-size:13px;line-height:1.5;margin:0 0 10px;">
+                [Set of 10 gently used early learning storybooks in English and Filipino, suitable for Kindergarten to Grade 3 learners.]
+              </p>
+
+              <div style="font-size:12.5px;display:flex;gap:16px;flex-wrap:wrap;">
+                <div>[Qty: <strong>10 sets</strong>]</div>
+                <div>[Condition: <strong>Gently Used</strong>]</div>
+                <div>[Pickup: <strong>Drop-off (Quezon City)</strong>]</div>
+                <div>[Date: <strong>2026-10-18</strong>]</div>
+              </div>
+            </div>
+
+            <!-- Review Link -->
+            <div style="text-align:right;">
+              <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[Review]</a>
+            </div>
+          </div>
+
+          <!-- Action Bar -->
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--wf-border);display:flex;justify-content:flex-end;gap:10px;align-items:center;">
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalArchiveDonation')">[Archive / Reject]</button>
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--primary" onclick="alert('[Wireframe Demo: Listing approved and published!]')">[Approve Listing]</button>
+          </div>
+        </div>
+
+        <!-- Donation Card 2 (Pending) -->
+        <div class="wf-card" style="padding:20px;">
+          <div style="display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:start;">
+            
+            <!-- Thumbnail Image Placeholder -->
+            <div class="wf-img-placeholder" style="width:120px;height:100px;min-height:0;">
+              <span>[Photo]</span>
+            </div>
+
+            <!-- Donation Details -->
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
+                <span class="wf-badge">[Food &amp; Groceries]</span>
+                <span class="wf-badge wf-badge--dashed">[Pending Verification]</span>
+                <span class="wf-hint">[Donor: <strong>David Tan</strong> (donor@icaredonate.test)]</span>
+              </div>
+
+              <h3 style="font-size:16.5px;font-weight:700;margin:0 0 6px;">
+                [Family Canned Goods &amp; Instant Meals Bundle]
+              </h3>
+
+              <p style="font-size:13px;line-height:1.5;margin:0 0 10px;">
+                [Unopened canned sardines, tuna, and instant noodles packed in 5 family survival bags. Expiry date valid through Dec 2027.]
+              </p>
+
+              <div style="font-size:12.5px;display:flex;gap:16px;flex-wrap:wrap;">
+                <div>[Qty: <strong>25 packs</strong>]</div>
+                <div>[Condition: <strong>Brand New / Sealed</strong>]</div>
+                <div>[Pickup: <strong>Drop-off (Manila Hub)</strong>]</div>
+                <div>[Date: <strong>2026-10-17</strong>]</div>
+              </div>
+            </div>
+
+            <!-- Review Link -->
+            <div style="text-align:right;">
+              <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[Review]</a>
+            </div>
+          </div>
+
+          <!-- Action Bar -->
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--wf-border);display:flex;justify-content:flex-end;gap:10px;align-items:center;">
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalArchiveDonation')">[Archive / Reject]</button>
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--primary" onclick="alert('[Wireframe Demo: Listing approved and published!]')">[Approve Listing]</button>
+          </div>
+        </div>
+
+        <!-- Donation Card 3 (Approved) -->
+        <div class="wf-card" style="padding:20px;">
+          <div style="display:grid;grid-template-columns:120px 1fr auto;gap:18px;align-items:start;">
+            
+            <div class="wf-img-placeholder" style="width:120px;height:100px;min-height:0;">
+              <span>[Photo]</span>
+            </div>
+
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
+                <span class="wf-badge">[Clothing]</span>
+                <span class="wf-badge wf-badge--dark">[Approved]</span>
+                <span class="wf-hint">[Donor: <strong>Elena Santos</strong> (elena@example.com)]</span>
+              </div>
+
+              <h3 style="font-size:16.5px;font-weight:700;margin:0 0 6px;">
+                [Warm Blankets &amp; Bed Linens for Displaced Families]
+              </h3>
+
+              <p style="font-size:13px;line-height:1.5;margin:0 0 10px;">
+                [Clean, laundered blankets and bed linens suitable for evacuation relief operations.]
+              </p>
+
+              <div style="font-size:12.5px;display:flex;gap:16px;flex-wrap:wrap;">
+                <div>[Qty: <strong>15 pcs</strong>]</div>
+                <div>[Condition: <strong>Gently Used</strong>]</div>
+                <div>[Pickup: <strong>Barangay Central Hall</strong>]</div>
+                <div>[Date: <strong>2026-10-15</strong>]</div>
+              </div>
+            </div>
+
+            <div style="text-align:right;">
+              <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[Review]</a>
+            </div>
+          </div>
+
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid var(--wf-border);display:flex;justify-content:flex-end;gap:10px;align-items:center;">
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalArchiveDonation')">[Archive]</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- ARCHIVE CONFIRMATION MODAL -->
+<div class="wf-modal-backdrop" id="wfModalArchiveDonation" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Archive Donation Listing]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalArchiveDonation')">&times;</button>
+    </div>
+    <div>
+      <p style="font-size:13px;margin:0 0 8px;">[Selected Donation Item:]</p>
+      <div style="font-weight:700;font-size:14px;padding:8px 12px;background:var(--wf-surface-alt);border-radius:4px;margin-bottom:12px;">
+        [Item Title Placeholder]
+      </div>
+      <div class="wf-card" style="padding:10px 14px;background:var(--wf-surface-alt);font-size:12.5px;margin-bottom:14px;">
+        [Archiving will immediately hide this item from public search. Historical claim logs and donor records will remain intact. You can restore it anytime.]
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Reason for Archival *]</label>
+        <select class="wf-select">
+          <option>[Policy Non-Compliance (Condition / Packaging)]</option>
+          <option>[Duplicate or Expired Listing]</option>
+          <option>[Donor Requested Withdrawal]</option>
+          <option>[Safety or Hygiene Concerns]</option>
+        </select>
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Detailed Archival Notes (Optional)]</label>
+        <textarea class="wf-textarea" placeholder="[Provide additional context for audit ledger...]"></textarea>
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalArchiveDonation')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Donation moved to archive]');wfCloseModal('wfModalArchiveDonation')">[Confirm Archive]</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

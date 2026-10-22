@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Request &amp; Proof Review Queue — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Request &amp; Proof Review Queue]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Status Tabs Navigation & Export Action -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+        <div class="wf-tabs" style="margin-bottom:0;">
+          <button class="wf-tab is-active">[Pending Proofs (2)]</button>
+          <button class="wf-tab">[Matched (1)]</button>
+          <button class="wf-tab">[Completed (1)]</button>
+          <button class="wf-tab">[All Requests (4)]</button>
+        </div>
+        <button type="button" class="wf-btn wf-btn--outline" style="height:36px;">[Export CSV]</button>
+      </div>
+
+      <!-- Requests Data Table -->
+      <div class="wf-card" style="padding:0;overflow:hidden;">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;">[Req ID]</th>
+              <th style="padding:12px 16px;">[Requester]</th>
+              <th style="padding:12px 16px;">[Item Requested]</th>
+              <th style="padding:12px 16px;">[Urgency]</th>
+              <th style="padding:12px 16px;">[Proof Status]</th>
+              <th style="padding:12px 16px;">[Status]</th>
+              <th style="padding:12px 16px;text-align:right;">[Actions]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#501]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Carlos Mendoza]</div>
+                <small class="wf-hint">[Quezon City &bull; 0918-223-1122]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:600;">[Elementary Backpacks &amp; Notebook Bundle]</div>
+                <small class="wf-hint">[Qty: 2 sets]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge wf-badge--dark">[Critical / High]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Barangay Indigency]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge wf-badge--dashed">[PENDING]</span>
+              </td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="request-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Review Proof]</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#490]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Rosalina Ramos]</div>
+                <small class="wf-hint">[Manila City &bull; 0920-555-8833]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:600;">[Family Food Assistance Pack]</div>
+                <small class="wf-hint">[Qty: 1 pack]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Moderate]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Student ID / Enrollment]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge wf-badge--dashed">[PENDING]</span>
+              </td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="request-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Review Proof]</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#412]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Maricel Dizon]</div>
+                <small class="wf-hint">[Caloocan City &bull; 0915-444-2211]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:600;">[Study Tablet for Online Modules]</div>
+                <small class="wf-hint">[Qty: 1 unit]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[High]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Barangay Indigency]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge wf-badge--dark">[MATCHED]</span>
+              </td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="request-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[View Details]</a>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[#380]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Eduardo Cruz]</div>
+                <small class="wf-hint">[Quezon City &bull; 0919-777-3344]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:600;">[Blood Pressure Monitor &amp; Strips]</div>
+                <small class="wf-hint">[Qty: 1 unit]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Moderate]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Senior Citizen ID]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge wf-badge--dark">[COMPLETED]</span>
+              </td>
+              <td style="padding:14px 16px;text-align:right;">
+                <a href="request-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[View Details]</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

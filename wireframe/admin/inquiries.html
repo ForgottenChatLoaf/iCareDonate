@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Public Inquiries &amp; Messages — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Public Inquiries &amp; Messages]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="support.html" class="wf-btn wf-btn--outline">
+          [&larr; Registered Support Tickets]
+        </a>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Inquiries Stack -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+
+        <!-- Inquiry 1 (Pending Reply) -->
+        <div class="wf-card" style="padding:22px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;">
+                <span class="wf-badge wf-badge--dashed">[Status: Pending Reply]</span>
+                <span class="wf-hint" style="font-size:12px;">
+                  [From: Rotary Youth Volunteer Org (volunteer@rotaryyouth.ph) &bull; 2026-10-11]
+                </span>
+              </div>
+              <h3 style="font-size:16.5px;font-weight:700;margin:0 0 6px;">
+                [Partnership Proposal: Barangay Donation Drive in Quezon City]
+              </h3>
+            </div>
+            <div>
+              <span class="wf-badge">[Institutional Inquiry]</span>
+            </div>
+          </div>
+
+          <p style="font-size:13.5px;background:var(--wf-surface-alt);padding:12px 14px;border:1px solid var(--wf-border);border-radius:4px;margin:0 0 14px;line-height:1.5;">
+            ["Good day! Our organization is preparing a school supplies donation drive for 150 elementary students in District 2. We would like to coordinate logistical drop-off points with iCareDonate administrators."]
+          </p>
+
+          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+            <input type="text" class="wf-input" placeholder="[Draft email reply to partner...]" style="flex:1;min-width:240px;">
+            <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Email response queued and sent]')">
+              [Send Response]
+            </button>
+          </div>
+        </div>
+
+        <!-- Inquiry 2 (Resolved) -->
+        <div class="wf-card" style="padding:22px;background:var(--wf-surface-alt);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;">
+                <span class="wf-badge wf-badge--dark">[Status: Resolved]</span>
+                <span class="wf-hint" style="font-size:12px;">
+                  [From: Barangay Councilor A. Santos &bull; 2026-10-06]
+                </span>
+              </div>
+              <h3 style="font-size:16.5px;font-weight:700;margin:0 0 6px;">
+                [Confirmation of verified drop-off hub address]
+              </h3>
+            </div>
+          </div>
+
+          <p style="font-size:13.5px;margin:0;line-height:1.5;">
+            <strong>[Admin Note:]</strong> ["Hub address confirmed and updated on public help page."]
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

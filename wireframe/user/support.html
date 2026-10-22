@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] User Support Desk — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── USER SIDEBAR ──────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill">[USER]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Donations &amp; Requests]</div>
+
+      <a href="offer-donation.html" class="wf-sidebar__link wf-sidebar__link--accent">
+        <span class="wf-sidebar__icon">+</span>
+        <span>[Post Donation]</span>
+      </a>
+
+      <a href="browse-donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9740;</span>
+        <span>[Browse Donations]</span>
+      </a>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[My Donations]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[My Requests]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Claims &amp; Handovers]</span>
+      </a>
+
+      <a href="history.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[History]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Communication]</div>
+
+      <a href="activity-log.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9201;</span>
+        <span>[Activity Log]</span>
+      </a>
+
+      <a href="notifications.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Notifications]</span>
+        <span class="wf-sidebar__badge">[3]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9888;</span>
+        <span>[Support &amp; Help]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Account]</div>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Profile]</span>
+      </a>
+
+      <a href="settings.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9881;</span>
+        <span>[Account Settings]</span>
+      </a>
+
+      <a href="help-center.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[Help Center]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Support &amp; Help Requests]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[U]</span>
+          <span>[User Name]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Two-Column Layout: Open Ticket Form + Past Tickets -->
+      <div class="wf-grid-1-2">
+
+        <!-- Column 1: New Ticket Form -->
+        <div class="wf-card">
+          <div class="wf-card__header">
+            <h2 class="wf-card__title">[Create Support Ticket]</h2>
+          </div>
+
+          <form action="#" method="post">
+            <div class="wf-form-group">
+              <label class="wf-label">[Issue Subject *]</label>
+              <input type="text" class="wf-input" placeholder="[Brief summary of inquiry...]">
+            </div>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Topic Category *]</label>
+              <select class="wf-select">
+                <option>[Proof Document Verification Question]</option>
+                <option>[Claim Code &amp; Handover Scheduling]</option>
+                <option>[Listing Approval Inquiry]</option>
+                <option>[Account Settings / Security]</option>
+                <option>[Report Abuse or False Listing]</option>
+              </select>
+            </div>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Urgency Priority]</label>
+              <select class="wf-select">
+                <option>[Standard Response (within 24 hours)]</option>
+                <option>[Urgent (Active pickup scheduled today)]</option>
+              </select>
+            </div>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Description of Issue *]</label>
+              <textarea class="wf-textarea" placeholder="[Describe your question or issue in detail...]"></textarea>
+            </div>
+
+            <div class="wf-img-placeholder" style="height:70px;margin-bottom:14px;">
+              <span>[Optional Attachment / Screenshot Placeholder]</span>
+            </div>
+
+            <button type="submit" class="wf-btn wf-btn--primary" style="width:100%;">[Submit Ticket]</button>
+          </form>
+        </div>
+
+        <!-- Column 2: Past Support Tickets Table -->
+        <div class="wf-card">
+          <div class="wf-card__header">
+            <h2 class="wf-card__title">[My Support Inquiries]</h2>
+            <span class="wf-hint">[History of tickets submitted]</span>
+          </div>
+
+          <div class="wf-table-wrap">
+            <table class="wf-table">
+              <thead>
+                <tr>
+                  <th>[Ticket ID]</th>
+                  <th>[Subject]</th>
+                  <th>[Category]</th>
+                  <th>[Status]</th>
+                  <th>[Updated]</th>
+                  <th style="text-align:right;">[Actions]</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>[#TCK-5541]</strong></td>
+                  <td>[Question regarding proof document resubmission]</td>
+                  <td>[Verification]</td>
+                  <td><span class="wf-badge wf-badge--dark">[In Progress]</span></td>
+                  <td>[Today]</td>
+                  <td style="text-align:right;">
+                    <button class="wf-btn wf-btn--sm wf-btn--subtle" onclick="alert('[Viewing Ticket Thread #TCK-5541]')">[View Thread]</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>[#TCK-5210]</strong></td>
+                  <td>[Pickup hub location operating hours inquiry]</td>
+                  <td>[Claims &amp; Pickup]</td>
+                  <td><span class="wf-badge">[Resolved]</span></td>
+                  <td>[2 weeks ago]</td>
+                  <td style="text-align:right;">
+                    <button class="wf-btn wf-btn--sm wf-btn--subtle" onclick="alert('[Viewing Ticket Thread #TCK-5210]')">[View Thread]</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>[#TCK-4980]</strong></td>
+                  <td>[Profile name correction request]</td>
+                  <td>[Account]</td>
+                  <td><span class="wf-badge">[Resolved]</span></td>
+                  <td>[1 month ago]</td>
+                  <td style="text-align:right;">
+                    <button class="wf-btn wf-btn--sm wf-btn--subtle" onclick="alert('[Viewing Ticket Thread #TCK-4980]')">[View Thread]</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="wf-banner" style="margin-top:16px;margin-bottom:0;">
+            <strong>[Help Center Tip]:</strong> [Before opening a ticket, check our <a href="help-center.html">Knowledge Base Guides &amp; Tutorials</a> for quick answers on pickup procedures and proof rules.]
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Authenticated Mini Footer -->
+    <footer class="wf-footer">
+      <div>[Authenticated User Portal] &bull; &copy; 2026 iCareDonate</div>
+      <div class="wf-footer__links">
+        <a href="../../frontend/privacy.html">[Privacy Policy]</a>
+        <a href="../../frontend/terms.html">[Terms of Service]</a>
+        <a href="help-center.html">[Help Center]</a>
+      </div>
+    </footer>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

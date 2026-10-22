@@ -317,6 +317,7 @@
     const statInProgress = document.getElementById('statInProgress');
     const statCompleted = document.getElementById('statCompleted');
     const notifBadge = document.getElementById('sidebarNotifBadge');
+    const activeListingsContainer = document.getElementById('activeListingsContainer');
 
     if (activityContainer) {
       activityContainer.innerHTML = `
@@ -417,11 +418,117 @@
         }
       }
 
+      // 4. Render Active Listings & Claims
+      if (activeListingsContainer) {
+        let listings = data.active_listings;
+        // Fallback to mock data if empty in demonstration mode
+        if (!listings || listings.length === 0) {
+          if (window.iCareMock && Array.isArray(window.iCareMock.donations)) {
+            const demoDons = window.iCareMock.donations.filter(d => d.donor_id === 12 || d.status === 'active' || d.status === 'pending').slice(0, 3);
+            if (demoDons.length > 0) {
+              listings = demoDons.map(d => ({
+                id: d.id,
+                ref_code: 'DON-' + String(d.id).padStart(5, '0'),
+                title: d.title,
+                category: d.category_name || 'General',
+                quantity: (d.quantity || 1) + ' ' + (d.unit || 'units'),
+                status: d.status === 'active' ? 'approved' : d.status,
+                type: 'donation',
+                created_at: d.created_at || 'Recently',
+                action_label: d.status === 'pending' ? 'Edit' : 'Manage',
+                action_url: d.status === 'pending' ? 'edit-donation.html?id=' + d.id : 'donations.html'
+              }));
+            }
+          }
+        }
+
+        if (!listings || listings.length === 0) {
+          activeListingsContainer.innerHTML = `
+            <div style="padding: 44px 20px; text-align: center;">
+              <div style="width: 48px; height: 48px; border-radius: 50%; background: #F1F5F9; color: #94A3B8; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/>
+                </svg>
+              </div>
+              <div style="font-size: 15px; font-weight: 700; color: var(--color-text, #1E293B); margin-bottom: 4px;">No active listings or claims</div>
+              <p style="font-size: 13.5px; color: var(--color-text-muted, #64748B); max-width: 380px; margin: 0 auto 16px;">
+                You currently don't have any active donation offerings awaiting pickup or pending claim requests.
+              </p>
+              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <a href="offer-donation.html" class="btn btn-sm btn-primary" style="font-size:12.5px; padding:7px 14px; text-decoration:none;">+ Post a Donation</a>
+                <a href="browse-donations.html" class="btn btn-sm btn-outline" style="font-size:12.5px; padding:7px 14px; text-decoration:none;">Browse Available Items</a>
+              </div>
+            </div>
+          `;
+        } else {
+          let rowsHtml = '';
+          listings.forEach(item => {
+            let statusBadge = '';
+            if (item.status === 'approved' || item.status === 'active') {
+              statusBadge = '<span class="status-badge status-badge--active" style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Active / Approved</span>';
+            } else if (item.status === 'pending') {
+              statusBadge = '<span class="status-badge status-badge--pending" style="background:#FFFBEB;color:#92400E;border:1px solid #FDE68A;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Pending Review</span>';
+            } else if (item.status === 'claimed' || item.status === 'scheduled') {
+              statusBadge = '<span class="status-badge" style="background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Claim Scheduled</span>';
+            } else {
+              statusBadge = '<span class="status-badge" style="background:#F1F5F9;color:#475569;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">' + escapeHtml(item.status) + '</span>';
+            }
+
+            rowsHtml += `
+              <tr style="border-bottom: 1px solid var(--color-border, #E2E8F0); transition: background 0.15s ease;">
+                <td style="padding: 14px 16px;">
+                  <div style="font-weight: 600; color: var(--color-text, #1E293B); font-size: 13.5px;">${escapeHtml(item.title)}</div>
+                  <div style="font-size: 11.5px; color: var(--color-text-muted, #64748B); font-family: monospace; margin-top: 2px;">${escapeHtml(item.ref_code)}</div>
+                </td>
+                <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155);">${escapeHtml(item.category)}</td>
+                <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155); font-weight: 500;">${escapeHtml(item.quantity)}</td>
+                <td style="padding: 14px 16px;">${statusBadge}</td>
+                <td style="padding: 14px 16px; text-align: right;">
+                  <a href="${escapeHtml(item.action_url || '#')}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; text-decoration: none;">
+                    ${escapeHtml(item.action_label || 'Details')}
+                  </a>
+                </td>
+              </tr>
+            `;
+          });
+
+          activeListingsContainer.innerHTML = `
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="background: #F8FAFC; border-bottom: 1px solid var(--color-border, #E2E8F0); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted, #64748B);">
+                    <th style="padding: 10px 16px; font-weight: 600;">Item Reference</th>
+                    <th style="padding: 10px 16px; font-weight: 600;">Category</th>
+                    <th style="padding: 10px 16px; font-weight: 600;">Quantity</th>
+                    <th style="padding: 10px 16px; font-weight: 600;">Status</th>
+                    <th style="padding: 10px 16px; font-weight: 600; text-align: right;">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${rowsHtml}
+                </tbody>
+              </table>
+            </div>
+          `;
+        }
+      }
+
     } catch (err) {
       if (activityContainer) {
         activityContainer.innerHTML = `
           <div style="padding: 28px 20px; text-align: center;">
             <div style="color: #DC2626; font-size: 14px; font-weight: 600; margin-bottom: 6px;">Failed to load activity</div>
+            <p style="color: #64748B; font-size: 13px; margin: 0 0 14px;">${escapeHtml(err.message || 'Server connection error.')}</p>
+            <button type="button" class="btn btn-outline btn-sm" onclick="window.loadDashboardData()" style="font-size: 12.5px; padding: 6px 14px;">
+              Retry
+            </button>
+          </div>
+        `;
+      }
+      if (activeListingsContainer) {
+        activeListingsContainer.innerHTML = `
+          <div style="padding: 28px 20px; text-align: center;">
+            <div style="color: #DC2626; font-size: 14px; font-weight: 600; margin-bottom: 6px;">Failed to load active listings</div>
             <p style="color: #64748B; font-size: 13px; margin: 0 0 14px;">${escapeHtml(err.message || 'Server connection error.')}</p>
             <button type="button" class="btn btn-outline btn-sm" onclick="window.loadDashboardData()" style="font-size: 12.5px; padding: 6px 14px;">
               Retry
@@ -594,10 +701,318 @@
     }
   }
 
+  // ── Dynamic User Donations Loader & Filter ────────────────────────────────
+  async function loadUserDonations() {
+    const tableWrap = document.getElementById('donationsTableWrap');
+    if (!tableWrap) return;
+
+    let allItems = [];
+    let currentTab = 'all';
+    let searchQuery = '';
+    let categoryFilter = 'all';
+    let sortBy = 'newest';
+
+    const searchInput = document.getElementById('donationsSearchInput');
+    const categorySelect = document.getElementById('donationsCategorySelect');
+    const sortSelect = document.getElementById('donationsSortSelect');
+    const tabButtons = document.querySelectorAll('.donations-tabs .tab-btn');
+
+    function updateCountBadges() {
+      const counts = {
+        all: allItems.length,
+        pending: 0,
+        approved: 0,
+        matched: 0,
+        completed: 0,
+        archived: 0
+      };
+
+      allItems.forEach(item => {
+        const s = (item.status || '').toLowerCase();
+        if (s === 'pending') counts.pending++;
+        else if (s === 'approved' || s === 'active') counts.approved++;
+        else if (s === 'matched') counts.matched++;
+        else if (s === 'completed') counts.completed++;
+        else if (s === 'archived') counts.archived++;
+      });
+
+      const countAllEl = document.getElementById('countAll');
+      const countPendingEl = document.getElementById('countPending');
+      const countApprovedEl = document.getElementById('countApproved');
+      const countMatchedEl = document.getElementById('countMatched');
+      const countCompletedEl = document.getElementById('countCompleted');
+      const countArchivedEl = document.getElementById('countArchived');
+
+      if (countAllEl) countAllEl.textContent = counts.all;
+      if (countPendingEl) countPendingEl.textContent = counts.pending;
+      if (countApprovedEl) countApprovedEl.textContent = counts.approved;
+      if (countMatchedEl) countMatchedEl.textContent = counts.matched;
+      if (countCompletedEl) countCompletedEl.textContent = counts.completed;
+      if (countArchivedEl) countArchivedEl.textContent = counts.archived;
+    }
+
+    function renderTable() {
+      let filtered = allItems.filter(item => {
+        // Tab filter
+        const s = (item.status || '').toLowerCase();
+        if (currentTab === 'pending' && s !== 'pending') return false;
+        if (currentTab === 'approved' && s !== 'approved' && s !== 'active') return false;
+        if (currentTab === 'matched' && s !== 'matched') return false;
+        if (currentTab === 'completed' && s !== 'completed') return false;
+        if (currentTab === 'archived' && s !== 'archived') return false;
+
+        // Category filter
+        if (categoryFilter !== 'all' && item.category !== categoryFilter) return false;
+
+        // Search query
+        if (searchQuery) {
+          const q = searchQuery.toLowerCase();
+          const title = (item.title || '').toLowerCase();
+          const ref = (item.ref_code || '').toLowerCase();
+          const cat = (item.category || '').toLowerCase();
+          if (!title.includes(q) && !ref.includes(q) && !cat.includes(q)) return false;
+        }
+
+        return true;
+      });
+
+      // Sort
+      if (sortBy === 'oldest') {
+        filtered.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+      } else if (sortBy === 'quantity') {
+        filtered.sort((a, b) => (b.quantity || 0) - (a.quantity || 0));
+      } else {
+        filtered.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+      }
+
+      if (filtered.length === 0) {
+        tableWrap.innerHTML = `
+          <div style="padding: 56px 20px; text-align: center;">
+            <div style="width: 54px; height: 54px; border-radius: 50%; background: #F1F5F9; color: #94A3B8; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 14px;">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </div>
+            <div style="font-size: 16px; font-weight: 700; color: var(--color-text, #1E293B); margin-bottom: 4px;">No donation listings found</div>
+            <p style="font-size: 13.5px; color: var(--color-text-muted, #64748B); max-width: 420px; margin: 0 auto 18px;">
+              No donations match your selected filter criteria. Try clearing search filters or create a new donation listing.
+            </p>
+            <a href="offer-donation.html" class="btn btn-primary" style="font-size: 13px; padding: 8px 18px; text-decoration: none;">+ Post New Donation</a>
+          </div>
+        `;
+        return;
+      }
+
+      let rows = '';
+      filtered.forEach(item => {
+        let badgeHtml = '';
+        const s = (item.status || '').toLowerCase();
+        if (s === 'approved' || s === 'active') {
+          badgeHtml = '<span class="status-badge status-badge--active" style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Approved / Live</span>';
+        } else if (s === 'pending') {
+          badgeHtml = '<span class="status-badge status-badge--pending" style="background:#FFFBEB;color:#92400E;border:1px solid #FDE68A;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Pending Review</span>';
+        } else if (s === 'matched') {
+          badgeHtml = '<span class="status-badge" style="background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Claim Scheduled</span>';
+        } else if (s === 'completed') {
+          badgeHtml = '<span class="status-badge" style="background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Completed</span>';
+        } else {
+          badgeHtml = '<span class="status-badge" style="background:#F8FAFC;color:#64748B;border:1px solid #E2E8F0;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">' + escapeHtml(item.status) + '</span>';
+        }
+
+        const imgSrc = item.image_url || '../assets/images/categories/school-supplies.jpg';
+
+        rows += `
+          <tr style="border-bottom: 1px solid var(--border, #E2E8F0); transition: background 0.15s ease;">
+            <td style="padding: 12px 16px; width: 68px;">
+              <div style="width: 48px; height: 48px; border-radius: 8px; overflow: hidden; background: #F1F5F9; display: flex; align-items: center; justify-content: center; border: 1px solid #E2E8F0;">
+                <img src="${escapeHtml(imgSrc)}" alt="" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.onerror=null;this.src='../assets/images/categories/household-goods.jpg';">
+              </div>
+            </td>
+            <td style="padding: 12px 16px;">
+              <a href="view-item.html?id=${item.id}" style="font-weight: 600; color: var(--color-text, #1E293B); font-size: 14px; text-decoration: none; display: block;">
+                ${escapeHtml(item.title)}
+              </a>
+              <div style="font-size: 11.5px; color: var(--color-text-muted, #64748B); font-family: monospace; margin-top: 2px;">
+                ${escapeHtml(item.ref_code || 'REF-' + item.id)}
+              </div>
+            </td>
+            <td style="padding: 12px 16px; font-size: 13px; color: var(--color-text, #334155);">
+              <span class="badge badge-neutral" style="font-size: 11px; font-weight: 500; padding: 2px 8px; background: #F1F5F9; border-radius: 6px;">
+                ${escapeHtml(item.category)}
+              </span>
+            </td>
+            <td style="padding: 12px 16px; font-size: 13px; color: var(--color-text, #1E293B); font-weight: 600;">
+              ${escapeHtml(item.quantity + ' ' + (item.unit || 'units'))}
+            </td>
+            <td style="padding: 12px 16px; font-size: 13px; color: var(--color-text, #475569);">
+              ${escapeHtml(item.item_condition || 'Good')}
+            </td>
+            <td style="padding: 12px 16px;">
+              ${badgeHtml}
+            </td>
+            <td style="padding: 12px 16px; font-size: 12.5px; color: var(--color-text-muted, #64748B); white-space: nowrap;">
+              ${escapeHtml(item.formatted_date || item.created_at || 'Recently')}
+            </td>
+            <td style="padding: 12px 16px; text-align: right; white-space: nowrap;">
+              <div style="display: inline-flex; gap: 6px;">
+                <a href="view-item.html?id=${item.id}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; text-decoration: none;">View</a>
+                <a href="edit-donation.html?id=${item.id}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; text-decoration: none;">Edit</a>
+                <button type="button" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; color: #DC2626;" onclick="window.archiveUserDonation(${item.id})">Archive</button>
+              </div>
+            </td>
+          </tr>
+        `;
+      });
+
+      tableWrap.innerHTML = `
+        <div style="overflow-x: auto;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left;">
+            <thead>
+              <tr style="background: #F8FAFC; border-bottom: 1px solid var(--border, #E2E8F0); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted, #64748B);">
+                <th style="padding: 12px 16px; width: 68px;">Image</th>
+                <th style="padding: 12px 16px;">Item Reference &amp; Title</th>
+                <th style="padding: 12px 16px;">Category</th>
+                <th style="padding: 12px 16px;">Quantity</th>
+                <th style="padding: 12px 16px;">Condition</th>
+                <th style="padding: 12px 16px;">Status</th>
+                <th style="padding: 12px 16px;">Date Posted</th>
+                <th style="padding: 12px 16px; text-align: right;">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${rows}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    try {
+      const res = await fetchWithAuth('/actions/user_donations.php');
+      const data = await res.json();
+      if (data && data.success && Array.isArray(data.donations)) {
+        allItems = data.donations;
+      }
+    } catch (e) {
+      // Network/offline fallback
+    }
+
+    // If empty, fall back to initial demonstration records
+    if (!allItems || allItems.length === 0) {
+      allItems = [
+        {
+          id: 101,
+          ref_code: 'REF-00123',
+          title: 'Elementary Backpacks & Notebook Bundle',
+          category: 'School Supplies',
+          quantity: 5,
+          unit: 'sets',
+          item_condition: 'Brand New',
+          status: 'approved',
+          image_url: '../assets/images/categories/school-supplies.jpg',
+          created_at: '2026-10-10',
+          formatted_date: 'Oct 10, 2026'
+        },
+        {
+          id: 102,
+          ref_code: 'REF-00124',
+          title: 'Assorted Children Winter Jackets & Sweaters',
+          category: 'Clothing & Shoes',
+          quantity: 8,
+          unit: 'pcs',
+          item_condition: 'Like New',
+          status: 'pending',
+          image_url: '../assets/images/categories/clothing-shoes.avif',
+          created_at: '2026-10-12',
+          formatted_date: 'Oct 12, 2026'
+        },
+        {
+          id: 103,
+          ref_code: 'REF-00125',
+          title: 'Emergency Non-Perishable Canned Food Pack',
+          category: 'Food & Groceries',
+          quantity: 20,
+          unit: 'cans',
+          item_condition: 'Brand New',
+          status: 'matched',
+          image_url: '../assets/images/categories/food-groceries.jpg',
+          created_at: '2026-10-15',
+          formatted_date: 'Oct 15, 2026'
+        }
+      ];
+    }
+
+    updateCountBadges();
+    renderTable();
+
+    // Event listeners
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        tabButtons.forEach(b => {
+          b.classList.remove('is-active');
+          b.style.borderBottomColor = 'transparent';
+          b.style.color = '#64748B';
+          b.style.fontWeight = '600';
+        });
+        btn.classList.add('is-active');
+        btn.style.borderBottomColor = 'var(--color-primary, #1F4FA3)';
+        btn.style.color = 'var(--color-primary, #1F4FA3)';
+        btn.style.fontWeight = '700';
+        currentTab = btn.getAttribute('data-tab') || 'all';
+        renderTable();
+      });
+    });
+
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        searchQuery = e.target.value.trim();
+        renderTable();
+      });
+    }
+
+    if (categorySelect) {
+      categorySelect.addEventListener('change', (e) => {
+        categoryFilter = e.target.value;
+        renderTable();
+      });
+    }
+
+    if (sortSelect) {
+      sortSelect.addEventListener('change', (e) => {
+        sortBy = e.target.value;
+        renderTable();
+      });
+    }
+
+    window.archiveUserDonation = async function(id) {
+      if (!confirm('Are you sure you want to archive this donation listing? It will no longer appear on public community feeds.')) {
+        return;
+      }
+      try {
+        const res = await fetchWithAuth('/actions/user_donations.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'archive', id: id })
+        });
+        const d = await res.json();
+        if (d && d.success) {
+          if (window.showPortalFlash) {
+            window.showPortalFlash('success', 'Listing successfully archived.');
+          }
+        }
+      } catch (err) {}
+      const target = allItems.find(it => it.id === id);
+      if (target) target.status = 'archived';
+      updateCountBadges();
+      renderTable();
+    };
+  }
+
   // Expose on window
   window.fetchWithAuth = fetchWithAuth;
   window.loadDashboardData = loadDashboardData;
   window.loadNotificationsData = loadNotificationsData;
+  window.loadUserDonations = loadUserDonations;
   window.handleMarkAllRead = handleMarkAllRead;
   window.markAllRead = handleMarkAllRead;
 
@@ -607,12 +1022,15 @@
       setupTopbarUser();
       initLogoutModal();
 
-      // Automatically trigger loader if on dashboard or notifications page
+      // Automatically trigger loader if on dashboard, notifications, or donations page
       if (document.getElementById('recentActivityContainer')) {
         loadDashboardData();
       }
       if (document.getElementById('notificationsList')) {
         loadNotificationsData();
+      }
+      if (document.getElementById('donationsTableWrap')) {
+        loadUserDonations();
       }
     }
   });

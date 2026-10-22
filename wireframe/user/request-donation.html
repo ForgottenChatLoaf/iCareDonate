@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Request Assistance — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── USER SIDEBAR ──────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill">[USER]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Donations &amp; Requests]</div>
+
+      <a href="offer-donation.html" class="wf-sidebar__link wf-sidebar__link--accent">
+        <span class="wf-sidebar__icon">+</span>
+        <span>[Post Donation]</span>
+      </a>
+
+      <a href="browse-donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9740;</span>
+        <span>[Browse Donations]</span>
+      </a>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[My Donations]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[My Requests]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Claims &amp; Handovers]</span>
+      </a>
+
+      <a href="history.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[History]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Communication]</div>
+
+      <a href="activity-log.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9201;</span>
+        <span>[Activity Log]</span>
+      </a>
+
+      <a href="notifications.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Notifications]</span>
+        <span class="wf-sidebar__badge">[3]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9888;</span>
+        <span>[Support &amp; Help]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Account]</div>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Profile]</span>
+      </a>
+
+      <a href="settings.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9881;</span>
+        <span>[Account Settings]</span>
+      </a>
+
+      <a href="help-center.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[Help Center]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <a href="requests.html" class="wf-btn wf-btn--sm wf-btn--outline">&larr; [Back to Requests]</a>
+          <h1 class="wf-topbar__title">[Submit Assistance Request]</h1>
+        </div>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[U]</span>
+          <span>[User Name]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Guidance Banner -->
+      <div class="wf-banner">
+        <div class="wf-banner__title">[Proof of Need &amp; Eligibility Guidelines]</div>
+        <p>[Notice placeholder: To protect community donations and ensure equitable distribution, requesters are required to provide verifiable supporting documents such as a Barangay Certificate of Indigency, Student ID, or Solo Parent ID. Documents are strictly confidential.]</p>
+      </div>
+
+      <!-- Application Form -->
+      <div class="wf-card" style="max-width:800px;margin:0 auto;">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Assistance Application Form]</h2>
+          <span class="wf-hint">[Form fields placeholder]</span>
+        </div>
+
+        <form action="#" method="post">
+
+          <!-- Item / Resource Request -->
+          <div class="wf-form-group">
+            <label class="wf-label">[Select Available Resource (or Custom Essential Request) *]</label>
+            <select class="wf-select">
+              <option>[Select an available donation from catalog...]</option>
+              <option selected>[REF-00123: Item Title Placeholder #1 (School Supplies)]</option>
+              <option>[REF-00124: Item Title Placeholder #2 (Food Groceries)]</option>
+              <option>[Custom: Other Critical Essential Assistance]</option>
+            </select>
+          </div>
+
+          <div class="wf-grid-2">
+            <div class="wf-form-group">
+              <label class="wf-label">[Quantity Needed *]</label>
+              <input type="number" class="wf-input" placeholder="[Enter exact units required, e.g. 2]">
+              <div class="wf-hint">[Request only what is needed for immediate household or student use]</div>
+            </div>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Urgency Level *]</label>
+              <select class="wf-select">
+                <option>[Select Urgency Level]</option>
+                <option>[Standard / Low — Needed within 2-3 weeks]</option>
+                <option>[Moderate — Needed within 1 week]</option>
+                <option>[Urgent / High — Immediate disaster relief or school deadline]</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="wf-form-group">
+            <label class="wf-label">[Beneficiary Justification &amp; Circumstances *]</label>
+            <textarea class="wf-textarea" placeholder="[Explain who the recipient is, their current family or community situation, and how this resource will help...]"></textarea>
+          </div>
+
+          <!-- Document Upload -->
+          <div style="border-top:1px solid var(--wf-surface-alt);padding-top:16px;margin-bottom:20px;">
+            <h3 style="font-size:13.5px;text-transform:uppercase;margin-bottom:12px;color:var(--wf-text-muted);">[Upload Proof of Need / Verification Document *]</h3>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Document Type]</label>
+              <select class="wf-select">
+                <option>[Select Document Type]</option>
+                <option>[Barangay Certificate of Indigency]</option>
+                <option>[Valid Public School Student ID / Enrollment Form]</option>
+                <option>[Solo Parent Identification Card]</option>
+                <option>[Disability (PWD) or Senior Citizen ID]</option>
+                <option>[Disaster Calamity Victim Verification Slip]</option>
+              </select>
+            </div>
+
+            <div class="wf-img-placeholder" style="height:120px;margin-bottom:10px;">
+              <span>[Upload Area: Drop proof file or click to browse (PDF, JPG, PNG, max 10MB)]</span>
+            </div>
+            <div class="wf-hint">[Ensure the full document name, official seal, and dates are clearly visible]</div>
+          </div>
+
+          <!-- Logistics & Safe Pickup -->
+          <div style="border-top:1px solid var(--wf-surface-alt);padding-top:16px;margin-bottom:20px;">
+            <h3 style="font-size:13.5px;text-transform:uppercase;margin-bottom:12px;color:var(--wf-text-muted);">[Handover Location &amp; Contact]</h3>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Preferred Community Hub for Pickup]</label>
+              <input type="text" class="wf-input" placeholder="[e.g. Barangay Hall Multi-Purpose Center, City/Municipality]">
+            </div>
+
+            <div class="wf-form-group">
+              <label class="wf-label">[Contact Number for Pickup Scheduling]</label>
+              <input type="text" class="wf-input" placeholder="[+63 9XX XXX XXXX]">
+            </div>
+          </div>
+
+          <!-- Acknowledgment -->
+          <div style="border-top:1px solid var(--wf-surface-alt);padding-top:16px;">
+            <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:18px;">
+              <input type="checkbox" id="wfReqCert" style="margin-top:3px;">
+              <label for="wfReqCert" style="font-size:12.5px;color:var(--wf-text);">
+                [I confirm that the information and documents provided are genuine, and that requested items will not be resold or transferred for commercial profit.]
+              </label>
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;gap:10px;">
+              <a href="requests.html" class="wf-btn wf-btn--outline">[Cancel]</a>
+              <button type="submit" class="wf-btn wf-btn--primary" style="padding:10px 24px;">[Submit Assistance Application]</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+    <!-- Authenticated Mini Footer -->
+    <footer class="wf-footer">
+      <div>[&copy; 2026 iCareDonate. All rights reserved.]</div>
+      <div class="wf-footer__links">
+        <a href="../../frontend/privacy.html">[Privacy Policy]</a>
+        <a href="../../frontend/terms.html">[Terms of Service]</a>
+        <a href="help-center.html">[Help Center]</a>
+      </div>
+    </footer>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

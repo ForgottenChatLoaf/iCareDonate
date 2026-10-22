@@ -64,14 +64,14 @@
         <span>Post Donation</span>
       </a>
 
+      <a href="browse-donations.html" class="sidebar-link sidebar-link--active is-active" data-nav="browse-donations">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+        <span>Browse Donations</span>
+      </a>
+
       <a href="donations.html" class="sidebar-link" data-nav="donations">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
         <span>My Donations</span>
-      </a>
-
-      <a href="browse-donations.html" class="sidebar-link" data-nav="browse-donations">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
-        <span>Browse Resources</span>
       </a>
 
       <a href="requests.html" class="sidebar-link" data-nav="requests">
@@ -168,15 +168,24 @@
 
     <div class="user-content" style="padding:28px 32px;">
 
+      <!-- Header Banner & Guidance -->
+      <div class="card" style="padding:18px 24px;border-radius:var(--radius-lg, 12px);border:1px solid var(--border, #E2E8F0);margin-bottom:20px;background:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <h2 style="font-size:17px;font-weight:700;color:var(--text, #1E293B);margin:0 0 4px;">Available Essential Resources</h2>
+          <p style="margin:0;font-size:13.5px;color:#64748B;">Browse verified surplus goods donated by generous community partners and individuals.</p>
+        </div>
+        <a href="request-donation.html" class="btn btn-outline" style="font-size:13px;padding:8px 16px;">Apply for Assistance</a>
+      </div>
+
       <!-- Search & Filters -->
       <div class="card" style="padding:18px 24px;border-radius:var(--radius-lg, 12px);border:1px solid var(--border, #E2E8F0);margin-bottom:24px;">
         <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
-          <div style="flex:1;min-width:240px;position:relative;">
+          <div style="flex:1;min-width:220px;position:relative;">
             <input type="text" id="browse-search" class="form-input" placeholder="Search by title, donor, location..." style="padding-left:36px;">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94A3B8;"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
           </div>
 
-          <div style="min-width:180px;">
+          <div style="min-width:160px;">
             <select id="browse-category" class="form-input">
               <option value="0">All Categories</option>
               <option value="1">Food &amp; Groceries</option>
@@ -186,6 +195,23 @@
               <option value="5">Household Essentials</option>
               <option value="6">Books &amp; Educational</option>
               <option value="8">Electronics &amp; Devices</option>
+            </select>
+          </div>
+
+          <div style="min-width:140px;">
+            <select id="browse-condition" class="form-input">
+              <option value="all">Any Condition</option>
+              <option value="New">Brand New</option>
+              <option value="Like New">Like New</option>
+              <option value="Good">Good Condition</option>
+              <option value="Fair">Fair Condition</option>
+            </select>
+          </div>
+
+          <div style="min-width:140px;">
+            <select id="browse-sort" class="form-input">
+              <option value="newest">Sort: Newest</option>
+              <option value="quantity">Sort: Highest Qty</option>
             </select>
           </div>
 
@@ -336,10 +362,22 @@
   function renderBrowseDonations() {
     const query = document.getElementById('browse-search').value.trim();
     const catId = Number(document.getElementById('browse-category').value);
+    const condFilter = document.getElementById('browse-condition') ? document.getElementById('browse-condition').value : 'all';
+    const sortVal = document.getElementById('browse-sort') ? document.getElementById('browse-sort').value : 'newest';
     const container = document.getElementById('browse-donations-grid');
 
     // Only approved and active donations are displayed to users
-    const items = window.MockStore.getDonations('approved', query, catId);
+    let items = window.MockStore ? window.MockStore.getDonations('approved', query, catId) : [];
+
+    if (condFilter && condFilter !== 'all') {
+      items = items.filter(it => (it.condition_type || '').toLowerCase().includes(condFilter.toLowerCase()));
+    }
+
+    if (sortVal === 'quantity') {
+      items.sort((a, b) => ((b.quantity_total || 0) - (b.quantity_reserved || 0)) - ((a.quantity_total || 0) - (a.quantity_reserved || 0)));
+    } else {
+      items.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
+    }
 
     if (items.length === 0) {
       container.innerHTML = `
@@ -605,6 +643,10 @@
     if (searchInput) searchInput.addEventListener('input', renderBrowseDonations);
     const catSelect = document.getElementById('browse-category');
     if (catSelect) catSelect.addEventListener('change', renderBrowseDonations);
+    const condSelect = document.getElementById('browse-condition');
+    if (condSelect) condSelect.addEventListener('change', renderBrowseDonations);
+    const sortSelect = document.getElementById('browse-sort');
+    if (sortSelect) sortSelect.addEventListener('change', renderBrowseDonations);
   }
 
   document.addEventListener('DOMContentLoaded', function() {

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Categories Directory — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Categories Directory]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <button type="button" class="wf-btn wf-btn--primary" onclick="wfOpenModal('wfModalAddCategory')">
+          [+ Add Category]
+        </button>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Category Cards Grid -->
+      <div class="wf-grid-3" style="margin-bottom:24px;">
+
+        <div class="wf-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <h3 style="margin:0;font-size:15px;font-weight:700;">[Food &amp; Groceries]</h3>
+            <span class="wf-badge wf-badge--dark">[Active]</span>
+          </div>
+          <p style="font-size:12.5px;margin-bottom:12px;line-height:1.5;">[Rice, canned items, milk packs, biscuits, and non-perishable pantry essentials.]</p>
+          <div style="font-size:11.5px;border-top:1px solid var(--wf-border);padding-top:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span class="wf-hint">[14 Active Listings]</span>
+            <button class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <h3 style="margin:0;font-size:15px;font-weight:700;">[School Supplies]</h3>
+            <span class="wf-badge wf-badge--dark">[Active]</span>
+          </div>
+          <p style="font-size:12.5px;margin-bottom:12px;line-height:1.5;">[Notebooks, textbooks, pens, backpacks, calculators, and educational study aids.]</p>
+          <div style="font-size:11.5px;border-top:1px solid var(--wf-border);padding-top:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span class="wf-hint">[11 Active Listings]</span>
+            <button class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <h3 style="margin:0;font-size:15px;font-weight:700;">[Clothing &amp; Footwear]</h3>
+            <span class="wf-badge wf-badge--dark">[Active]</span>
+          </div>
+          <p style="font-size:12.5px;margin-bottom:12px;line-height:1.5;">[School uniforms, children's clothes, rain jackets, and protective shoes.]</p>
+          <div style="font-size:11.5px;border-top:1px solid var(--wf-border);padding-top:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span class="wf-hint">[09 Active Listings]</span>
+            <button class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <h3 style="margin:0;font-size:15px;font-weight:700;">[Medical &amp; Health Aid]</h3>
+            <span class="wf-badge wf-badge--dark">[Active]</span>
+          </div>
+          <p style="font-size:12.5px;margin-bottom:12px;line-height:1.5;">[First aid kits, mobility assistance aids, hygiene soap, and basic care supplies.]</p>
+          <div style="font-size:11.5px;border-top:1px solid var(--wf-border);padding-top:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span class="wf-hint">[06 Active Listings]</span>
+            <button class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+          </div>
+        </div>
+
+        <div class="wf-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+            <h3 style="margin:0;font-size:15px;font-weight:700;">[Household Items]</h3>
+            <span class="wf-badge wf-badge--dark">[Active]</span>
+          </div>
+          <p style="font-size:12.5px;margin-bottom:12px;line-height:1.5;">[Blankets, solar flashlights, water containers, and emergency essentials.]</p>
+          <div style="font-size:11.5px;border-top:1px solid var(--wf-border);padding-top:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span class="wf-hint">[02 Active Listings]</span>
+            <button class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Summary Table -->
+      <div class="wf-card" style="padding:0;overflow:hidden;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--wf-border);font-weight:700;font-size:14px;">
+          [All Categories Summary Table]
+        </div>
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;width:70px;">[Order]</th>
+              <th style="padding:12px 16px;">[Category Name]</th>
+              <th style="padding:12px 16px;">[Description]</th>
+              <th style="padding:12px 16px;text-align:center;width:110px;">[Donations]</th>
+              <th style="padding:12px 16px;text-align:center;width:90px;">[Status]</th>
+              <th style="padding:12px 16px;text-align:right;width:140px;">[Actions]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:12px 16px;font-weight:700;">[1]</td>
+              <td style="padding:12px 16px;font-weight:600;">[Food &amp; Groceries]</td>
+              <td style="padding:12px 16px;">[Rice, canned goods, and essential non-perishables]</td>
+              <td style="padding:12px 16px;text-align:center;">[14]</td>
+              <td style="padding:12px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:12px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Category deactivated]')">[Disable]</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;font-weight:700;">[2]</td>
+              <td style="padding:12px 16px;font-weight:600;">[Clothing &amp; Footwear]</td>
+              <td style="padding:12px 16px;">[Apparel, raincoats, school uniform wear, shoes]</td>
+              <td style="padding:12px 16px;text-align:center;">[9]</td>
+              <td style="padding:12px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:12px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Category deactivated]')">[Disable]</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;font-weight:700;">[3]</td>
+              <td style="padding:12px 16px;font-weight:600;">[School Supplies]</td>
+              <td style="padding:12px 16px;">[Notebooks, writing materials, study tablets]</td>
+              <td style="padding:12px 16px;text-align:center;">[11]</td>
+              <td style="padding:12px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:12px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddCategory')">[Edit]</button>
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Category deactivated]')">[Disable]</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- ADD / EDIT CATEGORY MODAL -->
+<div class="wf-modal-backdrop" id="wfModalAddCategory" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Add / Edit Donation Category]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalAddCategory')">&times;</button>
+    </div>
+    <div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Category Name *]</label>
+        <input type="text" class="wf-input" placeholder="[e.g. Toys &amp; Books]">
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Description]</label>
+        <textarea class="wf-textarea" rows="2" placeholder="[Brief category scope description...]"></textarea>
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Sort Order]</label>
+        <input type="number" class="wf-input" value="99" style="width:120px;">
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalAddCategory')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Category saved]');wfCloseModal('wfModalAddCategory')">[Save Category]</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

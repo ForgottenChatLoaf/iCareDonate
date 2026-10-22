@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>iCareDonate — Wireframe Directory &amp; Library</title>
+  <link rel="stylesheet" href="assets/wireframe.css">
+</head>
+<body style="background:var(--wf-surface-muted);">
+
+  <!-- ── DIRECTORY TOP HEADER ───────────────────────────────── -->
+  <header class="wf-topbar" style="background:var(--wf-surface);border-bottom:2px solid var(--wf-border-black);">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:18px;font-weight:800;color:var(--wf-text);">[iCareDonate]</span>
+      <span class="wf-badge wf-badge--dark">[LOW-FIDELITY WIREFRAME ARCHITECTURE]</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <a href="user/dashboard.html" class="wf-btn wf-btn--outline">[Launch User Portal &rarr;]</a>
+      <a href="admin/dashboard.html" class="wf-btn wf-btn--primary">[Launch Admin Portal &rarr;]</a>
+    </div>
+  </header>
+
+  <!-- ── MAIN DIRECTORY CONTAINER ──────────────────────────── -->
+  <main style="max-width:1140px;margin:32px auto 80px;padding:0 24px;">
+
+    <!-- Library Welcome & Rules Card -->
+    <div class="wf-card" style="border:2px solid var(--wf-border-black);padding:28px;margin-bottom:32px;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:18px;">
+        <div>
+          <span class="wf-badge" style="margin-bottom:8px;">[Repository Specification]</span>
+          <h1 style="font-size:26px;margin:0 0 6px;">[iCareDonate Wireframe Library]</h1>
+          <p style="font-size:14px;max-width:680px;margin:0;">
+            [Independent, placeholder-only HTML wireframe library for all authenticated User and Admin pages, plus updated public components. Built with strict monochrome low-fidelity design rules.]
+          </p>
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <a href="user/dashboard.html" class="wf-btn wf-btn--primary">[Open User Dashboard]</a>
+          <a href="admin/dashboard.html" class="wf-btn wf-btn--primary">[Open Admin Dashboard]</a>
+          <a href="public/guides.html" class="wf-btn wf-btn--outline">[Open Guides Wireframe]</a>
+        </div>
+      </div>
+
+      <!-- Core Design Rules Summary -->
+      <div class="wf-grid-4" style="margin-bottom:0;">
+        <div style="padding:12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);">
+          <strong>[1. Monochrome Grayscale]</strong>
+          <p style="font-size:11.5px;margin:4px 0 0;">[Pure whites, light gray fills, neutral borders. Zero brand colors or gradients.]</p>
+        </div>
+        <div style="padding:12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);">
+          <strong>[2. Strict Placeholders]</strong>
+          <p style="font-size:11.5px;margin:4px 0 0;">[Zero realistic sample records. Zero Lorem Ipsum. Obvious placeholder tags.]</p>
+        </div>
+        <div style="padding:12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);">
+          <strong>[3. Image Boxes with Crosses]</strong>
+          <p style="font-size:11.5px;margin:4px 0 0;">[Diagonal crossing lines and centered labels for all image &amp; photo areas.]</p>
+        </div>
+        <div style="padding:12px;background:var(--wf-surface-alt);border:1px solid var(--wf-border);border-radius:var(--wf-radius);">
+          <strong>[4. Fully Responsive]</strong>
+          <p style="font-size:11.5px;margin:4px 0 0;">[Standalone HTML files with working navigation for Desktop, Tablet, and Mobile.]</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════
+         SECTION 1: USER PORTAL WIREFRAMES
+         ════════════════════════════════════════════════════════ -->
+    <section style="margin-bottom:40px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <h2 style="font-size:20px;margin:0 0 2px;">[1. User Portal Wireframe Pages]</h2>
+          <span class="wf-hint">[Complete coverage of all member portal workflows, donor submissions, requests, and claims]</span>
+        </div>
+        <span class="wf-badge wf-badge--dark">[17 Standalone Pages + Aliases]</span>
+      </div>
+
+      <div class="wf-table-wrap">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="width:240px;">[Page Name &amp; Link]</th>
+              <th style="width:220px;">[Filename]</th>
+              <th>[Layout &amp; Workflow Capabilities Represented]</th>
+              <th style="width:110px;text-align:right;">[Launch]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>[User Dashboard]</strong></td>
+              <td><code>user/dashboard.html</code></td>
+              <td>[Welcome banner, 4 KPI metric cards, quick action links, active listings table, recent activity feed]</td>
+              <td style="text-align:right;"><a href="user/dashboard.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Browse Community Donations]</strong></td>
+              <td><code>user/browse-donations.html</code></td>
+              <td>[Multi-filter search toolbar, category dropdowns, 6-card item grid with image placeholders and pagination]</td>
+              <td style="text-align:right;"><a href="user/browse-donations.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[View Donation Item Details]</strong></td>
+              <td><code>user/view-item.html</code></td>
+              <td>[Photo gallery &amp; thumbnails placeholder, specs table, verified donor info, application trigger &amp; overlay demo]</td>
+              <td style="text-align:right;"><a href="user/view-item.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[My Donations Directory]</strong></td>
+              <td><code>user/donations.html</code></td>
+              <td>[Status filter tabs (Pending, Live, Claimed, Completed), filter bar, listings table with edit/archive actions]</td>
+              <td style="text-align:right;"><a href="user/donations.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Post Item Donation]</strong></td>
+              <td><code>user/offer-donation.html</code></td>
+              <td>[Submission restriction notice, item specs form, category, quantity, condition, photo upload box, handover hub]</td>
+              <td style="text-align:right;"><a href="user/offer-donation.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Edit Existing Donation]</strong></td>
+              <td><code>user/edit-donation.html</code></td>
+              <td>[Pre-filled donation fields, current photo thumbnails, replacement photo dropzone, hub location editor]</td>
+              <td style="text-align:right;"><a href="user/edit-donation.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[My Assistance Requests]</strong></td>
+              <td><code>user/requests.html</code></td>
+              <td>[Status tabs (Under Review, Matched, Needs Info), request table with urgency indicators and progress tracker links]</td>
+              <td style="text-align:right;"><a href="user/requests.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Request Assistance Application]</strong></td>
+              <td><code>user/request-donation.html</code></td>
+              <td>[Eligibility notice, resource selector, urgency level, need justification, official Philippine proof document upload]</td>
+              <td style="text-align:right;"><a href="user/request-donation.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Request Tracking &amp; Timeline]</strong></td>
+              <td><code>user/request-details.html</code></td>
+              <td>[4-stage lifecycle stepper (Submitted &rarr; Verified &rarr; Matched &rarr; Claimed), match details, proof re-upload action]</td>
+              <td style="text-align:right;"><a href="user/request-details.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Claims &amp; Pickup Handovers]</strong></td>
+              <td><code>user/transactions.html</code></td>
+              <td>[Active claim pass card, 6-digit claim code (ICD-849201), QR code placeholder, venue details, completed transactions]</td>
+              <td style="text-align:right;"><a href="user/transactions.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Activity &amp; Handover History]</strong></td>
+              <td><code>user/history.html</code></td>
+              <td>[Historical KPI metrics, date range filter, completed transaction records table, receipt preview demonstration]</td>
+              <td style="text-align:right;"><a href="user/history.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[User Activity Log]</strong></td>
+              <td><code>user/activity-log.html</code></td>
+              <td>[Searchable chronological account event stream, action category pills, IP &amp; device metadata, CSV export action]</td>
+              <td style="text-align:right;"><a href="user/activity-log.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Notifications Center]</strong></td>
+              <td><code>user/notifications.html</code></td>
+              <td>[Category tabs (Unread, Matches, Reviews), unread status pills, automated match alerts, mark-all-read control]</td>
+              <td style="text-align:right;"><a href="user/notifications.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Support Desk &amp; Help Tickets]</strong></td>
+              <td><code>user/support.html</code></td>
+              <td>[Submit inquiry form with category and attachment, past ticket list with status badges and thread viewer]</td>
+              <td style="text-align:right;"><a href="user/support.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[User Profile &amp; Verification]</strong></td>
+              <td><code>user/profile.html</code></td>
+              <td>[Profile photo avatar box, identity verification status, government ID attachment preview, personal details form]</td>
+              <td style="text-align:right;"><a href="user/profile.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Account Settings &amp; Security]</strong></td>
+              <td><code>user/settings.html</code></td>
+              <td>[Password update form, 2FA setup prompt, email &amp; SMS notification toggles, privacy switches, active sessions]</td>
+              <td style="text-align:right;"><a href="user/settings.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[In-Portal Help Center]</strong></td>
+              <td><code>user/help-center.html</code></td>
+              <td>[Knowledge base search, topic guide cards, accordion FAQ items, contact support action card]</td>
+              <td style="text-align:right;"><a href="user/help-center.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════
+         SECTION 2: ADMIN PORTAL WIREFRAMES
+         ════════════════════════════════════════════════════════ -->
+    <section style="margin-bottom:40px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <h2 style="font-size:20px;margin:0 0 2px;">[2. Admin Portal Wireframe Pages]</h2>
+          <span class="wf-hint">[Administrative operations, moderation, audit trails, and logistics management]</span>
+        </div>
+        <span class="wf-badge wf-badge--dark">[20 Standalone Pages + Aliases]</span>
+      </div>
+
+      <div class="wf-table-wrap">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="width:240px;">[Page Name &amp; Link]</th>
+              <th style="width:220px;">[Filename]</th>
+              <th>[Layout &amp; Workflow Capabilities Represented]</th>
+              <th style="width:110px;text-align:right;">[Launch]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>[Admin Dashboard]</strong></td>
+              <td><code>admin/dashboard.html</code></td>
+              <td>[4 KPI operational stat cards, urgent donation review queue, urgent proof verification queue, system audit feed]</td>
+              <td style="text-align:right;"><a href="admin/dashboard.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Donation Review Management]</strong></td>
+              <td><code>admin/donations.html</code></td>
+              <td>[Status filter tabs, search and location filter, full inventory table, inspection links, archival reason modal]</td>
+              <td style="text-align:right;"><a href="admin/donations.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Donation Inspection &amp; Decision]</strong></td>
+              <td><code>admin/donation-review.html</code></td>
+              <td>[Multi-photo inspection lightbox, staff verification checklist, donor history record, Approve / Reject / Info buttons]</td>
+              <td style="text-align:right;"><a href="admin/donation-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Request &amp; Proof Queue]</strong></td>
+              <td><code>admin/requests.html</code></td>
+              <td>[Assistance requests queue, urgency indicators, proof attachment status, filter toolbar, match/interview shortcuts]</td>
+              <td style="text-align:right;"><a href="admin/requests.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Request &amp; Proof Inspection]</strong></td>
+              <td><code>admin/request-review.html</code></td>
+              <td>[High-res proof document lightbox, seal &amp; validity checklist, applicant circumstances, verification decision panel]</td>
+              <td style="text-align:right;"><a href="admin/request-review.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Transaction Monitoring]</strong></td>
+              <td><code>admin/transactions.html</code></td>
+              <td>[End-to-end handover lifecycle tracking, venue filter, status tabs, deadline extensions, completion overrides]</td>
+              <td style="text-align:right;"><a href="admin/transactions.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Beneficiary Interviews]</strong></td>
+              <td><code>admin/interviews.html</code></td>
+              <td>[Interview queue tabs, scheduler modal with coordinator assignment, assessment outcome evaluation modal]</td>
+              <td style="text-align:right;"><a href="admin/interviews.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[User Accounts Directory]</strong></td>
+              <td><code>admin/users.html</code></td>
+              <td>[Donor vs Beneficiary role tabs, verification filter, account directory table, profile &amp; moderation shortcuts]</td>
+              <td style="text-align:right;"><a href="admin/users.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[User Details &amp; Moderation]</strong></td>
+              <td><code>admin/user-detail.html</code></td>
+              <td>[Comprehensive profile overview, activity tabs, suspension modal with automatic donation archival cascade]</td>
+              <td style="text-align:right;"><a href="admin/user-detail.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Users &amp; Moderation]</strong></td>
+              <td><code>admin/moderation.html</code></td>
+              <td>[Report cards for flagged listings and suspicious accounts, takedown actions, suspension sanction controls]</td>
+              <td style="text-align:right;"><a href="admin/moderation.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Support Desk Management]</strong></td>
+              <td><code>admin/support.html</code></td>
+              <td>[Split-view ticket workspace, open queue, conversation history, internal notes, direct reply &amp; resolve controls]</td>
+              <td style="text-align:right;"><a href="admin/support.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Contact Form Inquiries]</strong></td>
+              <td><code>admin/inquiries.html</code></td>
+              <td>[Public contact submissions table, status filters, message read modal drawer with direct email reply form]</td>
+              <td style="text-align:right;"><a href="admin/inquiries.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Categories Management]</strong></td>
+              <td><code>admin/categories.html</code></td>
+              <td>[Directory of 6 primary aid categories, listing counts, category cards, create/edit modal with allowed sub-types]</td>
+              <td style="text-align:right;"><a href="admin/categories.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[FAQ Knowledge Base Admin]</strong></td>
+              <td><code>admin/faqs.html</code></td>
+              <td>[Grouped FAQ items for donors and beneficiaries, question reordering controls, add/edit FAQ modal overlay]</td>
+              <td style="text-align:right;"><a href="admin/faqs.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Reports &amp; Community Analytics]</strong></td>
+              <td><code>admin/reports.html</code></td>
+              <td>[Throughput generator toolbar, date pickers, summary metrics, monthly breakdown table, CSV export mock action]</td>
+              <td style="text-align:right;"><a href="admin/reports.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Statistics &amp; Health Metrics]</strong></td>
+              <td><code>admin/statistics.html</code></td>
+              <td>[Pure CSS wireframe bar charts, category throughput share, coordinator turnaround, fraud prevention rate]</td>
+              <td style="text-align:right;"><a href="admin/statistics.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[SuperAdmin: Admin Accounts]</strong></td>
+              <td><code>admin/admins.html</code></td>
+              <td>[SuperAdmin tier staff directory, role permissions, hub assignments, create new administrator modal]</td>
+              <td style="text-align:right;"><a href="admin/admins.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Audit Trail Logs]</strong></td>
+              <td><code>admin/logs.html</code></td>
+              <td>[Immutable audit stream table, actor names, action pills, entity targets, IP origins, raw payload inspectors]</td>
+              <td style="text-align:right;"><a href="admin/logs.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Admin Profile &amp; Security]</strong></td>
+              <td><code>admin/profile.html</code></td>
+              <td>[Staff account summary, 2FA status, hub desk assignment, secure password credential update form]</td>
+              <td style="text-align:right;"><a href="admin/profile.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Admin Portal Login]</strong></td>
+              <td><code>admin/login.html</code></td>
+              <td>[Clean low-fidelity login portal, staff email, password, two-factor authenticator code token input]</td>
+              <td style="text-align:right;"><a href="admin/login.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════
+         SECTION 3: PUBLIC & COMPONENT WIREFRAMES
+         ════════════════════════════════════════════════════════ -->
+    <section>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div>
+          <h2 style="font-size:20px;margin:0 0 2px;">[3. Public &amp; Shared Component Wireframes]</h2>
+          <span class="wf-hint">[Requested public platform guides and standardized updated 4-column footer component]</span>
+        </div>
+        <span class="wf-badge wf-badge--dark">[02 Dedicated Pages]</span>
+      </div>
+
+      <div class="wf-table-wrap">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="width:240px;">[Component / Page Name]</th>
+              <th style="width:220px;">[Filename]</th>
+              <th>[Layout &amp; Workflow Capabilities Represented]</th>
+              <th style="width:110px;text-align:right;">[Launch]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>[Guides &amp; Tutorials Wireframe]</strong></td>
+              <td><code>public/guides.html</code></td>
+              <td>[Complete wireframe replication of frontend/guides.html: jump navigation pills, 7 numbered guide step cards, verification document list, request lifecycle grid, help CTA card, and updated 4-column public footer]</td>
+              <td style="text-align:right;"><a href="public/guides.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+            <tr>
+              <td><strong>[Updated 4-Column Public Footer]</strong></td>
+              <td><code>public/public-footer.html</code></td>
+              <td>[Dedicated component showcase wireframe: Col 1 Brand &amp; Social, Col 2 Explore, Col 3 About, Col 4 Help &amp; Legal (with Guides link), and copyright/email bar, plus responsive grid architecture notes]</td>
+              <td style="text-align:right;"><a href="public/public-footer.html" class="wf-btn wf-btn--sm wf-btn--primary">[Open &rarr;]</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Simple Directory Footer -->
+  <footer style="text-align:center;padding:24px;border-top:1px solid var(--wf-border);font-size:12px;color:var(--wf-text-muted);">
+    [iCareDonate Low-Fidelity Wireframe System &bull; Standalone HTML Library &bull; Generated: October 2026]
+  </footer>
+
+  <script src="assets/wireframe.js"></script>
+</body>
+</html>

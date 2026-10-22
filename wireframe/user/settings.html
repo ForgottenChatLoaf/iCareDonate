@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Account Settings &amp; Security — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── USER SIDEBAR ──────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill">[USER]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Donations &amp; Requests]</div>
+
+      <a href="offer-donation.html" class="wf-sidebar__link wf-sidebar__link--accent">
+        <span class="wf-sidebar__icon">+</span>
+        <span>[Post Donation]</span>
+      </a>
+
+      <a href="browse-donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9740;</span>
+        <span>[Browse Donations]</span>
+      </a>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[My Donations]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[My Requests]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Claims &amp; Handovers]</span>
+      </a>
+
+      <a href="history.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[History]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Communication]</div>
+
+      <a href="activity-log.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9201;</span>
+        <span>[Activity Log]</span>
+      </a>
+
+      <a href="notifications.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Notifications]</span>
+        <span class="wf-sidebar__badge">[3]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9888;</span>
+        <span>[Support &amp; Help]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Account]</div>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Profile]</span>
+      </a>
+
+      <a href="settings.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9881;</span>
+        <span>[Account Settings]</span>
+      </a>
+
+      <a href="help-center.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[Help Center]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Account Settings &amp; Security]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[U]</span>
+          <span>[User Name]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Settings Layout -->
+      <div class="wf-grid-2">
+
+        <!-- Column 1: Password & Authentication -->
+        <div>
+          <!-- Change Password Card -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h2 class="wf-card__title">[Change Password]</h2>
+            </div>
+
+            <form action="#" method="post">
+              <div class="wf-form-group">
+                <label class="wf-label">[Current Password *]</label>
+                <input type="password" class="wf-input" placeholder="[Enter current password]">
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[New Password *]</label>
+                <input type="password" class="wf-input" placeholder="[Minimum 8 characters with numbers &amp; symbols]">
+              </div>
+
+              <div class="wf-form-group">
+                <label class="wf-label">[Confirm New Password *]</label>
+                <input type="password" class="wf-input" placeholder="[Re-enter new password]">
+              </div>
+
+              <button type="submit" class="wf-btn wf-btn--primary">[Update Password]</button>
+            </form>
+          </div>
+
+          <!-- Two-Factor Authentication -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h2 class="wf-card__title">[Two-Factor Authentication (2FA)]</h2>
+              <span class="wf-badge">[Status: Recommended]</span>
+            </div>
+            <p style="font-size:12.5px;">[Add an extra layer of security to prevent unauthorized access to your donation records and personal proofs.]</p>
+            <button type="button" class="wf-btn wf-btn--outline" onclick="alert('[Wireframe Demo: 2FA Setup Dialog]')">[Enable SMS / App 2FA]</button>
+          </div>
+        </div>
+
+        <!-- Column 2: Notification & Privacy Preferences -->
+        <div>
+          <!-- Notification Preferences -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h2 class="wf-card__title">[Notification Preferences]</h2>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div style="display:flex;align-items:flex-start;gap:10px;">
+                <input type="checkbox" id="prefMatches" checked style="margin-top:3px;">
+                <div>
+                  <label for="prefMatches" style="font-weight:600;font-size:13px;color:var(--wf-text);">[Match Alerts &amp; Approvals]</label>
+                  <p style="font-size:12px;margin:2px 0 0;">[Receive immediate in-app and email alerts when a request is matched or listing approved.]</p>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:flex-start;gap:10px;">
+                <input type="checkbox" id="prefPickup" checked style="margin-top:3px;">
+                <div>
+                  <label for="prefPickup" style="font-weight:600;font-size:13px;color:var(--wf-text);">[Handover Pickup Reminders]</label>
+                  <p style="font-size:12px;margin:2px 0 0;">[Receive SMS alerts 24 hours prior to scheduled hub handover deadlines.]</p>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:flex-start;gap:10px;">
+                <input type="checkbox" id="prefNewsletter" style="margin-top:3px;">
+                <div>
+                  <label for="prefNewsletter" style="font-weight:600;font-size:13px;color:var(--wf-text);">[Community Impact Reports &amp; News]</label>
+                  <p style="font-size:12px;margin:2px 0 0;">[Monthly newsletter highlighting transparent aid metrics across Philippines.]</p>
+                </div>
+              </div>
+            </div>
+
+            <button type="button" class="wf-btn wf-btn--outline" style="margin-top:16px;" onclick="alert('[Wireframe Demo: Preferences saved]')">[Save Preferences]</button>
+          </div>
+
+          <!-- Privacy & Visibility -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h2 class="wf-card__title">[Privacy Controls]</h2>
+            </div>
+            
+            <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;">
+              <input type="checkbox" id="prefPhoneVis" checked style="margin-top:3px;">
+              <div>
+                <label for="prefPhoneVis" style="font-weight:600;font-size:13px;color:var(--wf-text);">[Share Mobile Contact with Matched Partner]</label>
+                <p style="font-size:12px;margin:2px 0 0;">[Allows verified counterpart to call or SMS you for safe hub coordination.]</p>
+              </div>
+            </div>
+
+            <div style="border-top:1px solid var(--wf-surface-alt);padding-top:14px;">
+              <h4 style="margin-bottom:6px;color:var(--wf-border-black);">[Deactivate or Close Account]</h4>
+              <p style="font-size:12px;margin-bottom:10px;">[Permanently delete your profile and withdraw all active donation listings.]</p>
+              <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Account deletion confirmation]')">[Request Account Deletion]</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Active Sessions Section -->
+      <div class="wf-card">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Active Login Sessions]</h2>
+          <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Terminated all other sessions]')">[Log Out Other Devices]</button>
+        </div>
+
+        <div class="wf-table-wrap">
+          <table class="wf-table">
+            <thead>
+              <tr>
+                <th>[Device / Browser]</th>
+                <th>[Approximate Location]</th>
+                <th>[IP Address]</th>
+                <th>[Last Active]</th>
+                <th style="text-align:right;">[Status]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>[Chrome Desktop / Windows]</strong></td>
+                <td>[Quezon City, Metro Manila]</td>
+                <td>[192.168.X.X]</td>
+                <td>[Current Active Session]</td>
+                <td style="text-align:right;"><span class="wf-badge wf-badge--dark">[Current]</span></td>
+              </tr>
+              <tr>
+                <td><strong>[Safari Mobile / iOS]</strong></td>
+                <td>[Quezon City, Metro Manila]</td>
+                <td>[192.168.X.X]</td>
+                <td>[2 days ago]</td>
+                <td style="text-align:right;">
+                  <button class="wf-btn wf-btn--sm wf-btn--subtle" onclick="alert('[Terminating session]')">[Revoke]</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Authenticated Mini Footer -->
+    <footer class="wf-footer">
+      <div>[Authenticated User Portal] &bull; &copy; 2026 iCareDonate</div>
+      <div class="wf-footer__links">
+        <a href="../../frontend/privacy.html">[Privacy Policy]</a>
+        <a href="../../frontend/terms.html">[Terms of Service]</a>
+        <a href="help-center.html">[Help Center]</a>
+      </div>
+    </footer>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

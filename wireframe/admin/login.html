@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Log In — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+  <style>
+    .wf-login-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      max-width: 960px;
+      width: 100%;
+      margin: 40px auto;
+      align-items: stretch;
+    }
+    @media (max-width: 768px) {
+      .wf-login-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="wf-topbar" style="border-bottom:1px solid var(--wf-border);padding:14px 32px;display:flex;justify-content:space-between;align-items:center;">
+  <div style="font-weight:800;font-size:18px;">[iCareDonate]</div>
+  <a href="../index.html" class="wf-btn wf-btn--sm wf-btn--outline">&larr; [All Wireframes]</a>
+</div>
+
+<div class="wf-content" style="max-width:1040px;margin:0 auto;padding:40px 20px;">
+  <div class="wf-login-grid">
+
+    <!-- Left Brand Card -->
+    <div class="wf-card" style="padding:36px;display:flex;flex-direction:column;justify-content:space-between;border:2px solid var(--wf-border-black);">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:8px;margin-bottom:12px;">
+          <span style="font-size:20px;font-weight:800;">[iCareDonate]</span>
+          <span class="wf-badge wf-badge--dark">[ADMIN PORTAL]</span>
+        </div>
+        <h2 style="font-size:24px;font-weight:800;margin:0 0 8px;line-height:1.2;">
+          [Operational Moderation &amp; Verification Platform]
+        </h2>
+        <p class="wf-hint" style="font-size:13.5px;margin:0 0 24px;line-height:1.5;">
+          [Centralized administrative console for donation quality review, beneficiary indigency validation, handover monitoring, and immutable audit logs.]
+        </p>
+
+        <div style="display:flex;flex-direction:column;gap:14px;">
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:18px;">&#9635;</span>
+            <div>
+              <strong>[Verified Trust &amp; Safety]</strong>
+              <div class="wf-hint">[Every donation offer and proof document is reviewed by coordinators.]</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:18px;">&#8646;</span>
+            <div>
+              <strong>[Fulfillment Transparency]</strong>
+              <div class="wf-hint">[Track transactions from pledge through barangay hub handover.]</div>
+            </div>
+          </div>
+          <div style="display:flex;gap:12px;align-items:flex-start;">
+            <span style="font-size:18px;">&#9778;</span>
+            <div>
+              <strong>[Immutable Audit Trail]</strong>
+              <div class="wf-hint">[All administrative enforcement actions are logged with timestamp and IP.]</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="border-top:1px solid var(--wf-border);padding-top:16px;margin-top:24px;font-size:12px;">
+        <span class="wf-hint">[Restricted to authorized system administrators and barangay coordinators.]</span>
+      </div>
+    </div>
+
+    <!-- Right Login Form Card -->
+    <div class="wf-card" style="padding:36px;display:flex;flex-direction:column;justify-content:center;">
+      <h2 style="font-size:20px;font-weight:800;margin:0 0 6px;">[Welcome back]</h2>
+      <p class="wf-hint" style="font-size:13px;margin:0 0 20px;">[Sign in with your administrative credentials]</p>
+
+      <form action="dashboard.html" method="get">
+        <div class="wf-form-group">
+          <label class="wf-label">[Official Email Address *]</label>
+          <input type="email" class="wf-input" placeholder="[admin@icaredonate.ph]" required>
+        </div>
+
+        <div class="wf-form-group">
+          <label class="wf-label">[Password *]</label>
+          <input type="password" class="wf-input" placeholder="[Enter password]" required>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;font-size:12px;">
+          <label style="display:flex;align-items:center;gap:6px;">
+            <input type="checkbox"> [Remember session]
+          </label>
+          <a href="#" onclick="alert('[Password reset request logged]')">[Forgot Password?]</a>
+        </div>
+
+        <button type="submit" class="wf-btn wf-btn--primary" style="width:100%;padding:10px;font-size:14px;margin-bottom:14px;">
+          [Sign In to Admin Portal &rarr;]
+        </button>
+      </form>
+
+      <div class="wf-card" style="padding:12px;background:var(--wf-surface-alt);font-size:12px;text-align:center;">
+        <strong>[Demo Quick Login]:</strong>
+        <div style="margin-top:6px;display:flex;gap:8px;justify-content:center;">
+          <a href="dashboard.html" class="wf-btn wf-btn--sm wf-btn--outline">[Login as Head Admin]</a>
+          <a href="dashboard.html" class="wf-btn wf-btn--sm wf-btn--outline">[Login as Moderator]</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

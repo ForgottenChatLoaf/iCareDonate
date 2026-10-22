@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Beneficiary Verification Interviews — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Beneficiary Verification Interviews]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <button type="button" class="wf-btn wf-btn--primary" onclick="wfOpenModal('wfModalScheduleInterview')">
+          [+ Schedule Interview]
+        </button>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Interviews Data Table -->
+      <div class="wf-card" style="padding:0;overflow:hidden;">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;">[Interview ID]</th>
+              <th style="padding:12px 16px;">[Beneficiary]</th>
+              <th style="padding:12px 16px;">[Assistance Target]</th>
+              <th style="padding:12px 16px;">[Schedule]</th>
+              <th style="padding:12px 16px;">[Method &amp; Venue]</th>
+              <th style="padding:12px 16px;">[Outcome]</th>
+              <th style="padding:12px 16px;text-align:right;">[Action]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[INT-101]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Carlos Mendoza]</div>
+                <small class="wf-hint">[0918-223-1122]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <div>[Request #501 (School Supplies)]</div>
+              </td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:600;">[2026-10-15]</div>
+                <small class="wf-hint">[10:00 AM]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Phone Call]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge wf-badge--dashed">[Pending]</span>
+              </td>
+              <td style="padding:14px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Outcome recording modal opened]')">
+                  [Record Outcome]
+                </button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">[INT-098]</td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:700;">[Rosalina Ramos]</div>
+                <small class="wf-hint">[0920-555-8833]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <div>[Request #490 (Food Groceries)]</div>
+              </td>
+              <td style="padding:14px 16px;">
+                <div style="font-weight:600;">[2026-10-09]</div>
+                <small class="wf-hint">[02:30 PM]</small>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge">[Barangay Hall In-Person]</span>
+              </td>
+              <td style="padding:14px 16px;">
+                <span class="wf-badge wf-badge--dark">[Verified]</span>
+              </td>
+              <td style="padding:14px 16px;text-align:right;">
+                <span class="wf-hint" style="font-size:12px;">[Completed]</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- SCHEDULE INTERVIEW MODAL -->
+<div class="wf-modal-backdrop" id="wfModalScheduleInterview" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Schedule Verification Interview]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalScheduleInterview')">&times;</button>
+    </div>
+    <div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Assistance Request ID *]</label>
+        <input type="text" class="wf-input" value="[501]">
+      </div>
+      <div class="wf-grid-2">
+        <div class="wf-form-group">
+          <label class="wf-label">[Interview Date *]</label>
+          <input type="date" class="wf-input" value="2026-10-15">
+        </div>
+        <div class="wf-form-group">
+          <label class="wf-label">[Interview Time *]</label>
+          <input type="time" class="wf-input" value="10:00">
+        </div>
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Interview Method *]</label>
+        <select class="wf-select">
+          <option>[Phone Call]</option>
+          <option>[Video Call]</option>
+          <option>[In-Person at Barangay Partner]</option>
+        </select>
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalScheduleInterview')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Interview scheduled and applicant notified]');wfCloseModal('wfModalScheduleInterview')">[Schedule Interview]</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

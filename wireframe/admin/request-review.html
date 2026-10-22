@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Assistance Request Review — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <a href="requests.html" class="wf-btn wf-btn--sm wf-btn--outline">&larr; [Back to Requests]</a>
+          <h1 class="wf-topbar__title">[Assistance Request Review #501]</h1>
+        </div>
+      </div>
+      <div class="wf-topbar__right">
+        <span class="wf-badge wf-badge--dashed">[Proof Review]</span>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- 2-Column Grid -->
+      <div class="wf-grid-2" style="align-items:start;">
+
+        <!-- Left Column: Need Statement, Target Item & Proof Document -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+
+          <!-- Statement of Need & Target Card -->
+          <div class="wf-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;gap:10px;flex-wrap:wrap;">
+              <span class="wf-badge wf-badge--dark">[Urgency: High]</span>
+              <span class="wf-hint">[Filed: 2026-10-11]</span>
+            </div>
+
+            <h2 style="font-size:18px;font-weight:700;margin:0 0 6px;">
+              [Target: Elementary Backpacks &amp; Notebook Bundle]
+            </h2>
+            <div class="wf-hint" style="margin-bottom:16px;">
+              [Requested: <strong>2 sets</strong> &bull; Total Available in Donation: <strong>4 sets</strong>]
+            </div>
+
+            <div style="background:var(--wf-surface-alt);padding:14px;border:1px solid var(--wf-border);border-radius:4px;margin-bottom:14px;">
+              <strong style="display:block;margin-bottom:4px;">[Beneficiary Statement of Need:]</strong>
+              <p style="font-size:13px;line-height:1.5;margin:0;">
+                ["We have two young siblings entering Grade 3 and Grade 5 whose parents are displaced tricycle drivers currently without daily income following the recent storm. They lack school supplies and bags."]
+              </p>
+            </div>
+
+            <div style="font-size:12.5px;display:flex;flex-direction:column;gap:4px;">
+              <div>[Fulfillment City: <strong>Quezon City</strong>]</div>
+              <div>[Fulfillment Address: <strong>Block 12 Lot 4, Barangay Central, Quezon City</strong>]</div>
+            </div>
+          </div>
+
+          <!-- Proof Document Card -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h3 class="wf-card__title">[Supporting Proof Document]</h3>
+              <span class="wf-hint">[Submitted evidence]</span>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;background:var(--wf-surface-alt);padding:14px;border:1px solid var(--wf-border);border-radius:4px;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+              <div>
+                <div style="font-weight:700;font-size:13.5px;">[Barangay_Indigency_Certificate_Mendoza.pdf]</div>
+                <div class="wf-hint">[Uploaded &bull; Barangay Certificate]</div>
+              </div>
+              <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalProofInspect')">
+                [Inspect Document]
+              </button>
+            </div>
+
+            <div class="wf-hint" style="font-size:12px;line-height:1.5;">
+              [Proof documents are strictly accessible to authorized administrators and kept confidential in compliance with the Philippine Data Privacy Act.]
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Requester Profile & Moderation Decisions -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+
+          <!-- Beneficiary Profile Card -->
+          <div class="wf-card">
+            <div class="wf-card__header">
+              <h3 class="wf-card__title">[Beneficiary Profile]</h3>
+              <span class="wf-hint">[Account credibility and history]</span>
+            </div>
+
+            <div style="font-size:13px;display:flex;flex-direction:column;gap:8px;margin-bottom:16px;">
+              <div>[Name: <strong>Carlos Mendoza</strong>]</div>
+              <div>[Contact: <strong>0918-223-1122</strong>]</div>
+              <div>[Email: <strong>carlos@example.com</strong>]</div>
+              <div>[Location: <strong>Quezon City, Metro Manila</strong>]</div>
+              <div>[Previous Claims Completed: <strong>0</strong>]</div>
+            </div>
+
+            <a href="users.html" class="wf-btn wf-btn--outline" style="width:100%;text-align:center;">
+              [View Beneficiary Account History]
+            </a>
+          </div>
+
+          <!-- Moderation Decision Box -->
+          <div class="wf-card" style="border:2px solid var(--wf-border-black);">
+            <div class="wf-card__header">
+              <h3 class="wf-card__title">[Proof Verification Decision]</h3>
+              <span class="wf-badge wf-badge--dark">[Action Required]</span>
+            </div>
+            <div class="wf-hint" style="margin-bottom:14px;">
+              [Verify that submitted evidence establishes legitimate community need.]
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <button type="button" class="wf-btn wf-btn--primary" style="padding:10px 16px;width:100%;" onclick="alert('[Wireframe Demo: Proof verified and assistance request approved!]')">
+                [&check; Verify Proof &amp; Approve Request]
+              </button>
+              <a href="interviews.html" class="wf-btn wf-btn--outline" style="width:100%;text-align:center;">
+                [Schedule Verification Interview]
+              </a>
+              <button type="button" class="wf-btn wf-btn--outline" style="width:100%;" onclick="wfOpenModal('wfModalRejectRequest')">
+                [Reject Request &bull; Insufficient Proof]
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- Proof Inspection Dialog Modal -->
+<div class="wf-modal-backdrop" id="wfModalProofInspect" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Verification Document Preview]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalProofInspect')">&times;</button>
+    </div>
+    <div>
+      <div class="wf-img-placeholder" style="height:260px;margin-bottom:14px;">
+        <div style="text-align:center;padding:16px;">
+          <div style="font-weight:700;margin-bottom:4px;">[Barangay_Indigency_Certificate_Mendoza.pdf]</div>
+          <div class="wf-hint">[Status: Signed &amp; Sealed &bull; Verified Jurisdiction (Brgy. Central)]</div>
+        </div>
+      </div>
+      <div class="wf-card" style="padding:10px 14px;background:var(--wf-surface-alt);font-size:12px;">
+        [Official verification policy: Proof documents are restricted to authorized reviewers and retained securely under Philippine Data Privacy Act provisions.]
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalProofInspect')">[Close]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Proof document verified!]');wfCloseModal('wfModalProofInspect')">[Approve Proof]</button>
+    </div>
+  </div>
+</div>
+
+<!-- Rejection Reason Dialog Modal -->
+<div class="wf-modal-backdrop" id="wfModalRejectRequest" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Reject Assistance Request]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalRejectRequest')">&times;</button>
+    </div>
+    <div>
+      <p style="font-size:13px;margin:0 0 10px;">
+        [Please state the reason for rejection. This explanation will be logged and communicated to the beneficiary:]
+      </p>
+      <div class="wf-form-group">
+        <textarea class="wf-textarea" rows="3" placeholder="[e.g. Uploaded certificate is expired or illegible...]"></textarea>
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalRejectRequest')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Request rejected]');wfCloseModal('wfModalRejectRequest')">[Confirm Rejection]</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

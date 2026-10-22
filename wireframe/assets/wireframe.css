@@ -1,0 +1,933 @@
+/* ============================================================
+   iCareDonate Wireframe Design System (wireframe/assets/wireframe.css)
+   STRICT MONOCHROME LOW-FIDELITY WIREFRAME SYSTEM
+   Rules:
+   - Pure grayscale (White #FFFFFF, Grays #F8FAFC to #334155, Black #0F172A)
+   - Zero color accents, zero gradients, zero decorative drop shadows
+   - Neutral system sans-serif typography
+   - Explicit wireframe placeholder boxes for images with diagonal crosses
+   - Responsive layouts for Desktop, Tablet, and Mobile
+   ============================================================ */
+
+/* ── 1. Resets & CSS Variables ──────────────────────────────── */
+:root {
+  --wf-bg: #FFFFFF;
+  --wf-surface: #FFFFFF;
+  --wf-surface-muted: #F8FAFC;
+  --wf-surface-alt: #F1F5F9;
+  --wf-border: #CBD5E1;
+  --wf-border-dark: #64748B;
+  --wf-border-black: #0F172A;
+  
+  --wf-text: #0F172A;
+  --wf-text-muted: #64748B;
+  --wf-text-subtle: #94A3B8;
+  --wf-text-inverse: #FFFFFF;
+
+  --wf-sidebar-width: 260px;
+  --wf-topbar-height: 56px;
+  --wf-radius: 6px;
+  --wf-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--wf-font);
+  background-color: var(--wf-bg);
+  color: var(--wf-text);
+  line-height: 1.5;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── 2. Authenticated Mini Footer ──────────────────────────── */
+.wf-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 14px 24px;
+  margin-top: auto;
+  border-top: 1px solid var(--wf-border);
+  font-size: 12px;
+  color: var(--wf-text-muted);
+  background: var(--wf-surface-muted);
+}
+
+.wf-footer__links {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.wf-footer__links a {
+  color: var(--wf-text-muted);
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.wf-footer__links a:hover {
+  text-decoration: underline;
+  color: var(--wf-text);
+}
+
+/* ── 3. Typography ─────────────────────────────────────────── */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--wf-text);
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 8px;
+}
+
+h1 { font-size: 22px; }
+h2 { font-size: 18px; }
+h3 { font-size: 15px; }
+h4 { font-size: 13px; }
+
+p {
+  color: var(--wf-text-muted);
+  margin-bottom: 12px;
+  line-height: 1.55;
+}
+
+a {
+  color: var(--wf-text);
+  text-decoration: underline;
+}
+
+a:hover {
+  color: var(--wf-border-dark);
+}
+
+/* ── 3. Image Placeholder (Crossed Rectangles) ──────────────── */
+.wf-img-placeholder {
+  position: relative;
+  background-color: var(--wf-surface-alt);
+  border: 1px solid var(--wf-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  color: var(--wf-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  padding: 8px;
+  width: 100%;
+  min-height: 80px;
+}
+
+.wf-img-placeholder::before,
+.wf-img-placeholder::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.wf-img-placeholder::before {
+  background: linear-gradient(to top right, transparent calc(50% - 0.75px), var(--wf-border) 50%, transparent calc(50% + 0.75px));
+}
+
+.wf-img-placeholder::after {
+  background: linear-gradient(to bottom right, transparent calc(50% - 0.75px), var(--wf-border) 50%, transparent calc(50% + 0.75px));
+}
+
+.wf-img-placeholder span {
+  position: relative;
+  z-index: 2;
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  padding: 4px 10px;
+}
+
+/* ── 4. Layout Architecture ─────────────────────────────────── */
+.wf-layout {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+}
+
+.wf-sidebar {
+  width: var(--wf-sidebar-width);
+  background: var(--wf-surface-muted);
+  border-right: 1px solid var(--wf-border);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.wf-sidebar__brand {
+  padding: 16px;
+  border-bottom: 1px solid var(--wf-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wf-sidebar__logo-text {
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  text-decoration: none;
+  color: var(--wf-text);
+}
+
+.wf-sidebar__role-pill {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--wf-border-dark);
+  background: var(--wf-surface);
+}
+
+.wf-sidebar__nav {
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+
+.wf-sidebar__section-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--wf-text-subtle);
+  padding: 10px 10px 4px;
+}
+
+.wf-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  border-radius: var(--wf-radius);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--wf-text);
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: background 0.1s, border-color 0.1s;
+}
+
+.wf-sidebar__link:hover {
+  background: var(--wf-surface-alt);
+  border-color: var(--wf-border);
+  color: var(--wf-text);
+}
+
+.wf-sidebar__link.is-active {
+  background: var(--wf-surface);
+  border-color: var(--wf-border-black);
+  font-weight: 700;
+}
+
+.wf-sidebar__link--accent {
+  border: 1px dashed var(--wf-border-dark);
+  background: var(--wf-surface);
+  font-weight: 600;
+}
+
+.wf-sidebar__icon {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--wf-border-dark);
+  border-radius: 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 9px;
+  flex-shrink: 0;
+}
+
+.wf-sidebar__badge {
+  margin-left: auto;
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  border: 1px solid var(--wf-border-dark);
+  background: var(--wf-surface);
+}
+
+.wf-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--wf-bg);
+}
+
+.wf-topbar {
+  height: var(--wf-topbar-height);
+  background: var(--wf-surface);
+  border-bottom: 1px solid var(--wf-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
+.wf-topbar__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wf-topbar__toggle {
+  display: none;
+  padding: 6px 10px;
+  background: var(--wf-surface-muted);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.wf-topbar__title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.wf-topbar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.wf-user-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  background: var(--wf-surface-muted);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  font-size: 12.5px;
+  cursor: pointer;
+  text-decoration: none;
+  color: var(--wf-text);
+}
+
+.wf-user-avatar {
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--wf-border-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+  background: var(--wf-surface-alt);
+}
+
+.wf-content {
+  padding: 24px;
+  flex: 1;
+}
+
+/* ── 5. Component: Wireframe Cards ──────────────────────────── */
+.wf-card {
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  padding: 18px 20px;
+  margin-bottom: 20px;
+}
+
+.wf-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--wf-surface-alt);
+}
+
+.wf-card__title {
+  font-size: 14.5px;
+  font-weight: 700;
+  margin: 0;
+}
+
+/* ── 6. Component: Grid Systems ─────────────────────────────── */
+.wf-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.wf-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.wf-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.wf-grid-1-2 {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.wf-grid-2-1 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+/* ── 7. Component: Stat / Metric Box ────────────────────────── */
+.wf-stat-box {
+  background: var(--wf-surface);
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wf-stat-box__label {
+  font-size: 11.5px;
+  color: var(--wf-text-muted);
+  text-transform: uppercase;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+
+.wf-stat-box__value {
+  font-size: 26px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--wf-text);
+  margin-bottom: 6px;
+}
+
+.wf-stat-box__sub {
+  font-size: 11px;
+  color: var(--wf-text-subtle);
+}
+
+/* ── 8. Component: Tables ───────────────────────────────────── */
+.wf-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  background: var(--wf-surface);
+  margin-bottom: 16px;
+}
+
+.wf-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 12.5px;
+}
+
+.wf-table th {
+  background: var(--wf-surface-muted);
+  padding: 10px 14px;
+  font-weight: 700;
+  color: var(--wf-text);
+  border-bottom: 1px solid var(--wf-border);
+  white-space: nowrap;
+}
+
+.wf-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--wf-surface-alt);
+  color: var(--wf-text);
+}
+
+.wf-table tr:last-child td {
+  border-bottom: none;
+}
+
+.wf-table tr:hover td {
+  background: var(--wf-surface-muted);
+}
+
+/* ── 9. Component: Forms & Inputs ───────────────────────────── */
+.wf-form-group {
+  margin-bottom: 16px;
+}
+
+.wf-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--wf-text);
+  margin-bottom: 5px;
+}
+
+.wf-input,
+.wf-select,
+.wf-textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--wf-border);
+  border-radius: var(--wf-radius);
+  background: var(--wf-surface);
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--wf-text);
+}
+
+.wf-input:focus,
+.wf-select:focus,
+.wf-textarea:focus {
+  outline: none;
+  border-color: var(--wf-border-black);
+}
+
+.wf-textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.wf-hint {
+  font-size: 11px;
+  color: var(--wf-text-subtle);
+  margin-top: 4px;
+}
+
+/* ── 10. Component: Buttons ─────────────────────────────────── */
+.wf-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border-radius: var(--wf-radius);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all 0.1s;
+}
+
+.wf-btn--primary {
+  background: var(--wf-border-black);
+  color: var(--wf-text-inverse);
+  border-color: var(--wf-border-black);
+}
+
+.wf-btn--primary:hover {
+  background: #334155;
+  color: var(--wf-text-inverse);
+}
+
+.wf-btn--outline {
+  background: var(--wf-surface);
+  color: var(--wf-text);
+  border-color: var(--wf-border-dark);
+}
+
+.wf-btn--outline:hover {
+  background: var(--wf-surface-muted);
+}
+
+.wf-btn--subtle {
+  background: var(--wf-surface-alt);
+  color: var(--wf-text);
+  border-color: var(--wf-border);
+}
+
+.wf-btn--subtle:hover {
+  background: var(--wf-border);
+}
+
+.wf-btn--sm {
+  padding: 4px 8px;
+  font-size: 11px;
+}
+
+/* ── 11. Component: Badges & Status Pills ───────────────────── */
+.wf-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--wf-border-dark);
+  background: var(--wf-surface);
+  color: var(--wf-text);
+  white-space: nowrap;
+}
+
+.wf-badge--dark {
+  background: var(--wf-border-black);
+  color: var(--wf-text-inverse);
+  border-color: var(--wf-border-black);
+}
+
+.wf-badge--dashed {
+  border-style: dashed;
+}
+
+/* ── 12. Component: Filter Toolbar & Tabs ───────────────────── */
+.wf-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.wf-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid var(--wf-border);
+  margin-bottom: 18px;
+}
+
+.wf-tab {
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--wf-text-muted);
+  text-decoration: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  background: transparent;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+.wf-tab:hover {
+  color: var(--wf-text);
+}
+
+.wf-tab.is-active {
+  color: var(--wf-text);
+  border-bottom-color: var(--wf-border-black);
+}
+
+/* ── 13. Component: Notice / Banner Box ─────────────────────── */
+.wf-banner {
+  border: 1px solid var(--wf-border-dark);
+  border-left-width: 4px;
+  border-left-color: var(--wf-border-black);
+  background: var(--wf-surface-muted);
+  padding: 12px 16px;
+  border-radius: var(--wf-radius);
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.wf-banner__title {
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--wf-text);
+}
+
+/* ── 14. Component: Modal & Overlay ─────────────────────────── */
+.wf-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(15, 23, 42, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.wf-modal {
+  background: var(--wf-surface);
+  border: 2px solid var(--wf-border-black);
+  border-radius: var(--wf-radius);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 24px;
+  position: relative;
+}
+
+.wf-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--wf-border);
+}
+
+.wf-modal__close {
+  background: transparent;
+  border: 1px solid var(--wf-border);
+  border-radius: 4px;
+  padding: 3px 8px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.wf-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 14px;
+  border-top: 1px solid var(--wf-border);
+}
+
+/* ── 15. Component: Stepper / Timeline ──────────────────────── */
+.wf-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 20px 0;
+}
+
+.wf-stepper::before {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--wf-border);
+  z-index: 1;
+}
+
+.wf-step {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  background: var(--wf-surface);
+  padding: 0 8px;
+}
+
+.wf-step__circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid var(--wf-border-dark);
+  background: var(--wf-surface);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 700;
+  margin: 0 auto 6px;
+}
+
+.wf-step.is-done .wf-step__circle {
+  background: var(--wf-border-black);
+  color: var(--wf-text-inverse);
+  border-color: var(--wf-border-black);
+}
+
+.wf-step.is-active .wf-step__circle {
+  border-color: var(--wf-border-black);
+  border-width: 3px;
+}
+
+.wf-step__label {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+/* ── 16. Component: Public Navigation & Footer (Wireframe) ─── */
+.wf-public-nav {
+  height: 60px;
+  border-bottom: 1px solid var(--wf-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  background: var(--wf-surface);
+}
+
+.wf-public-links {
+  display: flex;
+  gap: 18px;
+}
+
+.wf-public-links a {
+  font-size: 13.5px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.wf-public-footer {
+  border-top: 1px solid var(--wf-border);
+  background: var(--wf-surface-muted);
+  padding: 40px 24px 24px;
+  margin-top: auto;
+}
+
+.wf-public-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1.5fr;
+  gap: 32px;
+  max-width: 1100px;
+  margin: 0 auto 32px;
+}
+
+.wf-public-footer__col h4 {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.wf-public-footer__col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.wf-public-footer__col ul a {
+  font-size: 12.5px;
+  color: var(--wf-text-muted);
+  text-decoration: none;
+}
+
+.wf-public-footer__bottom {
+  border-top: 1px solid var(--wf-border);
+  padding-top: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  font-size: 11.5px;
+  color: var(--wf-text-muted);
+}
+
+/* ── 17. Responsive Breakpoints ─────────────────────────────── */
+@media (max-width: 992px) {
+  .wf-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wf-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .wf-grid-1-2, .wf-grid-2-1 {
+    grid-template-columns: 1fr;
+  }
+  .wf-public-footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .wf-sidebar {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    transition: left 0.2s ease-in-out;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
+  }
+  .wf-sidebar.is-open {
+    left: 0;
+  }
+  .wf-topbar__toggle {
+    display: inline-flex;
+  }
+  .wf-grid-4, .wf-grid-3, .wf-grid-2 {
+    grid-template-columns: 1fr;
+  }
+  .wf-public-footer__grid {
+    grid-template-columns: 1fr;
+  }
+  .wf-stepper {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .wf-stepper::before {
+    display: none;
+  }
+  .wf-step {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0;
+  }
+  .wf-step__circle {
+    margin: 0;
+  }
+}
+
+/* ── Authenticated Wireframe Mini Footer ─────────────────────── */
+.wf-footer {
+  margin-top: auto;
+  padding: 16px 28px;
+  border-top: 1px solid var(--wf-border);
+  background: var(--wf-surface);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 12px;
+  color: var(--wf-text-muted);
+}
+
+.wf-footer__links {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.wf-footer__links a {
+  color: var(--wf-text-muted);
+  text-decoration: none;
+  font-size: 12px;
+}
+
+.wf-footer__links a:hover {
+  color: var(--wf-text);
+  text-decoration: underline;
+}

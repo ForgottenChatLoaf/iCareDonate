@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] User Profile &amp; Moderation — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <a href="users.html" class="wf-btn wf-btn--sm wf-btn--outline">&larr; [Users List]</a>
+          <h1 class="wf-topbar__title">[User Profile: Maria Santos (#12)]</h1>
+        </div>
+      </div>
+      <div class="wf-topbar__right">
+        <span class="wf-badge wf-badge--dark">[Status: Active]</span>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Moderation Cascade Policy Alert -->
+      <div class="wf-card" style="background:var(--wf-surface-alt);border-left:4px solid var(--wf-border-black);padding:12px 18px;margin-bottom:20px;">
+        <span style="font-size:13px;">
+          <strong>[Moderation Cascade Architecture:]</strong> [Suspending or banning an account triggers an automated cascade that archives all of their active donation offers. Reactivating this account later does not automatically republish archived donations.]
+        </span>
+      </div>
+
+      <!-- Upper Grid: Account Details & Moderation Controls -->
+      <div class="wf-grid-2" style="align-items:start;margin-bottom:20px;">
+
+        <!-- Left: Account Information Table -->
+        <div class="wf-card">
+          <h2 style="font-size:16px;font-weight:700;margin:0 0 14px;">[Account Information]</h2>
+          <div class="wf-table-wrap">
+            <table class="wf-table">
+              <tbody>
+                <tr>
+                  <td style="font-weight:700;width:140px;">[Full Name]</td>
+                  <td>[Maria Santos]</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;">[Email Address]</td>
+                  <td>[maria.santos@example.com]</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;">[Phone Number]</td>
+                  <td>[0917-555-0192]</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;">[Location]</td>
+                  <td>[Barangay Central, Quezon City]</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;">[System Role]</td>
+                  <td><span class="wf-badge">[Community User / Donor]</span></td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;">[Joined Date]</td>
+                  <td>[2026-01-15]</td>
+                </tr>
+                <tr>
+                  <td style="font-weight:700;">[Verification Status]</td>
+                  <td><span class="wf-badge wf-badge--dark">[Email Verified]</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Right: Summary Counters & Moderation Actions -->
+        <div style="display:flex;flex-direction:column;gap:18px;">
+
+          <!-- 4 Summary Stat Counters -->
+          <div class="wf-grid-4">
+            <div class="wf-stat-box" style="padding:12px 10px;text-align:center;">
+              <span class="wf-stat-box__value" style="font-size:22px;">[02]</span>
+              <span class="wf-stat-box__label">[Donations]</span>
+            </div>
+            <div class="wf-stat-box" style="padding:12px 10px;text-align:center;">
+              <span class="wf-stat-box__value" style="font-size:22px;">[01]</span>
+              <span class="wf-stat-box__label">[Requests]</span>
+            </div>
+            <div class="wf-stat-box" style="padding:12px 10px;text-align:center;">
+              <span class="wf-stat-box__value" style="font-size:22px;">[03]</span>
+              <span class="wf-stat-box__label">[Transactions]</span>
+            </div>
+            <div class="wf-stat-box" style="padding:12px 10px;text-align:center;">
+              <span class="wf-stat-box__value" style="font-size:22px;">[00]</span>
+              <span class="wf-stat-box__label">[Reports]</span>
+            </div>
+          </div>
+
+          <!-- Moderation Controls Card -->
+          <div class="wf-card" style="border:2px solid var(--wf-border-black);">
+            <h3 style="font-size:15px;font-weight:700;margin:0 0 6px;">[Account Moderation Actions]</h3>
+            <div class="wf-hint" style="margin-bottom:14px;">
+              [Apply administrative enforcement, warnings, suspension, or permanent ban.]
+            </div>
+
+            <!-- Formal Warning Form -->
+            <div style="display:flex;gap:8px;margin-bottom:14px;">
+              <input type="text" class="wf-input" placeholder="[Issue formal warning message...]" style="flex:1;">
+              <button type="button" class="wf-btn wf-btn--outline" onclick="alert('[Wireframe Demo: Formal warning logged and sent to user email]')">
+                [Issue Warning]
+              </button>
+            </div>
+
+            <!-- Status Buttons -->
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button type="button" class="wf-btn wf-btn--outline" onclick="wfOpenModal('wfModalSuspendUser')">
+                [Suspend Account]
+              </button>
+              <button type="button" class="wf-btn wf-btn--primary" onclick="wfOpenModal('wfModalBanUser')">
+                [Permanent Ban]
+              </button>
+              <a href="interviews.html" class="wf-btn wf-btn--outline">
+                [Schedule Interview]
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Lower Section: User's Associated Donations & Cascade Status -->
+      <div class="wf-card">
+        <div class="wf-card__header">
+          <h2 class="wf-card__title">[Associated Donations by This User]</h2>
+          <span class="wf-hint">[Notice how suspending the user immediately changes active offers to Archived]</span>
+        </div>
+
+        <div class="wf-table-wrap">
+          <table class="wf-table">
+            <thead>
+              <tr>
+                <th>[Item Title]</th>
+                <th>[Category]</th>
+                <th>[Quantity]</th>
+                <th>[Status]</th>
+                <th style="text-align:right;">[Review]</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>[Assorted Children Storybooks &amp; Workbooks]</strong></td>
+                <td>[School Supplies]</td>
+                <td>[10 sets]</td>
+                <td><span class="wf-badge wf-badge--dark">[Active &bull; Approved]</span></td>
+                <td style="text-align:right;">
+                  <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[Inspect]</a>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>[Elementary Student Notebooks]</strong></td>
+                <td>[School Supplies]</td>
+                <td>[15 pcs]</td>
+                <td><span class="wf-badge wf-badge--dark">[Active &bull; Approved]</span></td>
+                <td style="text-align:right;">
+                  <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[Inspect]</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- SUSPEND USER MODAL -->
+<div class="wf-modal-backdrop" id="wfModalSuspendUser" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Suspend User Account]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalSuspendUser')">&times;</button>
+    </div>
+    <div>
+      <div class="wf-card" style="padding:10px 14px;background:var(--wf-surface-alt);margin-bottom:12px;font-size:12.5px;">
+        <strong>[Cascade Notice:]</strong> [Suspending this account will automatically archive all of their currently active donation offers to safeguard the community.]
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Reason for Suspension *]</label>
+        <textarea class="wf-textarea" rows="3" placeholder="[Provide policy grounds or misconduct details...]"></textarea>
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalSuspendUser')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: User suspended and donations archived]');wfCloseModal('wfModalSuspendUser')">[Confirm Suspension]</button>
+    </div>
+  </div>
+</div>
+
+<!-- BAN USER MODAL -->
+<div class="wf-modal-backdrop" id="wfModalBanUser" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Permanent Account Ban]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalBanUser')">&times;</button>
+    </div>
+    <div>
+      <div class="wf-card" style="padding:10px 14px;background:var(--wf-surface-alt);margin-bottom:12px;font-size:12.5px;">
+        [Permanent ban locks authentication credentials permanently and purges all active participation listings.]
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Reason for Permanent Ban *]</label>
+        <textarea class="wf-textarea" rows="3" placeholder="[Provide violation findings for audit log...]"></textarea>
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalBanUser')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: User permanently banned]');wfCloseModal('wfModalBanUser')">[Confirm Ban]</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

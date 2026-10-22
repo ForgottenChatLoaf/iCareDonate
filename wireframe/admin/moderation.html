@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Community Moderation &amp; Flags — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Community Moderation &amp; Flags]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Status Filter Tabs -->
+      <div class="wf-tabs" style="margin-bottom:20px;">
+        <button class="wf-tab is-active">[All Reports (3)]</button>
+        <button class="wf-tab">[Pending (1)]</button>
+        <button class="wf-tab">[Resolved (2)]</button>
+      </div>
+
+      <!-- Reports Container -->
+      <div style="display:flex;flex-direction:column;gap:18px;">
+
+        <!-- Report 1 (Pending) -->
+        <div class="wf-card" style="padding:22px;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px;flex-wrap:wrap;">
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">
+                <span class="wf-badge wf-badge--dark">[Flag: Inappropriate Condition]</span>
+                <span class="wf-badge wf-badge--dashed">[Status: Pending Review]</span>
+                <span class="wf-hint" style="font-size:12px;">[Reported by David Tan &bull; 2026-10-12 14:15]</span>
+              </div>
+              <h3 style="font-size:16.5px;font-weight:700;margin:0 0 4px;">
+                [Target: Donation #103 &mdash; Assorted Children Winter Jackets &amp; Sweaters]
+              </h3>
+            </div>
+            <div>
+              <a href="donation-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[Inspect Item]</a>
+            </div>
+          </div>
+
+          <p style="font-size:13.5px;background:var(--wf-surface-alt);padding:12px 14px;border:1px solid var(--wf-border);border-radius:4px;margin:0 0 14px;line-height:1.5;">
+            <strong>[Reporter Note:]</strong> ["The donor description indicates winter parkas, but items appear visibly stained in the preview images. Request verification before public listing."]
+          </p>
+
+          <div style="display:flex;gap:10px;justify-content:flex-end;">
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Listing archived]')">
+              [Archive Donation #103]
+            </button>
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Report dismissed]')">
+              [Dismiss Report]
+            </button>
+            <button type="button" class="wf-btn wf-btn--sm wf-btn--primary" onclick="alert('[Wireframe Demo: Report resolved]')">
+              [Resolve &amp; Close]
+            </button>
+          </div>
+        </div>
+
+        <!-- Report 2 (Resolved) -->
+        <div class="wf-card" style="padding:22px;background:var(--wf-surface-alt);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:12px;flex-wrap:wrap;">
+            <div>
+              <div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">
+                <span class="wf-badge">[Flag: Duplicate Request]</span>
+                <span class="wf-badge wf-badge--dark">[Status: Resolved]</span>
+                <span class="wf-hint" style="font-size:12px;">[Reported by Coordinator #1 &bull; 2026-10-09]</span>
+              </div>
+              <h3 style="font-size:16.5px;font-weight:700;margin:0 0 4px;">
+                [Target: Request #490 &mdash; Family Food Assistance Pack]
+              </h3>
+            </div>
+            <div>
+              <a href="request-review.html" class="wf-btn wf-btn--sm wf-btn--outline">[Inspect Request]</a>
+            </div>
+          </div>
+
+          <p style="font-size:13.5px;margin:0 0 10px;line-height:1.5;">
+            <strong>[Resolution:]</strong> [Beneficiary explained previous request was cancelled. Active request #490 confirmed valid.]
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

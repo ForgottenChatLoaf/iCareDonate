@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Request Tracking Details — iCareDonate</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── USER SIDEBAR ──────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill">[USER]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Donations &amp; Requests]</div>
+
+      <a href="offer-donation.html" class="wf-sidebar__link wf-sidebar__link--accent">
+        <span class="wf-sidebar__icon">+</span>
+        <span>[Post Donation]</span>
+      </a>
+
+      <a href="browse-donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9740;</span>
+        <span>[Browse Donations]</span>
+      </a>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[My Donations]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[My Requests]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Claims &amp; Handovers]</span>
+      </a>
+
+      <a href="history.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[History]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Communication]</div>
+
+      <a href="activity-log.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9201;</span>
+        <span>[Activity Log]</span>
+      </a>
+
+      <a href="notifications.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Notifications]</span>
+        <span class="wf-sidebar__badge">[3]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9888;</span>
+        <span>[Support &amp; Help]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Account]</div>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Profile]</span>
+      </a>
+
+      <a href="settings.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9881;</span>
+        <span>[Account Settings]</span>
+      </a>
+
+      <a href="help-center.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[Help Center]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <div style="display:flex;align-items:center;gap:8px;">
+          <a href="requests.html" class="wf-btn wf-btn--sm wf-btn--outline">&larr; [Back to Requests]</a>
+          <h1 class="wf-topbar__title">[Tracking Request: #REQ-201]</h1>
+        </div>
+      </div>
+      <div class="wf-topbar__right">
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[U]</span>
+          <span>[User Name]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Lifecycle Stepper Component -->
+      <div class="wf-card">
+        <h2 class="wf-card__title" style="margin-bottom:14px;">[Request Lifecycle Progress]</h2>
+        <div class="wf-stepper">
+          <div class="wf-step is-done">
+            <div class="wf-step__circle">&#10003;</div>
+            <div class="wf-step__label">[1. Application Submitted]<br><small class="wf-hint">[YYYY-MM-DD]</small></div>
+          </div>
+          <div class="wf-step is-done">
+            <div class="wf-step__circle">&#10003;</div>
+            <div class="wf-step__label">[2. Proof Verified]<br><small class="wf-hint">[Coordinator Checked]</small></div>
+          </div>
+          <div class="wf-step is-active">
+            <div class="wf-step__circle">[3]</div>
+            <div class="wf-step__label"><strong>[3. Matched &amp; Scheduled]</strong><br><small class="wf-hint">[Current Stage]</small></div>
+          </div>
+          <div class="wf-step">
+            <div class="wf-step__circle">[4]</div>
+            <div class="wf-step__label">[4. Claimed &amp; Received]<br><small class="wf-hint">[Handover Pending]</small></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two-Column Information -->
+      <div class="wf-grid-2-1">
+
+        <!-- Column 1: Match & Request Summary -->
+        <div>
+          <!-- Match Alert Card -->
+          <div class="wf-card" style="border-left:4px solid var(--wf-border-black);">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;">
+              <div>
+                <span class="wf-badge wf-badge--dark">[Matched with Community Donor]</span>
+                <h3 style="margin:8px 0 4px;">[Handover Scheduled: Pick-up Details Ready]</h3>
+              </div>
+              <a href="transactions.html" class="wf-btn wf-btn--primary">[View Claim Pass &rarr;]</a>
+            </div>
+            <p style="font-size:13px;">[A verified donor has allocated items for this request. Please present your official 6-digit claim code during the scheduled pickup window.]</p>
+            
+            <div class="wf-table-wrap" style="margin-top:12px;margin-bottom:0;">
+              <table class="wf-table">
+                <tbody>
+                  <tr>
+                    <td style="font-weight:700;width:160px;">[Allocated Item]</td>
+                    <td>[Resource Item Title Placeholder #1]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Designated Venue]</td>
+                    <td>[Barangay Central Multi-Purpose Hall, Hub Desk #2]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Handover Deadline]</td>
+                    <td>[YYYY-MM-DD between 09:00 AM - 04:00 PM]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Assigned Coordinator]</td>
+                    <td>[Coordinator Name Placeholder]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Application Specifications -->
+          <div class="wf-card">
+            <h3 class="wf-card__title" style="margin-bottom:12px;">[Application Details]</h3>
+            <div class="wf-table-wrap">
+              <table class="wf-table">
+                <tbody>
+                  <tr>
+                    <td style="width:160px;font-weight:700;">[Request Reference]</td>
+                    <td>[#REQ-201]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Quantity Requested]</td>
+                    <td>[02 units]</td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Urgency Level]</td>
+                    <td><span class="wf-badge wf-badge--dark">[High / Urgent Need]</span></td>
+                  </tr>
+                  <tr>
+                    <td style="font-weight:700;">[Justification Note]</td>
+                    <td>[Paragraph placeholder: Explanation of family situation and specific need submitted during application.]</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Uploaded Proof Document & Actions -->
+        <div>
+          <div class="wf-card">
+            <h3 class="wf-card__title" style="margin-bottom:12px;">[Verification Proof Document]</h3>
+            <div class="wf-img-placeholder" style="height:180px;margin-bottom:12px;">
+              <span>[Uploaded Document Preview: Barangay Certificate of Indigency]</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+              <span class="wf-badge">[Status: Verified]</span>
+              <span class="wf-hint">[Uploaded: YYYY-MM-DD]</span>
+            </div>
+            <button type="button" class="wf-btn wf-btn--outline" style="width:100%;margin-bottom:8px;" onclick="alert('[Wireframe Demo: Replace proof document]')">
+              [Re-upload / Update Document]
+            </button>
+          </div>
+
+          <div class="wf-card">
+            <h4 style="margin-bottom:8px;">[Need Help with This Request?]</h4>
+            <p style="font-size:12px;margin-bottom:12px;">[If your circumstances have changed or you need to reschedule pickup, send a ticket to our community desk.]</p>
+            <a href="support.html" class="wf-btn wf-btn--subtle" style="width:100%;text-align:center;">
+              [Contact Coordinator Support]
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Authenticated Mini Footer -->
+    <footer class="wf-footer">
+      <div>[&copy; 2026 iCareDonate. All rights reserved.]</div>
+      <div class="wf-footer__links">
+        <a href="../../frontend/privacy.html">[Privacy Policy]</a>
+        <a href="../../frontend/terms.html">[Terms of Service]</a>
+        <a href="help-center.html">[Help Center]</a>
+      </div>
+    </footer>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Platform Statistics — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN CONTENT AREA ─────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Platform Statistics]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <span class="wf-hint">[Live data as of 2026-10-22]</span>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Primary KPIs -->
+      <div class="wf-grid-4" style="margin-bottom:20px;">
+        <div class="wf-stat-box">
+          <span class="wf-stat-box__label">[Total Registered Users]</span>
+          <span class="wf-stat-box__value">[248]</span>
+          <span class="wf-stat-box__sub">[+12 this month]</span>
+        </div>
+        <div class="wf-stat-box">
+          <span class="wf-stat-box__label">[Active Donations]</span>
+          <span class="wf-stat-box__value">[42]</span>
+          <span class="wf-stat-box__sub">[+5 this week]</span>
+        </div>
+        <div class="wf-stat-box">
+          <span class="wf-stat-box__label">[Fulfilled Transactions]</span>
+          <span class="wf-stat-box__value">[173]</span>
+          <span class="wf-stat-box__sub">[+29 this month]</span>
+        </div>
+        <div class="wf-stat-box">
+          <span class="wf-stat-box__label">[Beneficiaries Served]</span>
+          <span class="wf-stat-box__value">[319]</span>
+          <span class="wf-stat-box__sub">[+41 this month]</span>
+        </div>
+      </div>
+
+      <!-- Charts & Breakdown Grid -->
+      <div class="wf-grid-2" style="margin-bottom:20px;">
+
+        <!-- Monthly Donations Bar Chart Placeholder -->
+        <div class="wf-card">
+          <h3 class="wf-card__title" style="margin-bottom:14px;">[Monthly Donations (2026)]</h3>
+          <div style="height:140px;border:1px dashed var(--wf-border);display:flex;align-items:flex-end;justify-content:space-around;padding:10px;">
+            <div style="text-align:center;"><div style="background:var(--wf-border-black);width:22px;height:45px;margin:0 auto;"></div><span class="wf-hint">[Jan]</span></div>
+            <div style="text-align:center;"><div style="background:var(--wf-border-black);width:22px;height:65px;margin:0 auto;"></div><span class="wf-hint">[Feb]</span></div>
+            <div style="text-align:center;"><div style="background:var(--wf-border-black);width:22px;height:80px;margin:0 auto;"></div><span class="wf-hint">[Mar]</span></div>
+            <div style="text-align:center;"><div style="background:var(--wf-border-black);width:22px;height:55px;margin:0 auto;"></div><span class="wf-hint">[Apr]</span></div>
+            <div style="text-align:center;"><div style="background:var(--wf-border-black);width:22px;height:95px;margin:0 auto;"></div><span class="wf-hint">[May]</span></div>
+            <div style="text-align:center;"><div style="background:var(--wf-border-black);width:22px;height:110px;margin:0 auto;"></div><span class="wf-hint">[Jun]</span></div>
+          </div>
+        </div>
+
+        <!-- User Breakdown by Role -->
+        <div class="wf-card">
+          <h3 class="wf-card__title" style="margin-bottom:14px;">[User Breakdown by Role]</h3>
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                <strong>[Donors]</strong>
+                <span>[156 &bull; 63%]</span>
+              </div>
+              <div style="background:var(--wf-surface-alt);border:1px solid var(--wf-border);height:8px;border-radius:4px;">
+                <div style="background:var(--wf-border-black);width:63%;height:100%;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                <strong>[Beneficiaries]</strong>
+                <span>[84 &bull; 34%]</span>
+              </div>
+              <div style="background:var(--wf-surface-alt);border:1px solid var(--wf-border);height:8px;border-radius:4px;">
+                <div style="background:var(--wf-border-black);width:34%;height:100%;"></div>
+              </div>
+            </div>
+            <div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px;">
+                <strong>[Both Roles]</strong>
+                <span>[8 &bull; 3%]</span>
+              </div>
+              <div style="background:var(--wf-surface-alt);border:1px solid var(--wf-border);height:8px;border-radius:4px;">
+                <div style="background:var(--wf-border-black);width:3%;height:100%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Donations by Category Breakdown -->
+      <div class="wf-card" style="padding:0;overflow:hidden;margin-bottom:20px;">
+        <div style="padding:14px 18px;border-bottom:1px solid var(--wf-border);font-weight:700;font-size:14px;">
+          [Donations by Category Breakdown]
+        </div>
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;">[Category]</th>
+              <th style="padding:12px 16px;text-align:center;">[Active]</th>
+              <th style="padding:12px 16px;text-align:center;">[Fulfilled]</th>
+              <th style="padding:12px 16px;text-align:center;">[Archived]</th>
+              <th style="padding:12px 16px;">[Volume Share]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:12px 16px;font-weight:600;">[Food &amp; Groceries]</td>
+              <td style="padding:12px 16px;text-align:center;font-weight:700;">[14]</td>
+              <td style="padding:12px 16px;text-align:center;">[52]</td>
+              <td style="padding:12px 16px;text-align:center;">[8]</td>
+              <td style="padding:12px 16px;">[42%]</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;font-weight:600;">[Clothing &amp; Footwear]</td>
+              <td style="padding:12px 16px;text-align:center;font-weight:700;">[9]</td>
+              <td style="padding:12px 16px;text-align:center;">[41]</td>
+              <td style="padding:12px 16px;text-align:center;">[6]</td>
+              <td style="padding:12px 16px;">[29%]</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;font-weight:600;">[School Supplies]</td>
+              <td style="padding:12px 16px;text-align:center;font-weight:700;">[11]</td>
+              <td style="padding:12px 16px;text-align:center;">[39]</td>
+              <td style="padding:12px 16px;text-align:center;">[4]</td>
+              <td style="padding:12px 16px;">[18%]</td>
+            </tr>
+            <tr>
+              <td style="padding:12px 16px;font-weight:600;">[Medical Supplies]</td>
+              <td style="padding:12px 16px;text-align:center;font-weight:700;">[6]</td>
+              <td style="padding:12px 16px;text-align:center;">[28]</td>
+              <td style="padding:12px 16px;text-align:center;">[2]</td>
+              <td style="padding:12px 16px;">[11%]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pending Actions Box -->
+      <div class="wf-card">
+        <h3 class="wf-card__title" style="margin-bottom:14px;">[Pending Operational Actions]</h3>
+        <div class="wf-grid-4">
+          <div class="wf-card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12.5px;font-weight:600;">[Donations Awaiting Review]</span>
+            <span style="font-size:20px;font-weight:800;">[02]</span>
+          </div>
+          <div class="wf-card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12.5px;font-weight:600;">[Proof Documents to Verify]</span>
+            <span style="font-size:20px;font-weight:800;">[02]</span>
+          </div>
+          <div class="wf-card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12.5px;font-weight:600;">[Interviews Unscheduled]</span>
+            <span style="font-size:20px;font-weight:800;">[00]</span>
+          </div>
+          <div class="wf-card" style="padding:12px 14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:12.5px;font-weight:600;">[Transactions Ready to Close]</span>
+            <span style="font-size:20px;font-weight:800;">[01]</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>[Wireframe] Admin Accounts Management — iCareDonate Admin</title>
+  <link rel="stylesheet" href="../assets/wireframe.css">
+</head>
+<body>
+
+<div class="wf-layout">
+
+  <!-- ── ADMIN SIDEBAR ─────────────────────────────────────── -->
+  <aside class="wf-sidebar">
+    <div class="wf-sidebar__brand">
+      <a href="dashboard.html" class="wf-sidebar__logo-text">[iCareDonate]</a>
+      <span class="wf-sidebar__role-pill" style="border-color:var(--wf-border-black);font-weight:800;">[ADMIN]</span>
+    </div>
+
+    <nav class="wf-sidebar__nav">
+      <a href="dashboard.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9638;</span>
+        <span>[Dashboard]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Operations &amp; Reviews]</div>
+
+      <a href="donations.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9635;</span>
+        <span>[Donation Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="requests.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9702;</span>
+        <span>[Request &amp; Proof Review]</span>
+        <span class="wf-sidebar__badge">[2]</span>
+      </a>
+
+      <a href="transactions.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#8646;</span>
+        <span>[Transaction Monitoring]</span>
+      </a>
+
+      <a href="interviews.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9200;</span>
+        <span>[Interviews]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Users &amp; Moderation]</div>
+
+      <a href="users.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9675;</span>
+        <span>[Users &amp; Moderation]</span>
+      </a>
+
+      <a href="support.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9993;</span>
+        <span>[Support]</span>
+      </a>
+
+      <a href="inquiries.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#128488;</span>
+        <span>[Contact Inquiries]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Platform Content]</div>
+
+      <a href="faqs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#63;</span>
+        <span>[FAQ Content]</span>
+      </a>
+
+      <a href="reports.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9639;</span>
+        <span>[Reports]</span>
+      </a>
+
+      <a href="categories.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9776;</span>
+        <span>[Categories]</span>
+      </a>
+
+      <a href="statistics.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9640;</span>
+        <span>[Statistics]</span>
+      </a>
+
+      <a href="profile.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9679;</span>
+        <span>[Admin Profile]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[SuperAdmin Controls]</div>
+
+      <a href="admins.html" class="wf-sidebar__link is-active">
+        <span class="wf-sidebar__icon">&#9733;</span>
+        <span>[Admin Management]</span>
+      </a>
+
+      <a href="logs.html" class="wf-sidebar__link">
+        <span class="wf-sidebar__icon">&#9778;</span>
+        <span>[Audit Logs]</span>
+      </a>
+
+      <div class="wf-sidebar__section-title">[Directory]</div>
+      <a href="../index.html" class="wf-sidebar__link" style="border-top:1px dashed var(--wf-border);margin-top:8px;">
+        <span class="wf-sidebar__icon">&#8592;</span>
+        <span>[All Wireframes Index]</span>
+      </a>
+    </nav>
+  </aside>
+
+  <!-- ── MAIN ADMIN CONTENT ────────────────────────────────── -->
+  <main class="wf-main">
+    <header class="wf-topbar">
+      <div class="wf-topbar__left">
+        <button type="button" class="wf-topbar__toggle" aria-label="Toggle Navigation">&#9776;</button>
+        <h1 class="wf-topbar__title">[Admin Accounts Management]</h1>
+      </div>
+      <div class="wf-topbar__right">
+        <button type="button" class="wf-btn wf-btn--primary" onclick="wfOpenModal('wfModalAddAdmin')">
+          [+ Add Admin Account]
+        </button>
+        <a href="profile.html" class="wf-user-btn">
+          <span class="wf-user-avatar">[A]</span>
+          <span>[Admin Staff]</span>
+        </a>
+      </div>
+    </header>
+
+    <div class="wf-content">
+
+      <!-- Admin Directory Table -->
+      <div class="wf-card" style="padding:0;overflow:hidden;">
+        <table class="wf-table">
+          <thead>
+            <tr>
+              <th style="padding:12px 16px;">[Administrator]</th>
+              <th style="padding:12px 16px;">[Email]</th>
+              <th style="padding:12px 16px;">[Role]</th>
+              <th style="padding:12px 16px;text-align:center;">[Status]</th>
+              <th style="padding:12px 16px;">[Last Login]</th>
+              <th style="padding:12px 16px;text-align:right;">[Actions]</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="wf-user-avatar" style="width:32px;height:32px;font-size:12px;display:grid;place-items:center;">[HA]</div>
+                  <div>[Head Admin]</div>
+                </div>
+              </td>
+              <td style="padding:14px 16px;">[admin@icaredonate.ph]</td>
+              <td style="padding:14px 16px;"><span class="wf-badge wf-badge--dark">[Head Admin]</span></td>
+              <td style="padding:14px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:14px 16px;">[Today 09:12 AM]</td>
+              <td style="padding:14px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddAdmin')">[Edit]</button>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:14px 16px;font-weight:700;">
+                <div style="display:flex;align-items:center;gap:10px;">
+                  <div class="wf-user-avatar" style="width:32px;height:32px;font-size:12px;display:grid;place-items:center;">[MA]</div>
+                  <div>[Moderator Admin]</div>
+                </div>
+              </td>
+              <td style="padding:14px 16px;">[moderator@icaredonate.ph]</td>
+              <td style="padding:14px 16px;"><span class="wf-badge">[Admin (Standard)]</span></td>
+              <td style="padding:14px 16px;text-align:center;"><span class="wf-badge wf-badge--dark">[Active]</span></td>
+              <td style="padding:14px 16px;">[Yesterday 04:30 PM]</td>
+              <td style="padding:14px 16px;text-align:right;">
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="wfOpenModal('wfModalAddAdmin')">[Edit]</button>
+                <button type="button" class="wf-btn wf-btn--sm wf-btn--outline" onclick="alert('[Wireframe Demo: Admin suspended]')">[Suspend]</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+
+</div>
+
+<!-- CREATE ADMIN ACCOUNT DIALOG MODAL -->
+<div class="wf-modal-backdrop" id="wfModalAddAdmin" style="display:none;">
+  <div class="wf-modal">
+    <div class="wf-modal__header">
+      <h3 style="margin:0;">[Create Admin Account]</h3>
+      <button type="button" class="wf-modal__close" onclick="wfCloseModal('wfModalAddAdmin')">&times;</button>
+    </div>
+    <div>
+      <div class="wf-grid-2">
+        <div class="wf-form-group">
+          <label class="wf-label">[First Name *]</label>
+          <input type="text" class="wf-input" placeholder="[First]">
+        </div>
+        <div class="wf-form-group">
+          <label class="wf-label">[Last Name *]</label>
+          <input type="text" class="wf-input" placeholder="[Last]">
+        </div>
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Email Address *]</label>
+        <input type="email" class="wf-input" placeholder="[admin@icaredonate.ph]">
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Role *]</label>
+        <select class="wf-select">
+          <option>[Admin (Standard)]</option>
+          <option>[Head Admin]</option>
+        </select>
+      </div>
+      <div class="wf-form-group">
+        <label class="wf-label">[Temporary Password *]</label>
+        <input type="password" class="wf-input" placeholder="[Min 8 characters]">
+      </div>
+    </div>
+    <div class="wf-modal__footer">
+      <button type="button" class="wf-btn wf-btn--outline" onclick="wfCloseModal('wfModalAddAdmin')">[Cancel]</button>
+      <button type="button" class="wf-btn wf-btn--primary" onclick="alert('[Wireframe Demo: Admin account created]');wfCloseModal('wfModalAddAdmin')">[Create Account]</button>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/wireframe.js"></script>
+</body>
+</html>
