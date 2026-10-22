@@ -72,21 +72,31 @@ try {
     }
     $results['users'] = 'Admin, Donor, and Requester accounts safely seeded with correct bcrypt hashes.';
 
-    // Execute seed_dashboard_test_data.sql
-    $seedFile = __DIR__ . '/database/seed_dashboard_test_data.sql';
-    if (file_exists($seedFile)) {
-        $sql = file_get_contents($seedFile);
+    // Helper to execute a SQL seed file safely
+    $execSeedFile = function(string $path) use ($pdo, &$results): int {
+        if (!file_exists($path)) return 0;
+        $sql = file_get_contents($path);
         $cleaned = preg_replace('/--.*$/m', '', $sql);
         $statements = array_filter(array_map('trim', explode(';', $cleaned)));
         $executed = 0;
         foreach ($statements as $stmt) {
             if ($stmt !== '') {
-                $pdo->exec($stmt);
-                $executed++;
+                try {
+                    $pdo->exec($stmt);
+                    $executed++;
+                } catch (PDOException $e) {
+                    $results['warnings'][] = basename($path) . ': ' . $e->getMessage() . ' | SQL: ' . substr($stmt, 0, 120);
+                }
             }
         }
-        $results['seed_statements_executed'] = $executed;
-    }
+        return $executed;
+    };
+
+    // Execute seed_dashboard_test_data.sql (original test data)
+    $results['seed_dashboard_executed'] = $execSeedFile(__DIR__ . '/database/seed_dashboard_test_data.sql');
+
+    // Execute seed_demo_data.sql (comprehensive admin demo data)
+    $results['seed_demo_executed'] = $execSeedFile(__DIR__ . '/database/seed_demo_data.sql');
 
     $check = $pdo->query("SELECT id, name, email, role FROM users WHERE email IN ('admin@icaredonate.test', 'donor@icaredonate.test', 'requester@icaredonate.test')");
     $results['active_accounts'] = $check->fetchAll();

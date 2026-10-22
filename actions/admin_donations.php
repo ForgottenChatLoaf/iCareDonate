@@ -267,6 +267,12 @@ try {
     ]);
 
 } catch (Throwable $e) {
+    error_log('admin_donations query error: ' . $e->getMessage());
     http_response_code(500);
-    echo json_encode(['success' => false, 'message' => 'Failed to query donation records.']);
+    $debug = (getenv('APP_DEBUG') === 'true');
+    $payload = ['success' => false, 'message' => 'Failed to query donation records.'];
+    if ($debug) {
+        $payload['debug_error'] = $e->getMessage();
+    }
+    echo json_encode($payload);
 }
