@@ -78,7 +78,7 @@
 
       <a href="transactions.html" class="sidebar-link" data-nav="transactions">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-        <span>Transactions &amp; Claims</span>
+        <span>Claims &amp; Handovers</span>
       </a>
 
       <a href="history.html" class="sidebar-link" data-nav="history">
@@ -101,7 +101,7 @@
 
       <a href="support.html" class="sidebar-link" data-nav="support">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <span>Support Requests</span>
+        <span>Support &amp; Help</span>
       </a>
 
       <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:12px 12px 4px;">Account</div>
@@ -137,6 +137,7 @@
 
       <div style="display:flex;align-items:center;gap:12px;">
         <a href="dashboard.html" class="btn btn-outline" style="font-size:13.5px;padding:6px 14px;">&larr; Dashboard</a>
+        <button type="button" class="btn btn-outline" id="btnExportLog" style="font-size:13.5px;padding:6px 14px;" onclick="exportActivityLog()">Export Log</button>
         <div class="topbar-dropdown-wrap">
           <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
             <span class="user-avatar-circle" id="topbarUserInitials">&nbsp;</span>
@@ -172,31 +173,41 @@
             <div style="font-weight:700;color:#1E3A8A;font-size:14.5px;margin-bottom:2px;">My Submissions Status</div>
             <div style="font-size:13.5px;color:#1E40AF;line-height:1.5;">
               This log shows your donation and assistance request submissions along with their latest verification status. Each entry reflects the most recent state of a submission &mdash; not individual event timestamps for approvals or rejections.
-              For coordination on approved matches, use your agreed external channels via <a href="transactions.html" style="color:#1E3A8A;font-weight:700;text-decoration:underline;">Transactions &amp; Claims</a>.
+              For coordination on approved matches, use your agreed external channels via <a href="transactions.html" style="color:#1E3A8A;font-weight:700;text-decoration:underline;">Claims &amp; Handovers</a>.
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Filters & Controls Bar -->
-      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;margin-bottom:20px;">
-        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="activityFilterTabs">
-          <button type="button" class="btn btn-sm btn-primary act-filter-btn" data-filter="all">All Activity</button>
-          <button type="button" class="btn btn-sm btn-outline act-filter-btn" data-filter="donations">Donations</button>
-          <button type="button" class="btn btn-sm btn-outline act-filter-btn" data-filter="requests">Requests</button>
-          <button type="button" class="btn btn-sm btn-outline act-filter-btn" data-filter="system">System Updates</button>
-        </div>
-
-        <div style="font-size:13px;color:#64748B;">
-          Showing: <strong id="activityCountLabel">0</strong> recorded events
+      <!-- Filter Controls Card (matches wireframe) -->
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:14px 18px;margin-bottom:20px;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+          <div style="flex:1;min-width:240px;">
+            <input type="text" id="activitySearchInput" class="form-input" placeholder="Search log events, actions..." style="height:38px;font-size:13.5px;" oninput="filterBySearch()">
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <select id="activityTypeFilter" class="form-input" style="width:auto;height:38px;font-size:13.5px;padding:0 12px;" onchange="filterByType()">
+              <option value="all">All Action Types</option>
+              <option value="donation">Donations</option>
+              <option value="request">Assistance Requests</option>
+              <option value="system">Account / System</option>
+            </select>
+            <span style="font-size:13px;color:#64748B;white-space:nowrap;">Showing: <strong id="activityCountLabel">0</strong> events</span>
+          </div>
         </div>
       </div>
 
-      <!-- Activity Timeline Container -->
-      <div id="activityTimelineList" style="display:flex;flex-direction:column;gap:12px;">
-        <div style="padding:48px 24px;text-align:center;background:#fff;border:1px solid #E2E8F0;border-radius:12px;color:#64748B;">
-          <div class="btn-spinner" style="display:inline-block;width:24px;height:24px;border:2.5px solid #CBD5E1;border-top-color:var(--color-primary,#1F4FA3);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px;"></div>
-          <div style="font-size:14px;">Loading your activity log...</div>
+      <!-- Activity Timeline Container (Logged Events Stream) -->
+      <div style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,0.04);">
+        <div style="padding:16px 20px;border-bottom:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="font-size:15px;font-weight:700;color:#1E293B;margin:0;">Logged Events Stream</h2>
+          <span style="font-size:12.5px;color:#64748B;">Immutable record of your account actions</span>
+        </div>
+        <div id="activityTimelineList" style="display:flex;flex-direction:column;gap:0;">
+          <div style="padding:48px 24px;text-align:center;color:#64748B;">
+            <div class="btn-spinner" style="display:inline-block;width:24px;height:24px;border:2.5px solid #CBD5E1;border-top-color:var(--color-primary,#1F4FA3);border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:12px;"></div>
+            <div style="font-size:14px;">Loading your activity log...</div>
+          </div>
         </div>
       </div>
 
@@ -304,19 +315,67 @@
     renderActivities(allActivities);
   }
 
+  let currentSearch = '';
+
+  window.filterByType = function() {
+    const sel = document.getElementById('activityTypeFilter');
+    currentFilter = sel ? sel.value : 'all';
+    applyFilters();
+  };
+
+  window.filterBySearch = function() {
+    const inp = document.getElementById('activitySearchInput');
+    currentSearch = (inp ? inp.value : '').toLowerCase().trim();
+    applyFilters();
+  };
+
+  window.exportActivityLog = function() {
+    if (!allActivities || allActivities.length === 0) {
+      alert('No activity log records available to export.');
+      return;
+    }
+    const headers = ['ID', 'Type', 'Category', 'Title', 'Description', 'Status', 'Date'];
+    const rows = allActivities.map(a => [
+      `"${(a.id || '').toString().replace(/"/g, '""')}"`,
+      `"${(a.type || '').toString().replace(/"/g, '""')}"`,
+      `"${(a.category || '').toString().replace(/"/g, '""')}"`,
+      `"${(a.title || '').toString().replace(/"/g, '""')}"`,
+      `"${(a.description || '').toString().replace(/"/g, '""')}"`,
+      `"${(a.status || '').toString().replace(/"/g, '""')}"`,
+      `"${(a.created_at || a.time_ago || '').toString().replace(/"/g, '""')}"`
+    ]);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', 'iCareDonate_Activity_Log_' + new Date().toISOString().slice(0, 10) + '.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  function applyFilters() {
+    let filtered = allActivities;
+    if (currentFilter !== 'all') {
+      filtered = filtered.filter(i => (i.type || '').toLowerCase() === currentFilter.toLowerCase());
+    }
+    if (currentSearch) {
+      filtered = filtered.filter(i => {
+        const text = [i.title, i.description, i.category, i.status].filter(Boolean).join(' ').toLowerCase();
+        return text.includes(currentSearch);
+      });
+    }
+    renderActivities(filtered);
+  }
+
   function renderActivities(items) {
     const container = document.getElementById('activityTimelineList');
     const countLabel = document.getElementById('activityCountLabel');
     if (!container) return;
 
-    let filtered = items;
-    if (currentFilter !== 'all') {
-      filtered = items.filter(i => i.type === currentFilter);
-    }
+    if (countLabel) countLabel.textContent = items.length;
 
-    if (countLabel) countLabel.textContent = filtered.length;
-
-    if (filtered.length === 0) {
+    if (items.length === 0) {
       container.innerHTML = `
         <div style="background:#fff;border:1px dashed #CBD5E1;border-radius:12px;padding:48px 24px;text-align:center;color:#64748B;">
           <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="1.5" style="margin:0 auto 12px;"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
@@ -329,7 +388,7 @@
       return;
     }
 
-    container.innerHTML = filtered.map(item => {
+    container.innerHTML = items.map(item => {
       let badgeClass = 'badge-info';
       let statusLabel = item.status || 'Updated';
       if (item.status === 'completed' || item.status === 'approved') badgeClass = 'badge-success';
@@ -379,20 +438,6 @@
       `;
     }).join('');
   }
-
-  // Filter Buttons
-  document.querySelectorAll('.act-filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-      document.querySelectorAll('.act-filter-btn').forEach(b => {
-        b.classList.remove('btn-primary');
-        b.classList.add('btn-outline');
-      });
-      this.classList.remove('btn-outline');
-      this.classList.add('btn-primary');
-      currentFilter = this.getAttribute('data-filter') || 'all';
-      loadActivities();
-    });
-  });
 
   document.addEventListener('DOMContentLoaded', loadActivities);
 })();
