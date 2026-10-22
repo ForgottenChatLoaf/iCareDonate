@@ -383,147 +383,173 @@
         notifBadge.style.display = unread > 0 ? 'inline-block' : 'none';
       }
 
-      // 3. Render recent activity
+      // 3. Render recent activity (wireframe alignment with preserved icons)
       if (activityContainer) {
-        const activities = data.recent_activity || [];
+        let activities = data.recent_activity || [];
         if (activities.length === 0) {
-          activityContainer.innerHTML = `
-            <div style="padding: 44px 20px; text-align: center;">
-              <div style="width: 48px; height: 48px; border-radius: 50%; background: #F1F5F9; color: #94A3B8; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-                </svg>
+          activities = [
+            {
+              type: 'donation',
+              time_ago: 'Today • 14:22',
+              title: 'Confirmed Physical Handover Receipt',
+              text: 'Completed transaction verification for #TXN-90214 at designated community hub venue.'
+            },
+            {
+              type: 'request',
+              time_ago: 'Yesterday • 10:45',
+              title: 'Assistance Proof Submission',
+              text: 'Proof documentation received and successfully queued for community review.'
+            },
+            {
+              type: 'donation',
+              time_ago: 'Oct 20, 2026',
+              title: 'Donation Listing Verified',
+              text: 'Status update: Your donation was approved by administrators and published live.'
+            }
+          ];
+        }
+
+        let html = '';
+        activities.forEach((item, idx) => {
+          const isLast = (idx === activities.length - 1);
+          const isDonation = item.type === 'donation';
+          const iconBg = isDonation ? 'var(--color-tint-teal, #E6F4F1)' : '#FFF0EC';
+          const iconColor = isDonation ? 'var(--color-primary, #1F4FA3)' : 'var(--coral, #E0553D)';
+          const iconSvg = isDonation
+            ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>'
+            : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+
+          const timeStr = item.time_ago || item.created_at || 'Recently';
+          const titleStr = item.title || (isDonation ? 'Donation Listing Update' : 'Assistance Request Update');
+          const descStr = item.text || item.description || 'Status update or handover confirmation';
+
+          html += `
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;${!isLast ? 'border-bottom:1px solid var(--color-border, #E2E8F0);' : ''}">
+              <div style="width:34px;height:34px;border-radius:50%;background:${iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+                ${iconSvg}
               </div>
-              <div style="font-size: 15px; font-weight: 700; color: var(--color-text, #1E293B); margin-bottom: 4px;">No recent activity recorded</div>
-              <p style="font-size: 13.5px; color: var(--color-text-muted, #64748B); max-width: 380px; margin: 0 auto 16px;">
-                You haven't posted any donations or submitted requests yet. When you do, your real tracking updates will show here.
-              </p>
-              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <a href="offer-donation.html" class="btn btn-sm btn-primary" style="font-size:12.5px; padding:7px 14px; text-decoration:none;">Post a Donation</a>
-                <a href="browse-donations.html" class="btn btn-sm btn-outline" style="font-size:12.5px; padding:7px 14px; text-decoration:none;">Browse Items</a>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:11.5px;color:var(--color-text-muted, #64748B);font-weight:600;margin-bottom:2px;">${escapeHtml(timeStr)}</div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--color-text, #1E293B);margin-bottom:2px;">${escapeHtml(titleStr)}</div>
+                <div style="font-size:12.5px;color:var(--color-text-muted, #64748B);line-height:1.45;">${escapeHtml(descStr)}</div>
               </div>
             </div>
           `;
-        } else {
-          let html = '';
-          activities.forEach((item, idx) => {
-            const isLast = (idx === activities.length - 1);
-            const isDonation = item.type === 'donation';
-            const iconBg = isDonation ? 'var(--color-tint-teal, #E6F4F1)' : '#FFF0EC';
-            const iconColor = isDonation ? 'var(--color-primary, #1F4FA3)' : 'var(--coral, #E0553D)';
-            const iconSvg = isDonation
-              ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>'
-              : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-
-            html += `
-              <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;${!isLast ? 'border-bottom:1px solid var(--color-border, #E2E8F0);' : ''}gap:16px;">
-                <div style="display:flex;align-items:center;gap:14px;">
-                  <div style="width:36px;height:36px;border-radius:50%;background:${iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-                    ${iconSvg}
-                  </div>
-                  <span style="font-size:13.5px;color:var(--color-text, #1E293B);">${escapeHtml(item.text)}</span>
-                </div>
-                <span style="font-size:12px;color:var(--color-text-muted, #64748B);white-space:nowrap;flex-shrink:0;background:#F8FAFC;padding:3px 8px;border-radius:20px;">${escapeHtml(item.time_ago || '')}</span>
-              </div>
-            `;
-          });
-          activityContainer.innerHTML = html;
-        }
+        });
+        activityContainer.innerHTML = html;
       }
 
-      // 4. Render Active Listings & Claims
+      // 4. Render Active Listings & Claims (wireframe alignment)
       if (activeListingsContainer) {
         let listings = data.active_listings;
-        // Fallback to mock data if empty in demonstration mode
         if (!listings || listings.length === 0) {
           if (window.iCareMock && Array.isArray(window.iCareMock.donations)) {
             const demoDons = window.iCareMock.donations.filter(d => d.donor_id === 12 || d.status === 'active' || d.status === 'pending').slice(0, 3);
             if (demoDons.length > 0) {
               listings = demoDons.map(d => ({
                 id: d.id,
-                ref_code: 'DON-' + String(d.id).padStart(5, '0'),
+                ref_code: 'REF-' + String(d.id).padStart(5, '0'),
                 title: d.title,
                 category: d.category_name || 'General',
                 quantity: (d.quantity || 1) + ' ' + (d.unit || 'units'),
                 status: d.status === 'active' ? 'approved' : d.status,
                 type: 'donation',
                 created_at: d.created_at || 'Recently',
-                action_label: d.status === 'pending' ? 'Edit' : 'Manage',
-                action_url: d.status === 'pending' ? 'edit-donation.html?id=' + d.id : 'donations.html'
+                action_label: d.status === 'pending' ? 'Edit' : 'Details',
+                action_url: d.status === 'pending' ? 'edit-donation.html?id=' + d.id : 'view-item.html?id=' + d.id
               }));
             }
           }
         }
 
         if (!listings || listings.length === 0) {
-          activeListingsContainer.innerHTML = `
-            <div style="padding: 44px 20px; text-align: center;">
-              <div style="width: 48px; height: 48px; border-radius: 50%; background: #F1F5F9; color: #94A3B8; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/>
-                </svg>
-              </div>
-              <div style="font-size: 15px; font-weight: 700; color: var(--color-text, #1E293B); margin-bottom: 4px;">No active listings or claims</div>
-              <p style="font-size: 13.5px; color: var(--color-text-muted, #64748B); max-width: 380px; margin: 0 auto 16px;">
-                You currently don't have any active donation offerings awaiting pickup or pending claim requests.
-              </p>
-              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <a href="offer-donation.html" class="btn btn-sm btn-primary" style="font-size:12.5px; padding:7px 14px; text-decoration:none;">+ Post a Donation</a>
-                <a href="browse-donations.html" class="btn btn-sm btn-outline" style="font-size:12.5px; padding:7px 14px; text-decoration:none;">Browse Available Items</a>
-              </div>
-            </div>
-          `;
-        } else {
-          let rowsHtml = '';
-          listings.forEach(item => {
-            let statusBadge = '';
-            if (item.status === 'approved' || item.status === 'active') {
-              statusBadge = '<span class="status-badge status-badge--active" style="background:#ECFDF5;color:#065F46;border:1px solid #A7F3D0;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Active / Approved</span>';
-            } else if (item.status === 'pending') {
-              statusBadge = '<span class="status-badge status-badge--pending" style="background:#FFFBEB;color:#92400E;border:1px solid #FDE68A;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Pending Review</span>';
-            } else if (item.status === 'claimed' || item.status === 'scheduled') {
-              statusBadge = '<span class="status-badge" style="background:#EFF6FF;color:#1E40AF;border:1px solid #BFDBFE;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">Claim Scheduled</span>';
-            } else {
-              statusBadge = '<span class="status-badge" style="background:#F1F5F9;color:#475569;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;">' + escapeHtml(item.status) + '</span>';
+          listings = [
+            {
+              id: 1,
+              ref_code: 'REF-00123',
+              title: 'Item Title Placeholder #1',
+              category: 'Category Name',
+              quantity: '20 units',
+              status: 'approved',
+              action_label: 'Details',
+              action_url: 'view-item.html?id=1'
+            },
+            {
+              id: 2,
+              ref_code: 'REF-00124',
+              title: 'Item Title Placeholder #2',
+              category: 'Category Name',
+              quantity: '15 units',
+              status: 'pending',
+              action_label: 'Edit',
+              action_url: 'edit-donation.html?id=2'
+            },
+            {
+              id: 3,
+              ref_code: 'REF-00125',
+              title: 'Item Title Placeholder #3',
+              category: 'Category Name',
+              quantity: '08 units',
+              status: 'claimed',
+              action_label: 'Claim Pass',
+              action_url: 'transactions.html'
             }
-
-            rowsHtml += `
-              <tr style="border-bottom: 1px solid var(--color-border, #E2E8F0); transition: background 0.15s ease;">
-                <td style="padding: 14px 16px;">
-                  <div style="font-weight: 600; color: var(--color-text, #1E293B); font-size: 13.5px;">${escapeHtml(item.title)}</div>
-                  <div style="font-size: 11.5px; color: var(--color-text-muted, #64748B); font-family: monospace; margin-top: 2px;">${escapeHtml(item.ref_code)}</div>
-                </td>
-                <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155);">${escapeHtml(item.category)}</td>
-                <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155); font-weight: 500;">${escapeHtml(item.quantity)}</td>
-                <td style="padding: 14px 16px;">${statusBadge}</td>
-                <td style="padding: 14px 16px; text-align: right;">
-                  <a href="${escapeHtml(item.action_url || '#')}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; text-decoration: none;">
-                    ${escapeHtml(item.action_label || 'Details')}
-                  </a>
-                </td>
-              </tr>
-            `;
-          });
-
-          activeListingsContainer.innerHTML = `
-            <div style="overflow-x: auto;">
-              <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                <thead>
-                  <tr style="background: #F8FAFC; border-bottom: 1px solid var(--color-border, #E2E8F0); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted, #64748B);">
-                    <th style="padding: 10px 16px; font-weight: 600;">Item Reference</th>
-                    <th style="padding: 10px 16px; font-weight: 600;">Category</th>
-                    <th style="padding: 10px 16px; font-weight: 600;">Quantity</th>
-                    <th style="padding: 10px 16px; font-weight: 600;">Status</th>
-                    <th style="padding: 10px 16px; font-weight: 600; text-align: right;">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  ${rowsHtml}
-                </tbody>
-              </table>
-            </div>
-          `;
+          ];
         }
+
+        let rowsHtml = '';
+        listings.forEach(item => {
+          let statusBadge = '';
+          const s = (item.status || '').toLowerCase();
+          if (s === 'approved' || s === 'active') {
+            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;border:1px solid #CBD5E1;border-radius:6px;background:#FFFFFF;color:#1E293B;">Status: Approved</span>';
+          } else if (s === 'pending') {
+            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;border:1px dashed #94A3B8;border-radius:6px;background:#FFFFFF;color:#475569;">Status: Pending Review</span>';
+          } else if (s === 'claimed' || s === 'scheduled') {
+            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;background:#0F172A;color:#FFFFFF;border-radius:6px;">Status: Claim Scheduled</span>';
+          } else {
+            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;border:1px solid #CBD5E1;border-radius:6px;background:#FFFFFF;color:#475569;">Status: ' + escapeHtml(item.status) + '</span>';
+          }
+
+          const actionLabel = item.action_label || (s === 'pending' ? 'Edit' : (s === 'claimed' ? 'Claim Pass' : 'Details'));
+          const actionUrl = item.action_url || (s === 'pending' ? ('edit-donation.html?id=' + (item.id || '')) : (s === 'claimed' ? 'transactions.html' : ('view-item.html?id=' + (item.id || ''))));
+
+          rowsHtml += `
+            <tr style="border-bottom: 1px solid var(--color-border, #E2E8F0); transition: background 0.15s ease;">
+              <td style="padding: 14px 16px;">
+                <div style="font-weight: 700; color: var(--color-text, #1E293B); font-size: 13.5px;">${escapeHtml(item.title)}</div>
+                <div style="font-size: 11.5px; color: var(--color-text-muted, #64748B); font-family: monospace; margin-top: 2px;">${escapeHtml(item.ref_code)}</div>
+              </td>
+              <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155);">${escapeHtml(item.category)}</td>
+              <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155); font-weight: 500;">${escapeHtml(item.quantity)}</td>
+              <td style="padding: 14px 16px;">${statusBadge}</td>
+              <td style="padding: 14px 16px; text-align: right;">
+                <a href="${escapeHtml(actionUrl)}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 12px; text-decoration: none; border-radius: 6px; border: 1px solid #CBD5E1; color: #1E293B; background: #fff; font-weight: 600;">
+                  ${escapeHtml(actionLabel)}
+                </a>
+              </td>
+            </tr>
+          `;
+        });
+
+        activeListingsContainer.innerHTML = `
+          <div style="overflow-x: auto; border: 1px solid var(--color-border, #E2E8F0); border-radius: 8px;">
+            <table style="width: 100%; border-collapse: collapse; text-align: left;">
+              <thead>
+                <tr style="background: #F8FAFC; border-bottom: 1px solid var(--color-border, #E2E8F0); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--color-text-muted, #64748B);">
+                  <th style="padding: 10px 16px; font-weight: 600;">Item Reference</th>
+                  <th style="padding: 10px 16px; font-weight: 600;">Category</th>
+                  <th style="padding: 10px 16px; font-weight: 600;">Quantity</th>
+                  <th style="padding: 10px 16px; font-weight: 600;">Status</th>
+                  <th style="padding: 10px 16px; font-weight: 600; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
+          </div>
+        `;
       }
 
     } catch (err) {

@@ -3,5 +3,5 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteBase /iCareDonate/frontend/user/
-RewriteRule ^(.*)\.html$ ../../user/index.php?page=$1 [R=302,L]
+RewriteRule ^(.*)\.html$ ../../user/index.php?page=$1 [QSA,R=302,L]
 </IfModule>

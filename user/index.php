@@ -30,6 +30,8 @@ $pages = [
     'settings'         => 'settings.html',
     'help-center'      => 'help-center.html',
     'help'             => 'help-center.html',
+    'view-item'        => 'view-item.html',
+    'index'            => 'dashboard.html',
 ];
 
 $page = $_GET['page'] ?? 'dashboard';

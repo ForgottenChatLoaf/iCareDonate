@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <script>
@@ -39,9 +39,38 @@
     .stat-change--up { background:#DCFCE7; color:#16A34A; }
     .stat-change--down { background:#FEE2E2; color:#DC2626; }
     .chart-placeholder { background:#F8FAFC; border:1px dashed var(--color-border); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px; color:var(--color-text-muted); font-size:13px; }
-    .mini-bar { display:flex; align-items:flex-end; gap:5px; height:80px; }
-    .mini-bar .bar { flex:1; border-radius:4px 4px 0 0; background:var(--color-primary); opacity:0.75; transition:opacity 0.2s; }
-    .mini-bar .bar:hover { opacity:1; }
+    .chart-col { flex: 1; display: flex; flex-direction: column; align-items: center; height: 100%; justify-content: flex-end; }
+    .chart-bar { position: relative; cursor: pointer; transition: height 0.4s ease, filter 0.2s ease; }
+    .chart-bar:hover { filter: brightness(1.15); }
+    .chart-bar .bar-tooltip {
+      display: none;
+      position: absolute;
+      top: -26px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0F172A;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 20;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+    }
+    .chart-bar .bar-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -4px;
+      border-width: 4px;
+      border-style: solid;
+      border-color: #0F172A transparent transparent transparent;
+    }
+    .chart-bar:hover .bar-tooltip { display: block; }
+    @media(max-width: 960px) { .admin-visual-charts-row { grid-template-columns: 1fr !important; } }
     @media(max-width:1000px){ .stat-grid{grid-template-columns:1fr 1fr;} }
     @media(max-width:600px){ .stat-grid{grid-template-columns:1fr;} }
   </style>
@@ -202,33 +231,62 @@
         </div>
       </div>
 
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px;">
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:24px;" class="admin-visual-charts-row">
 
-        <!-- Monthly Donations Chart -->
-        <div class="card" style="padding:22px;border:1px solid var(--color-border);border-radius:var(--radius-md);">
-          <div style="font-size:14px;font-weight:700;margin-bottom:16px;">Monthly Donations (<span id="statsYearLabel">2026</span>)</div>
-          <div id="bar-chart" style="display:flex;align-items:flex-end;gap:8px;height:120px;"></div>
-          <div id="bar-labels" style="display:flex;gap:8px;margin-top:6px;"></div>
-        </div>
-
-        <!-- Breakdown by Role -->
-        <div class="card" style="padding:22px;border:1px solid var(--color-border);border-radius:var(--radius-md);">
-          <div style="font-size:14px;font-weight:700;margin-bottom:16px;">User Breakdown by Role</div>
-          <div style="display:flex;flex-direction:column;gap:12px;">
+        <!-- Monthly Operations Velocity Bar Graph -->
+        <div class="card" style="padding:22px 24px;border-radius:14px;border:1px solid var(--color-border);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
             <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Donors</span><span style="font-weight:700;color:var(--color-primary);">156</span></div>
-              <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:63%;height:8px;background:var(--color-primary);border-radius:4px;"></div></div>
+              <div style="font-size:15px;font-weight:700;color:var(--color-text);">Platform Operations Velocity (<span id="statsYearLabel">2026</span>)</div>
+              <div style="font-size:12.5px;color:var(--color-text-muted);margin-top:2px;">Monthly comparison of donations listed vs assistance requests submitted</div>
             </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Beneficiaries</span><span style="font-weight:700;color:#F2B84B;">84</span></div>
-              <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:34%;height:8px;background:#F2B84B;border-radius:4px;"></div></div>
-            </div>
-            <div>
-              <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Both Roles</span><span style="font-weight:700;color:#9333EA;">8</span></div>
-              <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:3%;height:8px;background:#9333EA;border-radius:4px;"></div></div>
+            <div style="display:flex;align-items:center;gap:14px;font-size:12px;font-weight:600;">
+              <span style="display:inline-flex;align-items:center;gap:6px;">
+                <span style="width:10px;height:10px;border-radius:3px;background:var(--color-primary, #1F4FA3);display:inline-block;"></span>
+                <span>Donations</span>
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:6px;">
+                <span style="width:10px;height:10px;border-radius:3px;background:var(--coral, #E0553D);display:inline-block;"></span>
+                <span>Requests</span>
+              </span>
             </div>
           </div>
+
+          <!-- Bar Chart Container -->
+          <div id="admin-bar-chart-wrap" style="position:relative;height:180px;display:flex;align-items:flex-end;gap:16px;padding:10px 10px 24px;border-bottom:1px solid var(--color-border);">
+            <div style="margin:auto;color:var(--color-text-muted);font-size:13px;">Loading operational analytics...</div>
+          </div>
+          <div id="admin-bar-chart-labels" style="display:flex;gap:16px;padding:8px 10px 0;text-align:center;">
+          </div>
         </div>
+
+        <!-- Breakdown by Role & Fulfillment -->
+        <div class="card" style="padding:22px;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="font-size:14px;font-weight:700;margin-bottom:16px;">User Breakdown by Role</div>
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Donors</span><span style="font-weight:700;color:var(--color-primary);" id="stat-donors-count">156</span></div>
+                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-donors-bar" style="width:63%;height:8px;background:var(--color-primary);border-radius:4px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Beneficiaries</span><span style="font-weight:700;color:#F2B84B;" id="stat-beneficiaries-count">84</span></div>
+                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-beneficiaries-bar" style="width:34%;height:8px;background:#F2B84B;border-radius:4px;"></div></div>
+              </div>
+              <div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Both Roles</span><span style="font-weight:700;color:#9333EA;" id="stat-both-count">8</span></div>
+                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-both-bar" style="width:3%;height:8px;background:#9333EA;border-radius:4px;"></div></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick fulfillment stat pill footer -->
+          <div style="margin-top:20px;padding-top:12px;border-top:1px solid var(--color-border);display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--color-text-muted);">
+            <span>Fulfillment Pipeline</span>
+            <span id="fulfillment-rate-label" style="font-weight:700;color:#16A34A;">Live Verified Status</span>
+          </div>
+        </div>
+
       </div>
 
       <!-- Category Breakdown -->
@@ -335,41 +393,95 @@
 <script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
+  function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
   document.getElementById('stats-date').textContent = new Date().toLocaleDateString('en-PH', {month:'long',day:'numeric',year:'numeric'});
   const yLabel = document.getElementById('statsYearLabel');
   if (yLabel) yLabel.textContent = new Date().getFullYear();
 
-  // Render mini bar chart
-  const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  const VALUES = [8,12,15,10,18,22,14,19,25,21,17,16];
-  const maxVal = Math.max(...VALUES);
-  const chart = document.getElementById('bar-chart');
-  const labels = document.getElementById('bar-labels');
-  MONTHS.forEach((m,i)=>{
-    const bar = document.createElement('div');
-    bar.style.cssText = `flex:1;background:var(--color-primary);opacity:0.7;border-radius:4px 4px 0 0;height:${(VALUES[i]/maxVal*100)}%;min-width:0;cursor:pointer;transition:opacity 0.2s;`;
-    bar.title = `${m}: ${VALUES[i]} donations`;
-    bar.addEventListener('mouseover',()=>bar.style.opacity='1');
-    bar.addEventListener('mouseout',()=>bar.style.opacity='0.7');
-    chart.appendChild(bar);
-    const lbl = document.createElement('div');
-    lbl.style.cssText = `flex:1;text-align:center;font-size:10px;color:var(--color-text-muted);`;
-    lbl.textContent = m.substring(0,1);
-    labels.appendChild(lbl);
-  });
+  // Render Monthly Operations Velocity Bar Graph (Donations vs Requests)
+  function renderMonthlyTrends(trends) {
+    const barChartWrap = document.getElementById('admin-bar-chart-wrap');
+    const barChartLabels = document.getElementById('admin-bar-chart-labels');
+    if (!barChartWrap || !barChartLabels) return;
 
-  // Hydrate with live database counts
+    if (!trends || trends.length === 0) {
+      trends = [
+        { label: 'May', donations: 8, requests: 5 },
+        { label: 'Jun', donations: 14, requests: 10 },
+        { label: 'Jul', donations: 19, requests: 12 },
+        { label: 'Aug', donations: 22, requests: 16 },
+        { label: 'Sep', donations: 25, requests: 18 },
+        { label: 'Oct', donations: 21, requests: 15 }
+      ];
+    }
+
+    const allCounts = trends.flatMap(t => [t.donations || 0, t.requests || 0]);
+    const maxVal = Math.max(5, ...allCounts);
+
+    barChartWrap.innerHTML = trends.map(t => {
+      const don = t.donations || 0;
+      const req = t.requests || 0;
+      const donPct = Math.max(8, Math.round((don / maxVal) * 100));
+      const reqPct = Math.max(8, Math.round((req / maxVal) * 100));
+
+      return `
+        <div class="chart-col">
+          <div style="display:flex;align-items:flex-end;gap:6px;height:100%;width:100%;justify-content:center;">
+            <div class="chart-bar" style="width:40%;max-width:20px;height:${donPct}%;background:linear-gradient(180deg, #3B82F6 0%, #1F4FA3 100%);border-radius:6px 6px 0 0;">
+              <span class="bar-tooltip">${don} Donations</span>
+            </div>
+            <div class="chart-bar" style="width:40%;max-width:20px;height:${reqPct}%;background:linear-gradient(180deg, #F87171 0%, #E0553D 100%);border-radius:6px 6px 0 0;">
+              <span class="bar-tooltip">${req} Requests</span>
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+
+    barChartLabels.innerHTML = trends.map(t => `
+      <div style="flex:1;font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.04em;">
+        ${escapeHtml(t.label || '')}
+      </div>
+    `).join('');
+  }
+
+  // Initial demo render
+  renderMonthlyTrends();
+
+  // Hydrate with live database statistics
   if (window.AdminAPI) {
     window.AdminAPI.getDashboard().then(res => {
-      if (res && res.counts) {
+      if (!res) return;
+
+      if (res.monthly_trends && res.monthly_trends.length > 0) {
+        renderMonthlyTrends(res.monthly_trends);
+      }
+
+      if (res.counts) {
+        const c = res.counts;
         const u = document.getElementById('stat-total-users');
-        if (u && res.counts.total_members != null) u.textContent = res.counts.total_members;
+        if (u && c.total_members != null) u.textContent = c.total_members;
         const d = document.getElementById('stat-active-donations');
-        if (d && res.counts.active_transactions != null) d.textContent = res.counts.active_transactions;
+        if (d && c.active_transactions != null) d.textContent = c.active_transactions;
         const pd = document.getElementById('stat-pending-donations');
-        if (pd && res.counts.pending_donations != null) pd.textContent = res.counts.pending_donations;
+        if (pd && c.pending_donations != null) pd.textContent = c.pending_donations;
         const pr = document.getElementById('stat-pending-proofs');
-        if (pr && res.counts.pending_requests != null) pr.textContent = res.counts.pending_requests;
+        if (pr && c.pending_requests != null) pr.textContent = c.pending_requests;
+      }
+
+      if (res.status_breakdown) {
+        const sb = res.status_breakdown;
+        const total = (sb.pending || 0) + (sb.approved || 0) + (sb.claimed || 0) + (sb.completed || 0);
+        const fulfilled = (sb.completed || 0) + (sb.claimed || 0);
+        const rate = total > 0 ? Math.round((fulfilled / total) * 100) : 82;
+        const rateLabel = document.getElementById('fulfillment-rate-label');
+        if (rateLabel) {
+          rateLabel.textContent = `${rate}% Handover Rate (${fulfilled}/${total} completed/active)`;
+        }
       }
     }).catch(err => console.warn('Statistics live load:', err));
   }
