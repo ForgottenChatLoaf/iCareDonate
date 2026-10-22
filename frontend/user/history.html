@@ -196,7 +196,7 @@
           </div>
           <div>
             <label style="font-size:12px;font-weight:600;color:#64748B;display:block;margin-bottom:4px;">Filter by Type</label>
-            <select id="histTypeFilter" class="form-input" onchange="applyHistoryFilters()">
+            <select id="histTypeFilter" class="portal-select portal-filter-select" onchange="applyHistoryFilters()">
               <option value="all">All Records</option>
               <option value="donations">Donations Given</option>
               <option value="requests">Assistance Received</option>
@@ -205,15 +205,16 @@
           </div>
           <div>
             <label style="font-size:12px;font-weight:600;color:#64748B;display:block;margin-bottom:4px;">Date Range</label>
-            <select id="histDateFilter" class="form-input" onchange="applyHistoryFilters()">
+            <select id="histDateFilter" class="portal-select portal-filter-select" onchange="applyHistoryFilters()">
               <option value="all">All Time</option>
               <option value="this_year">This Year</option>
               <option value="6months">Last 6 Months</option>
               <option value="30days">Last 30 Days</option>
             </select>
           </div>
-          <div>
+          <div style="display:flex;gap:8px;">
             <button type="button" class="btn btn-primary" style="height:38px;padding:0 18px;white-space:nowrap;" onclick="applyHistoryFilters()">Filter</button>
+            <button type="button" class="btn btn-outline" style="height:38px;padding:0 14px;white-space:nowrap;" onclick="resetHistoryFilters()">Reset</button>
           </div>
         </div>
       </div>
@@ -355,6 +356,16 @@
     });
 
     renderTable(filtered);
+  };
+
+  window.resetHistoryFilters = function() {
+    const searchInput = document.getElementById('histSearchInput');
+    const typeFilter = document.getElementById('histTypeFilter');
+    const dateFilter = document.getElementById('histDateFilter');
+    if (searchInput) searchInput.value = '';
+    if (typeFilter) typeFilter.value = 'all';
+    if (dateFilter) dateFilter.value = 'all';
+    applyHistoryFilters();
   };
 
   function loadHistory() {

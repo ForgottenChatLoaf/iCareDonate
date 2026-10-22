@@ -231,8 +231,25 @@
         <strong id="itemBreadcrumbTitle" style="color:#1E293B;font-weight:600;">Item Detail</strong>
       </nav>
 
+      <!-- Error / Not Found State -->
+      <div id="itemNotFoundWrap" class="card" style="display:none;padding:56px 24px;text-align:center;border-radius:12px;border:1px solid #E2E8F0;background:#fff;margin-bottom:24px;">
+        <div style="width:56px;height:56px;border-radius:50%;background:#FEF2F2;color:#DC2626;display:inline-flex;align-items:center;justify-content:center;margin-bottom:16px;">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h2 id="itemNotFoundTitle" style="font-size:18px;font-weight:700;color:#1E293B;margin:0 0 8px;">Donation Item Not Found</h2>
+        <p id="itemNotFoundMsg" style="font-size:14px;color:#64748B;max-width:440px;margin:0 auto 20px;line-height:1.5;">
+          The requested donation listing does not exist, has been removed, or is awaiting administrator moderation review.
+        </p>
+        <div style="display:inline-flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+          <a href="browse-donations.html" class="btn btn-primary" style="font-size:13.5px;padding:9px 20px;text-decoration:none;">Browse All Donations</a>
+          <a href="donations.html" class="btn btn-outline" style="font-size:13.5px;padding:9px 18px;text-decoration:none;">My Offered Donations</a>
+        </div>
+      </div>
+
       <!-- Two-Column Item Detail Layout -->
-      <div class="view-item-grid">
+      <div class="view-item-grid" id="viewItemGrid">
 
         <!-- Left Column: Gallery & Donor Card -->
         <div>
@@ -405,7 +422,7 @@
 
       <div class="form-group" style="margin-bottom:14px;">
         <label class="form-label" for="qr-urgency" style="font-size:13px;font-weight:600;">Urgency Level <span style="color:#DC2626;">*</span></label>
-        <select id="qr-urgency" class="form-control" style="padding:8px 12px;font-size:14px;">
+        <select id="qr-urgency" class="form-input portal-select" style="width:100%;height:40px;padding:8px 36px 8px 12px;font-size:13.5px;">
           <option value="low">Low — Standard Community Request</option>
           <option value="moderate" selected>Moderate — Needed within 1 week</option>
           <option value="urgent">Urgent / Emergency — Immediate need</option>
@@ -414,7 +431,7 @@
 
       <div class="form-group" style="margin-bottom:14px;">
         <label class="form-label" for="qr-notes" style="font-size:13px;font-weight:600;">Justification / Beneficiary Need <span style="color:#DC2626;">*</span></label>
-        <textarea id="qr-notes" class="form-control" rows="3" placeholder="Brief statement explaining who will benefit and reason for assistance..." required style="padding:8px 12px;font-size:13.5px;"></textarea>
+        <textarea id="qr-notes" class="form-input" rows="3" placeholder="Brief statement explaining who will benefit and reason for assistance..." required style="padding:10px 14px;font-size:13.5px;"></textarea>
       </div>
 
       <div style="background:#F8FAFC;border:1px dashed #CBD5E1;border-radius:8px;padding:12px;text-align:center;margin-bottom:18px;">
@@ -438,106 +455,166 @@
 (function() {
   'use strict';
 
-  // 1. Resolve item from query param (?id=...) or default to 101
   const params = new URLSearchParams(window.location.search);
-  const itemId = Number(params.get('id')) || 101;
+  const rawId = params.get('id');
+  const itemId = rawId ? Number(rawId) : null;
 
-  let currentItem = null;
-  if (window.MockStore && typeof window.MockStore.getDonationById === 'function') {
-    currentItem = window.MockStore.getDonationById(itemId);
+  const notFoundWrap = document.getElementById('itemNotFoundWrap');
+  const itemGrid = document.getElementById('viewItemGrid');
+  const notFoundMsg = document.getElementById('itemNotFoundMsg');
+
+  function showNotFound(msg) {
+    if (itemGrid) itemGrid.style.display = 'none';
+    if (notFoundWrap) {
+      notFoundWrap.style.display = 'block';
+      if (notFoundMsg && msg) notFoundMsg.textContent = msg;
+    }
+    const breadcrumbTitle = document.getElementById('itemBreadcrumbTitle');
+    if (breadcrumbTitle) breadcrumbTitle.textContent = 'Not Found';
   }
 
-  // Fallback if not found in MockStore
-  if (!currentItem) {
-    currentItem = {
-      id: itemId,
-      title: 'Elementary Backpacks & Notebook Bundle',
-      category_name: 'School Supplies',
-      category_slug: 'school-supplies',
-      donor_name: 'Maria Santos',
-      quantity_total: 10,
-      quantity_reserved: 2,
-      quantity_claimed: 1,
-      available_quantity: 7,
-      unit: 'sets',
-      condition_type: 'Brand New in original box',
-      pickup_method: 'pickup',
-      pickup_barangay: 'Barangay Central',
-      pickup_city: 'Quezon City',
-      description: 'Brand new school backpacks with 5 spiral notebooks, pens, crayons, and water bottles each. Packed and inspected for primary school learners.',
-      expiry_date: 'Non-perishable',
-      created_at: '2026-10-15',
-      image_url: '../assets/images/placeholder.svg'
+  function resolveConditionText(cond) {
+    const condMap = {
+      'new': 'Brand New in original packaging',
+      'like_new': 'Like New / Barely Used',
+      'good': 'Good gently used condition',
+      'fair': 'Fair functional condition',
+      'poor': 'Needs minor repair'
     };
+    const key = String(cond || '').toLowerCase().replace(/[\s-]+/g, '_');
+    return condMap[key] || cond || 'Good gently used condition';
   }
 
-  // Calculate avail qty
-  const availQty = currentItem.available_quantity !== undefined 
-    ? currentItem.available_quantity 
-    : (currentItem.quantity_total - (currentItem.quantity_reserved || 0) - (currentItem.quantity_claimed || 0));
+  function resolveHandoverText(method) {
+    const handoverMap = {
+      'pickup': 'Designated Community Hub Pickup',
+      'delivery': 'Direct Delivery upon coordination',
+      'meetup': 'Agreed Community Meetup Location',
+      'both': 'Designated Hub Pickup or Direct Delivery'
+    };
+    return handoverMap[method] || 'Designated Community Hub Pickup';
+  }
 
-  // Render details onto page
-  document.getElementById('itemBreadcrumbCategory').textContent = currentItem.category_name || 'General';
-  document.getElementById('itemBreadcrumbTitle').textContent = currentItem.title;
-  document.getElementById('itemCategoryBadge').textContent = 'Category: ' + (currentItem.category_name || 'General Resource');
-  document.getElementById('itemTitle').textContent = currentItem.title;
-  document.getElementById('itemRefMeta').textContent = `Reference ID: #DON-2026-${String(currentItem.id).padStart(5, '0')} • Posted: ${currentItem.created_at || '2026-10-15'}`;
+  function renderItem(item) {
+    if (notFoundWrap) notFoundWrap.style.display = 'none';
+    if (itemGrid) itemGrid.style.display = 'grid';
 
-  document.getElementById('itemQty').textContent = `${Math.max(0, availQty)} ${currentItem.unit || 'units'} available`;
-  
-  // Format condition
-  const condMap = {
-    'new': 'Brand New in original packaging',
-    'like_new': 'Like New / Barely Used',
-    'good': 'Good gently used condition',
-    'fair': 'Fair functional condition',
-    'poor': 'Needs minor repair'
-  };
-  const condText = condMap[currentItem.condition_type] || currentItem.condition_type || 'Good gently used condition';
-  document.getElementById('itemCondition').textContent = condText;
+    const categoryName = item.category_name || item.category || 'General Resource';
+    const title = item.title || 'Untitled Donation';
+    const refCode = item.ref_code || ('#DON-2026-' + String(item.id).padStart(5, '0'));
+    const postedDate = item.formatted_date || item.created_at || 'Recently posted';
 
-  document.getElementById('itemExpiry').textContent = currentItem.expiry_date || 'Non-perishable';
-  
-  const handoverMap = {
-    'pickup': 'Designated Community Hub Pickup',
-    'delivery': 'Direct Delivery upon coordination',
-    'both': 'Designated Hub Pickup or Direct Delivery'
-  };
-  document.getElementById('itemHandover').textContent = handoverMap[currentItem.pickup_method] || 'Designated Community Hub Pickup';
-  document.getElementById('itemLocation').textContent = `${currentItem.pickup_barangay || 'Barangay Multi-Purpose Hall'}, ${currentItem.pickup_city || 'Drop-off Partner Location'}`;
-  document.getElementById('itemDescription').textContent = currentItem.description || 'No additional notes provided by donor.';
+    const availQty = item.available_quantity !== undefined 
+      ? item.available_quantity 
+      : (item.quantity_total !== undefined 
+          ? Math.max(0, (item.quantity_total - (item.quantity_reserved || 0) - (item.quantity_claimed || 0)))
+          : (item.quantity || 1));
+    const unit = item.unit || 'units';
 
-  // Donor card
-  document.getElementById('itemDonorName').textContent = currentItem.donor_name || 'Community Donor';
-  document.getElementById('itemDonorLocation').textContent = `${currentItem.pickup_barangay || 'Barangay Central'}, ${currentItem.pickup_city || 'Quezon City'}`;
+    // Populate header & breadcrumb
+    document.getElementById('itemBreadcrumbCategory').textContent = categoryName;
+    document.getElementById('itemBreadcrumbTitle').textContent = title;
+    document.getElementById('itemCategoryBadge').textContent = 'Category: ' + categoryName;
+    document.getElementById('itemTitle').textContent = title;
+    document.getElementById('itemRefMeta').textContent = `Reference ID: ${refCode} • Posted: ${postedDate}`;
 
-  // Image handling
-  const mainImg = document.getElementById('itemMainImage');
-  const imgUrl = currentItem.image_url || currentItem.primary_image || '../assets/images/placeholder.svg';
-  mainImg.src = imgUrl;
+    // Specifications
+    document.getElementById('itemQty').textContent = `${Math.max(0, availQty)} ${unit} available`;
+    document.getElementById('itemCondition').textContent = resolveConditionText(item.condition_type || item.item_condition || item.condition);
+    document.getElementById('itemExpiry').textContent = item.expiry_date || 'Non-perishable';
+    document.getElementById('itemHandover').textContent = resolveHandoverText(item.pickup_method || item.handover_method);
 
-  const thumb0 = document.getElementById('thumb0');
-  const thumb1 = document.getElementById('thumb1');
-  const thumb2 = document.getElementById('thumb2');
-  if (thumb0) thumb0.src = imgUrl;
-  if (thumb1) thumb1.src = imgUrl;
-  if (thumb2) thumb2.src = imgUrl;
+    const locationText = [item.pickup_barangay || item.barangay, item.pickup_city || item.city || item.location].filter(Boolean).join(', ') || 'Metro Manila Drop-off Hub';
+    document.getElementById('itemLocation').textContent = locationText;
+    document.getElementById('itemDescription').textContent = item.description || 'No additional notes provided by donor.';
 
-  // Thumbnail click logic
-  const thumbBtns = document.querySelectorAll('.thumb-btn');
-  thumbBtns.forEach(btn => {
-    btn.addEventListener('click', function() {
-      thumbBtns.forEach(b => b.classList.remove('is-active'));
-      this.classList.add('is-active');
-      const img = this.querySelector('img');
-      if (img && mainImg) mainImg.src = img.src;
+    // Donor details
+    document.getElementById('itemDonorName').textContent = item.donor_name || 'Verified Community Donor';
+    document.getElementById('itemDonorLocation').textContent = locationText;
+
+    // Image handling
+    const mainImg = document.getElementById('itemMainImage');
+    const rawImg = item.image_url || item.primary_image || (item.images && item.images[0] ? item.images[0].file_path : '') || '../assets/images/placeholder.svg';
+    let imgUrl = rawImg;
+    if (!imgUrl.startsWith('http') && !imgUrl.startsWith('/') && !imgUrl.startsWith('../')) {
+      imgUrl = '../' + imgUrl;
+    }
+    mainImg.src = imgUrl;
+
+    const thumb0 = document.getElementById('thumb0');
+    const thumb1 = document.getElementById('thumb1');
+    const thumb2 = document.getElementById('thumb2');
+    if (thumb0) thumb0.src = imgUrl;
+    if (thumb1) thumb1.src = imgUrl;
+    if (thumb2) thumb2.src = imgUrl;
+
+    // Thumbnail click logic
+    const thumbBtns = document.querySelectorAll('.thumb-btn');
+    thumbBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        thumbBtns.forEach(b => b.classList.remove('is-active'));
+        this.classList.add('is-active');
+        const img = this.querySelector('img');
+        if (img && mainImg) mainImg.src = img.src;
+      });
     });
-  });
 
-  // Action links
-  const btnApply = document.getElementById('btnApplyForItem');
-  if (btnApply) {
-    btnApply.href = `request-donation.html?id=${currentItem.id}`;
+    // Action links
+    const btnApply = document.getElementById('btnApplyForItem');
+    if (btnApply) {
+      btnApply.href = `request-donation.html?id=${item.id}`;
+    }
+
+    // Modal fields
+    const quickSub = document.getElementById('quickModalSub');
+    const qrQty = document.getElementById('qr-qty');
+    const qrQtyHint = document.getElementById('qr-qty-hint');
+    if (quickSub) quickSub.textContent = `Item: ${title} (${refCode})`;
+    if (qrQty) qrQty.max = Math.max(1, availQty);
+    if (qrQtyHint) qrQtyHint.textContent = `Maximum allowed based on available stock: ${Math.max(1, availQty)} ${unit}.`;
+  }
+
+  async function loadItem() {
+    if (!rawId || isNaN(itemId) || itemId <= 0) {
+      showNotFound('No valid donation ID was specified in the request URL.');
+      return;
+    }
+
+    let item = null;
+
+    // 1. Try fetching from backend API
+    try {
+      const actionsBase = (typeof window.icd_actionsBase === 'function' ? window.icd_actionsBase() : '');
+      const res = await fetch(actionsBase + '/actions/user_donations.php?id=' + encodeURIComponent(itemId), {
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.success && (json.donation || json.data)) {
+          item = json.donation || json.data;
+        }
+      }
+    } catch(err) {
+      // Backend unavailable or network error
+    }
+
+    // 2. Fall back to MockStore lookup
+    if (!item && window.MockStore && typeof window.MockStore.getDonationById === 'function') {
+      item = window.MockStore.getDonationById(itemId);
+    }
+
+    // 3. Fall back to demo list in user-portal.js
+    if (!item && typeof allItems !== 'undefined' && Array.isArray(allItems)) {
+      item = allItems.find(d => Number(d.id) === Number(itemId));
+    }
+
+    if (!item) {
+      showNotFound(`Donation item #${itemId} was not found or is no longer in active circulation.`);
+      return;
+    }
+
+    renderItem(item);
   }
 
   // Quick Request Modal logic
@@ -546,19 +623,7 @@
   const closeModalBtn = document.getElementById('quickModalCloseBtn');
   const cancelModalBtn = document.getElementById('quickModalCancelBtn');
   const quickForm = document.getElementById('quickRequestForm');
-  const quickSub = document.getElementById('quickModalSub');
   const qrQty = document.getElementById('qr-qty');
-  const qrQtyHint = document.getElementById('qr-qty-hint');
-
-  if (quickSub) {
-    quickSub.textContent = `Item: ${currentItem.title} (#DON-2026-${String(currentItem.id).padStart(5, '0')})`;
-  }
-  if (qrQty) {
-    qrQty.max = Math.max(1, availQty);
-  }
-  if (qrQtyHint) {
-    qrQtyHint.textContent = `Maximum allowed based on available stock: ${Math.max(1, availQty)} ${currentItem.unit || 'units'}.`;
-  }
 
   function openQuickModal() {
     if (quickModal) {
@@ -587,26 +652,26 @@
   if (quickForm) {
     quickForm.addEventListener('submit', function(e) {
       e.preventDefault();
-      const qty = Number(qrQty.value) || 1;
-      const urgency = document.getElementById('qr-urgency').value;
-      const notes = document.getElementById('qr-notes').value.trim();
+      const currentTitle = document.getElementById('itemTitle')?.textContent || 'Donation Item';
+      const qty = Number(qrQty ? qrQty.value : 1) || 1;
+      const urgency = document.getElementById('qr-urgency')?.value || 'moderate';
+      const notes = document.getElementById('qr-notes')?.value.trim() || '';
 
-      // Save to localStorage for demo persistence
       try {
         const reqList = JSON.parse(localStorage.getItem('icd_user_requests') || '[]');
         reqList.unshift({
           id: 500 + Math.floor(Math.random() * 500),
-          item_title: currentItem.title,
+          item_title: currentTitle,
           quantity: qty,
-          unit: currentItem.unit || 'units',
+          unit: 'units',
           urgency: urgency,
           notes: notes,
           status: 'pending',
           created_at: new Date().toISOString().split('T')[0],
           requester_name: 'Maria Santos',
           contact_number: '0917-555-0192',
-          city: currentItem.pickup_city || 'Quezon City',
-          barangay: currentItem.pickup_barangay || 'Barangay Central'
+          city: 'Quezon City',
+          barangay: 'Barangay Central'
         });
         localStorage.setItem('icd_user_requests', JSON.stringify(reqList));
       } catch(err) {}
@@ -625,6 +690,7 @@
     });
   }
 
+  document.addEventListener('DOMContentLoaded', loadItem);
 })();
 </script>
 </body>

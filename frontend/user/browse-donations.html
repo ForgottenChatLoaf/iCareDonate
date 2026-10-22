@@ -185,8 +185,8 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:#94A3B8;"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
           </div>
 
-          <div style="min-width:160px;">
-            <select id="browse-category" class="form-input">
+          <div style="min-width:170px;">
+            <select id="browse-category" class="portal-select portal-filter-select">
               <option value="0">All Categories</option>
               <option value="1">Food &amp; Groceries</option>
               <option value="2">School Supplies</option>
@@ -198,8 +198,8 @@
             </select>
           </div>
 
-          <div style="min-width:140px;">
-            <select id="browse-condition" class="form-input">
+          <div style="min-width:145px;">
+            <select id="browse-condition" class="portal-select portal-filter-select">
               <option value="all">Any Condition</option>
               <option value="New">Brand New</option>
               <option value="Like New">Like New</option>
@@ -208,16 +208,21 @@
             </select>
           </div>
 
-          <div style="min-width:140px;">
-            <select id="browse-sort" class="form-input">
+          <div style="min-width:145px;">
+            <select id="browse-sort" class="portal-select portal-filter-select">
               <option value="newest">Sort: Newest</option>
               <option value="quantity">Sort: Highest Qty</option>
             </select>
           </div>
 
-          <button type="button" id="browse-filter-btn" class="btn btn-primary" style="padding:8px 18px;">
-            Filter
-          </button>
+          <div style="display:inline-flex;gap:8px;">
+            <button type="button" id="browse-filter-btn" class="btn btn-primary" style="height:38px;padding:0 16px;font-size:13px;">
+              Filter
+            </button>
+            <button type="button" id="browse-reset-btn" class="btn btn-outline" style="height:38px;padding:0 14px;font-size:13px;">
+              Reset
+            </button>
+          </div>
         </div>
       </div>
 
@@ -488,32 +493,35 @@
     });
 
     // Resolve donation item by ID
-    let item = null;
+    let mockItem = null;
     if (window.MockStore && typeof window.MockStore.getDonationById === 'function') {
-      item = window.MockStore.getDonationById(itemId);
+      mockItem = window.MockStore.getDonationById(itemId);
     }
 
-    if (!item) {
-      // Try resolving from API if available
-      const apiBase = window.location.pathname.includes('/CommunityDono/')
-        ? window.location.origin + '/CommunityDono/api/v1'
-        : '/api/v1';
-
-      fetch(`${apiBase}/public/donations.php?id=${encodeURIComponent(itemId)}`)
-        .then(res => res.ok ? res.json() : null)
-        .then(data => {
-          const d = data ? (data.data || data) : null;
-          if (d && d.id) {
-            populateModal(d);
-          } else {
-            showModalError();
-          }
-        })
-        .catch(() => showModalError());
-      return;
-    }
-
-    populateModal(item);
+    const actionsBase = (typeof window.icd_actionsBase === 'function' ? window.icd_actionsBase() : '');
+    fetch(`${actionsBase}/actions/user_donations.php?id=${encodeURIComponent(itemId)}`, {
+      credentials: 'same-origin',
+      headers: { 'Accept': 'application/json' }
+    })
+      .then(res => res.ok ? res.json() : null)
+      .then(data => {
+        const d = data ? (data.donation || data.data || data) : null;
+        if (d && d.id) {
+          populateModal(d);
+        } else if (mockItem) {
+          populateModal(mockItem);
+        } else {
+          showModalError();
+        }
+      })
+      .catch(() => {
+        if (mockItem) {
+          populateModal(mockItem);
+        } else {
+          showModalError();
+        }
+      });
+    return;
   }
 
   function populateModal(item) {
@@ -639,6 +647,16 @@
 
     const filterBtn = document.getElementById('browse-filter-btn');
     if (filterBtn) filterBtn.addEventListener('click', renderBrowseDonations);
+    const resetBtn = document.getElementById('browse-reset-btn');
+    if (resetBtn) {
+      resetBtn.addEventListener('click', function() {
+        if (document.getElementById('browse-search')) document.getElementById('browse-search').value = '';
+        if (document.getElementById('browse-category')) document.getElementById('browse-category').value = '0';
+        if (document.getElementById('browse-condition')) document.getElementById('browse-condition').value = 'all';
+        if (document.getElementById('browse-sort')) document.getElementById('browse-sort').value = 'newest';
+        renderBrowseDonations();
+      });
+    }
     const searchInput = document.getElementById('browse-search');
     if (searchInput) searchInput.addEventListener('input', renderBrowseDonations);
     const catSelect = document.getElementById('browse-category');

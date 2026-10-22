@@ -896,8 +896,14 @@
         if (currentTab === 'completed' && s !== 'completed') return false;
         if (currentTab === 'archived' && s !== 'archived') return false;
 
-        // Category filter
-        if (categoryFilter !== 'all' && item.category !== categoryFilter) return false;
+        // Category filter (flexible normalized matching for display name, slug, or ampersand differences)
+        if (categoryFilter !== 'all') {
+          const normItemCat = (item.category || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+          const normSelCat = categoryFilter.toLowerCase().replace(/[^a-z0-9]/g, '');
+          if (!normItemCat.includes(normSelCat) && !normSelCat.includes(normItemCat)) {
+            return false;
+          }
+        }
 
         // Search query
         if (searchQuery) {
@@ -1032,7 +1038,7 @@
       // Network/offline fallback
     }
 
-    // If empty, fall back to initial demonstration records
+    // If empty, fall back to initial demonstration records aligned with MockStore IDs
     if (!allItems || allItems.length === 0) {
       allItems = [
         {
@@ -1051,10 +1057,23 @@
         {
           id: 102,
           ref_code: 'REF-00124',
-          title: 'Assorted Children Winter Jackets & Sweaters',
+          title: 'Family Rice & Canned Goods Care Packs',
+          category: 'Food & Groceries',
+          quantity: 15,
+          unit: 'packs',
+          item_condition: 'Brand New',
+          status: 'approved',
+          image_url: '../assets/images/categories/food-groceries.jpg',
+          created_at: '2026-10-11',
+          formatted_date: 'Oct 11, 2026'
+        },
+        {
+          id: 103,
+          ref_code: 'REF-00125',
+          title: 'Children Rain Jackets & Durable Walking Shoes',
           category: 'Clothing & Shoes',
           quantity: 8,
-          unit: 'pcs',
+          unit: 'pairs',
           item_condition: 'Like New',
           status: 'pending',
           image_url: '../assets/images/categories/clothing-shoes.avif',
@@ -1062,17 +1081,17 @@
           formatted_date: 'Oct 12, 2026'
         },
         {
-          id: 103,
-          ref_code: 'REF-00125',
-          title: 'Emergency Non-Perishable Canned Food Pack',
-          category: 'Food & Groceries',
-          quantity: 20,
-          unit: 'cans',
+          id: 104,
+          ref_code: 'REF-00126',
+          title: 'Household First Aid Kits & Antiseptic Care Packs',
+          category: 'Medical & First Aid',
+          quantity: 12,
+          unit: 'kits',
           item_condition: 'Brand New',
           status: 'matched',
-          image_url: '../assets/images/categories/food-groceries.jpg',
-          created_at: '2026-10-15',
-          formatted_date: 'Oct 15, 2026'
+          image_url: '../assets/images/categories/medical-first-aid.jpg',
+          created_at: '2026-10-14',
+          formatted_date: 'Oct 14, 2026'
         }
       ];
     }
@@ -1118,6 +1137,24 @@
         renderTable();
       });
     }
+
+    window.resetDonationFilters = function() {
+      currentTab = 'all';
+      searchQuery = '';
+      categoryFilter = 'all';
+      sortBy = 'newest';
+      if (searchInput) searchInput.value = '';
+      if (categorySelect) categorySelect.value = 'all';
+      if (sortSelect) sortSelect.value = 'newest';
+      tabButtons.forEach(btn => {
+        const isAll = (btn.getAttribute('data-tab') === 'all');
+        btn.classList.toggle('is-active', isAll);
+        btn.style.borderBottomColor = isAll ? 'var(--color-primary, #1F4FA3)' : 'transparent';
+        btn.style.color = isAll ? 'var(--color-primary, #1F4FA3)' : '#64748B';
+        btn.style.fontWeight = isAll ? '700' : '600';
+      });
+      renderTable();
+    };
 
     window.archiveUserDonation = async function(id) {
       if (!confirm('Are you sure you want to archive this donation listing? It will no longer appear on public community feeds.')) {

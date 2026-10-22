@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -331,10 +331,34 @@
           opt.textContent = cat.name;
           sel.appendChild(opt);
         });
+      } else if (window.MockStore && typeof window.MockStore.getCategories === 'function') {
+        window.MockStore.getCategories().forEach(cat => {
+          const opt = document.createElement('option');
+          opt.value = cat.name;
+          opt.textContent = cat.name;
+          sel.appendChild(opt);
+        });
       }
     } catch (e) {
-      console.warn('Could not load categories:', e);
+      if (window.MockStore && typeof window.MockStore.getCategories === 'function') {
+        window.MockStore.getCategories().forEach(cat => {
+          const opt = document.createElement('option');
+          opt.value = cat.name;
+          opt.textContent = cat.name;
+          sel.appendChild(opt);
+        });
+      }
     }
+  }
+
+  function resetFilters() {
+    const sInp = document.getElementById('searchInput');
+    const cFil = document.getElementById('categoryFilter');
+    const soFil = document.getElementById('sortFilter');
+    if (sInp) sInp.value = '';
+    if (cFil) cFil.value = '';
+    if (soFil) soFil.value = 'newest';
+    setFilter('pending_verification');
   }
 
   function setFilter(status) {

@@ -197,8 +197,8 @@
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#94A3B8" stroke-width="2" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);pointer-events:none;"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
             <input type="text" id="donationsSearchInput" placeholder="Search my listings by title, reference code, or category..." style="width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border, #CBD5E1);border-radius:8px;font-size:13.5px;outline:none;background:#F8FAFC;">
           </div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <select id="donationsCategorySelect" style="padding:9px 12px;border:1px solid var(--border, #CBD5E1);border-radius:8px;font-size:13px;background:#fff;color:var(--text, #1E293B);cursor:pointer;outline:none;">
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <select id="donationsCategorySelect" class="portal-select portal-filter-select" style="min-width:180px;">
               <option value="all">All Categories</option>
               <option value="School Supplies">School Supplies</option>
               <option value="Clothing & Shoes">Clothing &amp; Shoes</option>
@@ -209,11 +209,14 @@
               <option value="Toys & Children">Toys &amp; Children</option>
               <option value="Electronics & Devices">Electronics &amp; Devices</option>
             </select>
-            <select id="donationsSortSelect" style="padding:9px 12px;border:1px solid var(--border, #CBD5E1);border-radius:8px;font-size:13px;background:#fff;color:var(--text, #1E293B);cursor:pointer;outline:none;">
+            <select id="donationsSortSelect" class="portal-select portal-filter-select" style="min-width:170px;">
               <option value="newest">Sort: Date Added (Newest)</option>
               <option value="oldest">Sort: Date Added (Oldest)</option>
               <option value="quantity">Sort: Quantity (Highest)</option>
             </select>
+            <button type="button" id="donationsResetBtn" class="btn btn-outline" style="height:38px;padding:0 14px;font-size:13px;" onclick="window.resetDonationFilters && window.resetDonationFilters()">
+              Clear Filters
+            </button>
           </div>
         </div>
       </div>

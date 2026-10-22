@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -170,6 +170,17 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
+      <!-- Filter Bar -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap;">
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="claims-filter-tabs">
+          <button type="button" class="btn btn-primary" data-status="all" onclick="setClaimFilter('all')">All Passes</button>
+          <button type="button" class="btn btn-outline" data-status="ready_for_pickup" onclick="setClaimFilter('ready_for_pickup')">Ready for Pickup</button>
+          <button type="button" class="btn btn-outline" data-status="dispatching" onclick="setClaimFilter('dispatching')">Dispatching</button>
+          <button type="button" class="btn btn-outline" data-status="completed" onclick="setClaimFilter('completed')">Completed</button>
+        </div>
+        <input type="text" id="claimsSearchInput" class="form-input" placeholder="Search claims, passes, beneficiaries..." style="height:36px;font-size:13px;width:260px;" oninput="renderClaimsTable()">
+      </div>
+
       <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#fff;">
         <table class="table" style="width:100%;margin:0;border-collapse:collapse;font-size:13.5px;">
           <thead style="background:#F8FAFC;border-bottom:1px solid var(--color-border);">
@@ -183,42 +194,8 @@
               <th style="padding:12px 16px;text-align:right;font-weight:700;color:var(--color-text-muted);">Release Action</th>
             </tr>
           </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">CLM-401</td>
-              <td style="padding:14px 16px;font-weight:600;">Elementary Backpacks &amp; Notebook Bundle</td>
-              <td style="padding:14px 16px;">Carlos Mendoza</td>
-              <td style="padding:14px 16px;">Maria Santos</td>
-              <td style="padding:14px 16px;color:#D97706;font-weight:600;">Oct 16, 2026</td>
-              <td style="padding:14px 16px;"><span class="badge badge-warning">Ready for Pickup</span></td>
-              <td style="padding:14px 16px;text-align:right;">
-                <button type="button" class="btn btn-primary" style="font-size:12px;padding:5px 12px;" onclick="window.showAdminFlash('success', 'Release pass verified. Goods released.')">
-                  Validate &amp; Release
-                </button>
-              </td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">CLM-382</td>
-              <td style="padding:14px 16px;font-weight:600;">Family Rice &amp; Canned Goods Care Packs</td>
-              <td style="padding:14px 16px;">Rosalina Ramos</td>
-              <td style="padding:14px 16px;">David Tan</td>
-              <td style="padding:14px 16px;color:#D97706;font-weight:600;">Oct 18, 2026</td>
-              <td style="padding:14px 16px;"><span class="badge badge-info">Dispatching</span></td>
-              <td style="padding:14px 16px;text-align:right;">
-                <button type="button" class="btn btn-outline" style="font-size:12px;padding:5px 12px;">Track Dispatch</button>
-              </td>
-            </tr>
-            <tr>
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">CLM-290</td>
-              <td style="padding:14px 16px;font-weight:600;">Secondary School Science Textbooks</td>
-              <td style="padding:14px 16px;">Teresa Lim</td>
-              <td style="padding:14px 16px;">Elena Cruz</td>
-              <td style="padding:14px 16px;color:var(--color-text-muted);">Completed</td>
-              <td style="padding:14px 16px;"><span class="badge badge-success">Claim Completed</span></td>
-              <td style="padding:14px 16px;text-align:right;">
-                <span style="font-size:12px;color:var(--color-text-muted);">Receipt Filed</span>
-              </td>
-            </tr>
+          <tbody id="claims-tbody">
+            <!-- Populated by JS -->
           </tbody>
         </table>
       </div>
@@ -229,6 +206,60 @@
 
 <script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
+<script>
+  const CLAIMS_DATA = [
+    { id: 'CLM-401', item: 'Elementary Backpacks & Notebook Bundle', beneficiary: 'Carlos Mendoza', donor: 'Maria Santos', deadline: 'Oct 16, 2026', status: 'ready_for_pickup', statusLabel: 'Ready for Pickup', badgeClass: 'badge-warning', actionHtml: '<button type="button" class="btn btn-primary" style="font-size:12px;padding:5px 12px;" onclick="window.showAdminFlash(\'success\',\'Release pass verified. Goods released.\')">Validate &amp; Release</button>' },
+    { id: 'CLM-382', item: 'Family Rice & Canned Goods Care Packs',  beneficiary: 'Rosalina Ramos', donor: 'David Tan',    deadline: 'Oct 18, 2026', status: 'dispatching',      statusLabel: 'Dispatching',     badgeClass: 'badge-info',    actionHtml: '<button type="button" class="btn btn-outline" style="font-size:12px;padding:5px 12px;">Track Dispatch</button>' },
+    { id: 'CLM-290', item: 'Secondary School Science Textbooks',      beneficiary: 'Teresa Lim',     donor: 'Elena Cruz',   deadline: 'Completed',        status: 'completed',          statusLabel: 'Claim Completed', badgeClass: 'badge-success', actionHtml: '<span style="font-size:12px;color:var(--color-text-muted);">Receipt Filed</span>' },
+  ];
+
+  let activeClaimFilter = 'all';
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    const d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  function setClaimFilter(status) {
+    activeClaimFilter = status;
+    document.querySelectorAll('#claims-filter-tabs button').forEach(btn => {
+      btn.className = btn.getAttribute('data-status') === status ? 'btn btn-primary' : 'btn btn-outline';
+    });
+    renderClaimsTable();
+  }
+
+  function renderClaimsTable() {
+    const tbody = document.getElementById('claims-tbody');
+    if (!tbody) return;
+    const q = (document.getElementById('claimsSearchInput').value || '').toLowerCase().trim();
+    const filtered = CLAIMS_DATA.filter(c => {
+      const matchStatus = activeClaimFilter === 'all' || c.status === activeClaimFilter;
+      const matchSearch = !q || c.id.toLowerCase().includes(q) || c.item.toLowerCase().includes(q) || c.beneficiary.toLowerCase().includes(q) || c.donor.toLowerCase().includes(q);
+      return matchStatus && matchSearch;
+    });
+
+    if (filtered.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="padding:48px 16px;text-align:center;color:var(--color-text-muted);">No claims found matching the selected filter.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = filtered.map(c => `
+      <tr style="border-bottom:1px solid var(--color-border-light);">
+        <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">${escapeHtml(c.id)}</td>
+        <td style="padding:14px 16px;font-weight:600;">${escapeHtml(c.item)}</td>
+        <td style="padding:14px 16px;">${escapeHtml(c.beneficiary)}</td>
+        <td style="padding:14px 16px;">${escapeHtml(c.donor)}</td>
+        <td style="padding:14px 16px;color:#D97706;font-weight:600;">${escapeHtml(c.deadline)}</td>
+        <td style="padding:14px 16px;"><span class="badge ${c.badgeClass}">${escapeHtml(c.statusLabel)}</span></td>
+        <td style="padding:14px 16px;text-align:right;">${c.actionHtml}</td>
+      </tr>
+    `).join('');
+  }
+
+  document.addEventListener('DOMContentLoaded', () => renderClaimsTable());
+</script>
 
 
   <!-- Mobile sidebar toggle JS -->

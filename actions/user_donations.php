@@ -94,16 +94,89 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 // GET: Retrieve User's Donation Listings
 // ─────────────────────────────────────────────────────────────
 try {
+    // ─────────────────────────────────────────────────────────
+    // Single Item Lookup: GET ?id={donationId}
+    // ─────────────────────────────────────────────────────────
+    $singleId = (int)($_GET['id'] ?? 0);
+    if ($singleId > 0) {
+        $stmtSingle = $pdo->prepare("
+            SELECT d.*, 
+                   d.donor_id AS user_id, 
+                   COALESCE(d.condition, 'good') AS condition_type,
+                   COALESCE(d.condition, 'good') AS item_condition,
+                   COALESCE(d.city, d.location, 'Metro Manila') AS pickup_city,
+                   COALESCE(d.barangay, '') AS pickup_barangay,
+                   COALESCE(d.handover_method, 'pickup') AS pickup_method,
+                   'units' AS unit,
+                   u.name AS donor_name, 
+                   u.email AS donor_email
+            FROM donations d
+            LEFT JOIN users u ON d.donor_id = u.id
+            WHERE d.id = :id
+            LIMIT 1
+        ");
+        $stmtSingle->execute([':id' => $singleId]);
+        $row = $stmtSingle->fetch();
+
+        if (!$row) {
+            http_response_code(404);
+            echo json_encode(['success' => false, 'message' => 'Donation record not found.']);
+            exit;
+        }
+
+        // Authorization: Current user must be donor, or listing must be approved/public, or user is admin
+        $isOwner = ((int)$row['donor_id'] === (int)$userId);
+        $isApproved = in_array(strtolower($row['status']), ['approved', 'active', 'matched', 'completed']);
+        $isAdmin = (strtolower($_SESSION['icd_role'] ?? '') === 'admin');
+
+        if (!$isOwner && !$isApproved && !$isAdmin) {
+            http_response_code(403);
+            echo json_encode(['success' => false, 'message' => 'You do not have permission to view this private donation listing.']);
+            exit;
+        }
+
+        $row['available_quantity'] = (int)($row['quantity'] ?? 1);
+        $row['quantity_total'] = (int)($row['quantity'] ?? 1);
+        $row['formatted_date'] = date('M j, Y', strtotime((string)$row['created_at']));
+        $row['ref_code'] = 'REF-' . str_pad((string)$row['id'], 5, '0', STR_PAD_LEFT);
+        $row['category_name'] = $row['category'] ?? 'General Resource';
+        $row['image_url'] = $row['image_url'] ?: '../assets/images/placeholder.svg';
+
+        echo json_encode(['success' => true, 'donation' => $row, 'data' => $row]);
+        exit;
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // List Query: User Listings or Public Browse
+    // ─────────────────────────────────────────────────────────
     $statusFilter = trim((string)($_GET['status'] ?? 'all'));
     $search       = trim((string)($_GET['q'] ?? ''));
     $category     = trim((string)($_GET['category'] ?? ''));
     $sort         = trim((string)($_GET['sort'] ?? 'newest'));
+    $isBrowse     = isset($_GET['browse']) || (isset($_GET['scope']) && $_GET['scope'] === 'browse');
 
-    $sql = "SELECT d.id, d.title, d.category, d.quantity, d.unit, d.item_condition, d.status,
-                   d.image_url, d.created_at, d.updated_at
-            FROM donations d
-            WHERE d.donor_id = :uid";
-    $params = [':uid' => $userId];
+    if ($isBrowse) {
+        $sql = "SELECT d.*, 
+                       COALESCE(d.condition, 'good') AS item_condition,
+                       COALESCE(d.condition, 'good') AS condition_type,
+                       COALESCE(d.city, d.location, 'Metro Manila') AS pickup_city,
+                       COALESCE(d.barangay, '') AS pickup_barangay,
+                       COALESCE(d.handover_method, 'pickup') AS pickup_method,
+                       'units' AS unit,
+                       u.name AS donor_name,
+                       u.email AS donor_email
+                FROM donations d
+                LEFT JOIN users u ON d.donor_id = u.id
+                WHERE d.status = 'approved'";
+        $params = [];
+    } else {
+        $sql = "SELECT d.*,
+                       COALESCE(d.condition, 'good') AS item_condition,
+                       'units' AS unit
+                FROM donations d
+                WHERE d.donor_id = :uid";
+        $params = [':uid' => $userId];
+    }
 
     if ($statusFilter !== '' && $statusFilter !== 'all') {
         if ($statusFilter === 'active' || $statusFilter === 'approved') {
@@ -118,12 +191,13 @@ try {
     }
 
     if ($category !== '' && $category !== 'all') {
-        $sql .= " AND d.category = :category";
+        $sql .= " AND (d.category = :category OR d.category LIKE :category_like)";
         $params[':category'] = $category;
+        $params[':category_like'] = '%' . $category . '%';
     }
 
     if ($search !== '') {
-        $sql .= " AND (d.title LIKE :search OR d.category LIKE :search)";
+        $sql .= " AND (d.title LIKE :search OR d.category LIKE :search OR d.description LIKE :search)";
         $params[':search'] = '%' . $search . '%';
     }
 
