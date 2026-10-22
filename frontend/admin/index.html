@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -31,6 +31,46 @@
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/pages/admin.css">
+  <style>
+    .chart-bar:hover {
+      filter: brightness(1.15);
+    }
+    .chart-bar .bar-tooltip {
+      display: none;
+      position: absolute;
+      top: -26px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0F172A;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 7px;
+      border-radius: 4px;
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 20;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+    }
+    .chart-bar .bar-tooltip::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      margin-left: -4px;
+      border-width: 4px;
+      border-style: solid;
+      border-color: #0F172A transparent transparent transparent;
+    }
+    .chart-bar:hover .bar-tooltip {
+      display: block;
+    }
+    @media(max-width: 960px) {
+      .admin-visual-charts-row {
+        grid-template-columns: 1fr !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -227,6 +267,62 @@
 
       </div>
 
+      <!-- Platform Analytics & Visual Graphs -->
+      <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:20px;margin-bottom:28px;" class="admin-visual-charts-row">
+
+        <!-- 6-Month Operations Bar Graph -->
+        <div class="card" style="padding:22px 24px;border-radius:14px;border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.04);">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:18px;flex-wrap:wrap;gap:10px;">
+            <div>
+              <div style="font-size:16px;font-weight:700;color:var(--text, #1E293B);">Platform Operations Velocity</div>
+              <div style="font-size:12.5px;color:var(--text-muted, #64748B);margin-top:2px;">6-Month activity comparison of donations listed vs requests submitted</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:14px;font-size:12.5px;font-weight:600;">
+              <span style="display:inline-flex;align-items:center;gap:6px;">
+                <span style="width:10px;height:10px;border-radius:3px;background:var(--cobalt, #1F4FA3);display:inline-block;"></span>
+                <span>Donations</span>
+              </span>
+              <span style="display:inline-flex;align-items:center;gap:6px;">
+                <span style="width:10px;height:10px;border-radius:3px;background:var(--coral, #E0553D);display:inline-block;"></span>
+                <span>Requests</span>
+              </span>
+            </div>
+          </div>
+
+          <!-- Bar Chart Container -->
+          <div id="admin-bar-chart-wrap" style="position:relative;height:180px;display:flex;align-items:flex-end;gap:16px;padding:10px 10px 24px;border-bottom:1px solid #E2E8F0;">
+            <div style="margin:auto;color:#94A3B8;font-size:13px;">Loading operational analytics...</div>
+          </div>
+          <div id="admin-bar-chart-labels" style="display:flex;gap:16px;padding:8px 10px 0;text-align:center;">
+          </div>
+        </div>
+
+        <!-- Category Distribution & Fulfillment Breakdown -->
+        <div class="card" style="padding:22px 24px;border-radius:14px;border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.04);display:flex;flex-direction:column;justify-content:space-between;">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <div>
+                <div style="font-size:16px;font-weight:700;color:var(--text, #1E293B);">Category Allocation</div>
+                <div style="font-size:12.5px;color:var(--text-muted, #64748B);margin-top:2px;">Active community inventory distribution</div>
+              </div>
+              <a href="categories.html" style="font-size:12px;color:var(--cobalt, #1F4FA3);font-weight:600;text-decoration:none;">Manage &rarr;</a>
+            </div>
+
+            <!-- Category Progress Bars -->
+            <div id="admin-category-bars" style="display:flex;flex-direction:column;gap:12px;margin-top:8px;">
+              <div style="padding:18px;text-align:center;color:#94A3B8;font-size:13px;">Loading categories...</div>
+            </div>
+          </div>
+
+          <!-- Quick fulfillment stat pill footer -->
+          <div style="margin-top:16px;padding-top:12px;border-top:1px solid #F1F5F9;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#64748B;">
+            <span>Fulfillment Pipeline</span>
+            <span id="fulfillment-rate-label" style="font-weight:700;color:#16A34A;">Live Verified Status</span>
+          </div>
+        </div>
+
+      </div>
+
       <!-- Quick Administrative Shortcuts -->
       <div style="margin-bottom:28px;">
         <div style="font-size:15px;font-weight:700;color:var(--text, #1E293B);margin-bottom:12px;">Quick Administrative Actions</div>
@@ -364,11 +460,97 @@
 
     if (btnDonations) btnDonations.textContent = c.pending_donations ?? 0;
     if (btnRequests)  btnRequests.textContent  = c.pending_requests ?? 0;
+    if (statConcerns)  statConcerns.textContent  = c.open_inquiries ?? 0;
 
     const queueReqLink = document.getElementById('queue-requests-link');
     if (queueReqLink) queueReqLink.textContent = `Queue (${c.pending_requests ?? 0}) →`;
     const queueDonLink = document.getElementById('queue-donations-link');
     if (queueDonLink) queueDonLink.textContent = `Queue (${c.pending_donations ?? 0}) →`;
+
+    // 1. Render Monthly Trends Bar Graph
+    const barChartWrap = document.getElementById('admin-bar-chart-wrap');
+    const barChartLabels = document.getElementById('admin-bar-chart-labels');
+    if (barChartWrap && barChartLabels) {
+      const trends = res.monthly_trends || [];
+      if (trends.length === 0) {
+        barChartWrap.innerHTML = '<div style="margin:auto;color:#94A3B8;font-size:13px;">No monthly operations recorded yet.</div>';
+      } else {
+        const allCounts = trends.flatMap(t => [t.donations || 0, t.requests || 0]);
+        const maxVal = Math.max(5, ...allCounts);
+
+        barChartWrap.innerHTML = trends.map(t => {
+          const don = t.donations || 0;
+          const req = t.requests || 0;
+          const donPct = Math.max(8, Math.round((don / maxVal) * 100));
+          const reqPct = Math.max(8, Math.round((req / maxVal) * 100));
+
+          return `
+            <div class="chart-col" style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;">
+              <div style="display:flex;align-items:flex-end;gap:6px;height:100%;width:100%;justify-content:center;">
+                <div class="chart-bar" style="width:40%;max-width:20px;height:${donPct}%;background:linear-gradient(180deg, #3B82F6 0%, #1F4FA3 100%);border-radius:6px 6px 0 0;position:relative;cursor:pointer;transition:height 0.4s ease, filter 0.2s ease;">
+                  <span class="bar-tooltip">${don} Donations</span>
+                </div>
+                <div class="chart-bar" style="width:40%;max-width:20px;height:${reqPct}%;background:linear-gradient(180deg, #F87171 0%, #E0553D 100%);border-radius:6px 6px 0 0;position:relative;cursor:pointer;transition:height 0.4s ease, filter 0.2s ease;">
+                  <span class="bar-tooltip">${req} Requests</span>
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        barChartLabels.innerHTML = trends.map(t => `
+          <div style="flex:1;font-size:12px;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:0.04em;">
+            ${escapeHtml(t.label || '')}
+          </div>
+        `).join('');
+      }
+    }
+
+    // 2. Render Category Distribution Bars
+    const catBars = document.getElementById('admin-category-bars');
+    if (catBars) {
+      const cats = res.category_distribution || [];
+      if (cats.length === 0) {
+        catBars.innerHTML = '<div style="padding:16px;text-align:center;color:#94A3B8;font-size:13px;">No category distribution data recorded yet.</div>';
+      } else {
+        const totalItems = cats.reduce((acc, c) => acc + (parseInt(c.total_items) || 0), 0) || 1;
+        const colorPalette = [
+          'linear-gradient(90deg, #1F4FA3 0%, #3B82F6 100%)',
+          'linear-gradient(90deg, #E0553D 0%, #F87171 100%)',
+          'linear-gradient(90deg, #D97706 0%, #FBBF24 100%)',
+          'linear-gradient(90deg, #059669 0%, #34D399 100%)',
+          'linear-gradient(90deg, #7C3AED 0%, #A78BFA 100%)',
+        ];
+
+        catBars.innerHTML = cats.map((cat, idx) => {
+          const count = parseInt(cat.total_items) || 0;
+          const pct = Math.min(100, Math.round((count / totalItems) * 100));
+          const grad = colorPalette[idx % colorPalette.length];
+
+          return `
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;font-size:13px;margin-bottom:5px;">
+                <span style="font-weight:600;color:var(--text, #1E293B);">${escapeHtml(cat.cat_name)}</span>
+                <span style="font-weight:700;color:#64748B;font-size:12px;">${count} items (${pct}%)</span>
+              </div>
+              <div style="height:8px;border-radius:6px;background:#F1F5F9;overflow:hidden;">
+                <div style="width:${pct}%;height:100%;border-radius:6px;background:${grad};transition:width 0.5s ease;"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+    }
+
+    // 3. Update Fulfillment Pipeline Rate
+    const rateLabel = document.getElementById('fulfillment-rate-label');
+    if (rateLabel && res.status_breakdown) {
+      const sb = res.status_breakdown;
+      const total = (sb.pending || 0) + (sb.approved || 0) + (sb.claimed || 0) + (sb.completed || 0);
+      const fulfilled = (sb.completed || 0) + (sb.claimed || 0);
+      const rate = total > 0 ? Math.round((fulfilled / total) * 100) : 0;
+      rateLabel.textContent = `${rate}% Handover Rate (${fulfilled}/${total} completed/active)`;
+    }
 
     // 1. Render Urgent Beneficiary Proofs Queue
     if (proofsQueue) {

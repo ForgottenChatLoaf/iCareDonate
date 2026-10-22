@@ -61,6 +61,25 @@ if ($method === 'POST') {
             exit;
         }
 
+        if ($action === 'mark_read') {
+            $notifId = (int)($_POST['id'] ?? ($jsonBody['id'] ?? 0));
+            if ($notifId > 0) {
+                $stmt = $pdo->prepare('UPDATE notifications SET is_read = 1 WHERE id = :id AND user_id = :uid');
+                $stmt->execute([':id' => $notifId, ':uid' => $userId]);
+            }
+            $stmtCount = $pdo->prepare('SELECT COUNT(*) FROM notifications WHERE user_id = :uid AND is_read = 0');
+            $stmtCount->execute([':uid' => $userId]);
+            $remaining = (int)$stmtCount->fetchColumn();
+
+            http_response_code(200);
+            echo json_encode([
+                'success'      => true,
+                'message'      => 'Notification marked as read.',
+                'unread_count' => $remaining,
+            ]);
+            exit;
+        }
+
         http_response_code(400);
         echo json_encode([
             'success' => false,

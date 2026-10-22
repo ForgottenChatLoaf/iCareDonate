@@ -55,21 +55,26 @@ $html = preg_replace('/<head[^>]*>/i', "$0\n  $baseTag", $html, 1);
 // Inject user session information into window.ICD_SESSION and sync to localStorage
 $firstName = explode(' ', currentName())[0] ?? 'User';
 $lastName = implode(' ', array_slice(explode(' ', currentName()), 1)) ?: 'Member';
+$actualUserId = (int)($_SESSION['icd_user_id'] ?? 0);
+$actualEmail  = (string)($_SESSION['icd_email'] ?? 'user@icaredonate.test');
 $sessionScript = '<script>
+window.icd_actionsBase = function() { return ' . json_encode(_icd_root()) . '.replace(/\/$/, ""); };
 window.ICD_SESSION = ' . json_encode([
     'loggedIn' => isLoggedIn(),
     'role'     => currentRole(),
     'name'     => currentName(),
+    'userId'   => $actualUserId,
+    'email'    => $actualEmail,
 ]) . ';
 try {
   if (!localStorage.getItem("icd_token")) {
     localStorage.setItem("icd_token", "session-" + Date.now());
   }
   localStorage.setItem("icd_user", JSON.stringify({
-    id: 1,
+    id: ' . $actualUserId . ',
     first_name: ' . json_encode($firstName) . ',
     last_name: ' . json_encode($lastName) . ',
-    email: ' . json_encode($_SESSION['icd_user_id'] ?? 'user@icaredonate.test') . ',
+    email: ' . json_encode($actualEmail) . ',
     role: ' . json_encode(currentRole()) . '
   }));
 } catch(e) {}

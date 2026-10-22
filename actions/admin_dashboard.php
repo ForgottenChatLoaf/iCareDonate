@@ -59,6 +59,13 @@ try {
         $totalMembers = (int)$stmtUsers->fetchColumn();
     } catch (PDOException $e) {}
 
+    // Count open inquiries (support tickets)
+    $openInquiries = 0;
+    try {
+        $stmtInq = $pdo->query("SELECT COUNT(*) FROM support_tickets WHERE status = 'open'");
+        $openInquiries = (int)$stmtInq->fetchColumn();
+    } catch (PDOException $e) {}
+
     // 2. Urgent Attention Queues: Pending Donations
     $urgentDonations = [];
     try {
@@ -131,6 +138,82 @@ try {
         } catch (PDOException $e) {}
     }
 
+    // 5. 6-Month Monthly Trends for Bar Graph (Donations vs Requests)
+    $months = [];
+    for ($i = 5; $i >= 0; $i--) {
+        $ts = strtotime("-$i months");
+        $mKey = date('Y-m', $ts);
+        $mLabel = date('M', $ts);
+        $months[$mKey] = [
+            'key'       => $mKey,
+            'label'     => $mLabel,
+            'donations' => 0,
+            'requests'  => 0,
+        ];
+    }
+
+    try {
+        $stmtMDon = $pdo->query("
+            SELECT DATE_FORMAT(created_at, '%Y-%m') AS ym, COUNT(*) AS cnt
+            FROM donations
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY ym
+        ");
+        while ($r = $stmtMDon->fetch()) {
+            if (isset($months[$r['ym']])) {
+                $months[$r['ym']]['donations'] = (int)$r['cnt'];
+            }
+        }
+    } catch (PDOException $e) {}
+
+    try {
+        $stmtMReq = $pdo->query("
+            SELECT DATE_FORMAT(created_at, '%Y-%m') AS ym, COUNT(*) AS cnt
+            FROM requests
+            WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 6 MONTH)
+            GROUP BY ym
+        ");
+        while ($r = $stmtMReq->fetch()) {
+            if (isset($months[$r['ym']])) {
+                $months[$r['ym']]['requests'] = (int)$r['cnt'];
+            }
+        }
+    } catch (PDOException $e) {}
+
+    $monthlyTrends = array_values($months);
+
+    // 6. Category Distribution for Analytics Bars
+    $categoryDistribution = [];
+    try {
+        $stmtCat = $pdo->query("
+            SELECT COALESCE(NULLIF(category, ''), 'General Goods') AS cat_name, COUNT(*) AS total_items
+            FROM donations
+            GROUP BY cat_name
+            ORDER BY total_items DESC
+            LIMIT 5
+        ");
+        $categoryDistribution = $stmtCat->fetchAll();
+    } catch (PDOException $e) {}
+
+    // 7. Fulfillment Status Breakdown
+    $statusBreakdown = [
+        'pending'   => $pendingDonations,
+        'approved'  => 0,
+        'claimed'   => 0,
+        'completed' => 0,
+    ];
+    try {
+        $stmtStatus = $pdo->query("SELECT status, COUNT(*) AS cnt FROM donations GROUP BY status");
+        while ($r = $stmtStatus->fetch()) {
+            $st = strtolower((string)$r['status']);
+            if (isset($statusBreakdown[$st])) {
+                $statusBreakdown[$st] = (int)$r['cnt'];
+            } elseif ($st === 'archived') {
+                $statusBreakdown['completed'] += (int)$r['cnt'];
+            }
+        }
+    } catch (PDOException $e) {}
+
     echo json_encode([
         'success' => true,
         'admin'   => [
@@ -143,11 +226,15 @@ try {
             'pending_donations'   => $pendingDonations,
             'pending_requests'    => $pendingRequests,
             'active_transactions' => $activeTransactions,
+            'open_inquiries'      => $openInquiries,
             'total_members'       => $totalMembers,
         ],
-        'urgent_donations'    => $urgentDonations,
-        'urgent_requests'     => $urgentRequests,
-        'recent_operations'   => $recentOperations,
+        'monthly_trends'        => $monthlyTrends,
+        'category_distribution' => $categoryDistribution,
+        'status_breakdown'      => $statusBreakdown,
+        'urgent_donations'      => $urgentDonations,
+        'urgent_requests'       => $urgentRequests,
+        'recent_operations'     => $recentOperations,
     ]);
 
 } catch (Throwable $e) {

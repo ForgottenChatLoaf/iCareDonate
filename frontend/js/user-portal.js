@@ -247,20 +247,33 @@
   }
 
   function icd_actionsBase() {
-    if (typeof window.icd_actionsBase === 'function') {
+    if (typeof window.icd_actionsBase === 'function' && window.icd_actionsBase !== icd_actionsBase) {
       return window.icd_actionsBase();
     }
     const host = window.location.hostname;
     if (host === 'localhost' || host === '127.0.0.1') {
       const p = window.location.pathname;
-      const idx = p.indexOf('/frontend/');
-      if (idx !== -1) {
-        return p.substring(0, idx);
+      const idxFrontend = p.indexOf('/frontend/');
+      if (idxFrontend !== -1) {
+        return p.substring(0, idxFrontend);
+      }
+      const idxUser = p.indexOf('/user/');
+      if (idxUser !== -1) {
+        return p.substring(0, idxUser);
+      }
+      const idxAdmin = p.indexOf('/admin/');
+      if (idxAdmin !== -1) {
+        return p.substring(0, idxAdmin);
+      }
+      const match = p.match(/^(\/[^\/]+)/);
+      if (match && match[1] !== '/actions') {
+        return match[1];
       }
       return '';
     }
     return 'https://icaredonate.onrender.com';
   }
+  window.icd_actionsBase = icd_actionsBase;
 
   // ── Authenticated API Client ──────────────────────────────────────────────
   async function fetchWithAuth(url, options = {}) {
@@ -539,10 +552,152 @@
     }
   }
 
-  // ── Dynamic Notifications Loader & Mark-All-Read ──────────────────────────
+  // ── Dynamic Notifications Loader & Filter Tabs & Mark-All-Read ───────────
+  let currentNotifFilter = 'all';
+  let cachedNotifsList = [];
+
+  async function refreshSidebarNotifBadge() {
+    const notifBadge = document.getElementById('sidebarNotifBadge');
+    if (!notifBadge) return;
+    try {
+      const res = await fetchWithAuth('/actions/notifications.php');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.success) {
+        const unreadCount = data.unread_count ?? (Array.isArray(data.notifications) ? data.notifications.filter(n => !n.is_read).length : 0);
+        notifBadge.textContent = unreadCount;
+        notifBadge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+      }
+    } catch (e) {}
+  }
+
+  function filterNotifs(items, filter) {
+    if (filter === 'all') return items;
+    if (filter === 'unread') return items.filter(n => !n.is_read);
+    if (filter === 'match') return items.filter(n => (n.type || '').includes('match') || (n.type || '').includes('claim') || (n.type || '').includes('handover'));
+    if (filter === 'system') return items.filter(n => (n.type || '').includes('verif') || (n.type || '').includes('approv') || (n.type || '').includes('system') || (n.type || '').includes('donation') || (n.type || '').includes('request'));
+    return items;
+  }
+
+  function renderNotifItems() {
+    const listEl = document.getElementById('notificationsList');
+    if (!listEl) return;
+    const items = filterNotifs(cachedNotifsList, currentNotifFilter);
+
+    const unreadCount = cachedNotifsList.filter(n => !n.is_read).length;
+    const notifBadge = document.getElementById('sidebarNotifBadge');
+    if (notifBadge) {
+      notifBadge.textContent = unreadCount;
+      notifBadge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+    }
+
+    const tabUnread = document.getElementById('notifTab-unread');
+    if (tabUnread) {
+      tabUnread.textContent = `Unread${unreadCount > 0 ? ' (' + unreadCount + ')' : ''}`;
+    }
+
+    if (items.length === 0) {
+      listEl.innerHTML = `
+        <div style="padding: 48px 24px; text-align: center; border-radius: 12px; background: #fff;">
+          <div style="width: 48px; height: 48px; border-radius: 50%; background: #F1F5F9; color: #94A3B8; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+            </svg>
+          </div>
+          <h3 style="font-size: 16px; font-weight: 700; color: #1E293B; margin: 0 0 6px;">All Caught Up!</h3>
+          <p style="font-size: 13.5px; color: #64748B; margin: 0;">You have no ${currentNotifFilter === 'unread' ? 'unread ' : ''}notifications at this time.</p>
+        </div>
+      `;
+      return;
+    }
+
+    listEl.innerHTML = items.map((n, idx) => {
+      const isUnread = !n.is_read;
+      const bg = isUnread ? '#EFF6FF' : '#FFFFFF';
+      const border = idx < items.length - 1 ? 'border-bottom: 1px solid #F1F5F9;' : '';
+
+      let iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
+      let iconBg = 'var(--color-primary, #1F4FA3)';
+      let iconColor = '#FFFFFF';
+
+      const t = (n.type || '').toLowerCase();
+      if (t.includes('match') || t.includes('claim') || t.includes('handover')) {
+        iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
+        iconBg = '#FEF3C7';
+        iconColor = '#D97706';
+      } else if (t.includes('donation')) {
+        iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>';
+        iconBg = '#E6F4F1';
+        iconColor = 'var(--color-primary, #1F4FA3)';
+      } else if (t.includes('request')) {
+        iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+        iconBg = '#FFF0EC';
+        iconColor = 'var(--coral, #E0553D)';
+      }
+
+      return `
+        <div class="card notif-card ${isUnread ? 'is-unread' : 'is-read'}" data-id="${n.id}" onclick="window.markNotifRead(${n.id}, this)" style="padding:16px 20px;background:${bg};${border}display:flex;gap:14px;align-items:flex-start;cursor:pointer;transition:background 0.2s ease;">
+          <div style="width:36px;height:36px;border-radius:50%;background:${iconBg};color:${iconColor};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            ${iconSvg}
+          </div>
+          <div style="flex:1;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
+              <strong style="font-size:14px;color:var(--text, #1E293B);">${escapeHtml(n.title)}</strong>
+              ${isUnread ? '<span style="font-size:11px;font-weight:600;background:var(--color-primary,#1F4FA3);color:#fff;padding:2px 8px;border-radius:12px;">New</span>' : '<span style="font-size:11px;color:#94A3B8;">Read</span>'}
+            </div>
+            <p style="font-size:13.5px;color:#475569;margin:2px 0 6px;line-height:1.45;">
+              ${escapeHtml(n.message)}
+            </p>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:11.5px;color:#94A3B8;">${escapeHtml(n.time_ago || '')}</span>
+              ${n.link ? `<a href="${n.link}" class="btn btn-sm btn-outline" style="font-size:12px;padding:3px 10px;" onclick="event.stopPropagation()">View &rarr;</a>` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  window.setNotificationFilter = function(filter) {
+    currentNotifFilter = filter || 'all';
+    document.querySelectorAll('.notif-tab-btn').forEach(btn => {
+      if (btn.getAttribute('data-filter') === currentNotifFilter) {
+        btn.classList.remove('btn-outline');
+        btn.classList.add('btn-primary');
+      } else {
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-outline');
+      }
+    });
+    renderNotifItems();
+  };
+
+  window.markNotifRead = async function(id, rowEl) {
+    if (!id) return;
+    const target = cachedNotifsList.find(n => n.id === id);
+    if (target && target.is_read) return;
+
+    try {
+      const res = await fetchWithAuth('/actions/notifications.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'mark_read', id })
+      });
+      const data = await res.json();
+      if (target) target.is_read = true;
+      if (data && typeof data.unread_count === 'number') {
+        const notifBadge = document.getElementById('sidebarNotifBadge');
+        if (notifBadge) {
+          notifBadge.textContent = data.unread_count;
+          notifBadge.style.display = data.unread_count > 0 ? 'inline-block' : 'none';
+        }
+      }
+      renderNotifItems();
+    } catch(e) {}
+  };
+
   async function loadNotificationsData() {
     const listEl = document.getElementById('notificationsList');
-    const notifBadge = document.getElementById('sidebarNotifBadge');
     if (!listEl) return;
 
     listEl.innerHTML = `
@@ -565,71 +720,8 @@
         throw new Error((data && data.message) ? data.message : 'Unable to load notifications.');
       }
 
-      const notifs = data.notifications || [];
-      const unreadCount = data.unread_count ?? 0;
-
-      if (notifBadge) {
-        notifBadge.textContent = unreadCount;
-        notifBadge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
-      }
-
-      if (notifs.length === 0) {
-        listEl.innerHTML = `
-          <div class="card" style="padding: 48px 24px; text-align: center; border-radius: 12px; background: #fff; border: 1px solid var(--border, #E2E8F0);">
-            <div style="width: 48px; height: 48px; border-radius: 50%; background: #F1F5F9; color: #94A3B8; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 12px;">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-              </svg>
-            </div>
-            <h3 style="font-size: 16px; font-weight: 700; color: #1E293B; margin: 0 0 6px;">All Caught Up!</h3>
-            <p style="font-size: 13.5px; color: #64748B; margin: 0;">You have no notifications at this time.</p>
-          </div>
-        `;
-        return;
-      }
-
-      let html = '';
-      notifs.forEach(n => {
-        const isUnread = !n.is_read;
-        const bg = isUnread ? '#E6F4F1' : '#FFFFFF';
-        const border = isUnread ? '#CBD5E1' : '#E2E8F0';
-
-        let iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>';
-        let iconBg = 'var(--color-primary, #1F4FA3)';
-        let iconColor = '#FFFFFF';
-
-        if (n.type === 'match') {
-          iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
-          iconBg = '#FEF3C7';
-          iconColor = '#D97706';
-        } else if (n.type === 'donation') {
-          iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>';
-        } else if (n.type === 'request') {
-          iconSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
-          iconBg = '#FFF0EC';
-          iconColor = 'var(--coral, #E0553D)';
-        }
-
-        html += `
-          <div class="card notif-card ${isUnread ? 'is-unread' : 'is-read'}" data-id="${n.id}" style="padding:18px 20px;border-radius:12px;border:1px solid ${border};background:${bg};display:flex;gap:16px;align-items:flex-start;transition:background 0.2s ease;">
-            <div style="width:36px;height:36px;border-radius:50%;background:${iconBg};color:${iconColor};display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-              ${iconSvg}
-            </div>
-            <div style="flex:1;">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
-                <div style="font-weight:700;font-size:14.5px;color:var(--text, #1E293B);">${escapeHtml(n.title)}</div>
-                ${isUnread ? '<span style="font-size:11px;font-weight:600;background:var(--color-primary,#1F4FA3);color:#fff;padding:2px 8px;border-radius:12px;">New</span>' : ''}
-              </div>
-              <p style="font-size:13.5px;color:#334155;margin:4px 0 6px;">
-                ${escapeHtml(n.message)}
-              </p>
-              <span style="font-size:11.5px;color:#64748B;">${escapeHtml(n.time_ago || '')}</span>
-            </div>
-          </div>
-        `;
-      });
-
-      listEl.innerHTML = html;
+      cachedNotifsList = data.notifications || [];
+      renderNotifItems();
 
     } catch (err) {
       listEl.innerHTML = `
@@ -666,22 +758,8 @@
         throw new Error((data && data.message) ? data.message : 'Server failed to mark notifications as read.');
       }
 
-      // Visually update cards in DOM
-      document.querySelectorAll('.notif-card').forEach(c => {
-        c.style.background = '#FFFFFF';
-        c.style.borderColor = '#E2E8F0';
-        c.classList.remove('is-unread');
-        c.classList.add('is-read');
-        const badge = c.querySelector('span[style*="border-radius:12px"]');
-        if (badge) badge.remove();
-      });
-
-      // Update sidebar badge
-      const notifBadge = document.getElementById('sidebarNotifBadge');
-      if (notifBadge) {
-        notifBadge.textContent = '0';
-        notifBadge.style.display = 'none';
-      }
+      cachedNotifsList.forEach(n => { n.is_read = true; });
+      renderNotifItems();
 
       if (window.showPortalFlash) {
         window.showPortalFlash('success', 'All notifications marked as read.');
@@ -696,7 +774,7 @@
     } finally {
       if (btn) {
         btn.disabled = false;
-        btn.innerHTML = origHtml;
+        btn.innerHTML = origHtml || 'Mark all as read';
       }
     }
   }
@@ -1012,6 +1090,7 @@
   window.fetchWithAuth = fetchWithAuth;
   window.loadDashboardData = loadDashboardData;
   window.loadNotificationsData = loadNotificationsData;
+  window.refreshSidebarNotifBadge = refreshSidebarNotifBadge;
   window.loadUserDonations = loadUserDonations;
   window.handleMarkAllRead = handleMarkAllRead;
   window.markAllRead = handleMarkAllRead;
@@ -1021,6 +1100,9 @@
       setupActiveNav();
       setupTopbarUser();
       initLogoutModal();
+
+      // Automatically sync unread notification badge across all pages
+      refreshSidebarNotifBadge();
 
       // Automatically trigger loader if on dashboard, notifications, or donations page
       if (document.getElementById('recentActivityContainer')) {
