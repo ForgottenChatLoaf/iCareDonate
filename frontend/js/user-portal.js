@@ -532,7 +532,7 @@
           const actionLabel = item.action_label || (s === 'pending' ? 'Edit' : (s === 'claimed' ? 'Claim Pass' : 'Details'));
           const actionUrl = item.action_url || (s === 'pending' ? ('edit-donation.html?id=' + (item.id || '')) : (s === 'claimed' ? 'transactions.html' : ('view-item.html?id=' + (item.id || ''))));
 
-          let actionBtnStyle = 'display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:5px 13px;text-decoration:none;border-radius:6px;font-weight:700;transition:all 0.15s ease;';
+          let actionBtnStyle = 'display:inline-flex;align-items:center;gap:5px;font-size:12px;padding:5px 13px;text-decoration:none;border-radius:6px;font-weight:700;transition:all 0.15s ease;white-space:nowrap;';
           if (s === 'pending') {
             actionBtnStyle += 'background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;';
           } else if (s === 'claimed' || s === 'scheduled') {
@@ -556,7 +556,7 @@
               <td style="padding: 14px 16px;">${statusBadge}</td>
               <td style="padding: 14px 16px; text-align: right;">
                 <a href="${escapeHtml(actionUrl)}" style="${actionBtnStyle}">
-                  ${escapeHtml(actionLabel)} &rarr;
+                  ${escapeHtml(actionLabel)} →
                 </a>
               </td>
             </tr>
