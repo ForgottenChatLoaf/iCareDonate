@@ -412,25 +412,41 @@
         let html = '';
         activities.forEach((item, idx) => {
           const isLast = (idx === activities.length - 1);
-          const isDonation = item.type === 'donation';
-          const iconBg = isDonation ? 'var(--color-tint-teal, #E6F4F1)' : '#FFF0EC';
-          const iconColor = isDonation ? 'var(--color-primary, #1F4FA3)' : 'var(--coral, #E0553D)';
-          const iconSvg = isDonation
-            ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>'
-            : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+          const t = (item.type || '').toLowerCase();
+          const isDonation = t === 'donation';
+          const isClaim = t === 'claim' || t === 'transaction' || (item.title && item.title.toLowerCase().includes('handover'));
+
+          let iconBg = '#EEF2FF';
+          let iconBorder = '#C7D2FE';
+          let iconColor = '#1F4FA3';
+          let iconSvg = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2.2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>';
+
+          if (isClaim) {
+            iconBg = '#F5F3FF';
+            iconBorder = '#DDD6FE';
+            iconColor = '#7C3AED';
+            iconSvg = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2.2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>';
+          } else if (!isDonation) {
+            iconBg = '#FFF0EC';
+            iconBorder = '#FECACA';
+            iconColor = '#E0553D';
+            iconSvg = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="' + iconColor + '" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>';
+          }
 
           const timeStr = item.time_ago || item.created_at || 'Recently';
           const titleStr = item.title || (isDonation ? 'Donation Listing Update' : 'Assistance Request Update');
           const descStr = item.text || item.description || 'Status update or handover confirmation';
 
           html += `
-            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;${!isLast ? 'border-bottom:1px solid var(--color-border, #E2E8F0);' : ''}">
-              <div style="width:34px;height:34px;border-radius:50%;background:${iconBg};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
+            <div style="display:flex;gap:12px;align-items:flex-start;padding:14px 16px;transition:background 0.15s ease;${!isLast ? 'border-bottom:1px solid var(--color-border, #E2E8F0);' : ''}" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='transparent'">
+              <div style="width:38px;height:38px;border-radius:10px;background:${iconBg};border:1px solid ${iconBorder};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;">
                 ${iconSvg}
               </div>
               <div style="flex:1;min-width:0;">
-                <div style="font-size:11.5px;color:var(--color-text-muted, #64748B);font-weight:600;margin-bottom:2px;">${escapeHtml(timeStr)}</div>
-                <div style="font-size:13.5px;font-weight:700;color:var(--color-text, #1E293B);margin-bottom:2px;">${escapeHtml(titleStr)}</div>
+                <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+                  <span style="font-size:11px;font-weight:700;color:#64748B;background:#F1F5F9;padding:2px 8px;border-radius:9999px;">${escapeHtml(timeStr)}</span>
+                </div>
+                <div style="font-size:13.5px;font-weight:700;color:var(--color-text, #1E293B);margin-bottom:3px;">${escapeHtml(titleStr)}</div>
                 <div style="font-size:12.5px;color:var(--color-text-muted, #64748B);line-height:1.45;">${escapeHtml(descStr)}</div>
               </div>
             </div>
@@ -502,30 +518,45 @@
           let statusBadge = '';
           const s = (item.status || '').toLowerCase();
           if (s === 'approved' || s === 'active') {
-            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;border:1px solid #CBD5E1;border-radius:6px;background:#FFFFFF;color:#1E293B;">Status: Approved</span>';
+            statusBadge = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;font-size:12px;font-weight:700;border-radius:9999px;background:#DCFCE7;color:#15803D;border:1px solid #86EFAC;"><span style="width:6px;height:6px;border-radius:50%;background:#16A34A;"></span>Approved</span>';
           } else if (s === 'pending') {
-            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;border:1px dashed #94A3B8;border-radius:6px;background:#FFFFFF;color:#475569;">Status: Pending Review</span>';
+            statusBadge = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;font-size:12px;font-weight:700;border-radius:9999px;background:#FEF3C7;color:#B45309;border:1px solid #FCD34D;"><span style="width:6px;height:6px;border-radius:50%;background:#D97706;"></span>Pending Review</span>';
           } else if (s === 'claimed' || s === 'scheduled') {
-            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;background:#0F172A;color:#FFFFFF;border-radius:6px;">Status: Claim Scheduled</span>';
+            statusBadge = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;font-size:12px;font-weight:700;border-radius:9999px;background:#EDE9FE;color:#6D28D9;border:1px solid #C4B5FD;"><span style="width:6px;height:6px;border-radius:50%;background:#7C3AED;"></span>Claim Scheduled</span>';
+          } else if (s === 'completed') {
+            statusBadge = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;font-size:12px;font-weight:700;border-radius:9999px;background:#E0F2FE;color:#0369A1;border:1px solid #BAE6FD;"><span style="width:6px;height:6px;border-radius:50%;background:#0284C7;"></span>Completed</span>';
           } else {
-            statusBadge = '<span style="display:inline-block;padding:3px 10px;font-size:11.5px;font-weight:600;border:1px solid #CBD5E1;border-radius:6px;background:#FFFFFF;color:#475569;">Status: ' + escapeHtml(item.status) + '</span>';
+            statusBadge = '<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 11px;font-size:12px;font-weight:700;border-radius:9999px;background:#F1F5F9;color:#475569;border:1px solid #CBD5E1;"><span style="width:6px;height:6px;border-radius:50%;background:#94A3B8;"></span>' + escapeHtml(item.status) + '</span>';
           }
 
           const actionLabel = item.action_label || (s === 'pending' ? 'Edit' : (s === 'claimed' ? 'Claim Pass' : 'Details'));
           const actionUrl = item.action_url || (s === 'pending' ? ('edit-donation.html?id=' + (item.id || '')) : (s === 'claimed' ? 'transactions.html' : ('view-item.html?id=' + (item.id || ''))));
 
+          let actionBtnStyle = 'display:inline-flex;align-items:center;gap:4px;font-size:12px;padding:5px 13px;text-decoration:none;border-radius:6px;font-weight:700;transition:all 0.15s ease;';
+          if (s === 'pending') {
+            actionBtnStyle += 'background:#FFFBEB;color:#D97706;border:1px solid #FDE68A;';
+          } else if (s === 'claimed' || s === 'scheduled') {
+            actionBtnStyle += 'background:#F5F3FF;color:#7C3AED;border:1px solid #DDD6FE;';
+          } else {
+            actionBtnStyle += 'background:#EEF2FF;color:#1F4FA3;border:1px solid #C7D2FE;';
+          }
+
           rowsHtml += `
-            <tr style="border-bottom: 1px solid var(--color-border, #E2E8F0); transition: background 0.15s ease;">
+            <tr style="border-bottom: 1px solid var(--color-border, #E2E8F0); transition: background 0.15s ease;" onmouseover="this.style.background='#F8FAFC'" onmouseout="this.style.background='transparent'">
               <td style="padding: 14px 16px;">
-                <div style="font-weight: 700; color: var(--color-text, #1E293B); font-size: 13.5px;">${escapeHtml(item.title)}</div>
-                <div style="font-size: 11.5px; color: var(--color-text-muted, #64748B); font-family: monospace; margin-top: 2px;">${escapeHtml(item.ref_code)}</div>
+                <div style="font-weight: 700; color: #1E293B; font-size: 13.5px;">${escapeHtml(item.title)}</div>
+                <div style="margin-top: 3px;">
+                  <span style="font-size: 11px; color: #2563EB; background: #EFF6FF; border: 1px solid #DBEAFE; padding: 2px 7px; border-radius: 5px; font-weight: 700; font-family: ui-monospace, monospace;">${escapeHtml(item.ref_code)}</span>
+                </div>
               </td>
-              <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155);">${escapeHtml(item.category)}</td>
-              <td style="padding: 14px 16px; font-size: 13px; color: var(--color-text, #334155); font-weight: 500;">${escapeHtml(item.quantity)}</td>
+              <td style="padding: 14px 16px;">
+                <span style="display:inline-block;padding:3px 9px;font-size:12px;font-weight:600;border-radius:6px;background:#F1F5F9;color:#334155;border:1px solid #E2E8F0;">${escapeHtml(item.category)}</span>
+              </td>
+              <td style="padding: 14px 16px; font-size: 13px; color: #0F172A; font-weight: 700;">${escapeHtml(item.quantity)}</td>
               <td style="padding: 14px 16px;">${statusBadge}</td>
               <td style="padding: 14px 16px; text-align: right;">
-                <a href="${escapeHtml(actionUrl)}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 12px; text-decoration: none; border-radius: 6px; border: 1px solid #CBD5E1; color: #1E293B; background: #fff; font-weight: 600;">
-                  ${escapeHtml(actionLabel)}
+                <a href="${escapeHtml(actionUrl)}" style="${actionBtnStyle}">
+                  ${escapeHtml(actionLabel)} &rarr;
                 </a>
               </td>
             </tr>
