@@ -1,7 +1,7 @@
 # iCareDonate — Render Web Service Dockerfile
-# PHP 8.2 + Apache, configured for Render's dynamic PORT assignment.
+# PHP 8.4 + Apache, configured for Render's dynamic PORT assignment.
 
-FROM php:8.2-apache
+FROM php:8.4.27-apache
 
 # ── System Dependencies ───────────────────────────────────────────────────────
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -52,6 +52,7 @@ RUN { \
     echo 'session.cookie_samesite = None'; \
     echo 'session.cookie_secure = 1'; \
     echo 'expose_php = Off'; \
+    echo 'session.upload_progress.enabled = 0'; \
 } > /usr/local/etc/php/conf.d/icaredonate.ini
 
 # ── Application files ─────────────────────────────────────────────────────────
