@@ -181,50 +181,6 @@ $base = 'frontend/';
         </div>
         <?php endif; ?>
 
-        <!-- Quick Test Panel — local development only -->
-        <?php
-        $isLocalEnv = (getenv('APP_ENV') !== 'production' && !isset($_SERVER['RENDER']) && !isset($_SERVER['VERCEL']));
-        if ($isLocalEnv):
-        ?>
-        <div class="quick-test" id="quick-test-panel" role="region" aria-label="Quick test credentials">
-          <div class="quick-test__label">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            Quick test &mdash; click to prefill
-          </div>
-          <div class="quick-test__btns">
-            <button type="button" class="qt-btn qt-btn--admin" id="qt-admin"
-                    data-email="admin@icaredonate.test" data-pass="Admin@1234"
-                    title="admin@icaredonate.test / Admin@1234">
-              <span class="qt-btn-icon" aria-hidden="true">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/></svg>
-              </span>
-              <span>Admin</span>
-              <span class="qt-badge">admin</span>
-            </button>
-            <button type="button" class="qt-btn" id="qt-donor"
-                    data-email="donor@icaredonate.test" data-pass="Donor@1234"
-                    title="donor@icaredonate.test / Donor@1234">
-              <span class="qt-btn-icon" aria-hidden="true">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
-              </span>
-              <span>Donor</span>
-              <span class="qt-badge">donor</span>
-            </button>
-            <button type="button" class="qt-btn" id="qt-requester"
-                    data-email="requester@icaredonate.test" data-pass="Requester@1234"
-                    title="requester@icaredonate.test / Requester@1234">
-              <span class="qt-btn-icon" aria-hidden="true">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </span>
-              <span>Requester</span>
-              <span class="qt-badge">requester</span>
-            </button>
-          </div>
-        </div>
-        <?php endif; ?>
-
         <!-- Login Form — POSTs to server, no JavaScript required to authenticate -->
         <form id="user-login-form" method="POST" action="actions/login_process.php" novalidate>
 
@@ -376,25 +332,6 @@ $base = 'frontend/';
       passInput.addEventListener('keydown', checkCaps);
       passInput.addEventListener('keyup', checkCaps);
     }
-
-    // Quick test autofill — fills the form fields, does NOT bypass PHP auth
-    function prefill(email, pass) {
-      var emailEl = document.getElementById('login-email');
-      var passEl  = document.getElementById('login-password');
-      if (emailEl) { emailEl.value = email; emailEl.focus(); }
-      if (passEl)  { passEl.value  = pass; }
-      var panel = document.getElementById('quick-test-panel');
-      if (panel) {
-        panel.style.borderColor = 'var(--cobalt)';
-        setTimeout(function () { panel.style.borderColor = ''; }, 700);
-      }
-    }
-
-    document.querySelectorAll('.qt-btn[data-email]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        prefill(btn.dataset.email, btn.dataset.pass);
-      });
-    });
   })();
   </script>
 </body>

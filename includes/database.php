@@ -36,32 +36,40 @@ if (file_exists($envFile)) {
     }
 }
 
-$host    = getenv('DB_HOST')     ?: '127.0.0.1';
+$appEnv  = strtolower((string)(getenv('APP_ENV') ?: 'development'));
+$isProd  = ($appEnv === 'production' || getenv('RENDER') !== false);
+
+$host    = getenv('DB_HOST')     ?: ($isProd ? '' : '127.0.0.1');
 $port    = getenv('DB_PORT')     ?: '3306';
-$dbName  = getenv('DB_DATABASE') ?: 'icaredonate';
-$dbUser  = getenv('DB_USERNAME') ?: 'root';
+$dbName  = getenv('DB_DATABASE') ?: ($isProd ? '' : 'icaredonate');
+$dbUser  = getenv('DB_USERNAME') ?: ($isProd ? '' : 'root');
 $dbPass  = getenv('DB_PASSWORD') ?: '';
 $sslCa   = getenv('DB_SSL_CA')   ?: '';
 $charset = 'utf8mb4';
 
-$dsn = "mysql:host={$host};port={$port};dbname={$dbName};charset={$charset}";
-$options = [
-    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-    PDO::ATTR_EMULATE_PREPARES   => false,
-];
+$pdo = null;
+if ($isProd && ($host === '' || $dbName === '' || $dbUser === '')) {
+    error_log('Database configuration error: Missing required DB_HOST, DB_DATABASE, or DB_USERNAME in production.');
+} else {
+    $dsn = "mysql:host={$host};port={$port};dbname={$dbName};charset={$charset}";
+    $options = [
+        PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_EMULATE_PREPARES   => false,
+    ];
 
-// Add SSL CA cert for Aiven / remote MySQL (SSL-REQUIRED connections)
-if ($sslCa && file_exists($sslCa)) {
-    $options[PDO::MYSQL_ATTR_SSL_CA]               = $sslCa;
-    $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
-}
+    // Add SSL CA cert for Aiven / remote MySQL (SSL-REQUIRED connections)
+    if ($sslCa && file_exists($sslCa)) {
+        $options[PDO::MYSQL_ATTR_SSL_CA]               = $sslCa;
+        $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = true;
+    }
 
-try {
-    $pdo = new PDO($dsn, $dbUser, $dbPass, $options);
-} catch (PDOException $e) {
-    error_log('Database connection error: ' . $e->getMessage());
-    $pdo = null;
+    try {
+        $pdo = new PDO($dsn, $dbUser, $dbPass, $options);
+    } catch (PDOException $e) {
+        error_log('Database connection error: ' . $e->getMessage());
+        $pdo = null;
+    }
 }
 
 /**
