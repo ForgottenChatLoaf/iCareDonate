@@ -11,7 +11,7 @@ Options -Indexes
   RewriteBase /
 
   # Block direct access to sensitive directories via URL
-  RewriteRule ^(includes|config|database|archived|dev_workspaces|\.git)(/|$) - [F,L]
+  RewriteRule ^(includes|config|database|archived|tests|dev_workspaces|\.git)(/|$) - [F,L]
 
   # Block setup_admin.php from web access (belt-and-suspenders with Dockerfile)
   RewriteRule ^setup_admin\.php$ - [F,L]
