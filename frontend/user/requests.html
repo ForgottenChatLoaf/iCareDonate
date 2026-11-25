@@ -217,48 +217,183 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
-<script src="../js/user-portal.js?v=defense3"></script>
+<script src="../js/user-portal.js?v=defense4"></script>
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+let MY_REQUESTS = [];
+
+function escReq(s) {
+  const d = document.createElement('div');
+  d.textContent = s ?? '';
+  return d.innerHTML;
+}
+
+function reqStatusBadge(st) {
+  const map = {
+    pending:      ['badge-warning', 'Pending Review'],
+    under_review: ['badge-info',    'Under Review'],
+    approved:     ['badge-success', 'Approved'],
+    completed:    ['badge-primary', 'Fulfilled'],
+    rejected:     ['badge-danger',  'Rejected'],
+    cancelled:    ['badge-neutral', 'Cancelled'],
+  };
+  const [cls, lbl] = map[(st || '').toLowerCase()] || ['badge-neutral', st || 'Pending'];
+  return `<span class="badge ${cls}">${lbl}</span>`;
+}
+
+async function loadMyRequests() {
+  const container = document.getElementById('requests-list-container');
+  if (!container) return;
+  container.innerHTML = `<div class="card" style="padding:28px;text-align:center;color:#64748B;">Loading your assistance requests...</div>`;
+
   try {
-    const container = document.getElementById('requests-list-container');
-    const localReqs = JSON.parse(localStorage.getItem('icd_user_requests') || '[]');
-    if (container && localReqs.length > 0) {
-      localReqs.forEach(req => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.style.cssText = 'padding:24px;border-radius:var(--radius-lg, 12px);border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);';
-        card.innerHTML = `
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:14px;flex-wrap:wrap;">
-            <div>
-              <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;">
-                <span class="badge badge-info" style="font-size:11px;">Request #${req.id}</span>
-                <span style="font-size:12px;color:#64748B;">Submitted ${req.created_at || 'Today'}</span>
-              </div>
-              <h3 style="font-size:18px;font-weight:700;color:var(--text, #1E293B);margin:0 0 4px;">
-                ${req.item_title}
-              </h3>
-              <p style="color:#64748B;font-size:13.5px;margin:0 0 8px;">
-                Quantity: <strong>${req.quantity}</strong> &middot; Beneficiary: <strong>${req.requester_name || 'Verified Member'}</strong> &middot; Locality: <strong>${req.barangay || 'Metro Manila'}</strong>
-              </p>
+    const res = await window.fetchWithAuth('/actions/user_requests.php');
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || 'Unable to load requests.');
+    MY_REQUESTS = data.requests || [];
+    renderMyRequests();
+  } catch (err) {
+    container.innerHTML = `<div class="card" style="padding:28px;text-align:center;color:#DC2626;">${escReq(err.message)}</div>`;
+  }
+}
+
+function renderMyRequests() {
+  const container = document.getElementById('requests-list-container');
+  if (!container) return;
+
+  if (MY_REQUESTS.length === 0) {
+    container.innerHTML = `
+      <div class="card" style="padding:36px;text-align:center;border:1px dashed var(--color-border,#CBD5E1);border-radius:12px;">
+        <h3 style="margin:0 0 8px;font-size:16px;color:#1E293B;">No Assistance Requests Yet</h3>
+        <p style="margin:0 0 16px;font-size:13.5px;color:#64748B;">You have not submitted any assistance requests.</p>
+        <a href="request-donation.html" class="btn btn-primary" style="font-size:13px;padding:8px 18px;">Submit Assistance Request</a>
+      </div>`;
+    return;
+  }
+
+  container.innerHTML = MY_REQUESTS.map(r => {
+    const st = (r.status || '').toLowerCase();
+    const canEdit = ['pending', 'under_review', 'approved'].includes(st);
+    const canCancel = !['completed', 'cancelled', 'rejected'].includes(st);
+    const fulfilled = Number(r.fulfilled_quantity || 0);
+    const qty = Number(r.quantity || 1);
+
+    return `
+      <div class="card" style="padding:22px;border-radius:12px;border:1px solid var(--color-border,#E2E8F0);background:#fff;margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:10px;">
+          <div>
+            <div style="display:flex;gap:8px;align-items:center;margin-bottom:6px;flex-wrap:wrap;">
+              <span class="badge badge-info" style="font-size:11px;">Request #${r.id}</span>
+              ${reqStatusBadge(r.status)}
+              <span class="badge badge-neutral" style="font-size:11px;">Urgency: ${escReq(r.urgency || 'Medium')}</span>
+              <span style="font-size:12px;color:#64748B;">${escReq((r.created_at || '').split(' ')[0])}</span>
             </div>
-            <div style="text-align:right;">
-              <span class="badge badge-warning" style="background:#FEF3C7;color:#D97706;border:1px solid #FDE68A;">Under Coordinator Review</span>
+            <h3 style="font-size:17px;font-weight:700;color:#1E293B;margin:0 0 4px;">${escReq(r.item_title || 'Assistance Request')}</h3>
+            <p style="color:#64748B;font-size:13px;margin:0;">
+              Quantity: <strong>${qty} ${escReq(r.unit || 'items')}</strong> &bull; Fulfilled: <strong>${fulfilled}/${qty}</strong>
+              ${r.category ? ` &bull; Category: <strong>${escReq(r.category)}</strong>` : ''}
+            </p>
+          </div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            ${canEdit ? `<button type="button" class="btn btn-outline" onclick="openEditRequestModal(${r.id})" style="font-size:12px;padding:5px 12px;">Edit</button>` : ''}
+            <a href="support.html?request_id=${r.id}" class="btn btn-outline" style="font-size:12px;padding:5px 12px;">Contact Support</a>
+            ${canCancel ? `<button type="button" class="btn btn-outline" onclick="cancelMyRequest(${r.id})" style="font-size:12px;padding:5px 12px;border-color:#DC2626;color:#DC2626;">Cancel</button>` : ''}
+          </div>
+        </div>
+        <div style="background:#F8FAFC;padding:12px 14px;border-radius:8px;font-size:13px;color:#475569;">
+          ${escReq(r.message || '')}
+        </div>
+        ${r.rejection_reason ? `<div style="margin-top:8px;font-size:12.5px;color:#DC2626;"><strong>Coordinator Note:</strong> ${escReq(r.rejection_reason)}</div>` : ''}
+      </div>
+    `;
+  }).join('');
+}
+
+function openEditRequestModal(id) {
+  const req = MY_REQUESTS.find(x => Number(x.id) === Number(id));
+  if (!req) return;
+  let dlg = document.getElementById('edit-req-dialog');
+  if (!dlg) {
+    dlg = document.createElement('dialog');
+    dlg.id = 'edit-req-dialog';
+    dlg.style.cssText = 'border:none;border-radius:12px;padding:0;background:transparent;max-width:500px;width:92%;';
+    dlg.innerHTML = `
+      <div class="card" style="padding:24px;background:#fff;border-radius:12px;border:1px solid var(--color-border);box-shadow:0 20px 45px rgba(0,0,0,0.2);">
+        <h3 style="margin:0 0 14px;font-size:17px;font-weight:700;">Edit Assistance Request</h3>
+        <form onsubmit="handleEditRequestSubmit(event)">
+          <input type="hidden" id="er-id">
+          <div style="margin-bottom:12px;"><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Item / Request Title</label><input id="er-title" type="text" class="form-input" style="width:100%;height:36px;" required></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+            <div><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Quantity *</label><input id="er-qty" type="number" min="1" class="form-input" style="width:100%;height:36px;" required></div>
+            <div><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Urgency</label>
+              <select id="er-urgency" class="form-input" style="width:100%;height:36px;">
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+                <option value="Critical">Critical</option>
+              </select>
             </div>
           </div>
-          <div style="background:#F8FAFC;padding:12px 16px;border-radius:8px;font-size:13px;color:#475569;margin-bottom:16px;">
-            <strong>Fulfillment Address:</strong> ${req.complete_address || 'Confirmed on File'} &bull; <strong>Contact:</strong> ${req.contact_number || 'Confirmed'}
-          </div>
+          <div style="margin-bottom:16px;"><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Reason / Details * (min 10 chars)</label><textarea id="er-msg" rows="3" class="form-input" style="width:100%;" required minlength="10"></textarea></div>
           <div style="display:flex;justify-content:flex-end;gap:10px;">
-            <span class="badge badge-neutral" style="font-size:12px;padding:6px 12px;">Verification in Progress</span>
+            <button type="button" class="btn btn-outline" onclick="document.getElementById('edit-req-dialog').close()">Cancel</button>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
           </div>
-        `;
-        container.prepend(card);
-      });
-    }
-  } catch(e) {}
-});
+        </form>
+      </div>`;
+    document.body.appendChild(dlg);
+  }
+  document.getElementById('er-id').value = req.id;
+  document.getElementById('er-title').value = req.item_title || '';
+  document.getElementById('er-qty').value = req.quantity || 1;
+  document.getElementById('er-urgency').value = req.urgency || 'Medium';
+  document.getElementById('er-msg').value = req.message || '';
+  dlg.showModal();
+}
+
+async function handleEditRequestSubmit(e) {
+  e.preventDefault();
+  const id = Number(document.getElementById('er-id').value);
+  try {
+    const res = await window.fetchWithAuth('/actions/user_requests.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'update',
+        id,
+        item_title: document.getElementById('er-title').value.trim(),
+        quantity: Number(document.getElementById('er-qty').value),
+        urgency: document.getElementById('er-urgency').value,
+        message: document.getElementById('er-msg').value.trim()
+      })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update request.');
+    document.getElementById('edit-req-dialog').close();
+    if (window.showPortalFlash) window.showPortalFlash('success', data.message);
+    loadMyRequests();
+  } catch (err) {
+    if (window.showPortalFlash) window.showPortalFlash('error', err.message);
+  }
+}
+
+async function cancelMyRequest(id) {
+  if (!confirm('Are you sure you want to cancel this assistance request?')) return;
+  try {
+    const res = await window.fetchWithAuth('/actions/user_requests.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action: 'cancel', id })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || 'Unable to cancel request.');
+    if (window.showPortalFlash) window.showPortalFlash('success', data.message);
+    loadMyRequests();
+  } catch (err) {
+    if (window.showPortalFlash) window.showPortalFlash('error', err.message);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadMyRequests);
 </script>
 
   <!-- Mobile sidebar toggle JS -->

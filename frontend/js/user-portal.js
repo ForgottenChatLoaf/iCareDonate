@@ -387,26 +387,13 @@
       if (activityContainer) {
         let activities = data.recent_activity || [];
         if (activities.length === 0) {
-          activities = [
-            {
-              type: 'donation',
-              time_ago: 'Today • 14:22',
-              title: 'Confirmed Physical Handover Receipt',
-              text: 'Completed transaction verification for #TXN-90214 at designated community hub venue.'
-            },
-            {
-              type: 'request',
-              time_ago: 'Yesterday • 10:45',
-              title: 'Assistance Proof Submission',
-              text: 'Proof documentation received and successfully queued for community review.'
-            },
-            {
-              type: 'donation',
-              time_ago: 'Oct 20, 2026',
-              title: 'Donation Listing Verified',
-              text: 'Status update: Your donation was approved by administrators and published live.'
-            }
-          ];
+          activityContainer.innerHTML = `
+            <div style="padding:36px 16px;text-align:center;color:var(--color-text-muted,#64748B);">
+              <div style="font-weight:600;font-size:14px;margin-bottom:4px;color:var(--color-text,#1E293B);">No recent activity recorded yet</div>
+              <div style="font-size:12.5px;">Your donation listings, request submissions, and handovers will appear here.</div>
+            </div>
+          `;
+          return;
         }
 
         let html = '';
@@ -457,60 +444,18 @@
 
       // 4. Render Active Listings & Claims (wireframe alignment)
       if (activeListingsContainer) {
-        let listings = data.active_listings;
-        if (!listings || listings.length === 0) {
-          if (window.iCareMock && Array.isArray(window.iCareMock.donations)) {
-            const demoDons = window.iCareMock.donations.filter(d => d.donor_id === 12 || d.status === 'active' || d.status === 'pending').slice(0, 3);
-            if (demoDons.length > 0) {
-              listings = demoDons.map(d => ({
-                id: d.id,
-                ref_code: 'REF-' + String(d.id).padStart(5, '0'),
-                title: d.title,
-                category: d.category_name || 'General',
-                quantity: (d.quantity || 1) + ' ' + (d.unit || 'units'),
-                status: d.status === 'active' ? 'approved' : d.status,
-                type: 'donation',
-                created_at: d.created_at || 'Recently',
-                action_label: d.status === 'pending' ? 'Edit' : 'Details',
-                action_url: d.status === 'pending' ? 'edit-donation.html?id=' + d.id : 'view-item.html?id=' + d.id
-              }));
-            }
-          }
-        }
+        let listings = data.active_listings || [];
 
-        if (!listings || listings.length === 0) {
-          listings = [
-            {
-              id: 1,
-              ref_code: 'REF-00123',
-              title: 'Item Title Placeholder #1',
-              category: 'Category Name',
-              quantity: '20 units',
-              status: 'approved',
-              action_label: 'Details',
-              action_url: 'view-item.html?id=1'
-            },
-            {
-              id: 2,
-              ref_code: 'REF-00124',
-              title: 'Item Title Placeholder #2',
-              category: 'Category Name',
-              quantity: '15 units',
-              status: 'pending',
-              action_label: 'Edit',
-              action_url: 'edit-donation.html?id=2'
-            },
-            {
-              id: 3,
-              ref_code: 'REF-00125',
-              title: 'Item Title Placeholder #3',
-              category: 'Category Name',
-              quantity: '08 units',
-              status: 'claimed',
-              action_label: 'Claim Pass',
-              action_url: 'transactions.html'
-            }
-          ];
+        if (listings.length === 0) {
+          activeListingsContainer.innerHTML = `
+            <tr>
+              <td colspan="5" style="padding: 36px 16px; text-align: center; color: var(--color-text-muted, #64748B);">
+                <div style="font-weight: 600; font-size: 14px; margin-bottom: 4px; color: var(--color-text, #1E293B);">No active listings or claims yet</div>
+                <div style="font-size: 12.5px;">Your active donations and assistance requests will appear here once submitted.</div>
+              </td>
+            </tr>
+          `;
+          return;
         }
 
         let rowsHtml = '';
@@ -995,9 +940,10 @@
               ${escapeHtml(item.formatted_date || item.created_at || 'Recently')}
             </td>
             <td style="padding: 12px 16px; text-align: right; white-space: nowrap;">
-              <div style="display: inline-flex; gap: 6px;">
+              <div style="display: inline-flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end;">
                 <a href="view-item.html?id=${item.id}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; text-decoration: none;">View</a>
                 <a href="edit-donation.html?id=${item.id}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; text-decoration: none;">Edit</a>
+                <a href="support.html?donation_id=${item.id}" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; text-decoration: none;">Support</a>
                 <button type="button" class="btn btn-sm btn-outline" style="font-size: 12px; padding: 4px 10px; color: #DC2626;" onclick="window.archiveUserDonation(${item.id})">Archive</button>
               </div>
             </td>
@@ -1038,62 +984,9 @@
       // Network/offline fallback
     }
 
-    // If empty, fall back to initial demonstration records aligned with MockStore IDs
-    if (!allItems || allItems.length === 0) {
-      allItems = [
-        {
-          id: 101,
-          ref_code: 'REF-00123',
-          title: 'Elementary Backpacks & Notebook Bundle',
-          category: 'School Supplies',
-          quantity: 5,
-          unit: 'sets',
-          item_condition: 'Brand New',
-          status: 'approved',
-          image_url: '../assets/images/categories/school-supplies.jpg',
-          created_at: '2026-10-10',
-          formatted_date: 'Oct 10, 2026'
-        },
-        {
-          id: 102,
-          ref_code: 'REF-00124',
-          title: 'Family Rice & Canned Goods Care Packs',
-          category: 'Food & Groceries',
-          quantity: 15,
-          unit: 'packs',
-          item_condition: 'Brand New',
-          status: 'approved',
-          image_url: '../assets/images/categories/food-groceries.jpg',
-          created_at: '2026-10-11',
-          formatted_date: 'Oct 11, 2026'
-        },
-        {
-          id: 103,
-          ref_code: 'REF-00125',
-          title: 'Children Rain Jackets & Durable Walking Shoes',
-          category: 'Clothing & Shoes',
-          quantity: 8,
-          unit: 'pairs',
-          item_condition: 'Like New',
-          status: 'pending',
-          image_url: '../assets/images/categories/clothing-shoes.avif',
-          created_at: '2026-10-12',
-          formatted_date: 'Oct 12, 2026'
-        },
-        {
-          id: 104,
-          ref_code: 'REF-00126',
-          title: 'Household First Aid Kits & Antiseptic Care Packs',
-          category: 'Medical & First Aid',
-          quantity: 12,
-          unit: 'kits',
-          item_condition: 'Brand New',
-          status: 'matched',
-          image_url: '../assets/images/categories/medical-first-aid.jpg',
-          created_at: '2026-10-14',
-          formatted_date: 'Oct 14, 2026'
-        }
-      ];
+    // If empty, keep allItems as an empty array to reflect real database state
+    if (!allItems || !Array.isArray(allItems)) {
+      allItems = [];
     }
 
     updateCountBadges();
@@ -1167,16 +1060,21 @@
           body: JSON.stringify({ action: 'archive', id: id })
         });
         const d = await res.json();
-        if (d && d.success) {
-          if (window.showPortalFlash) {
-            window.showPortalFlash('success', 'Listing successfully archived.');
-          }
+        if (!res.ok || !d || !d.success) {
+          throw new Error((d && d.message) || 'Failed to archive donation.');
         }
-      } catch (err) {}
-      const target = allItems.find(it => it.id === id);
-      if (target) target.status = 'archived';
-      updateCountBadges();
-      renderTable();
+        const target = allItems.find(it => it.id === id);
+        if (target) target.status = 'archived';
+        updateCountBadges();
+        renderTable();
+        if (window.showPortalFlash) {
+          window.showPortalFlash('success', d.message || 'Listing successfully archived.');
+        }
+      } catch (err) {
+        if (window.showPortalFlash) {
+          window.showPortalFlash('error', err.message || 'Unable to archive listing.');
+        }
+      }
     };
   }
 

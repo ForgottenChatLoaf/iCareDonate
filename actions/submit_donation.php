@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/database.php';
+require_once __DIR__ . '/../includes/rate_limiter.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -40,33 +41,96 @@ if ($pdo === null) {
 // Read payload from POST or JSON
 $rawInput = file_get_contents('php://input');
 $jsonBody = json_decode($rawInput, true) ?? [];
+$mergedInput = !empty($_POST) ? $_POST : $jsonBody;
 
-$title          = trim((string)($_POST['title'] ?? ($jsonBody['title'] ?? '')));
+// Anti-abuse & security gates: CSRF, Honeypot, Rate Limit, Account Status
+if (!icd_verify_csrf_request($mergedInput)) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Security verification failed (invalid CSRF token). Please refresh and try again.']);
+    exit;
+}
+
+if (icd_is_honeypot_triggered($mergedInput)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Submission could not be verified. Please try again.']);
+    exit;
+}
+
+icd_enforce_rate_limit('submit_donation', 10, 900, $userId);
+
+// Verify account is active
+$stCheck = $pdo->prepare('SELECT status FROM users WHERE id = :uid LIMIT 1');
+$stCheck->execute([':uid' => $userId]);
+$uStatus = strtolower((string)($stCheck->fetchColumn() ?: 'active'));
+if ($uStatus === 'suspended' || $uStatus === 'banned') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Your account is currently ' . $uStatus . ' and cannot submit donations.']);
+    exit;
+}
+
+$title          = trim((string)($_POST['title'] ?? ($_POST['item_title'] ?? ($jsonBody['title'] ?? ($jsonBody['item_title'] ?? '')))));
 $category       = trim((string)($_POST['category'] ?? ($jsonBody['category'] ?? 'other-essentials')));
 $description    = trim((string)($_POST['description'] ?? ($jsonBody['description'] ?? '')));
 $quantity       = (int)($_POST['quantity_total'] ?? ($_POST['quantity'] ?? ($jsonBody['quantity_total'] ?? ($jsonBody['quantity'] ?? 1))));
 $unit           = trim((string)($_POST['unit'] ?? ($jsonBody['unit'] ?? 'pcs')));
-$conditionType  = trim((string)($_POST['condition_type'] ?? ($jsonBody['condition_type'] ?? 'Good')));
-$pickupMethod   = trim((string)($_POST['pickup_method'] ?? ($jsonBody['pickup_method'] ?? 'both')));
+$conditionType  = trim((string)($_POST['condition_type'] ?? ($_POST['condition'] ?? ($jsonBody['condition_type'] ?? ($jsonBody['condition'] ?? 'Good')))));
+$pickupMethod   = trim((string)($_POST['pickup_method'] ?? ($jsonBody['pickup_method'] ?? 'pickup')));
 $pickupCity     = trim((string)($_POST['pickup_city'] ?? ($jsonBody['pickup_city'] ?? '')));
 $pickupBarangay = trim((string)($_POST['pickup_barangay'] ?? ($jsonBody['pickup_barangay'] ?? '')));
+$pickupLocation = trim((string)($_POST['pickup_location'] ?? ($jsonBody['pickup_location'] ?? '')));
+
+if ($pickupLocation !== '' && ($pickupCity === '' || $pickupBarangay === '')) {
+    $locParts = array_map('trim', explode(',', $pickupLocation));
+    if (count($locParts) >= 2) {
+        $pickupBarangay = $pickupBarangay ?: $locParts[0];
+        $pickupCity     = $pickupCity ?: implode(', ', array_slice($locParts, 1));
+    } else {
+        $pickupBarangay = $pickupBarangay ?: $locParts[0];
+        $pickupCity     = $pickupCity ?: $locParts[0];
+    }
+}
 
 // Validation
 $errors = [];
 if ($title === '' || mb_strlen($title) < 3) {
     $errors[] = 'Please provide a clear item title for your donation (at least 3 characters).';
+} elseif (mb_strlen($title) > 150) {
+    $errors[] = 'Item title must not exceed 150 characters.';
+} elseif (icd_has_excessive_repetition($title)) {
+    $errors[] = 'Item title contains invalid repeated characters.';
 }
 
-if ($quantity < 1) {
-    $errors[] = 'Quantity must be at least 1.';
+if (mb_strlen($description) > 2000) {
+    $errors[] = 'Description must not exceed 2,000 characters.';
+} elseif ($description !== '' && icd_has_excessive_repetition($description)) {
+    $errors[] = 'Description contains invalid repeated characters.';
 }
 
-if ($pickupCity === '') {
-    $errors[] = 'Please specify the city/municipality for handover coordination.';
+if ($quantity < 1 || $quantity > 10000) {
+    $errors[] = 'Quantity must be between 1 and 10,000.';
 }
 
-if ($pickupBarangay === '') {
-    $errors[] = 'Please specify the barangay for handover coordination.';
+$condNormalized = strtolower(str_replace([' ', '-'], '_', $conditionType));
+$acceptedCondMap = [
+    'new'         => 'new',
+    'brand_new'   => 'new',
+    'like_new'    => 'like_new',
+    'gently_used' => 'like_new',
+    'good'        => 'good',
+    'refurbished' => 'good',
+    'fair'        => 'fair',
+    'poor'        => 'poor',
+];
+if (!isset($acceptedCondMap[$condNormalized])) {
+    $errors[] = 'Please select a valid item condition (Brand New, Like New, Good, or Fair).';
+}
+
+if ($pickupCity === '' || mb_strlen($pickupCity) > 100) {
+    $errors[] = 'Please specify a valid city/municipality for handover coordination.';
+}
+
+if ($pickupBarangay === '' || mb_strlen($pickupBarangay) > 100) {
+    $errors[] = 'Please specify a valid barangay for handover coordination.';
 }
 
 if (!empty($errors)) {
@@ -174,10 +238,7 @@ try {
         exit;
     }
 
-    // Normalize condition enum ('new','like_new','good','fair','poor')
-    $condLower = strtolower(str_replace([' ', '-'], '_', $conditionType));
-    $validConditions = ['new', 'like_new', 'good', 'fair', 'poor'];
-    $condition = in_array($condLower, $validConditions, true) ? $condLower : 'good';
+    $condition = $acceptedCondMap[$condNormalized] ?? 'good';
 
     // Normalize handover_method enum ('pickup','meetup','delivery')
     $methodLower = strtolower($pickupMethod);
@@ -186,28 +247,41 @@ try {
 
     $location = trim($pickupBarangay . ', ' . $pickupCity);
 
+    // Resolve category_id if exists
+    $categoryId = null;
+    try {
+        $catStmt = $pdo->prepare('SELECT id FROM categories WHERE slug = :cat OR name = :cat LIMIT 1');
+        $catStmt->execute([':cat' => $category]);
+        $catRow = $catStmt->fetch();
+        if ($catRow) {
+            $categoryId = (int)$catRow['id'];
+        }
+    } catch (PDOException $e) {}
+
     // 5. Insert the Donation Record
     $insertStmt = $pdo->prepare("
         INSERT INTO donations (
-            donor_id, title, category, description, image_url, quantity,
+            donor_id, category_id, title, category, description, image_url, quantity, unit,
             `condition`, location, barangay, city, handover_method, status, created_at
         ) VALUES (
-            :uid, :title, :cat, :desc, :img, :qty,
+            :uid, :cat_id, :title, :cat, :desc, :img, :qty, :unit,
             :cond, :loc, :brgy, :city, :method, 'pending', NOW()
         )
     ");
     $insertStmt->execute([
-        ':uid'    => $userId,
-        ':title'  => $title,
-        ':cat'    => $category,
-        ':desc'   => $description,
-        ':img'    => $imageUrl,
-        ':qty'    => $quantity,
-        ':cond'   => $condition,
-        ':loc'    => $location,
-        ':brgy'   => $pickupBarangay,
-        ':city'   => $pickupCity,
-        ':method' => $handoverMethod,
+        ':uid'     => $userId,
+        ':cat_id'  => $categoryId,
+        ':title'   => $title,
+        ':cat'     => $category,
+        ':desc'    => $description,
+        ':img'     => $imageUrl,
+        ':qty'     => $quantity,
+        ':unit'    => $unit ?: 'pcs',
+        ':cond'    => $condition,
+        ':loc'     => $location,
+        ':brgy'    => $pickupBarangay,
+        ':city'    => $pickupCity,
+        ':method'  => $handoverMethod,
     ]);
 
     $newDonationId = (int)$pdo->lastInsertId();

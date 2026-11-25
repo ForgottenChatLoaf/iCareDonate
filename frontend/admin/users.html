@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -201,8 +201,14 @@
           </div>
 
           <!-- Search and Export toolbar -->
-          <div style="display:flex;gap:10px;align-items:center;flex:1;max-width:440px;">
-            <input type="text" id="userSearchInput" class="form-input" placeholder="Search name, email, city..." style="height:38px;font-size:13px;flex:1;" oninput="renderUserTable()">
+          <div style="display:flex;gap:10px;align-items:center;flex:1;max-width:560px;flex-wrap:wrap;">
+            <select id="userRoleFilter" class="form-input" style="height:38px;font-size:13px;width:150px;" onchange="fetchAndRenderUsers()">
+              <option value="">All Roles</option>
+              <option value="donor">Donors</option>
+              <option value="requester">Requesters</option>
+              <option value="admin">Administrators</option>
+            </select>
+            <input type="text" id="userSearchInput" class="form-input" placeholder="Search name, email, city..." style="height:38px;font-size:13px;flex:1;min-width:160px;" oninput="fetchAndRenderUsers()">
             <button type="button" class="btn btn-outline" onclick="handleExportUsers()" style="height:38px;font-size:12.5px;padding:0 14px;white-space:nowrap;display:inline-flex;align-items:center;gap:6px;">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
               Export CSV
@@ -266,12 +272,15 @@
     }
 
     const q = (document.getElementById('userSearchInput').value || '').trim();
+    const roleFilter = (document.getElementById('userRoleFilter') ? document.getElementById('userRoleFilter').value : '');
 
     try {
-      const res = await window.AdminAPI.getUsers({
+      const params = {
         status: activeUserFilter,
         q: q
-      });
+      };
+      if (roleFilter) params.role = roleFilter;
+      const res = await window.AdminAPI.getUsers(params);
 
       if (res && res.counts) {
         document.getElementById('user-cnt-all').textContent = res.counts.all ?? 0;

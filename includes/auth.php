@@ -89,7 +89,8 @@ function requireLogin(): void {
  */
 function requireAdmin(): void {
     requireLogin();
-    if (($_SESSION['icd_role'] ?? '') !== 'admin') {
+    $adminRoles = ['admin', 'head_admin', 'superadmin', 'donation_admin', 'campaign_admin', 'moderator', 'support_admin'];
+    if (!in_array($_SESSION['icd_role'] ?? '', $adminRoles, true)) {
         header('Location: ' . _icd_root() . 'frontend/403.html');
         exit;
     }
@@ -114,6 +115,71 @@ function currentRole(): ?string {
  */
 function currentName(): ?string {
     return $_SESSION['icd_name'] ?? null;
+}
+
+/**
+ * Returns (and lazily creates) the per-session CSRF token.
+ */
+function icd_get_csrf_token(): string {
+    if (empty($_SESSION['icd_csrf_token'])) {
+        $_SESSION['icd_csrf_token'] = bin2hex(random_bytes(32));
+    }
+    return (string)$_SESSION['icd_csrf_token'];
+}
+
+/**
+ * Verifies a CSRF token for state-changing requests.
+ * Requests authenticated via Authorization: Bearer <token> are exempt from cookie-CSRF.
+ */
+function icd_verify_csrf_request(?array $payload = null): bool {
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? ($_SERVER['REDIRECT_HTTP_AUTHORIZATION'] ?? '');
+    if ($authHeader !== '' && preg_match('/Bearer\s+\S+/i', $authHeader)) {
+        return true;
+    }
+    if (empty($_SESSION['icd_csrf_token'])) {
+        return true; // No browser CSRF token established yet (e.g. first stateless POST)
+    }
+    $clientToken = $_SERVER['HTTP_X_CSRF_TOKEN']
+        ?? ($_POST['_csrf'] ?? ($payload['_csrf'] ?? ''));
+    if (!is_string($clientToken) || $clientToken === '') {
+        return false;
+    }
+    return hash_equals((string)$_SESSION['icd_csrf_token'], $clientToken);
+}
+
+/**
+ * Validates password strength according to platform security policy.
+ * Returns null if valid, or a user-facing error message if invalid.
+ */
+function icd_validate_password_policy(string $password): ?string {
+    if (strlen($password) < 8) {
+        return 'Password must be at least 8 characters long.';
+    }
+    if (!preg_match('/[A-Za-z]/', $password) || !preg_match('/[0-9]/', $password)) {
+        return 'Password must contain at least one letter and one number.';
+    }
+    if (trim($password) === '') {
+        return 'Password cannot be empty or whitespace.';
+    }
+    return null;
+}
+
+/**
+ * Invalidates all stored API sessions for a user (optionally keeping the current Bearer token).
+ */
+function icd_invalidate_user_sessions(PDO $pdo, int $userId, ?string $keepRawToken = null): void {
+    try {
+        if ($keepRawToken !== null && $keepRawToken !== '') {
+            $keepHash = hash('sha256', $keepRawToken);
+            $stmt = $pdo->prepare('DELETE FROM user_sessions WHERE user_id = :uid AND token != :keep');
+            $stmt->execute([':uid' => $userId, ':keep' => $keepHash]);
+        } else {
+            $stmt = $pdo->prepare('DELETE FROM user_sessions WHERE user_id = :uid');
+            $stmt->execute([':uid' => $userId]);
+        }
+    } catch (PDOException $e) {
+        error_log('icd_invalidate_user_sessions error: ' . $e->getMessage());
+    }
 }
 
 /**

@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -31,6 +31,11 @@
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/pages/admin.css">
+  <style>
+    @media (max-width: 960px) {
+      #convInboxGrid { grid-template-columns: 1fr !important; }
+    }
+  </style>
 </head>
 <body>
 
@@ -172,21 +177,63 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
-        <div style="display:flex;gap:8px;" id="supportFilterGroup">
-          <button type="button" class="btn btn-primary btn-sm" onclick="filterAdminTickets('all')" id="flt-all">All Tickets</button>
-          <button type="button" class="btn btn-soft btn-sm" onclick="filterAdminTickets('open')" id="flt-open">Open</button>
-          <button type="button" class="btn btn-soft btn-sm" onclick="filterAdminTickets('in_progress')" id="flt-in_progress">In Progress</button>
-          <button type="button" class="btn btn-soft btn-sm" onclick="filterAdminTickets('resolved')" id="flt-resolved">Resolved</button>
+      <!-- Mode Switcher: Support Conversations Inbox vs Legacy Support Tickets -->
+      <div style="display:flex;gap:10px;margin-bottom:20px;border-bottom:1px solid #E2E8F0;padding-bottom:12px;flex-wrap:wrap;align-items:center;">
+        <button type="button" class="btn btn-primary btn-sm" id="tabConversationsBtn" onclick="switchSupportTab('conversations')">
+          Support Conversations Inbox <span id="convUnreadBadge" class="badge badge-danger" style="display:none;margin-left:6px;font-size:11px;">0</span>
+        </button>
+        <button type="button" class="btn btn-soft btn-sm" id="tabTicketsBtn" onclick="switchSupportTab('tickets')">
+          Legacy Support Tickets
+        </button>
+      </div>
+
+      <!-- TAB 1: SUPPORT CONVERSATIONS INBOX -->
+      <div id="conversationsTabPanel">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;" id="convFilterGroup">
+            <button type="button" class="btn btn-primary btn-sm" onclick="filterConversations('all')" id="cflt-all">All</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="filterConversations('waiting_support')" id="cflt-waiting_support">Needs Reply</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="filterConversations('waiting_user')" id="cflt-waiting_user">Waiting User</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="filterConversations('resolved')" id="cflt-resolved">Resolved</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="filterConversations('closed')" id="cflt-closed">Closed</button>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input type="search" id="convSearchInput" class="form-input" placeholder="Search subject, user..." style="height:36px;font-size:13px;min-width:220px;" oninput="debounceLoadConversations()">
+            <span style="font-size:13px;color:var(--color-text-muted);" id="convCountLabel">Loading...</span>
+          </div>
         </div>
-        <div style="font-size:13px;color:var(--color-text-muted);" id="supportTicketCount">
-          Loading tickets...
+
+        <div style="display:grid;grid-template-columns:1fr 1.35fr;gap:20px;align-items:start;" id="convInboxGrid">
+          <div id="convListContainer" style="display:flex;flex-direction:column;gap:10px;">
+            <div style="padding:32px;text-align:center;color:#64748B;background:#fff;border:1px solid #E2E8F0;border-radius:12px;">Loading support conversations...</div>
+          </div>
+          <div id="convThreadContainer" style="background:#fff;border:1px solid #E2E8F0;border-radius:12px;padding:22px;min-height:360px;">
+            <div style="padding:48px 20px;text-align:center;color:#64748B;">
+              <div style="font-weight:700;color:#1E293B;margin-bottom:6px;">Select a Conversation</div>
+              <div style="font-size:13px;">Choose a thread from the left to view messages, reply, add internal notes, assign, or escalate.</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div id="adminTicketsContainer" style="display:flex;flex-direction:column;gap:16px;">
-        <div style="padding:40px;text-align:center;color:#64748B;">
-          Loading community support tickets from database...
+      <!-- TAB 2: LEGACY SUPPORT TICKETS -->
+      <div id="ticketsTabPanel" style="display:none;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;gap:8px;" id="supportFilterGroup">
+            <button type="button" class="btn btn-primary btn-sm" onclick="filterAdminTickets('all')" id="flt-all">All Tickets</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="filterAdminTickets('open')" id="flt-open">Open</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="filterAdminTickets('in_progress')" id="flt-in_progress">In Progress</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="filterAdminTickets('resolved')" id="flt-resolved">Resolved</button>
+          </div>
+          <div style="font-size:13px;color:var(--color-text-muted);" id="supportTicketCount">
+            Loading tickets...
+          </div>
+        </div>
+
+        <div id="adminTicketsContainer" style="display:flex;flex-direction:column;gap:16px;">
+          <div style="padding:40px;text-align:center;color:#64748B;">
+            Loading community support tickets from database...
+          </div>
         </div>
       </div>
 
@@ -198,6 +245,261 @@
 <script>
 let adminTickets = [];
 let currentFilter = 'all';
+
+let adminConversations = [];
+let supportStaff = [];
+let convFilter = 'all';
+let activeConvId = null;
+let convSearchTimer = null;
+
+function switchSupportTab(tab) {
+  const convPanel = document.getElementById('conversationsTabPanel');
+  const tickPanel = document.getElementById('ticketsTabPanel');
+  const convBtn = document.getElementById('tabConversationsBtn');
+  const tickBtn = document.getElementById('tabTicketsBtn');
+  if (tab === 'conversations') {
+    convPanel.style.display = 'block';
+    tickPanel.style.display = 'none';
+    convBtn.className = 'btn btn-primary btn-sm';
+    tickBtn.className = 'btn btn-soft btn-sm';
+    loadConversations();
+  } else {
+    convPanel.style.display = 'none';
+    tickPanel.style.display = 'block';
+    convBtn.className = 'btn btn-soft btn-sm';
+    tickBtn.className = 'btn btn-primary btn-sm';
+    loadAdminTickets();
+  }
+}
+
+function convStatusMeta(st) {
+  switch (st) {
+    case 'waiting_support': return { cls: 'badge-warning', lbl: 'Needs Reply' };
+    case 'waiting_user':    return { cls: 'badge-info', lbl: 'Waiting User' };
+    case 'resolved':        return { cls: 'badge-success', lbl: 'Resolved' };
+    case 'closed':          return { cls: 'badge-neutral', lbl: 'Closed' };
+    default:                return { cls: 'badge-warning', lbl: 'Open' };
+  }
+}
+
+function filterConversations(filter) {
+  convFilter = filter;
+  ['all', 'waiting_support', 'waiting_user', 'resolved', 'closed'].forEach(f => {
+    const btn = document.getElementById('cflt-' + f);
+    if (btn) btn.className = (f === filter) ? 'btn btn-primary btn-sm' : 'btn btn-soft btn-sm';
+  });
+  loadConversations();
+}
+
+function debounceLoadConversations() {
+  clearTimeout(convSearchTimer);
+  convSearchTimer = setTimeout(loadConversations, 250);
+}
+
+async function loadConversations() {
+  const listEl = document.getElementById('convListContainer');
+  const countEl = document.getElementById('convCountLabel');
+  const q = (document.getElementById('convSearchInput') && document.getElementById('convSearchInput').value.trim()) || '';
+  const params = new URLSearchParams({ admin_view: '1' });
+  if (convFilter !== 'all') params.set('status', convFilter);
+  if (q) params.set('q', q);
+
+  try {
+    const data = await window.AdminAPI.request('support_conversations.php?' + params.toString());
+    if (data && data.success) {
+      adminConversations = Array.isArray(data.conversations) ? data.conversations : [];
+      supportStaff = Array.isArray(data.support_staff) ? data.support_staff : [];
+    } else {
+      adminConversations = [];
+    }
+  } catch (err) {
+    adminConversations = [];
+  }
+
+  if (countEl) countEl.textContent = `${adminConversations.length} conversation${adminConversations.length === 1 ? '' : 's'}`;
+  const totalUnread = adminConversations.reduce((acc, c) => acc + Number(c.unread_count || 0), 0);
+  const badge = document.getElementById('convUnreadBadge');
+  if (badge) {
+    badge.textContent = totalUnread;
+    badge.style.display = totalUnread > 0 ? 'inline-block' : 'none';
+  }
+
+  if (!listEl) return;
+  if (adminConversations.length === 0) {
+    listEl.innerHTML = `<div style="padding:36px 20px;text-align:center;color:#64748B;background:#fff;border:1px solid #E2E8F0;border-radius:12px;">No support conversations match this filter.</div>`;
+    return;
+  }
+
+  listEl.innerHTML = adminConversations.map(c => {
+    const meta = convStatusMeta(c.status);
+    const isSel = Number(activeConvId) === Number(c.id);
+    const unread = Number(c.unread_count || 0);
+    const updated = c.updated_at ? new Date(c.updated_at).toLocaleDateString() : '';
+    return `
+      <button type="button" onclick="openConversation(${Number(c.id)})"
+        style="text-align:left;width:100%;padding:14px 16px;border-radius:12px;border:1px solid ${isSel ? '#1F4FA3' : '#E2E8F0'};background:${isSel ? '#EFF6FF' : '#fff'};cursor:pointer;transition:all 0.15s;">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:4px;">
+          <span class="badge ${meta.cls}" style="font-size:11px;">${escapeHtml(meta.lbl)}</span>
+          <span style="font-size:11.5px;color:#64748B;">#${Number(c.id)} &bull; ${escapeHtml(updated)}</span>
+        </div>
+        <div style="font-weight:700;font-size:14px;color:#1E293B;margin-bottom:3px;">${escapeHtml(c.subject)}</div>
+        <div style="font-size:12px;color:#475569;margin-bottom:4px;">${escapeHtml(c.user_name || 'User')} (${escapeHtml(c.user_email || '')})</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;font-size:11.5px;color:#64748B;">
+          <span>${escapeHtml(c.category || 'general')}${c.assigned_admin_name ? ' &bull; Assigned: ' + escapeHtml(c.assigned_admin_name) : ''}</span>
+          ${unread > 0 ? `<span class="badge badge-danger" style="font-size:10.5px;">${unread} new</span>` : ''}
+        </div>
+      </button>`;
+  }).join('');
+}
+
+async function openConversation(convId) {
+  activeConvId = convId;
+  const panel = document.getElementById('convThreadContainer');
+  if (!panel) return;
+  panel.innerHTML = '<div style="padding:32px;text-align:center;color:#64748B;">Loading conversation...</div>';
+
+  try {
+    const data = await window.AdminAPI.request('support_conversations.php?id=' + encodeURIComponent(convId));
+    if (!data || !data.success || !data.conversation) {
+      panel.innerHTML = `<div style="color:#DC2626;padding:20px;">${escapeHtml((data && data.message) || 'Failed to load conversation.')}</div>`;
+      return;
+    }
+
+    const c = data.conversation;
+    const msgs = Array.isArray(data.messages) ? data.messages : [];
+    const meta = convStatusMeta(c.status);
+
+    const staffOpts = supportStaff.map(s =>
+      `<option value="${Number(s.id)}" ${Number(c.assigned_admin_id) === Number(s.id) ? 'selected' : ''}>${escapeHtml(s.name)} (${escapeHtml(s.role)})</option>`
+    ).join('');
+
+    const msgsHtml = msgs.map(m => {
+      const isNote = Number(m.is_internal_note) === 1;
+      const isUser = m.sender_type === 'user';
+      const bg = isNote ? '#FEF9C3' : (isUser ? '#F8FAFC' : '#EFF6FF');
+      const border = isNote ? '#FDE047' : (isUser ? '#E2E8F0' : '#BFDBFE');
+      const when = m.created_at ? new Date(m.created_at).toLocaleString() : '';
+      return `
+        <div style="background:${bg};border:1px solid ${border};border-radius:10px;padding:10px 14px;margin-bottom:10px;font-size:13px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:12px;">
+            <strong>${escapeHtml(m.sender_name || m.sender_type)}${isNote ? ' (Private Internal Note)' : ''}</strong>
+            <span style="color:#64748B;">${escapeHtml(when)}</span>
+          </div>
+          <div style="white-space:pre-wrap;line-height:1.5;color:#1E293B;">${escapeHtml(m.message)}</div>
+        </div>`;
+    }).join('');
+
+    panel.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;padding-bottom:14px;border-bottom:1px solid #E2E8F0;margin-bottom:14px;">
+        <div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+            <span class="badge ${meta.cls}">${escapeHtml(meta.lbl)}</span>
+            <span class="badge badge-neutral">${escapeHtml(c.priority || 'medium')} priority</span>
+            ${c.escalated_to_role ? `<span class="badge badge-danger">Escalated: ${escapeHtml(c.escalated_to_role)}</span>` : ''}
+          </div>
+          <h3 style="margin:0 0 4px;font-size:16.5px;font-weight:700;color:#1E293B;">#${Number(c.id)}: ${escapeHtml(c.subject)}</h3>
+          <div style="font-size:12.5px;color:#64748B;">From <strong>${escapeHtml(c.user_name)}</strong> (${escapeHtml(c.user_email)}) &bull; Category: ${escapeHtml(c.category || 'general')}</div>
+          ${c.donation_title ? `<div style="font-size:12px;color:#1E40AF;margin-top:4px;">Linked Donation: <strong>${escapeHtml(c.donation_title)}</strong></div>` : ''}
+          ${c.request_title ? `<div style="font-size:12px;color:#1E40AF;margin-top:4px;">Linked Request: <strong>${escapeHtml(c.request_title)}</strong></div>` : ''}
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <select class="form-input" style="height:34px;font-size:12px;width:auto;" onchange="assignConversation(${Number(c.id)}, this.value)">
+            <option value="">Assign Staff...</option>
+            ${staffOpts}
+          </select>
+          <select class="form-input" style="height:34px;font-size:12px;width:auto;" onchange="if(this.value) escalateConversation(${Number(c.id)}, this.value)">
+            <option value="">Escalate To...</option>
+            <option value="head_admin">Head Admin</option>
+            <option value="donation_admin">Donation Admin</option>
+            <option value="campaign_admin">Campaign Admin</option>
+            <option value="moderator">Moderator</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="max-height:340px;overflow-y:auto;margin-bottom:14px;padding-right:4px;">
+        ${msgsHtml || '<div style="color:#64748B;font-size:13px;">No messages yet.</div>'}
+      </div>
+
+      <div style="border-top:1px solid #E2E8F0;padding-top:14px;">
+        <textarea id="convReplyInput" class="form-input" rows="2" placeholder="Write a reply visible to the user..." style="font-size:13px;margin-bottom:8px;"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="sendConvAction(${Number(c.id)}, 'reply')">Send Reply</button>
+            <button type="button" class="btn btn-soft btn-sm" onclick="sendConvAction(${Number(c.id)}, 'internal_note')">Save Private Note</button>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            ${c.status !== 'resolved' ? `<button type="button" class="btn btn-outline btn-sm" onclick="updateConvStatus(${Number(c.id)}, 'resolved')">Mark Resolved</button>` : ''}
+            ${c.status !== 'closed' ? `<button type="button" class="btn btn-outline btn-sm" onclick="updateConvStatus(${Number(c.id)}, 'closed')">Close</button>` : ''}
+          </div>
+        </div>
+      </div>
+    `;
+    loadConversations();
+  } catch (err) {
+    panel.innerHTML = '<div style="color:#DC2626;padding:20px;">Network error loading conversation.</div>';
+  }
+}
+
+async function sendConvAction(convId, action) {
+  const input = document.getElementById('convReplyInput');
+  const msg = input ? input.value.trim() : '';
+  if (!msg) { alert('Please enter a message first.'); return; }
+  const data = await window.AdminAPI.request('support_conversations.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action, conversation_id: convId, message: msg })
+  });
+  if (data && data.success) {
+    if (window.showAdminFlash) window.showAdminFlash('success', data.message || 'Saved.');
+    await openConversation(convId);
+  } else {
+    alert((data && data.message) || 'Action failed.');
+  }
+}
+
+async function updateConvStatus(convId, status) {
+  const data = await window.AdminAPI.request('support_conversations.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'update_status', conversation_id: convId, status })
+  });
+  if (data && data.success) {
+    if (window.showAdminFlash) window.showAdminFlash('success', 'Status updated to ' + status);
+    await openConversation(convId);
+  } else {
+    alert((data && data.message) || 'Failed to update status.');
+  }
+}
+
+async function assignConversation(convId, adminId) {
+  if (!adminId) return;
+  const data = await window.AdminAPI.request('support_conversations.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'assign', conversation_id: convId, assigned_admin_id: Number(adminId) })
+  });
+  if (data && data.success) {
+    if (window.showAdminFlash) window.showAdminFlash('success', 'Conversation assigned.');
+    await openConversation(convId);
+  } else {
+    alert((data && data.message) || 'Assignment failed.');
+  }
+}
+
+async function escalateConversation(convId, role) {
+  const data = await window.AdminAPI.request('support_conversations.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action: 'escalate', conversation_id: convId, escalate_to_role: role })
+  });
+  if (data && data.success) {
+    if (window.showAdminFlash) window.showAdminFlash('success', 'Conversation escalated to ' + role);
+    await openConversation(convId);
+  } else {
+    alert((data && data.message) || 'Escalation failed.');
+  }
+}
 
 function filterAdminTickets(filter) {
   currentFilter = filter;
@@ -389,7 +691,7 @@ function escapeHtml(str) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-  loadAdminTickets();
+  loadConversations();
 });
 </script>
 

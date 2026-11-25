@@ -43,6 +43,11 @@ if ($pdo === null) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $rawInput = file_get_contents('php://input');
     $payload  = json_decode($rawInput, true) ?? $_POST;
+    if (!icd_verify_csrf_request(is_array($payload) ? $payload : null)) {
+        http_response_code(403);
+        echo json_encode(['success' => false, 'message' => 'Invalid security token. Please refresh and try again.']);
+        exit;
+    }
 
     $action     = trim((string)($payload['action'] ?? ''));
     $donationId = (int)($payload['id'] ?? 0);
@@ -55,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Verify ownership
-        $stmtCheck = $pdo->prepare('SELECT id, title, status FROM donations WHERE id = :id AND donor_id = :uid LIMIT 1');
+        $stmtCheck = $pdo->prepare('SELECT * FROM donations WHERE id = :id AND donor_id = :uid LIMIT 1');
         $stmtCheck->execute([':id' => $donationId, ':uid' => $userId]);
         $donation = $stmtCheck->fetch();
 
@@ -65,10 +70,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
 
+        if ($action === 'update') {
+            if (!in_array($donation['status'], ['pending', 'approved'], true)) {
+                http_response_code(409);
+                echo json_encode(['success' => false, 'message' => 'Only pending or approved donations can be edited.']);
+                exit;
+            }
+            $title    = trim((string)($payload['title'] ?? $donation['title']));
+            $desc     = trim((string)($payload['description'] ?? ($donation['description'] ?? '')));
+            $category = trim((string)($payload['category'] ?? ($donation['category'] ?? 'other-essentials')));
+            $qty      = (int)($payload['quantity'] ?? $donation['quantity']);
+            $unit     = trim((string)($payload['unit'] ?? ($donation['unit'] ?? 'items')));
+            $city     = trim((string)($payload['city'] ?? ($donation['city'] ?? '')));
+            $barangay = trim((string)($payload['barangay'] ?? ($donation['barangay'] ?? '')));
+            $rawCond  = strtolower(trim((string)($payload['condition'] ?? ($donation['condition'] ?? 'good'))));
+            $condMap  = ['brand new' => 'new', 'new' => 'new', 'like new' => 'like_new', 'like_new' => 'like_new', 'good' => 'good', 'fair' => 'fair', 'poor' => 'poor'];
+            $cond     = $condMap[$rawCond] ?? ($donation['condition'] ?? 'good');
+            $allocated = (int)($donation['allocated_quantity'] ?? 0);
+
+            if (mb_strlen($title) < 3 || mb_strlen($title) > 150) {
+                http_response_code(422);
+                echo json_encode(['success' => false, 'message' => 'Donation title must be between 3 and 150 characters.']);
+                exit;
+            }
+            if ($qty < max(1, $allocated) || $qty > 10000) {
+                http_response_code(422);
+                echo json_encode(['success' => false, 'message' => "Quantity must be between " . max(1, $allocated) . " and 10,000."]);
+                exit;
+            }
+
+            // Re-trigger pending review if an approved donation changes core matching attributes
+            $newStatus = $donation['status'];
+            if ($donation['status'] === 'approved' && (
+                $title !== $donation['title'] ||
+                $category !== $donation['category'] ||
+                $qty !== (int)$donation['quantity'] ||
+                $cond !== $donation['condition']
+            )) {
+                $newStatus = 'pending';
+            }
+
+            $pdo->prepare("
+                UPDATE donations
+                SET title = :t, description = :d, category = :cat, quantity = :q, unit = :u,
+                    `condition` = :cond, city = :city, barangay = :brgy, status = :st, updated_at = NOW()
+                WHERE id = :id AND donor_id = :uid
+            ")->execute([
+                ':t'    => $title,
+                ':d'    => $desc,
+                ':cat'  => $category !== '' ? $category : $donation['category'],
+                ':q'    => $qty,
+                ':u'    => $unit !== '' ? $unit : 'items',
+                ':cond' => $cond,
+                ':city' => $city !== '' ? $city : $donation['city'],
+                ':brgy' => $barangay !== '' ? $barangay : $donation['barangay'],
+                ':st'   => $newStatus,
+                ':id'   => $donationId,
+                ':uid'  => $userId,
+            ]);
+
+            $msg = ($newStatus === 'pending' && $donation['status'] === 'approved')
+                ? 'Donation updated and returned to coordinator review because core item details changed.'
+                : 'Donation listing updated successfully.';
+            echo json_encode(['success' => true, 'message' => $msg, 'status' => $newStatus]);
+            exit;
+        }
+
         if ($action === 'archive' || $action === 'cancel') {
-            $newStatus = ($action === 'archive') ? 'archived' : 'rejected';
-            $stmtUpdate = $pdo->prepare("UPDATE donations SET status = :status, updated_at = NOW() WHERE id = :id");
-            $stmtUpdate->execute([':status' => $newStatus, ':id' => $donationId]);
+            $activeAlloc = (int)$pdo->query("SELECT COUNT(*) FROM donation_allocations WHERE donation_id = {$donationId} AND status IN ('approved','preparing','ready_for_handover')")->fetchColumn();
+            if ($activeAlloc > 0) {
+                http_response_code(409);
+                echo json_encode(['success' => false, 'message' => 'Cannot withdraw or archive a donation with active allocations.']);
+                exit;
+            }
+
+            $newStatus = ($action === 'archive') ? 'archived' : 'cancelled';
+            $stmtUpdate = $pdo->prepare("UPDATE donations SET status = :status, updated_at = NOW() WHERE id = :id AND donor_id = :uid");
+            $stmtUpdate->execute([':status' => $newStatus, ':id' => $donationId, ':uid' => $userId]);
 
             echo json_encode([
                 'success' => true,
@@ -218,12 +296,23 @@ try {
             'id'             => (int)$row['id'],
             'ref_code'       => 'REF-' . str_pad((string)$row['id'], 5, '0', STR_PAD_LEFT),
             'title'          => $row['title'],
+            'description'    => $row['description'] ?? '',
             'category'       => $row['category'] ?? 'General',
+            'category_name'  => $row['category'] ?? 'General',
             'quantity'       => (int)($row['quantity'] ?? 1),
+            'quantity_total' => (int)($row['quantity'] ?? 1),
+            'quantity_reserved' => 0,
             'unit'           => $row['unit'] ?: 'units',
             'item_condition' => $row['item_condition'] ?: 'Good',
+            'condition_type' => $row['item_condition'] ?: 'good',
             'status'         => $row['status'],
-            'image_url'      => $row['image_url'] ?: '../assets/images/categories/household-goods.jpg',
+            'image_url'      => $row['image_url'] ?: '../assets/images/placeholder.svg',
+            'primary_image'  => $row['image_url'] ?: '../assets/images/placeholder.svg',
+            'donor_name'     => $row['donor_name'] ?? 'Community Donor',
+            'donor_email'    => $row['donor_email'] ?? '',
+            'pickup_city'    => $row['pickup_city'] ?? 'Metro Manila',
+            'pickup_barangay'=> $row['pickup_barangay'] ?? '',
+            'pickup_method'  => $row['pickup_method'] ?? 'pickup',
             'created_at'     => $row['created_at'],
             'formatted_date' => date('M j, Y', strtotime((string)$row['created_at'])),
         ];

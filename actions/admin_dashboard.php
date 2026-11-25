@@ -34,11 +34,23 @@ try {
     $pendingRequests = 0;
     $activeTransactions = 0;
     $totalMembers = 0;
+    $totalUsers = 0;
+    $fulfilledTx = 0;
+    $beneficiariesServed = 0;
+    $unscheduledInterviews = 0;
+    $readyTransactions = 0;
 
     // Count pending donations
     try {
         $stmtDon = $pdo->query("SELECT COUNT(*) FROM donations WHERE status = 'pending'");
         $pendingDonations = (int)$stmtDon->fetchColumn();
+    } catch (PDOException $e) {}
+
+    // Count active approved donations
+    $activeDonations = 0;
+    try {
+        $stmtActiveDon = $pdo->query("SELECT COUNT(*) FROM donations WHERE status = 'approved'");
+        $activeDonations = (int)$stmtActiveDon->fetchColumn();
     } catch (PDOException $e) {}
 
     // Count pending requests (pending or under_review)
@@ -53,10 +65,46 @@ try {
         $activeTransactions = (int)$stmtTx->fetchColumn();
     } catch (PDOException $e) {}
 
+    // Count fulfilled transactions (completed requests or handovers)
+    try {
+        $stmtFulfilled = $pdo->query("SELECT COUNT(*) FROM requests WHERE status = 'completed'");
+        $fulfilledTx = (int)$stmtFulfilled->fetchColumn();
+    } catch (PDOException $e) {}
+
+    // Count distinct beneficiaries served
+    try {
+        $stmtServed = $pdo->query("SELECT COUNT(DISTINCT requester_id) FROM requests WHERE status = 'completed'");
+        $beneficiariesServed = (int)$stmtServed->fetchColumn();
+    } catch (PDOException $e) {}
+
     // Count registered users
     try {
         $stmtUsers = $pdo->query("SELECT COUNT(*) FROM users WHERE role != 'admin'");
         $totalMembers = (int)$stmtUsers->fetchColumn();
+        $totalUsers = (int)$pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
+    } catch (PDOException $e) {}
+
+    // Count unscheduled interviews
+    try {
+        $stmtInterviews = $pdo->query("SELECT COUNT(*) FROM interviews WHERE status = 'pending'");
+        $unscheduledInterviews = (int)$stmtInterviews->fetchColumn();
+    } catch (PDOException $e) {}
+
+    // Count ready to close transactions (approved requests linked to donations)
+    try {
+        $stmtReady = $pdo->query("SELECT COUNT(*) FROM requests WHERE status = 'approved' AND donation_id IS NOT NULL");
+        $readyTransactions = (int)$stmtReady->fetchColumn();
+    } catch (PDOException $e) {}
+
+    // Count user roles
+    $donorsCount = 0;
+    $beneficiariesCount = 0;
+    $bothCount = 0;
+    try {
+        $stmtRoleD = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'donor'");
+        $donorsCount = (int)$stmtRoleD->fetchColumn();
+        $stmtRoleR = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'requester'");
+        $beneficiariesCount = (int)$stmtRoleR->fetchColumn();
     } catch (PDOException $e) {}
 
     // Count open inquiries (support tickets)
@@ -182,25 +230,51 @@ try {
 
     $monthlyTrends = array_values($months);
 
-    // 6. Category Distribution for Analytics Bars
+    // 6. Category Distribution for Analytics Bars & Table
     $categoryDistribution = [];
+    $categoryTable = [];
+    $totalDonationsCount = 0;
     try {
-        $stmtCat = $pdo->query("
-            SELECT COALESCE(NULLIF(category, ''), 'General Goods') AS cat_name, COUNT(*) AS total_items
-            FROM donations
+        $totalDonationsCount = (int)$pdo->query("SELECT COUNT(*) FROM donations")->fetchColumn();
+        $stmtCatTable = $pdo->query("
+            SELECT
+                COALESCE(c.name, NULLIF(d.category, ''), 'General Goods') AS cat_name,
+                SUM(CASE WHEN d.status = 'approved' THEN 1 ELSE 0 END) AS active_count,
+                SUM(CASE WHEN d.status IN ('claimed', 'completed') THEN 1 ELSE 0 END) AS fulfilled_count,
+                SUM(CASE WHEN d.status = 'archived' THEN 1 ELSE 0 END) AS archived_count,
+                COUNT(*) AS total_items
+            FROM donations d
+            LEFT JOIN categories c ON (d.category = c.slug OR d.category = c.name)
             GROUP BY cat_name
             ORDER BY total_items DESC
-            LIMIT 5
         ");
-        $categoryDistribution = $stmtCat->fetchAll();
+        while ($catRow = $stmtCatTable->fetch()) {
+            $catTotal = (int)$catRow['total_items'];
+            $share = $totalDonationsCount > 0 ? round(($catTotal / $totalDonationsCount) * 100) : 0;
+            $entry = [
+                'name'      => $catRow['cat_name'],
+                'active'    => (int)$catRow['active_count'],
+                'fulfilled' => (int)$catRow['fulfilled_count'],
+                'archived'  => (int)$catRow['archived_count'],
+                'total'     => $catTotal,
+                'share_pct' => $share,
+            ];
+            $categoryTable[] = $entry;
+            if (count($categoryDistribution) < 5) {
+                $categoryDistribution[] = [
+                    'cat_name'    => $catRow['cat_name'],
+                    'total_items' => $catTotal,
+                ];
+            }
+        }
     } catch (PDOException $e) {}
 
     // 7. Fulfillment Status Breakdown
     $statusBreakdown = [
         'pending'   => $pendingDonations,
-        'approved'  => 0,
+        'approved'  => $activeDonations,
         'claimed'   => 0,
-        'completed' => 0,
+        'completed' => $fulfilledTx,
     ];
     try {
         $stmtStatus = $pdo->query("SELECT status, COUNT(*) AS cnt FROM donations GROUP BY status");
@@ -214,6 +288,23 @@ try {
         }
     } catch (PDOException $e) {}
 
+    // 8. Platform Health Rates
+    $totalRequestsCount = $pendingRequests + $fulfilledTx;
+    $fulfillmentRate = $totalRequestsCount > 0 ? round(($fulfilledTx / $totalRequestsCount) * 100) : 0;
+    $verifiedDonorsRate = $donorsCount > 0 ? 100 : 0;
+    try {
+        $activeDonors = (int)$pdo->query("SELECT COUNT(*) FROM users WHERE role = 'donor' AND status = 'active'")->fetchColumn();
+        if ($donorsCount > 0) {
+            $verifiedDonorsRate = round(($activeDonors / $donorsCount) * 100);
+        }
+    } catch (PDOException $e) {}
+
+    // User Role percentages
+    $roleTotal = $donorsCount + $beneficiariesCount + $bothCount;
+    $donorPct = $roleTotal > 0 ? round(($donorsCount / $roleTotal) * 100) : 0;
+    $beneficiaryPct = $roleTotal > 0 ? round(($beneficiariesCount / $roleTotal) * 100) : 0;
+    $bothPct = $roleTotal > 0 ? round(($bothCount / $roleTotal) * 100) : 0;
+
     echo json_encode([
         'success' => true,
         'admin'   => [
@@ -223,14 +314,33 @@ try {
             'role'  => $admin['role']
         ],
         'counts'  => [
-            'pending_donations'   => $pendingDonations,
-            'pending_requests'    => $pendingRequests,
-            'active_transactions' => $activeTransactions,
-            'open_inquiries'      => $openInquiries,
-            'total_members'       => $totalMembers,
+            'pending_donations'      => $pendingDonations,
+            'pending_requests'       => $pendingRequests,
+            'active_donations'       => $activeDonations,
+            'active_transactions'    => $activeTransactions,
+            'fulfilled_transactions' => $fulfilledTx,
+            'beneficiaries_served'   => $beneficiariesServed,
+            'unscheduled_interviews' => $unscheduledInterviews,
+            'ready_transactions'     => $readyTransactions,
+            'open_inquiries'         => $openInquiries,
+            'total_members'          => $totalMembers,
+            'total_users'            => $totalUsers,
+        ],
+        'user_roles' => [
+            'donors_count'        => $donorsCount,
+            'donors_pct'          => $donorPct,
+            'beneficiaries_count' => $beneficiariesCount,
+            'beneficiaries_pct'   => $beneficiaryPct,
+            'both_count'          => $bothCount,
+            'both_pct'            => $bothPct,
+        ],
+        'platform_health' => [
+            'fulfillment_rate'     => $fulfillmentRate,
+            'verified_donors_rate' => $verifiedDonorsRate,
         ],
         'monthly_trends'        => $monthlyTrends,
         'category_distribution' => $categoryDistribution,
+        'category_table'        => $categoryTable,
         'status_breakdown'      => $statusBreakdown,
         'urgent_donations'      => $urgentDonations,
         'urgent_requests'       => $urgentRequests,

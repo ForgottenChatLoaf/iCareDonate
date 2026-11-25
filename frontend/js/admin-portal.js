@@ -7,13 +7,30 @@
 (function() {
   'use strict';
 
-  // Highlight active sidebar navigation based on data-nav attribute
+  // Highlight active sidebar navigation and filter visible links by admin role
   function setupAdminNav() {
     const path = window.location.pathname;
     const page = path.split('/').pop().replace('.html', '') || 'index';
 
+    let role = 'head_admin';
+    try {
+      const u = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      if (u && u.role) role = u.role;
+    } catch (e) {}
+
+    const roleAllowMap = {
+      donation_admin: ['dashboard', 'donations', 'requests', 'matches', 'transactions', 'interviews', 'categories', 'reports', 'statistics', 'profile', 'logout'],
+      campaign_admin: ['dashboard', 'campaigns', 'categories', 'reports', 'statistics', 'profile', 'logout'],
+      moderator:      ['dashboard', 'users', 'moderation', 'support', 'inquiries', 'faqs', 'statistics', 'profile', 'logout'],
+      support_admin:  ['dashboard', 'support', 'inquiries', 'faqs', 'statistics', 'profile', 'logout'],
+    };
+    const allowedNavs = roleAllowMap[role] || null; // null = head_admin / admin / superadmin (all allowed)
+
     document.querySelectorAll('.sidebar-link[data-nav]').forEach(link => {
       const navKey = link.getAttribute('data-nav');
+      if (allowedNavs && !allowedNavs.includes(navKey)) {
+        link.style.display = 'none';
+      }
       if (navKey === page || (page === 'index' && navKey === 'dashboard')) {
         link.classList.add('sidebar-link--active');
       } else {
@@ -211,9 +228,18 @@
       return false;
     }
 
-    if (user.role !== 'admin' && user.role !== 'superadmin') {
+    const adminRoles = ['admin', 'head_admin', 'superadmin', 'donation_admin', 'campaign_admin', 'moderator', 'support_admin'];
+    if (!adminRoles.includes(user.role)) {
       const isSubdir = window.location.pathname.includes('/user') || window.location.pathname.includes('/admin');
       window.location.href = isSubdir ? '../user/dashboard.html' : 'user-dashboard.html';
+      return false;
+    }
+
+    // Enforce first-login password change before accessing other admin pages
+    const curPage = (window.location.pathname.split('/').pop() || '').toLowerCase();
+    if (user.must_change_password && curPage !== 'profile.html') {
+      const isSubdir = window.location.pathname.includes('/admin');
+      window.location.href = isSubdir ? 'profile.html?force_pw=1' : 'admin/profile.html?force_pw=1';
       return false;
     }
 
@@ -405,6 +431,14 @@
     },
 
     createAdmin: function(data) {
+      return this.request('admin_users.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+    },
+
+    updateUserAccount: function(data) {
       return this.request('admin_users.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

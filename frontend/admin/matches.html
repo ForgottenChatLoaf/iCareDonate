@@ -1,10 +1,10 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Smart Matching &amp; Handover Pairs — iCareDonate Admin</title>
-  <meta name="description" content="Match verified beneficiary requests with available donations and track pairing logistics.">
+  <title>Resource Matching &amp; Allocations — iCareDonate Admin</title>
+  <meta name="description" content="Deterministic resource matching engine, explainable match scoring, and allocation lifecycle management.">
   <meta name="theme-color" content="#1F4FA3">
 
   <script>
@@ -31,12 +31,24 @@
   <link rel="stylesheet" href="../css/layout.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/pages/admin.css">
+  <style>
+    .match-kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+    @media (max-width: 1024px) { .match-kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px)  { .match-kpi-grid { grid-template-columns: 1fr; } }
+    .match-kpi-card { background: #fff; border: 1px solid var(--color-border, #E2E8F0); border-radius: 12px; padding: 16px 18px; }
+    .match-kpi-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-text-muted, #64748B); margin-bottom: 6px; }
+    .match-kpi-val { font-size: 26px; font-weight: 800; color: #0F172A; line-height: 1.1; }
+    .match-filter-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; background: #fff; border: 1px solid var(--color-border, #E2E8F0); border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; }
+    .score-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+    .score-strong { background: #DCFCE7; color: #15803D; }
+    .score-potential { background: #DBEAFE; color: #1D4ED8; }
+    .score-weak { background: #FEF3C7; color: #B45309; }
+    .table-scroll { width: 100%; overflow-x: auto; }
+  </style>
 </head>
 <body>
 
 <div class="admin-layout">
-
-  <!-- ADMIN SIDEBAR -->
   <aside class="user-sidebar admin-sidebar" role="complementary" aria-label="Admin navigation">
     <div class="brand-sidebar-container" role="banner">
       <a href="index.html" class="brand-sidebar-logo" aria-label="iCareDonate ADMIN">
@@ -49,198 +61,418 @@
     </div>
 
     <nav class="sidebar-nav" aria-label="Admin navigation">
-      <a href="index.html" class="sidebar-link sidebar-link--active" data-nav="dashboard">
+      <a href="index.html" class="sidebar-link" data-nav="dashboard">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
         <span>Dashboard</span>
       </a>
-
-      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:10px 12px 4px;margin-top:6px;display:block;">Operations &amp; Reviews</div>
-
+      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:10px 12px 4px;margin-top:6px;display:block;">Operations &amp; Matching</div>
       <a href="donations.html" class="sidebar-link" data-nav="donations">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 12 20 22 4 22 4 12"/><rect width="20" height="5" x="2" y="7"/><line x1="12" x2="12" y1="22" y2="7"/></svg>
         <span>Donation Review</span>
       </a>
       <a href="requests.html" class="sidebar-link" data-nav="requests">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><path d="m9 15 2 2 4-4"/></svg>
-        <span>Request &amp; Proof Review</span>
+        <span>Request Review</span>
+      </a>
+      <a href="matches.html" class="sidebar-link sidebar-link--active" data-nav="matches">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"/><path d="m15 9 6-6"/></svg>
+        <span>Resource Matching</span>
+      </a>
+      <a href="campaigns.html" class="sidebar-link" data-nav="campaigns">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" x2="4" y1="22" y2="15"/></svg>
+        <span>Campaigns</span>
       </a>
       <a href="transactions.html" class="sidebar-link" data-nav="transactions">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
-        <span>Transaction Monitoring</span>
+        <span>Transactions</span>
       </a>
-      <a href="interviews.html" class="sidebar-link" data-nav="interviews">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>
-        <span>Interviews</span>
-      </a>
-
-      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:10px 12px 4px;margin-top:6px;display:block;">Users &amp; Moderation</div>
-
       <a href="users.html" class="sidebar-link" data-nav="users">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
         <span>Users &amp; Moderation</span>
-      </a>
-      <a href="support.html" class="sidebar-link" data-nav="support">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        <span>Support</span>
-      </a>
-      <a href="inquiries.html" class="sidebar-link" data-nav="inquiries">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-        <span>Contact Inquiries</span>
-      </a>
-
-      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:10px 12px 4px;margin-top:6px;display:block;">Platform Content</div>
-
-      <a href="faqs.html" class="sidebar-link" data-nav="faqs">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" x2="12.01" y1="17" y2="17"/></svg>
-        <span>FAQ Content</span>
-      </a>
-      <a href="reports.html" class="sidebar-link" data-nav="reports">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" x2="18" y1="20" y2="10"/><line x1="12" x2="12" y1="20" y2="4"/><line x1="6" x2="6" y1="20" y2="14"/></svg>
-        <span>Reports</span>
-      </a>
-      <a href="categories.html" class="sidebar-link" data-nav="categories">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" x2="7.01" y1="7" y2="7"/></svg>
-        <span>Categories</span>
       </a>
       <a href="statistics.html" class="sidebar-link" data-nav="statistics">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         <span>Statistics</span>
       </a>
-      <a href="profile.html" class="sidebar-link" data-nav="profile">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        <span>Admin Profile</span>
-      </a>
-
-      <div class="sidebar-section-title" style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--color-text-muted,#94A3B8);padding:10px 12px 4px;margin-top:6px;display:block;">SuperAdmin Controls</div>
-
-      <a href="admins.html" class="sidebar-link" data-nav="admins" style="color:var(--amber-dark, #D99B26);">
+      <a href="admins.html" class="sidebar-link" data-nav="admins">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
         <span>Admin Management</span>
       </a>
-      <a href="logs.html" class="sidebar-link" data-nav="logs" style="color:var(--amber-dark, #D99B26);">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
+      <a href="logs.html" class="sidebar-link" data-nav="logs">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
         <span>Audit Logs</span>
       </a>
       <a href="../logout.html" class="sidebar-link sidebar-link--logout" id="sidebarLogoutBtn" data-nav="logout">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
         <span>Logout</span>
       </a>
     </nav>
   </aside>
 
-  <!-- ADMIN MAIN -->
-    <!-- Sidebar backdrop (mobile) -->
   <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
 
   <div class="admin-main">
     <header class="admin-topbar">
       <div style="display:flex;align-items:center;gap:10px;">
-        <button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle" aria-label="Toggle navigation" aria-expanded="false"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-        <h1 class="admin-topbar__title" style="margin:0;font-size:20px;font-weight:700;">Smart Matching &amp; Logistics Pairing</h1>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;">
-        <a href="requests.html" class="btn btn-primary" style="font-size:12.5px;padding:6px 14px;">
-          + Match Pending Request
-        </a>
-        <div class="topbar-dropdown-wrap">
-        <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
-          <span class="user-avatar-circle" id="topbarUserInitials">&nbsp;</span>
-          <span id="topbarUserName">&nbsp;</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="topbar-chevron"><polyline points="6 9 12 15 18 9"/></svg>
+        <button type="button" class="admin-sidebar-toggle" id="adminSidebarToggle" aria-label="Toggle navigation" aria-expanded="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
         </button>
-        <div class="topbar-dropdown" id="topbarDropdownMenu" role="menu" aria-label="Admin account menu">
-          <a href="profile.html" role="menuitem">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Admin Profile</span>
-          </a>
-          <a href="admins.html" role="menuitem">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            <span>Admin Management</span>
-          </a>
-          <a href="logs.html" role="menuitem">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/></svg>
-            <span>Audit Logs</span>
-          </a>
-          <a href="../logout.html" class="sidebar-link--logout dropdown-danger" role="menuitem">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y2="12"/></svg>
-            <span>Log Out</span>
-          </a>
+        <div>
+          <h1 class="admin-topbar__title" style="margin:0;font-size:19px;font-weight:700;">Resource Matching &amp; Allocations</h1>
+          <div style="font-size:12px;color:var(--color-text-muted,#64748B);">Deterministic compatibility scoring &bull; Concurrency-safe quantity allocation</div>
         </div>
       </div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <button type="button" class="btn btn-primary" id="btn-rerun-matching" onclick="loadMatchingData()" style="font-size:12.5px;padding:7px 14px;">
+          Re-run Matching
+        </button>
+        <div class="topbar-dropdown-wrap">
+          <button type="button" class="admin-user-btn" id="topbarUserMenuBtn" aria-haspopup="true" aria-expanded="false">
+            <span class="user-avatar-circle" id="topbarUserInitials">&nbsp;</span>
+            <span id="topbarUserName">&nbsp;</span>
+          </button>
+        </div>
       </div>
     </header>
 
-    <div class="admin-content" style="padding:28px 32px;">
+    <div class="admin-content" style="padding:24px 28px;">
 
-      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#fff;">
-        <table class="table" style="width:100%;margin:0;border-collapse:collapse;font-size:13.5px;">
-          <thead style="background:#F8FAFC;border-bottom:1px solid var(--color-border);">
-            <tr>
-              <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--color-text-muted);">Match ID</th>
-              <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--color-text-muted);">Donation Item</th>
-              <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--color-text-muted);">Allocated Qty</th>
-              <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--color-text-muted);">Donor</th>
-              <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--color-text-muted);">Requester</th>
-              <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--color-text-muted);">Handover Mode</th>
-              <th style="padding:12px 16px;text-align:left;font-weight:700;color:var(--color-text-muted);">Deadline</th>
-              <th style="padding:12px 16px;text-align:right;font-weight:700;color:var(--color-text-muted);">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">M-101</td>
-              <td style="padding:14px 16px;font-weight:700;">Elementary Backpacks &amp; Notebook Bundle</td>
-              <td style="padding:14px 16px;">1 set</td>
-              <td style="padding:14px 16px;">Maria Santos</td>
-              <td style="padding:14px 16px;">Carlos Mendoza</td>
-              <td style="padding:14px 16px;"><span class="badge badge-neutral">Pickup</span></td>
-              <td style="padding:14px 16px;">Oct 16, 2026</td>
-              <td style="padding:14px 16px;text-align:right;"><span class="badge badge-warning">Matched</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">M-102</td>
-              <td style="padding:14px 16px;font-weight:700;">Family Rice &amp; Canned Goods Care Packs</td>
-              <td style="padding:14px 16px;">2 packs</td>
-              <td style="padding:14px 16px;">David Tan</td>
-              <td style="padding:14px 16px;">Rosalina Ramos</td>
-              <td style="padding:14px 16px;"><span class="badge badge-neutral">Both</span></td>
-              <td style="padding:14px 16px;">Oct 18, 2026</td>
-              <td style="padding:14px 16px;text-align:right;"><span class="badge badge-info">In Delivery</span></td>
-            </tr>
-            <tr>
-              <td style="padding:14px 16px;font-weight:700;color:var(--color-primary);">M-103</td>
-              <td style="padding:14px 16px;font-weight:700;">Secondary School Science Textbooks</td>
-              <td style="padding:14px 16px;">3 books</td>
-              <td style="padding:14px 16px;">Elena Cruz</td>
-              <td style="padding:14px 16px;">Teresa Lim</td>
-              <td style="padding:14px 16px;"><span class="badge badge-neutral">Direct</span></td>
-              <td style="padding:14px 16px;">Oct 08, 2026</td>
-              <td style="padding:14px 16px;text-align:right;"><span class="badge badge-success">Completed</span></td>
-            </tr>
-          </tbody>
-        </table>
+      <!-- KPI Summary -->
+      <div class="match-kpi-grid">
+        <div class="match-kpi-card">
+          <div class="match-kpi-label">Available Donations</div>
+          <div class="match-kpi-val" id="kpi-avail-don">0</div>
+        </div>
+        <div class="match-kpi-card">
+          <div class="match-kpi-label">Open Requests</div>
+          <div class="match-kpi-val" id="kpi-open-req">0</div>
+        </div>
+        <div class="match-kpi-card">
+          <div class="match-kpi-label">Strong / Potential Matches</div>
+          <div class="match-kpi-val" id="kpi-matches">0</div>
+        </div>
+        <div class="match-kpi-card">
+          <div class="match-kpi-label">Active &amp; Completed Allocations</div>
+          <div class="match-kpi-val" id="kpi-allocations">0</div>
+        </div>
+      </div>
+
+      <!-- Filter Bar -->
+      <div class="match-filter-bar">
+        <div style="flex:1;min-width:180px;">
+          <label for="f-search" style="display:block;font-size:11px;font-weight:700;color:#64748B;margin-bottom:4px;">Search</label>
+          <input id="f-search" type="text" class="form-input" placeholder="Item, keyword, explanation..." style="width:100%;height:36px;font-size:13px;">
+        </div>
+        <div style="min-width:140px;">
+          <label for="f-urgency" style="display:block;font-size:11px;font-weight:700;color:#64748B;margin-bottom:4px;">Urgency</label>
+          <select id="f-urgency" class="form-input" style="width:100%;height:36px;font-size:13px;">
+            <option value="">All Urgencies</option>
+            <option value="Critical">Critical</option>
+            <option value="High">High</option>
+            <option value="Medium">Medium</option>
+            <option value="Low">Low</option>
+          </select>
+        </div>
+        <div style="min-width:150px;">
+          <label for="f-class" style="display:block;font-size:11px;font-weight:700;color:#64748B;margin-bottom:4px;">Classification</label>
+          <select id="f-class" class="form-input" style="width:100%;height:36px;font-size:13px;">
+            <option value="">All Tiers</option>
+            <option value="Strong Match">Strong Match (85–100)</option>
+            <option value="Potential Match">Potential Match (65–84)</option>
+            <option value="Weak Match">Weak Match (40–64)</option>
+          </select>
+        </div>
+        <div style="min-width:140px;">
+          <label for="f-location" style="display:block;font-size:11px;font-weight:700;color:#64748B;margin-bottom:4px;">Location</label>
+          <input id="f-location" type="text" class="form-input" placeholder="City or barangay" style="width:100%;height:36px;font-size:13px;">
+        </div>
+        <button type="button" class="btn btn-primary" onclick="loadMatchingData()" style="height:36px;padding:0 16px;font-size:13px;">Apply</button>
+      </div>
+
+      <!-- Recommended Matches -->
+      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:12px;background:#fff;margin-bottom:28px;">
+        <div style="padding:14px 18px;border-bottom:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="margin:0;font-size:15px;font-weight:700;">Recommended Resource Matches</h2>
+          <span id="matches-count-label" style="font-size:12px;color:#64748B;">Loading...</span>
+        </div>
+        <div class="table-scroll">
+          <table class="table" style="width:100%;margin:0;border-collapse:collapse;font-size:13px;">
+            <thead style="background:#F8FAFC;border-bottom:1px solid #E2E8F0;">
+              <tr>
+                <th style="padding:12px 14px;text-align:left;">Donation Offered</th>
+                <th style="padding:12px 14px;text-align:left;">Assistance Request</th>
+                <th style="padding:12px 14px;text-align:left;">Score &amp; Explanation</th>
+                <th style="padding:12px 14px;text-align:left;">Qty / Location</th>
+                <th style="padding:12px 14px;text-align:right;">Decision</th>
+              </tr>
+            </thead>
+            <tbody id="matches-tbody">
+              <tr><td colspan="5" style="padding:28px;text-align:center;color:#64748B;">Evaluating eligible donations and requests...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Allocations Lifecycle Table -->
+      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:12px;background:#fff;">
+        <div style="padding:14px 18px;border-bottom:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
+          <h2 style="margin:0;font-size:15px;font-weight:700;">Allocation History &amp; Handover Lifecycle</h2>
+          <span id="allocations-count-label" style="font-size:12px;color:#64748B;">0 records</span>
+        </div>
+        <div class="table-scroll">
+          <table class="table" style="width:100%;margin:0;border-collapse:collapse;font-size:13px;">
+            <thead style="background:#F8FAFC;border-bottom:1px solid #E2E8F0;">
+              <tr>
+                <th style="padding:12px 14px;text-align:left;">ID</th>
+                <th style="padding:12px 14px;text-align:left;">Donation &rarr; Request</th>
+                <th style="padding:12px 14px;text-align:left;">Allocated Qty</th>
+                <th style="padding:12px 14px;text-align:left;">Score</th>
+                <th style="padding:12px 14px;text-align:left;">Status</th>
+                <th style="padding:12px 14px;text-align:right;">Lifecycle Action</th>
+              </tr>
+            </thead>
+            <tbody id="allocations-tbody">
+              <tr><td colspan="6" style="padding:28px;text-align:center;color:#64748B;">Loading allocation history...</td></tr>
+            </tbody>
+          </table>
+        </div>
       </div>
 
     </div>
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
+<!-- Approve Allocation Modal -->
+<dialog id="alloc-dialog" style="border:none;border-radius:14px;padding:0;background:transparent;max-width:440px;width:92%;">
+  <div class="card" style="padding:24px;background:#fff;border-radius:14px;border:1px solid #E2E8F0;box-shadow:0 20px 40px rgba(0,0,0,0.2);">
+    <h3 style="margin:0 0 12px;font-size:16px;font-weight:700;">Approve Resource Allocation</h3>
+    <p id="alloc-modal-summary" style="font-size:13px;color:#475569;margin:0 0 14px;"></p>
+    <form id="alloc-approve-form">
+      <input type="hidden" id="alloc-don-id">
+      <input type="hidden" id="alloc-req-id">
+      <div style="margin-bottom:12px;">
+        <label for="alloc-qty" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;">Quantity to Allocate</label>
+        <input id="alloc-qty" type="number" min="1" class="form-input" style="width:100%;height:36px;" required>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label for="alloc-notes" style="display:block;font-size:12px;font-weight:700;margin-bottom:4px;">Coordination Notes (Optional)</label>
+        <textarea id="alloc-notes" rows="2" class="form-input" style="width:100%;" placeholder="Handover instructions or pickup point..."></textarea>
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('alloc-dialog').close()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="alloc-submit-btn">Confirm Allocation</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
 <script src="../js/admin-portal.js"></script>
+<script>
+function escapeHtml(str) {
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
 
+function getActionsBase() {
+  if (window.icd_actionsBase) return window.icd_actionsBase();
+  const p = window.location.pathname;
+  const idx = p.indexOf('/frontend/');
+  return idx !== -1 ? p.substring(0, idx) : '';
+}
 
-  <!-- Mobile sidebar toggle JS -->
-  <script>
-  (function() {
-    var sidebar = document.querySelector('.admin-sidebar, .user-sidebar');
-    var backdrop = document.getElementById('sidebarBackdrop');
-    var toggleBtn = document.getElementById('adminSidebarToggle') || document.getElementById('userSidebarToggle');
-    function openSidebar() { if(sidebar) sidebar.classList.add('sidebar-open'); if(backdrop) backdrop.classList.add('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','true'); }
-    function closeSidebar() { if(sidebar) sidebar.classList.remove('sidebar-open'); if(backdrop) backdrop.classList.remove('is-active'); if(toggleBtn) toggleBtn.setAttribute('aria-expanded','false'); }
-    if(toggleBtn) toggleBtn.addEventListener('click', function() { sidebar && sidebar.classList.contains('sidebar-open') ? closeSidebar() : openSidebar(); });
-    if(backdrop) backdrop.addEventListener('click', closeSidebar);
-    document.addEventListener('keydown', function(e) { if(e.key==='Escape') closeSidebar(); });
-  })();
-  </script>
+function getAuthHeaders() {
+  const h = { 'Accept': 'application/json', 'Content-Type': 'application/json' };
+  const t = localStorage.getItem('icd_token');
+  if (t) h['Authorization'] = 'Bearer ' + t;
+  return h;
+}
+
+async function loadMatchingData() {
+  const params = new URLSearchParams();
+  const s = document.getElementById('f-search').value.trim();
+  const u = document.getElementById('f-urgency').value;
+  const c = document.getElementById('f-class').value;
+  const l = document.getElementById('f-location').value.trim();
+  if (s) params.set('search', s);
+  if (u) params.set('urgency', u);
+  if (c) params.set('classification', c);
+  if (l) params.set('location', l);
+
+  try {
+    const res = await fetch(getActionsBase() + '/actions/admin_matching.php?' + params.toString(), {
+      credentials: 'include',
+      headers: getAuthHeaders()
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || 'Unable to load matching data.');
+
+    const sum = data.summary || {};
+    document.getElementById('kpi-avail-don').textContent = sum.available_donations ?? 0;
+    document.getElementById('kpi-open-req').textContent = sum.open_requests ?? 0;
+    document.getElementById('kpi-matches').textContent = (sum.strong_matches ?? 0) + (sum.potential_matches ?? 0);
+    document.getElementById('kpi-allocations').textContent = sum.recent_allocations_count ?? 0;
+
+    renderMatches(data.matches || []);
+    renderAllocations(data.allocations || []);
+  } catch (err) {
+    document.getElementById('matches-tbody').innerHTML = `<tr><td colspan="5" style="padding:24px;text-align:center;color:#DC2626;">${escapeHtml(err.message)}</td></tr>`;
+  }
+}
+
+function renderMatches(matches) {
+  const tbody = document.getElementById('matches-tbody');
+  document.getElementById('matches-count-label').textContent = `${matches.length} recommendation(s)`;
+
+  if (!matches.length) {
+    tbody.innerHTML = `<tr><td colspan="5" style="padding:32px;text-align:center;color:#64748B;">
+      No eligible resource matches found. Matches are computed automatically from verified donations and open assistance requests.
+    </td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = matches.map(m => {
+    const cls = m.classification === 'Strong Match' ? 'score-strong' : (m.classification === 'Potential Match' ? 'score-potential' : 'score-weak');
+    return `
+      <tr style="border-bottom:1px solid #F1F5F9;">
+        <td style="padding:12px 14px;">
+          <div style="font-weight:700;color:#0F172A;">${escapeHtml(m.donation_title)}</div>
+          <div style="font-size:12px;color:#64748B;">${escapeHtml(m.donation_category)} &bull; Condition: ${escapeHtml(m.donation_condition)}</div>
+        </td>
+        <td style="padding:12px 14px;">
+          <div style="font-weight:700;color:#1E40AF;">${escapeHtml(m.request_title)}</div>
+          <div style="font-size:12px;color:#64748B;">Urgency: <strong>${escapeHtml(m.request_urgency)}</strong> &bull; ${escapeHtml(m.request_status)}</div>
+        </td>
+        <td style="padding:12px 14px;max-width:300px;">
+          <span class="score-pill ${cls}">${m.match_score}/100 &middot; ${escapeHtml(m.classification)}</span>
+          <div style="font-size:11.5px;color:#475569;margin-top:5px;">${escapeHtml(m.explanation)}</div>
+        </td>
+        <td style="padding:12px 14px;">
+          <div><strong>${m.donation_available_qty}</strong> avail / <strong>${m.request_needed_qty}</strong> needed ${m.is_partial ? '<span class="badge badge-warning">Partial</span>' : ''}</div>
+          <div style="font-size:11.5px;color:#64748B;">${escapeHtml(m.location_compatibility)}</div>
+        </td>
+        <td style="padding:12px 14px;text-align:right;white-space:nowrap;">
+          <button type="button" class="btn btn-primary" style="font-size:12px;padding:5px 10px;"
+            onclick='openAllocModal(${JSON.stringify(m)})'>Approve</button>
+          <button type="button" class="btn btn-outline" style="font-size:12px;padding:5px 10px;color:#DC2626;"
+            onclick="rejectMatch(${m.donation_id}, ${m.request_id})">Reject</button>
+        </td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function renderAllocations(allocs) {
+  const tbody = document.getElementById('allocations-tbody');
+  document.getElementById('allocations-count-label').textContent = `${allocs.length} record(s)`;
+
+  if (!allocs.length) {
+    tbody.innerHTML = `<tr><td colspan="6" style="padding:28px;text-align:center;color:#64748B;">No allocation records yet.</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = allocs.map(a => {
+    let actionsHtml = '<span style="font-size:12px;color:#94A3B8;">Finalized</span>';
+    if (a.status === 'approved') {
+      actionsHtml = `<button class="btn btn-outline" style="font-size:11.5px;padding:4px 8px;" onclick="transitionAlloc(${a.id}, 'preparing')">Preparing</button>
+                     <button class="btn btn-primary" style="font-size:11.5px;padding:4px 8px;" onclick="transitionAlloc(${a.id}, 'completed')">Complete</button>
+                     <button class="btn btn-outline" style="font-size:11.5px;padding:4px 8px;color:#DC2626;" onclick="transitionAlloc(${a.id}, 'cancelled')">Cancel</button>`;
+    } else if (a.status === 'preparing') {
+      actionsHtml = `<button class="btn btn-outline" style="font-size:11.5px;padding:4px 8px;" onclick="transitionAlloc(${a.id}, 'ready_for_handover')">Ready</button>
+                     <button class="btn btn-primary" style="font-size:11.5px;padding:4px 8px;" onclick="transitionAlloc(${a.id}, 'completed')">Complete</button>`;
+    } else if (a.status === 'ready_for_handover') {
+      actionsHtml = `<button class="btn btn-primary" style="font-size:11.5px;padding:4px 8px;" onclick="transitionAlloc(${a.id}, 'completed')">Complete Handover</button>`;
+    }
+
+    return `
+      <tr style="border-bottom:1px solid #F1F5F9;">
+        <td style="padding:12px 14px;font-weight:700;">#${a.id}</td>
+        <td style="padding:12px 14px;">
+          <div><strong>${escapeHtml(a.donation_title)}</strong> &rarr; ${escapeHtml(a.request_title)}</div>
+          <div style="font-size:11.5px;color:#64748B;">Donor: ${escapeHtml(a.donor_name || 'N/A')} &bull; Requester: ${escapeHtml(a.requester_name || 'N/A')}</div>
+        </td>
+        <td style="padding:12px 14px;">${a.allocated_quantity} ${escapeHtml(a.donation_unit || 'items')}</td>
+        <td style="padding:12px 14px;">${a.match_score}/100</td>
+        <td style="padding:12px 14px;"><span class="badge badge-neutral">${escapeHtml(a.status)}</span></td>
+        <td style="padding:12px 14px;text-align:right;white-space:nowrap;">${actionsHtml}</td>
+      </tr>
+    `;
+  }).join('');
+}
+
+function openAllocModal(m) {
+  document.getElementById('alloc-don-id').value = m.donation_id;
+  document.getElementById('alloc-req-id').value = m.request_id;
+  const qtyInput = document.getElementById('alloc-qty');
+  qtyInput.max = m.suggested_qty;
+  qtyInput.value = m.suggested_qty;
+  document.getElementById('alloc-modal-summary').textContent = `Matching "${m.donation_title}" (${m.donation_available_qty} available) to "${m.request_title}" (${m.request_needed_qty} needed).`;
+  document.getElementById('alloc-dialog').showModal();
+}
+
+document.getElementById('alloc-approve-form').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('alloc-submit-btn');
+  btn.disabled = true;
+  try {
+    const res = await fetch(getActionsBase() + '/actions/admin_matching.php', {
+      method: 'POST',
+      credentials: 'include',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({
+        action: 'approve_allocation',
+        donation_id: parseInt(document.getElementById('alloc-don-id').value, 10),
+        request_id: parseInt(document.getElementById('alloc-req-id').value, 10),
+        allocated_quantity: parseInt(document.getElementById('alloc-qty').value, 10),
+        notes: document.getElementById('alloc-notes').value.trim()
+      })
+    });
+    const data = await res.json();
+    if (!res.ok || !data.success) throw new Error(data.message || 'Allocation failed.');
+    document.getElementById('alloc-dialog').close();
+    if (window.showAdminFlash) window.showAdminFlash('success', data.message);
+    loadMatchingData();
+  } catch (err) {
+    alert(err.message);
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+async function rejectMatch(donId, reqId) {
+  const reason = prompt('Reason for dismissing this match recommendation:', 'Incompatible item specifications');
+  if (reason === null) return;
+  const res = await fetch(getActionsBase() + '/actions/admin_matching.php', {
+    method: 'POST',
+    credentials: 'include',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ action: 'reject_recommendation', donation_id: donId, request_id: reqId, reason })
+  });
+  const data = await res.json();
+  if (data.success) {
+    if (window.showAdminFlash) window.showAdminFlash('success', data.message);
+    loadMatchingData();
+  } else {
+    alert(data.message || 'Action failed.');
+  }
+}
+
+async function transitionAlloc(allocId, status) {
+  const res = await fetch(getActionsBase() + '/actions/admin_matching.php', {
+    method: 'POST',
+    credentials: 'include',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ action: 'update_status', allocation_id: allocId, status })
+  });
+  const data = await res.json();
+  if (data.success) {
+    if (window.showAdminFlash) window.showAdminFlash('success', data.message);
+    loadMatchingData();
+  } else {
+    alert(data.message || 'Status update failed.');
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadMatchingData);
+</script>
 </body>
 </html>

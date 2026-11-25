@@ -203,6 +203,7 @@
       <div class="card" style="padding:32px;border-radius:12px;border:1px solid var(--border, #E2E8F0);background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
         
         <form id="assistance-request-form">
+          <input type="text" name="website_url" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
           <input type="hidden" id="req-donation-id" value="2">
           
           <!-- 1. Resource Request Details -->
@@ -319,7 +320,6 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/forms.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
@@ -337,42 +337,51 @@
       const addrInput = document.getElementById('req-address');
 
       if (fullNameInput && !fullNameInput.value) {
-        fullNameInput.value = u.name || (u.first_name ? (u.first_name + ' ' + (u.last_name || '')).trim() : 'Maria Santos');
+        fullNameInput.value = u.name || (u.first_name ? (u.first_name + ' ' + (u.last_name || '')).trim() : '');
       }
       if (contactInput && !contactInput.value) {
-        contactInput.value = u.phone || '0917-555-0192';
+        contactInput.value = u.phone || '';
       }
       if (cityInput && !cityInput.value) {
-        cityInput.value = u.city || 'Quezon City';
+        cityInput.value = u.city || '';
       }
       if (brgyInput && !brgyInput.value) {
-        brgyInput.value = u.barangay || 'Barangay Central';
+        brgyInput.value = u.barangay || '';
       }
       if (addrInput && !addrInput.value) {
-        addrInput.value = u.address || 'Block 12 Lot 4, Community Avenue';
+        addrInput.value = u.address || '';
       }
     } catch(e) {}
   }
 
-  // 2. Resolve donation details from query param (?id=...)
-  function initItemPreview() {
+  // 2. Resolve donation details from query param (?id=...) from live database
+  async function initItemPreview() {
     const params = new URLSearchParams(window.location.search);
     const donationId = params.get('id') || params.get('donation_id');
     if (donationId) {
       document.getElementById('req-donation-id').value = donationId;
-      if (window.MOCK_DATA && window.MOCK_DATA.browseDonations) {
-        const item = window.MOCK_DATA.browseDonations.find(d => String(d.id) === String(donationId));
+      const actionsBase = (typeof window.icd_actionsBase === 'function' ? window.icd_actionsBase() : '');
+      try {
+        const res = await fetch(`${actionsBase}/actions/user_donations.php?id=${encodeURIComponent(donationId)}`, {
+          credentials: 'same-origin',
+          headers: { 'Accept': 'application/json' }
+        });
+        const data = await res.json();
+        const item = data && (data.donation || data.data);
         if (item) {
           document.getElementById('preview-item-title').textContent = item.title;
-          document.getElementById('preview-item-category').textContent = item.categoryName || 'Surplus Item';
-          document.getElementById('preview-donor-name').textContent = item.donorName || 'Community Donor';
-          document.getElementById('preview-avail-qty').textContent = item.availableQuantity + ' ' + (item.unit || 'units');
-          document.getElementById('preview-donor-location').textContent = item.location || 'Metro Manila';
-          const maxQ = Math.max(1, item.availableQuantity || 1);
+          document.getElementById('preview-item-category').textContent = item.category || item.category_name || 'Surplus Item';
+          document.getElementById('preview-donor-name').textContent = item.donor_name || 'Community Donor';
+          document.getElementById('preview-avail-qty').textContent = (item.quantity || 1) + ' ' + (item.unit || 'units');
+          document.getElementById('preview-donor-location').textContent = (item.pickup_barangay ? item.pickup_barangay + ', ' : '') + (item.pickup_city || 'Metro Manila');
+          const maxQ = Math.max(1, item.quantity || 1);
           const qInput = document.getElementById('req-quantity');
-          qInput.max = maxQ;
-          document.getElementById('quantity-hint').textContent = 'Maximum allowed based on available stock: ' + maxQ + ' ' + (item.unit || 'units');
+          if (qInput) qInput.max = maxQ;
+          const qHint = document.getElementById('quantity-hint');
+          if (qHint) qHint.textContent = 'Maximum allowed based on available stock: ' + maxQ + ' ' + (item.unit || 'units');
         }
+      } catch (e) {
+        console.warn('Could not load donation preview from database:', e);
       }
     }
   }

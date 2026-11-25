@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -191,7 +191,13 @@
 
         <!-- Left: Account Information -->
         <div class="card" style="padding:24px;border:1px solid var(--color-border);border-radius:var(--radius-lg);background:#fff;">
-          <h2 style="font-size:16px;font-weight:700;margin:0 0 16px;color:var(--color-primary);">Account Information</h2>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;gap:8px;flex-wrap:wrap;">
+            <h2 style="font-size:16px;font-weight:700;margin:0;color:var(--color-primary);">Account Information</h2>
+            <div style="display:flex;gap:8px;">
+              <button type="button" class="btn btn-outline" onclick="openEditUserModal()" style="font-size:12px;padding:5px 12px;">Edit Details</button>
+              <button type="button" id="btn-reset-user-pw" class="btn btn-outline" onclick="initiateUserReset()" style="font-size:12px;padding:5px 12px;display:none;">Reset Password</button>
+            </div>
+          </div>
 
           <table style="width:100%;font-size:13.5px;border-collapse:collapse;">
             <tr style="border-bottom:1px solid var(--color-border-light);">
@@ -234,22 +240,18 @@
         <div style="display:flex;flex-direction:column;gap:20px;">
 
           <!-- Summary Counters -->
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
             <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
-              <div id="cnt-donations" style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">2</div>
+              <div id="cnt-donations" style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">0</div>
               <div style="font-size:11.5px;color:var(--color-text-muted);">Donations</div>
             </div>
             <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
-              <div style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">1</div>
+              <div id="cnt-requests" style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">0</div>
               <div style="font-size:11.5px;color:var(--color-text-muted);">Requests</div>
             </div>
             <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
-              <div style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:var(--color-primary);">3</div>
-              <div style="font-size:11.5px;color:var(--color-text-muted);">Transactions</div>
-            </div>
-            <div class="card" style="padding:14px;text-align:center;border:1px solid var(--color-border);border-radius:var(--radius-md);background:#fff;">
-              <div style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:#DC2626;">0</div>
-              <div style="font-size:11.5px;color:var(--color-text-muted);">Reports</div>
+              <div id="cnt-total-activity" style="font-family:var(--font-brand);font-size:24px;font-weight:700;color:#16A34A;">0</div>
+              <div style="font-size:11.5px;color:var(--color-text-muted);">Total Activity</div>
             </div>
           </div>
 
@@ -487,6 +489,18 @@
     if (!container) return;
 
     document.getElementById('cnt-donations').textContent = userDonations.length;
+    const reqCntEl = document.getElementById('cnt-requests');
+    if (reqCntEl) reqCntEl.textContent = (typeof userRequests !== 'undefined' ? userRequests.length : 0);
+    const totEl = document.getElementById('cnt-total-activity');
+    if (totEl) totEl.textContent = userDonations.length + (typeof userRequests !== 'undefined' ? userRequests.length : 0);
+
+    try {
+      const me = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      const resetBtn = document.getElementById('btn-reset-user-pw');
+      if (resetBtn && ['head_admin', 'admin', 'superadmin'].includes(me.role)) {
+        resetBtn.style.display = 'inline-flex';
+      }
+    } catch(e) {}
 
     if (userDonations.length === 0) {
       container.innerHTML = '<p style="color:var(--color-text-muted);font-size:13px;margin:0;">No donations recorded for this account in the database.</p>';
@@ -599,6 +613,85 @@
   }
 
   document.addEventListener('DOMContentLoaded', loadUserProfile);
+
+  function openEditUserModal() {
+    if (!targetUser) return;
+    let dlg = document.getElementById('edit-user-dialog');
+    if (!dlg) {
+      dlg = document.createElement('dialog');
+      dlg.id = 'edit-user-dialog';
+      dlg.style.cssText = 'border:none;border-radius:12px;padding:0;background:transparent;max-width:480px;width:92%;';
+      dlg.innerHTML = `
+        <div class="card" style="padding:24px;background:#fff;border-radius:12px;border:1px solid var(--color-border);box-shadow:0 20px 45px rgba(0,0,0,0.2);">
+          <h3 style="margin:0 0 16px;font-size:17px;font-weight:700;">Edit User Profile</h3>
+          <form onsubmit="handleEditUserSubmit(event)">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px;">
+              <div><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">First Name *</label><input id="eu-first" type="text" class="form-input" style="width:100%;height:36px;" required></div>
+              <div><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Last Name *</label><input id="eu-last" type="text" class="form-input" style="width:100%;height:36px;" required></div>
+            </div>
+            <div style="margin-bottom:12px;"><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Email *</label><input id="eu-email" type="email" class="form-input" style="width:100%;height:36px;" required></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;">
+              <div><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Phone</label><input id="eu-phone" type="text" class="form-input" style="width:100%;height:36px;"></div>
+              <div><label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">City</label><input id="eu-city" type="text" class="form-input" style="width:100%;height:36px;"></div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;gap:10px;">
+              <button type="button" class="btn btn-outline" onclick="document.getElementById('edit-user-dialog').close()">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Changes</button>
+            </div>
+          </form>
+        </div>`;
+      document.body.appendChild(dlg);
+    }
+    const parts = (targetUser.name || '').trim().split(/\s+/);
+    document.getElementById('eu-first').value = targetUser.first_name || parts[0] || '';
+    document.getElementById('eu-last').value = targetUser.last_name || parts.slice(1).join(' ') || '';
+    document.getElementById('eu-email').value = targetUser.email || '';
+    document.getElementById('eu-phone').value = targetUser.phone || '';
+    document.getElementById('eu-city').value = targetUser.city || '';
+    dlg.showModal();
+  }
+
+  async function handleEditUserSubmit(e) {
+    e.preventDefault();
+    if (!targetUser) return;
+    const fn = document.getElementById('eu-first').value.trim();
+    const ln = document.getElementById('eu-last').value.trim();
+    const email = document.getElementById('eu-email').value.trim();
+    const phone = document.getElementById('eu-phone').value.trim();
+    const city = document.getElementById('eu-city').value.trim();
+    try {
+      const res = await window.AdminAPI.updateUserAccount({
+        action: 'update_user',
+        id: targetUser.id,
+        first_name: fn,
+        last_name: ln,
+        name: `${fn} ${ln}`.trim(),
+        email,
+        phone,
+        city
+      });
+      if (!res.success) throw new Error(res.message || 'Update failed.');
+      document.getElementById('edit-user-dialog').close();
+      window.showAdminFlash('success', res.message);
+      loadUserProfile();
+    } catch (err) {
+      window.showAdminFlash('error', err.message);
+    }
+  }
+
+  async function initiateUserReset() {
+    if (!targetUser) return;
+    if (!confirm(`Generate a single-use password reset link for ${targetUser.name}?`)) return;
+    try {
+      const res = await window.AdminAPI.updateUserAccount({ action: 'initiate_password_reset', id: targetUser.id });
+      if (!res.success) throw new Error(res.message || 'Reset failed.');
+      const url = window.location.origin + res.reset_url;
+      prompt('Single-use password reset link (expires in 1 hour):', url);
+      window.showAdminFlash('success', res.message);
+    } catch (err) {
+      window.showAdminFlash('error', err.message);
+    }
+  }
 </script>
 
 

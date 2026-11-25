@@ -26,7 +26,7 @@ if ($pdo === null) {
     exit;
 }
 
-$admin = requireAdminApi($pdo);
+$admin = requireAdminRoleApi($pdo, ['donation_admin']);
 
 // ─────────────────────────────────────────────────────────────
 // POST: Confirm Handover / Release Goods

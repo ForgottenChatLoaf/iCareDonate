@@ -211,23 +211,23 @@
       <div class="stat-grid">
         <div class="stat-card" style="--card-accent:#1F4FA3;">
           <div class="stat-label">Total Registered Users</div>
-          <div class="stat-value" id="stat-total-users">248</div>
-          <div class="stat-change stat-change--up">+12 this month</div>
+          <div class="stat-value" id="stat-total-users">0</div>
+          <div class="stat-sub" id="stat-total-users-sub">Live verified accounts</div>
         </div>
         <div class="stat-card" style="--card-accent:#F2B84B;">
           <div class="stat-label">Active Donations</div>
-          <div class="stat-value" id="stat-active-donations">42</div>
-          <div class="stat-change stat-change--up">+5 this week</div>
+          <div class="stat-value" id="stat-active-donations">0</div>
+          <div class="stat-sub" id="stat-active-donations-sub">Available in catalog</div>
         </div>
         <div class="stat-card" style="--card-accent:#16A34A;">
           <div class="stat-label">Fulfilled Transactions</div>
-          <div class="stat-value" id="stat-fulfilled-tx">173</div>
-          <div class="stat-change stat-change--up">+29 this month</div>
+          <div class="stat-value" id="stat-fulfilled-tx">0</div>
+          <div class="stat-sub" id="stat-fulfilled-tx-sub">Successfully distributed</div>
         </div>
         <div class="stat-card" style="--card-accent:#9333EA;">
           <div class="stat-label">Beneficiaries Served</div>
-          <div class="stat-value" id="stat-beneficiaries">319</div>
-          <div class="stat-change stat-change--up">+41 this month</div>
+          <div class="stat-value" id="stat-beneficiaries">0</div>
+          <div class="stat-sub" id="stat-beneficiaries-sub">Distinct recipients aided</div>
         </div>
       </div>
 
@@ -252,12 +252,15 @@
             </div>
           </div>
 
-          <!-- Bar Chart Container -->
-          <div id="admin-bar-chart-wrap" style="position:relative;height:180px;display:flex;align-items:flex-end;gap:16px;padding:10px 10px 24px;border-bottom:1px solid var(--color-border);">
-            <div style="margin:auto;color:var(--color-text-muted);font-size:13px;">Loading operational analytics...</div>
+          <!-- Bar Chart Container (Chart.js) -->
+          <div id="admin-bar-chart-wrap" style="position:relative;height:220px;width:100%;">
+            <canvas id="adminVelocityChart" aria-label="Monthly Platform Operations Velocity Chart"></canvas>
+            <div id="adminVelocityEmpty" style="display:none;position:absolute;inset:0;align-items:center;justify-content:center;flex-direction:column;text-align:center;color:var(--color-text-muted);font-size:13px;">
+              <div style="font-weight:600;margin-bottom:4px;color:var(--color-text);">No operations recorded yet</div>
+              <div style="font-size:12px;">Monthly bars will render in real time as donations and requests are submitted.</div>
+            </div>
           </div>
-          <div id="admin-bar-chart-labels" style="display:flex;gap:16px;padding:8px 10px 0;text-align:center;">
-          </div>
+          <div id="admin-bar-chart-labels" style="display:none;"></div>
         </div>
 
         <!-- Breakdown by Role & Fulfillment -->
@@ -266,16 +269,16 @@
             <div style="font-size:14px;font-weight:700;margin-bottom:16px;">User Breakdown by Role</div>
             <div style="display:flex;flex-direction:column;gap:12px;">
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Donors</span><span style="font-weight:700;color:var(--color-primary);" id="stat-donors-count">156</span></div>
-                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-donors-bar" style="width:63%;height:8px;background:var(--color-primary);border-radius:4px;"></div></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Donors</span><span style="font-weight:700;color:var(--color-primary);" id="stat-donors-count">0</span></div>
+                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-donors-bar" style="width:0%;height:8px;background:var(--color-primary);border-radius:4px;transition:width 0.4s ease;"></div></div>
               </div>
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Beneficiaries</span><span style="font-weight:700;color:#F2B84B;" id="stat-beneficiaries-count">84</span></div>
-                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-beneficiaries-bar" style="width:34%;height:8px;background:#F2B84B;border-radius:4px;"></div></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Beneficiaries</span><span style="font-weight:700;color:#F2B84B;" id="stat-beneficiaries-count">0</span></div>
+                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-beneficiaries-bar" style="width:0%;height:8px;background:#F2B84B;border-radius:4px;transition:width 0.4s ease;"></div></div>
               </div>
               <div>
-                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Both Roles</span><span style="font-weight:700;color:#9333EA;" id="stat-both-count">8</span></div>
-                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-both-bar" style="width:3%;height:8px;background:#9333EA;border-radius:4px;"></div></div>
+                <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:600;">Both Roles</span><span style="font-weight:700;color:#9333EA;" id="stat-both-count">0</span></div>
+                <div style="background:#E5E7EB;border-radius:4px;height:8px;"><div id="stat-both-bar" style="width:0%;height:8px;background:#9333EA;border-radius:4px;transition:width 0.4s ease;"></div></div>
               </div>
             </div>
           </div>
@@ -302,34 +305,11 @@
               <th style="padding:11px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Volume Share</th>
             </tr>
           </thead>
-          <tbody>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:13px 16px;font-weight:600;">Food &amp; Groceries</td>
-              <td style="padding:13px 16px;text-align:center;font-weight:700;">14</td>
-              <td style="padding:13px 16px;text-align:center;">52</td>
-              <td style="padding:13px 16px;text-align:center;">8</td>
-              <td style="padding:13px 16px;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:42%;height:8px;background:#1F4FA3;border-radius:4px;"></div></div><span style="font-size:11.5px;color:var(--color-text-muted);">42%</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:13px 16px;font-weight:600;">Clothing</td>
-              <td style="padding:13px 16px;text-align:center;font-weight:700;">9</td>
-              <td style="padding:13px 16px;text-align:center;">41</td>
-              <td style="padding:13px 16px;text-align:center;">6</td>
-              <td style="padding:13px 16px;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:29%;height:8px;background:#F2B84B;border-radius:4px;"></div></div><span style="font-size:11.5px;color:var(--color-text-muted);">29%</span></td>
-            </tr>
-            <tr style="border-bottom:1px solid var(--color-border-light);">
-              <td style="padding:13px 16px;font-weight:600;">School Supplies</td>
-              <td style="padding:13px 16px;text-align:center;font-weight:700;">11</td>
-              <td style="padding:13px 16px;text-align:center;">39</td>
-              <td style="padding:13px 16px;text-align:center;">4</td>
-              <td style="padding:13px 16px;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:18%;height:8px;background:#16A34A;border-radius:4px;"></div></div><span style="font-size:11.5px;color:var(--color-text-muted);">18%</span></td>
-            </tr>
+          <tbody id="stats-category-tbody">
             <tr>
-              <td style="padding:13px 16px;font-weight:600;">Medical Supplies</td>
-              <td style="padding:13px 16px;text-align:center;font-weight:700;">6</td>
-              <td style="padding:13px 16px;text-align:center;">28</td>
-              <td style="padding:13px 16px;text-align:center;">2</td>
-              <td style="padding:13px 16px;"><div style="background:#E5E7EB;border-radius:4px;height:8px;"><div style="width:11%;height:8px;background:#9333EA;border-radius:4px;"></div></div><span style="font-size:11.5px;color:var(--color-text-muted);">11%</span></td>
+              <td colspan="5" style="padding:32px 16px;text-align:center;color:var(--color-text-muted);font-size:13px;">
+                Loading live category statistics...
+              </td>
             </tr>
           </tbody>
         </table>
@@ -365,22 +345,22 @@
             <div style="display:flex;align-items:center;gap:12px;font-size:13px;border-bottom:1px solid var(--color-border-light);padding-bottom:10px;">
               <div style="width:10px;height:10px;background:#16A34A;border-radius:50%;flex-shrink:0;"></div>
               <span style="font-weight:600;flex:1;">Request Fulfillment Rate</span>
-              <span style="font-weight:800;color:#16A34A;">82%</span>
+              <span style="font-weight:800;color:#16A34A;" id="stat-health-fulfillment">0%</span>
             </div>
             <div style="display:flex;align-items:center;gap:12px;font-size:13px;border-bottom:1px solid var(--color-border-light);padding-bottom:10px;">
               <div style="width:10px;height:10px;background:#16A34A;border-radius:50%;flex-shrink:0;"></div>
-              <span style="font-weight:600;flex:1;">Avg. Response Time</span>
-              <span style="font-weight:800;color:#16A34A;">1.4 days</span>
+              <span style="font-weight:600;flex:1;">Avg. Verification Response</span>
+              <span style="font-weight:800;color:#16A34A;" id="stat-health-response">Live</span>
             </div>
             <div style="display:flex;align-items:center;gap:12px;font-size:13px;border-bottom:1px solid var(--color-border-light);padding-bottom:10px;">
               <div style="width:10px;height:10px;background:#D97706;border-radius:50%;flex-shrink:0;"></div>
-              <span style="font-weight:600;flex:1;">Claim Deadline Compliance</span>
-              <span style="font-weight:800;color:#D97706;">74%</span>
+              <span style="font-weight:600;flex:1;">Active Transaction Pipeline</span>
+              <span style="font-weight:800;color:#D97706;" id="stat-health-pipeline">0 Active</span>
             </div>
             <div style="display:flex;align-items:center;gap:12px;font-size:13px;">
               <div style="width:10px;height:10px;background:#16A34A;border-radius:50%;flex-shrink:0;"></div>
-              <span style="font-weight:600;flex:1;">Verified Donors</span>
-              <span style="font-weight:800;color:#16A34A;">91%</span>
+              <span style="font-weight:600;flex:1;">Verified Donors Standing</span>
+              <span style="font-weight:800;color:#16A34A;" id="stat-health-verified">100%</span>
             </div>
           </div>
         </div>
@@ -390,9 +370,11 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
+<script src="../assets/vendor/chart.umd.min.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
+  let velocityChartInstance = null;
+
   function escapeHtml(str) {
     if (str === null || str === undefined) return '';
     return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -402,88 +384,190 @@
   const yLabel = document.getElementById('statsYearLabel');
   if (yLabel) yLabel.textContent = new Date().getFullYear();
 
-  // Render Monthly Operations Velocity Bar Graph (Donations vs Requests)
+  // Render Monthly Operations Velocity Bar Graph using Chart.js (Donations vs Requests from real DB records)
   function renderMonthlyTrends(trends) {
-    const barChartWrap = document.getElementById('admin-bar-chart-wrap');
-    const barChartLabels = document.getElementById('admin-bar-chart-labels');
-    if (!barChartWrap || !barChartLabels) return;
+    const canvas = document.getElementById('adminVelocityChart');
+    const emptyEl = document.getElementById('adminVelocityEmpty');
+    if (!canvas) return;
 
-    if (!trends || trends.length === 0) {
-      trends = [
-        { label: 'May', donations: 8, requests: 5 },
-        { label: 'Jun', donations: 14, requests: 10 },
-        { label: 'Jul', donations: 19, requests: 12 },
-        { label: 'Aug', donations: 22, requests: 16 },
-        { label: 'Sep', donations: 25, requests: 18 },
-        { label: 'Oct', donations: 21, requests: 15 }
-      ];
+    const rows = Array.isArray(trends) ? trends : [];
+    const allCounts = rows.flatMap(t => [Number(t.donations || 0), Number(t.requests || 0)]);
+    const totalActivity = allCounts.reduce((a, b) => a + b, 0);
+
+    if (rows.length === 0 || totalActivity === 0) {
+      canvas.style.display = 'none';
+      if (emptyEl) emptyEl.style.display = 'flex';
+      if (velocityChartInstance) {
+        velocityChartInstance.destroy();
+        velocityChartInstance = null;
+      }
+      return;
     }
 
-    const allCounts = trends.flatMap(t => [t.donations || 0, t.requests || 0]);
-    const maxVal = Math.max(5, ...allCounts);
+    canvas.style.display = 'block';
+    if (emptyEl) emptyEl.style.display = 'none';
 
-    barChartWrap.innerHTML = trends.map(t => {
-      const don = t.donations || 0;
-      const req = t.requests || 0;
-      const donPct = Math.max(8, Math.round((don / maxVal) * 100));
-      const reqPct = Math.max(8, Math.round((req / maxVal) * 100));
+    const labels = rows.map(t => t.label || '');
+    const donationsData = rows.map(t => Number(t.donations || 0));
+    const requestsData = rows.map(t => Number(t.requests || 0));
 
-      return `
-        <div class="chart-col">
-          <div style="display:flex;align-items:flex-end;gap:6px;height:100%;width:100%;justify-content:center;">
-            <div class="chart-bar" style="width:40%;max-width:20px;height:${donPct}%;background:linear-gradient(180deg, #3B82F6 0%, #1F4FA3 100%);border-radius:6px 6px 0 0;">
-              <span class="bar-tooltip">${don} Donations</span>
-            </div>
-            <div class="chart-bar" style="width:40%;max-width:20px;height:${reqPct}%;background:linear-gradient(180deg, #F87171 0%, #E0553D 100%);border-radius:6px 6px 0 0;">
-              <span class="bar-tooltip">${req} Requests</span>
-            </div>
-          </div>
-        </div>
-      `;
-    }).join('');
+    if (velocityChartInstance) {
+      velocityChartInstance.destroy();
+    }
 
-    barChartLabels.innerHTML = trends.map(t => `
-      <div style="flex:1;font-size:12px;font-weight:700;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:0.04em;">
-        ${escapeHtml(t.label || '')}
-      </div>
-    `).join('');
+    if (typeof window.Chart === 'function') {
+      velocityChartInstance = new window.Chart(canvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Donations',
+              data: donationsData,
+              backgroundColor: '#1F4FA3',
+              borderRadius: 6,
+              maxBarThickness: 28
+            },
+            {
+              label: 'Requests',
+              data: requestsData,
+              backgroundColor: '#E0553D',
+              borderRadius: 6,
+              maxBarThickness: 28
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#0F172A',
+              padding: 10,
+              cornerRadius: 8
+            }
+          },
+          scales: {
+            x: {
+              grid: { display: false },
+              ticks: { color: '#64748B', font: { size: 12, weight: '600' } }
+            },
+            y: {
+              beginAtZero: true,
+              ticks: { precision: 0, color: '#64748B', font: { size: 11 } },
+              grid: { color: '#F1F5F9' }
+            }
+          }
+        }
+      });
+    }
   }
-
-  // Initial demo render
-  renderMonthlyTrends();
 
   // Hydrate with live database statistics
   if (window.AdminAPI) {
     window.AdminAPI.getDashboard().then(res => {
-      if (!res) return;
+      if (!res || !res.success) return;
 
-      if (res.monthly_trends && res.monthly_trends.length > 0) {
-        renderMonthlyTrends(res.monthly_trends);
-      }
+      // 1. Render Monthly Trends
+      renderMonthlyTrends(res.monthly_trends || []);
 
+      // 2. Hydrate KPIs
       if (res.counts) {
         const c = res.counts;
         const u = document.getElementById('stat-total-users');
         if (u && c.total_members != null) u.textContent = c.total_members;
         const d = document.getElementById('stat-active-donations');
-        if (d && c.active_transactions != null) d.textContent = c.active_transactions;
+        if (d && c.active_donations != null) d.textContent = c.active_donations;
+        const f = document.getElementById('stat-fulfilled-tx');
+        if (f && c.fulfilled_transactions != null) f.textContent = c.fulfilled_transactions;
+        const b = document.getElementById('stat-beneficiaries');
+        if (b && c.beneficiaries_served != null) b.textContent = c.beneficiaries_served;
+
+        // Pending Actions Queue
         const pd = document.getElementById('stat-pending-donations');
         if (pd && c.pending_donations != null) pd.textContent = c.pending_donations;
         const pr = document.getElementById('stat-pending-proofs');
         if (pr && c.pending_requests != null) pr.textContent = c.pending_requests;
+        const ui = document.getElementById('stat-unscheduled-interviews');
+        if (ui && c.unscheduled_interviews != null) ui.textContent = c.unscheduled_interviews;
+        const rt = document.getElementById('stat-ready-transactions');
+        if (rt && c.ready_transactions != null) rt.textContent = c.ready_transactions;
+
+        const pLine = document.getElementById('stat-health-pipeline');
+        if (pLine && c.active_transactions != null) pLine.textContent = `${c.active_transactions} In Pipeline`;
       }
 
-      if (res.status_breakdown) {
-        const sb = res.status_breakdown;
-        const total = (sb.pending || 0) + (sb.approved || 0) + (sb.claimed || 0) + (sb.completed || 0);
-        const fulfilled = (sb.completed || 0) + (sb.claimed || 0);
-        const rate = total > 0 ? Math.round((fulfilled / total) * 100) : 82;
-        const rateLabel = document.getElementById('fulfillment-rate-label');
-        if (rateLabel) {
-          rateLabel.textContent = `${rate}% Handover Rate (${fulfilled}/${total} completed/active)`;
+      // 3. Hydrate User Breakdown by Role
+      if (res.user_roles) {
+        const ur = res.user_roles;
+        const dCount = document.getElementById('stat-donors-count');
+        const dBar = document.getElementById('stat-donors-bar');
+        if (dCount) dCount.textContent = `${ur.donors_count} (${ur.donors_pct}%)`;
+        if (dBar) dBar.style.width = `${ur.donors_pct}%`;
+
+        const bCount = document.getElementById('stat-beneficiaries-count');
+        const bBar = document.getElementById('stat-beneficiaries-bar');
+        if (bCount) bCount.textContent = `${ur.beneficiaries_count} (${ur.beneficiaries_pct}%)`;
+        if (bBar) bBar.style.width = `${ur.beneficiaries_pct}%`;
+
+        const boCount = document.getElementById('stat-both-count');
+        const boBar = document.getElementById('stat-both-bar');
+        if (boCount) boCount.textContent = `${ur.both_count} (${ur.both_pct}%)`;
+        if (boBar) boBar.style.width = `${ur.both_pct}%`;
+      }
+
+      // 4. Hydrate Category Table Breakdown
+      const catTbody = document.getElementById('stats-category-tbody');
+      if (catTbody) {
+        const catRows = res.category_table || [];
+        if (catRows.length === 0) {
+          catTbody.innerHTML = `
+            <tr>
+              <td colspan="5" style="padding:32px 16px;text-align:center;color:var(--color-text-muted);font-size:13px;">
+                No donations currently recorded across categories.
+              </td>
+            </tr>
+          `;
+        } else {
+          catTbody.innerHTML = catRows.map(r => `
+            <tr style="border-bottom:1px solid var(--color-border-light);">
+              <td style="padding:13px 16px;font-weight:600;">${escapeHtml(r.name)}</td>
+              <td style="padding:13px 16px;text-align:center;font-weight:700;">${r.active}</td>
+              <td style="padding:13px 16px;text-align:center;">${r.fulfilled}</td>
+              <td style="padding:13px 16px;text-align:center;">${r.archived}</td>
+              <td style="padding:13px 16px;">
+                <div style="background:#E5E7EB;border-radius:4px;height:8px;max-width:140px;display:inline-block;width:70%;vertical-align:middle;margin-right:8px;">
+                  <div style="width:${r.share_pct}%;height:8px;background:var(--color-primary);border-radius:4px;"></div>
+                </div>
+                <span style="font-size:12px;font-weight:700;color:var(--color-text-muted);">${r.share_pct}%</span>
+              </td>
+            </tr>
+          `).join('');
         }
       }
-    }).catch(err => console.warn('Statistics live load:', err));
+
+      // 5. Hydrate Platform Health
+      if (res.platform_health) {
+        const ph = res.platform_health;
+        const hFul = document.getElementById('stat-health-fulfillment');
+        if (hFul) hFul.textContent = `${ph.fulfillment_rate}%`;
+        const hVer = document.getElementById('stat-health-verified');
+        if (hVer) hVer.textContent = `${ph.verified_donors_rate}%`;
+      }
+
+      // 6. Fulfillment Rate Label in Card
+      const rateLabel = document.getElementById('fulfillment-rate-label');
+      if (rateLabel && res.counts) {
+        const total = (res.counts.active_donations || 0) + (res.counts.fulfilled_transactions || 0);
+        const fulfilled = res.counts.fulfilled_transactions || 0;
+        const rate = total > 0 ? Math.round((fulfilled / total) * 100) : 0;
+        rateLabel.textContent = `${rate}% Handover Rate (${fulfilled}/${total} completed/active)`;
+      }
+
+    }).catch(err => {
+      console.warn('Statistics live load error:', err);
+    });
   }
 </script>
 

@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js" defer></script>
+  <script src="assets/vendor/lucide.min.js" defer></script>
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
@@ -240,25 +240,49 @@
     document.addEventListener('DOMContentLoaded', () => {
       if(window.lucide) lucide.createIcons();
 
-      // Contact form: submit via fetch
+      // Contact form: submit via fetch to support_tickets.php
       const form = document.getElementById('contact-inquiry-form');
       if (form) {
         form.addEventListener('submit', async function(e) {
           e.preventDefault();
           const submitBtn = form.querySelector('button[type="submit"]');
           const origText = submitBtn ? submitBtn.innerHTML : 'Send inquiry';
-          if (submitBtn) {
-            submitBtn.disabled = true;
-            submitBtn.innerHTML = 'Sending...';
-          }
 
           const submittedEmail = form.email ? form.email.value.trim() : '';
           const submittedName = form.name ? form.name.value.trim() : '';
           const submittedSubject = form.subject ? form.subject.value : 'General';
           const submittedMsg = form.message ? form.message.value.trim() : '';
 
-          // Support graceful client confirmation
-          setTimeout(() => {
+          if (!submittedName || !submittedEmail || !submittedMsg) {
+            if (window.ICD_MAIN) window.ICD_MAIN.showToast('Validation Error', 'Please fill out your name, email, and message.', 'error');
+            return;
+          }
+
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Sending...';
+          }
+
+          try {
+            const base = (window.icd_actionsBase ? window.icd_actionsBase() : '');
+            const res = await fetch(base + '/actions/support_tickets.php', {
+              method: 'POST',
+              credentials: 'include',
+              headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+              body: JSON.stringify({
+                action: 'create',
+                name: submittedName,
+                email: submittedEmail,
+                subject: submittedSubject,
+                category: 'inquiry',
+                message: submittedMsg
+              })
+            });
+            const data = await res.json();
+            if (!res.ok || !data || !data.success) {
+              throw new Error((data && (data.error || data.message)) || 'Unable to send inquiry.');
+            }
+
             const formWrap = document.getElementById('contact-form-wrap');
             const successBox = document.getElementById('contact-success');
             if (formWrap) formWrap.style.display = 'none';
@@ -269,8 +293,18 @@
               }
               successBox.style.display = 'block';
             }
-            if(window.lucide) lucide.createIcons();
-          }, 800);
+            if (window.lucide) lucide.createIcons();
+          } catch (err) {
+            if (window.ICD_MAIN) {
+              window.ICD_MAIN.showToast('Submission Error', err.message || 'Failed to submit inquiry.', 'error');
+            } else {
+              alert(err.message || 'Failed to submit inquiry.');
+            }
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = origText;
+            }
+          }
         });
       }
     });

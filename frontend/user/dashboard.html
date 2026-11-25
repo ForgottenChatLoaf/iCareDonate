@@ -539,6 +539,42 @@
 
         </div>
 
+        <!-- Community Impact, Campaigns & Verified Achievements -->
+        <div class="wireframe-dashboard-grid" style="margin-top:22px;">
+          <div class="card" style="background:#fff;border:1px solid var(--color-border, #E2E8F0);border-radius:var(--radius-lg, 12px);padding:20px 24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div style="font-size:15px;font-weight:700;color:var(--color-text, #1E293B);">Community Impact &amp; Active Campaigns</div>
+              <span style="font-size:11.5px;color:#64748B;">Live verified records</span>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;" id="communityImpactKpis">
+              <div style="background:#F8FAFC;border-radius:10px;padding:12px;text-align:center;">
+                <div style="font-size:20px;font-weight:800;color:#1F4FA3;" id="ci-approved">0</div>
+                <div style="font-size:11px;color:#64748B;">Approved Donations</div>
+              </div>
+              <div style="background:#F8FAFC;border-radius:10px;padding:12px;text-align:center;">
+                <div style="font-size:20px;font-weight:800;color:#15803D;" id="ci-completed">0</div>
+                <div style="font-size:11px;color:#64748B;">Completed Matches</div>
+              </div>
+              <div style="background:#F8FAFC;border-radius:10px;padding:12px;text-align:center;">
+                <div style="font-size:20px;font-weight:800;color:#D97706;" id="ci-fulfilled">0</div>
+                <div style="font-size:11px;color:#64748B;">Fulfilled Requests</div>
+              </div>
+            </div>
+            <div id="communityCampaignsList" style="font-size:13px;color:#64748B;">Loading community campaigns...</div>
+          </div>
+
+          <div class="card" style="background:#fff;border:1px solid var(--color-border, #E2E8F0);border-radius:var(--radius-lg, 12px);padding:20px 24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+              <div style="font-size:15px;font-weight:700;color:var(--color-text, #1E293B);" id="achievementsHeading">Participation Milestones</div>
+              <span style="font-size:11.5px;color:#64748B;">Verified outcomes</span>
+            </div>
+            <div id="personalImpactSummary" style="font-size:13px;color:#475569;margin-bottom:12px;"></div>
+            <div id="achievementsContainer" style="display:flex;flex-direction:column;gap:8px;">
+              <div style="padding:18px;text-align:center;color:#64748B;font-size:13px;">Loading verified milestones...</div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Mini Footer -->
@@ -555,6 +591,74 @@
 
   <script src="../js/mock-data.js"></script>
   <script src="../js/user-portal.js?v=defense3"></script>
+  <script>
+    (function() {
+      function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+      const base = (window.icd_actionsBase ? window.icd_actionsBase() : '');
+      const hdr = { 'Accept': 'application/json' };
+      const t = localStorage.getItem('icd_token');
+      if (t) hdr['Authorization'] = 'Bearer ' + t;
+
+      fetch(base + '/actions/community_impact.php', { credentials: 'include', headers: hdr })
+        .then(r => r.json())
+        .then(data => {
+          if (!data || !data.success) return;
+          const com = data.community || {};
+          document.getElementById('ci-approved').textContent = com.approved_donations ?? 0;
+          document.getElementById('ci-completed').textContent = com.completed_allocations ?? 0;
+          document.getElementById('ci-fulfilled').textContent = com.fulfilled_requests ?? 0;
+
+          const campEl = document.getElementById('communityCampaignsList');
+          const camps = data.campaigns || [];
+          if (!camps.length) {
+            campEl.innerHTML = '<div style="padding:14px;background:#F8FAFC;border-radius:8px;text-align:center;">No active community campaigns right now.</div>';
+          } else {
+            campEl.innerHTML = camps.map(c => `
+              <div style="margin-bottom:10px;padding:10px 12px;background:#F8FAFC;border-radius:8px;">
+                <div style="display:flex;justify-content:space-between;font-weight:700;color:#1E293B;margin-bottom:4px;">
+                  <span>${esc(c.title)}</span>
+                  <span>${c.verified_quantity} / ${c.target_quantity} ${esc(c.target_unit)} (${c.progress_percent}%)</span>
+                </div>
+                <div style="height:6px;background:#E2E8F0;border-radius:999px;overflow:hidden;">
+                  <div style="height:100%;width:${c.progress_percent}%;background:#1F4FA3;"></div>
+                </div>
+              </div>
+            `).join('');
+          }
+
+          const pers = data.personal;
+          const sumEl = document.getElementById('personalImpactSummary');
+          const achEl = document.getElementById('achievementsContainer');
+          if (!pers) return;
+
+          if (pers.role === 'requester') {
+            const rs = pers.requester_stats || {};
+            document.getElementById('achievementsHeading').textContent = 'Your Assistance Overview';
+            sumEl.innerHTML = `Requests submitted: <strong>${rs.submitted ?? 0}</strong> &bull; Approved: <strong>${rs.approved ?? 0}</strong> &bull; Completed: <strong>${rs.completed ?? 0}</strong>`;
+            achEl.innerHTML = '<div style="padding:14px;background:#F0F9FF;border-radius:8px;color:#0369A1;font-size:12.5px;">Assistance eligibility is based solely on verified need and never requires badges or participation milestones.</div>';
+          } else {
+            const ds = pers.donor_stats || {};
+            sumEl.innerHTML = `Donations submitted: <strong>${ds.submitted ?? 0}</strong> &bull; Approved: <strong>${ds.approved ?? 0}</strong> &bull; Matched &amp; completed: <strong>${ds.matched_completed ?? 0}</strong>`;
+            const achs = pers.achievements || [];
+            const earned = achs.filter(a => !!a.earned_at);
+            if (!earned.length) {
+              achEl.innerHTML = '<div style="padding:14px;background:#F8FAFC;border-radius:8px;text-align:center;color:#64748B;font-size:12.5px;">No milestones unlocked yet. Milestones are awarded automatically when your donations are verified and completed.</div>';
+            } else {
+              achEl.innerHTML = earned.map(a => `
+                <div style="padding:10px 12px;border-radius:8px;border:1px solid #E2E8F0;display:flex;justify-content:space-between;align-items:center;">
+                  <div>
+                    <div style="font-weight:700;font-size:13px;color:${esc(a.badge_color)};">${esc(a.title)}</div>
+                    <div style="font-size:11.5px;color:#64748B;">${esc(a.description)}</div>
+                  </div>
+                  <span class="badge badge-success" style="font-size:11px;">Earned</span>
+                </div>
+              `).join('');
+            }
+          }
+        })
+        .catch(() => {});
+    })();
+  </script>
 
   <!-- Mobile sidebar toggle JS -->
   <script>

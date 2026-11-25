@@ -12,6 +12,7 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/database.php';
+require_once __DIR__ . '/../includes/rate_limiter.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -41,20 +42,71 @@ if ($pdo === null) {
 // Read payload from POST or JSON
 $rawInput = file_get_contents('php://input');
 $jsonBody = json_decode($rawInput, true) ?? [];
+$mergedInput = !empty($_POST) ? $_POST : $jsonBody;
+
+if (!icd_verify_csrf_request($mergedInput)) {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Security verification failed (invalid CSRF token). Please refresh and try again.']);
+    exit;
+}
+
+if (icd_is_honeypot_triggered($mergedInput)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Submission could not be verified. Please try again.']);
+    exit;
+}
+
+icd_enforce_rate_limit('submit_request', 10, 900, $userId);
+
+// Verify account is active
+$stCheck = $pdo->prepare('SELECT status FROM users WHERE id = :uid LIMIT 1');
+$stCheck->execute([':uid' => $userId]);
+$uStatus = strtolower((string)($stCheck->fetchColumn() ?: 'active'));
+if ($uStatus === 'suspended' || $uStatus === 'banned') {
+    http_response_code(403);
+    echo json_encode(['success' => false, 'message' => 'Your account is currently ' . $uStatus . ' and cannot submit requests.']);
+    exit;
+}
 
 $donationId      = isset($_POST['donation_id']) ? (int)$_POST['donation_id'] : (isset($jsonBody['donation_id']) ? (int)$jsonBody['donation_id'] : null);
 $itemTitle       = trim((string)($_POST['item_title'] ?? ($jsonBody['item_title'] ?? '')));
-$quantity        = (int)($_POST['quantity'] ?? ($jsonBody['quantity'] ?? 1));
+$category        = trim((string)($_POST['category'] ?? ($jsonBody['category'] ?? '')));
+$quantity        = (int)($_POST['quantity'] ?? ($_POST['quantity_needed'] ?? ($jsonBody['quantity'] ?? ($jsonBody['quantity_needed'] ?? 1))));
 $unit            = trim((string)($_POST['unit'] ?? ($jsonBody['unit'] ?? 'packs')));
-$reason          = trim((string)($_POST['reason'] ?? ($jsonBody['reason'] ?? '')));
+$reason          = trim((string)($_POST['reason'] ?? ($_POST['situation'] ?? ($jsonBody['reason'] ?? ($jsonBody['situation'] ?? '')))));
 $proofType       = trim((string)($_POST['proof_type'] ?? ($jsonBody['proof_type'] ?? 'Certificate of Indigency')));
+$urgencyRaw      = trim((string)($_POST['urgency'] ?? ($jsonBody['urgency'] ?? 'Medium')));
+
+$urgencyMap = [
+    'standard' => 'Medium',
+    'low'      => 'Low',
+    'medium'   => 'Medium',
+    'high'     => 'High',
+    'critical' => 'Critical',
+];
+$urgency = $urgencyMap[strtolower($urgencyRaw)] ?? 'Medium';
 
 // Requester Personal & Contact Information
 $requesterName   = trim((string)($_POST['requester_name'] ?? ($jsonBody['requester_name'] ?? '')));
-$contactNumber   = trim((string)($_POST['contact_number'] ?? ($jsonBody['contact_number'] ?? '')));
+$contactNumber   = trim((string)($_POST['contact_number'] ?? ($_POST['requester_phone'] ?? ($jsonBody['contact_number'] ?? ($jsonBody['requester_phone'] ?? '')))));
 $barangay        = trim((string)($_POST['barangay'] ?? ($jsonBody['barangay'] ?? '')));
 $city            = trim((string)($_POST['city'] ?? ($jsonBody['city'] ?? '')));
-$completeAddress = trim((string)($_POST['complete_address'] ?? ($jsonBody['complete_address'] ?? '')));
+$completeAddress = trim((string)($_POST['complete_address'] ?? ($_POST['requester_address'] ?? ($jsonBody['complete_address'] ?? ($jsonBody['requester_address'] ?? '')))));
+
+if ($completeAddress !== '' && ($barangay === '' || $city === '')) {
+    $addrParts = array_map('trim', explode(',', $completeAddress));
+    if (count($addrParts) >= 2) {
+        $barangay = $barangay ?: $addrParts[0];
+        $city     = $city ?: implode(', ', array_slice($addrParts, 1));
+    } else {
+        $barangay = $barangay ?: $addrParts[0];
+        $city     = $city ?: $addrParts[0];
+    }
+}
+
+if ($itemTitle === '' && $category !== '') {
+    $itemTitle = ucwords(str_replace('-', ' ', $category)) . ' Assistance';
+}
 
 // 3. Fallback: Retrieve missing personal info from users table if not passed
 if ($requesterName === '') {
@@ -162,7 +214,7 @@ try {
 
     // Handle optional proof file upload
     $proofFilePath = null;
-    $proofFile = $_FILES['proof_file'] ?? ($_FILES['proof'] ?? null);
+    $proofFile = $_FILES['proof_file'] ?? ($_FILES['proof'] ?? ($_FILES['proof_doc'] ?? null));
     if ($proofFile && is_array($proofFile) && !empty($proofFile['name']) && $proofFile['error'] === UPLOAD_ERR_OK) {
         $uploadDir = __DIR__ . '/../uploads/proofs';
         if (!is_dir($uploadDir)) {
@@ -178,37 +230,45 @@ try {
         }
     }
 
-    // If no donationId passed, associate with an available donation or 1
-    $finalDonationId = ($donationId !== null && $donationId > 0) ? $donationId : 1;
-    if ($finalDonationId === 1) {
-        $checkDid = $pdo->query('SELECT id FROM donations ORDER BY id ASC LIMIT 1');
-        $foundDid = $checkDid ? (int)$checkDid->fetchColumn() : 0;
-        if ($foundDid > 0) {
-            $finalDonationId = $foundDid;
+    // If donationId passed, verify it exists in donations table; otherwise null
+    $finalDonationId = null;
+    if ($donationId !== null && $donationId > 0) {
+        $checkDid = $pdo->prepare('SELECT id FROM donations WHERE id = :id LIMIT 1');
+        $checkDid->execute([':id' => $donationId]);
+        if ($checkDid->fetchColumn()) {
+            $finalDonationId = $donationId;
         }
     }
 
     $compiledMessage = $reason;
-    if ($requesterName !== '' || $contactNumber !== '') {
-        $compiledMessage .= "\n\n[Contact: " . $requesterName . " | " . $contactNumber . " | " . $barangay . ", " . $city . " | " . $completeAddress . "]";
-    }
 
     // 7. Insert the Assistance Request into MySQL
     $insertStmt = $pdo->prepare("
         INSERT INTO requests (
-            requester_id, donation_id, message, quantity, urgency, proof_type, proof_file_path, status, created_at
+            requester_id, donation_id, item_title, message, quantity, unit, urgency,
+            proof_type, proof_file_path, contact_number, barangay, city, complete_address,
+            status, created_at
         ) VALUES (
-            :uid, :did, :msg, :qty, 'Medium', :proof, :file_path, 'pending', NOW()
+            :uid, :did, :item_title, :msg, :qty, :unit, :urgency,
+            :proof, :file_path, :contact, :brgy, :city, :addr,
+            'pending', NOW()
         )
     ");
 
     $insertStmt->execute([
-        ':uid'       => $userId,
-        ':did'       => $finalDonationId,
-        ':msg'       => $compiledMessage,
-        ':qty'       => $quantity,
-        ':proof'     => $proofType ?: 'Certificate of Indigency',
-        ':file_path' => $proofFilePath,
+        ':uid'        => $userId,
+        ':did'        => $finalDonationId,
+        ':item_title' => $itemTitle,
+        ':msg'        => $compiledMessage,
+        ':qty'        => $quantity,
+        ':unit'       => $unit ?: 'items',
+        ':urgency'    => $urgency,
+        ':proof'      => $proofType ?: 'Certificate of Indigency',
+        ':file_path'  => $proofFilePath,
+        ':contact'    => $contactNumber,
+        ':brgy'       => $barangay,
+        ':city'       => $city,
+        ':addr'       => $completeAddress,
     ]);
 
     $newRequestId = (int)$pdo->lastInsertId();

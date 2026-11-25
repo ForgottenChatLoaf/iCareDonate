@@ -361,76 +361,111 @@
   }
 </style>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
-  function renderBrowseDonations() {
-    const query = document.getElementById('browse-search').value.trim();
-    const catId = Number(document.getElementById('browse-category').value);
+  let activeBrowseItems = [];
+
+  async function renderBrowseDonations() {
+    const query = (document.getElementById('browse-search')?.value || '').trim();
+    const catSelect = document.getElementById('browse-category');
+    const catVal = catSelect ? catSelect.value : 'all';
     const condFilter = document.getElementById('browse-condition') ? document.getElementById('browse-condition').value : 'all';
     const sortVal = document.getElementById('browse-sort') ? document.getElementById('browse-sort').value : 'newest';
     const container = document.getElementById('browse-donations-grid');
+    if (!container) return;
 
-    // Only approved and active donations are displayed to users
-    let items = window.MockStore ? window.MockStore.getDonations('approved', query, catId) : [];
+    container.innerHTML = `
+      <div style="grid-column: 1 / -1; padding: 48px 24px; text-align: center; color: var(--color-text-muted, #64748B);">
+        <div style="font-size: 14px; font-weight: 600;">Loading verified community donations from database...</div>
+      </div>
+    `;
 
-    if (condFilter && condFilter !== 'all') {
-      items = items.filter(it => (it.condition_type || '').toLowerCase().includes(condFilter.toLowerCase()));
-    }
+    try {
+      const actionsBase = (typeof window.icd_actionsBase === 'function' ? window.icd_actionsBase() : '');
+      const params = new URLSearchParams({
+        browse: '1',
+        q: query,
+        sort: sortVal
+      });
+      if (catVal && catVal !== 'all' && catVal !== '0') {
+        params.append('category', catVal);
+      }
 
-    if (sortVal === 'quantity') {
-      items.sort((a, b) => ((b.quantity_total || 0) - (b.quantity_reserved || 0)) - ((a.quantity_total || 0) - (a.quantity_reserved || 0)));
-    } else {
-      items.sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0));
-    }
+      const res = await fetch(`${actionsBase}/actions/user_donations.php?${params.toString()}`, {
+        credentials: 'same-origin',
+        headers: { 'Accept': 'application/json' }
+      });
 
-    if (items.length === 0) {
-      container.innerHTML = `
-        <div style="grid-column: 1 / -1; background: #fff; padding: 48px 24px; text-align: center; border-radius: 12px; border: 1px solid var(--border, #E2E8F0);">
-          <div style="width: 48px; height: 48px; border-radius: 50%; background: #F1F5F9; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; color: #64748B;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+      if (!res.ok) {
+        throw new Error('Database server returned status ' + res.status);
+      }
+
+      const data = await res.json();
+      let items = (data && data.success && Array.isArray(data.donations)) ? data.donations : [];
+
+      if (condFilter && condFilter !== 'all') {
+        items = items.filter(it => (it.condition_type || it.item_condition || '').toLowerCase().includes(condFilter.toLowerCase()));
+      }
+
+      activeBrowseItems = items;
+
+      if (items.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; background: #fff; padding: 48px 24px; text-align: center; border-radius: 12px; border: 1px solid var(--border, #E2E8F0);">
+            <div style="width: 48px; height: 48px; border-radius: 50%; background: #F1F5F9; display: flex; align-items: center; justify-content: center; margin: 0 auto 14px; color: #64748B;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>
+            </div>
+            <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--color-text, #1E293B);">No available donations found</h3>
+            <p style="color: #64748B; font-size: 13.5px; margin: 0;">There are currently no matching verified donations in the database. Check back soon or list a new donation.</p>
           </div>
-          <h3 style="font-size: 17px; font-weight: 700; margin-bottom: 6px;">No available donations found</h3>
-          <p style="color: #64748B; font-size: 13.5px; margin: 0;">Try adjusting your search criteria or selecting another category.</p>
-        </div>
-      `;
-      return;
-    }
+        `;
+        return;
+      }
 
-    container.innerHTML = items.map(item => `
-      <div class="card" style="border-radius:12px;overflow:hidden;border:1px solid var(--border, #E2E8F0);display:flex;flex-direction:column;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
-        <div style="height:170px;background:#F1F5F9;position:relative;overflow:hidden;cursor:pointer;" onclick="window.location.href='view-item.html?id=${item.id}'">
-          <img src="${item.image_url || item.primary_image || '../assets/images/placeholder.svg'}" alt="${item.title}" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='../assets/images/placeholder.svg';">
-          <span class="badge badge-neutral" style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.95);box-shadow:0 2px 4px rgba(0,0,0,0.1);font-weight:600;font-size:11px;">
-            ${item.category_name}
-          </span>
-        </div>
-        <div style="padding:18px;display:flex;flex-direction:column;flex:1;">
-          <div style="margin-bottom:6px;">
-            <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;background:var(--sky, #DCE8F7);color:var(--cobalt, #1F4FA3);padding:2px 8px;border-radius:999px;" title="Identity and proof reviewed by the iCareDonate admin team.">
-              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-              Verified Donor
+      container.innerHTML = items.map(item => `
+        <div class="card" style="border-radius:12px;overflow:hidden;border:1px solid var(--border, #E2E8F0);display:flex;flex-direction:column;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.05);">
+          <div style="height:170px;background:#F1F5F9;position:relative;overflow:hidden;cursor:pointer;" onclick="window.location.href='view-item.html?id=${item.id}'">
+            <img src="${item.image_url || item.primary_image || '../assets/images/placeholder.svg'}" alt="${escapeHtml(item.title)}" style="width:100%;height:100%;object-fit:cover;" onerror="this.onerror=null;this.src='../assets/images/placeholder.svg';">
+            <span class="badge badge-neutral" style="position:absolute;top:12px;left:12px;background:rgba(255,255,255,0.95);box-shadow:0 2px 4px rgba(0,0,0,0.1);font-weight:600;font-size:11px;">
+              ${escapeHtml(item.category_name || item.category || 'Goods')}
             </span>
           </div>
-          <h3 style="font-size:16px;font-weight:700;margin:0 0 8px;line-height:1.35;color:var(--text, #1E293B);">
-            <a href="view-item.html?id=${item.id}" style="color:inherit;text-decoration:none;">${item.title}</a>
-          </h3>
-          <p style="font-size:13px;color:#64748B;margin:0 0 14px;line-height:1.45;flex:1;">
-            ${item.description.length > 95 ? item.description.substring(0, 95) + '...' : item.description}
-          </p>
-          <div style="font-size:12px;color:#475569;display:flex;flex-direction:column;gap:4px;margin-bottom:16px;background:#F8FAFC;padding:10px 12px;border-radius:8px;">
-            <div>Available: <strong>${item.quantity_total - item.quantity_reserved - item.quantity_claimed} ${item.unit}</strong></div>
-            <div>Condition: <strong>${item.condition_type}</strong></div>
-            <div>Location: <strong>${item.pickup_barangay}, ${item.pickup_city}</strong></div>
-          </div>
-          <div>
-            <a href="view-item.html?id=${item.id}" class="btn btn-primary" style="width:100%;text-align:center;font-size:13px;padding:10px 12px;display:block;box-sizing:border-box;">
-              View &amp; Request
-            </a>
+          <div style="padding:18px;display:flex;flex-direction:column;flex:1;">
+            <div style="margin-bottom:6px;">
+              <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:600;background:var(--sky, #DCE8F7);color:var(--cobalt, #1F4FA3);padding:2px 8px;border-radius:999px;" title="Verified by community coordinators.">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+                Verified Donor
+              </span>
+            </div>
+            <h3 style="font-size:16px;font-weight:700;margin:0 0 8px;line-height:1.35;color:var(--text, #1E293B);">
+              <a href="view-item.html?id=${item.id}" style="color:inherit;text-decoration:none;">${escapeHtml(item.title)}</a>
+            </h3>
+            <p style="font-size:13px;color:#64748B;margin:0 0 14px;line-height:1.45;flex:1;">
+              ${escapeHtml(item.description && item.description.length > 95 ? item.description.substring(0, 95) + '...' : (item.description || 'Verified community donation'))}
+            </p>
+            <div style="font-size:12px;color:#475569;display:flex;flex-direction:column;gap:4px;margin-bottom:16px;background:#F8FAFC;padding:10px 12px;border-radius:8px;">
+              <div>Available: <strong>${item.quantity_total || item.quantity || 1} ${escapeHtml(item.unit || 'units')}</strong></div>
+              <div>Condition: <strong>${escapeHtml(item.condition_type || item.item_condition || 'Good')}</strong></div>
+              <div>Location: <strong>${escapeHtml(item.pickup_barangay ? item.pickup_barangay + ', ' : '')}${escapeHtml(item.pickup_city || 'Metro Manila')}</strong></div>
+            </div>
+            <div>
+              <a href="view-item.html?id=${item.id}" class="btn btn-primary" style="width:100%;text-align:center;font-size:13px;padding:10px 12px;display:block;box-sizing:border-box;">
+                View &amp; Request
+              </a>
+            </div>
           </div>
         </div>
-      </div>
-    `).join('');
+      `).join('');
+
+    } catch (err) {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; background: #FEF2F2; padding: 36px 24px; text-align: center; border-radius: 12px; border: 1px solid #FECACA;">
+          <h3 style="font-size: 16px; font-weight: 700; color: #DC2626; margin: 0 0 6px;">Unable to load donations from database</h3>
+          <p style="color: #991B1B; font-size: 13px; margin: 0 0 14px;">Please verify your database connection or try again.</p>
+          <button type="button" onclick="renderBrowseDonations()" class="btn btn-primary" style="font-size: 12.5px; padding: 6px 16px;">Retry</button>
+        </div>
+      `;
+    }
   }
 
   // ══════════════════════════════════════════════════════════
@@ -492,12 +527,6 @@
       modal.classList.add('open');
     });
 
-    // Resolve donation item by ID
-    let mockItem = null;
-    if (window.MockStore && typeof window.MockStore.getDonationById === 'function') {
-      mockItem = window.MockStore.getDonationById(itemId);
-    }
-
     const actionsBase = (typeof window.icd_actionsBase === 'function' ? window.icd_actionsBase() : '');
     fetch(`${actionsBase}/actions/user_donations.php?id=${encodeURIComponent(itemId)}`, {
       credentials: 'same-origin',
@@ -508,18 +537,12 @@
         const d = data ? (data.donation || data.data || data) : null;
         if (d && d.id) {
           populateModal(d);
-        } else if (mockItem) {
-          populateModal(mockItem);
         } else {
           showModalError();
         }
       })
       .catch(() => {
-        if (mockItem) {
-          populateModal(mockItem);
-        } else {
-          showModalError();
-        }
+        showModalError();
       });
     return;
   }

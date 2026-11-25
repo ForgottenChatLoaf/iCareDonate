@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <script>
@@ -166,15 +166,36 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
-      <div class="card" style="padding:0;overflow:hidden;border:1px solid var(--color-border);border-radius:var(--radius-lg);">
-        <table class="table" style="width:100%;border-collapse:collapse;font-size:13.5px;">
+      <!-- Search & Filter Toolbar -->
+      <div class="card" style="padding:16px 20px;margin-bottom:20px;border:1px solid var(--color-border);border-radius:var(--radius-lg);display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;">
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;flex:1;">
+          <input type="text" id="admin-search-input" class="form-input" placeholder="Search admin name or email..." style="height:36px;font-size:13px;min-width:220px;flex:1;max-width:320px;" oninput="fetchAdminsDebounced()">
+          <select id="admin-role-filter" class="form-input" style="height:36px;font-size:13px;width:180px;" onchange="fetchAdmins()">
+            <option value="">All Admin Roles</option>
+            <option value="head_admin">Head Administrator</option>
+            <option value="donation_admin">Donation Administrator</option>
+            <option value="campaign_admin">Campaign Administrator</option>
+            <option value="moderator">Moderator</option>
+            <option value="support_admin">Support Administrator</option>
+          </select>
+          <select id="admin-status-filter" class="form-input" style="height:36px;font-size:13px;width:150px;" onchange="fetchAdmins()">
+            <option value="all">All Statuses</option>
+            <option value="active">Active</option>
+            <option value="suspended">Inactive / Suspended</option>
+          </select>
+        </div>
+        <span id="admin-count-badge" style="font-size:12.5px;color:var(--color-text-muted);font-weight:600;">0 accounts</span>
+      </div>
+
+      <div class="card" style="padding:0;overflow-x:auto;border:1px solid var(--color-border);border-radius:var(--radius-lg);">
+        <table class="table" style="width:100%;border-collapse:collapse;font-size:13.5px;min-width:760px;">
           <thead style="background:#F8FAFC;border-bottom:1px solid var(--color-border);">
             <tr>
               <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Administrator</th>
               <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Email</th>
               <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Role</th>
               <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:center;">Status</th>
-              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Last Login</th>
+              <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:left;">Created / Last Login</th>
               <th style="padding:12px 16px;font-weight:700;color:var(--color-text-muted);text-align:right;">Actions</th>
             </tr>
           </thead>
@@ -209,8 +230,11 @@
       <div style="margin-bottom:12px;">
         <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Role</label>
         <select id="new-adm-role" class="form-input" style="width:100%;height:36px;font-size:13px;">
-          <option value="admin">Admin (Standard)</option>
-          <option value="head_admin">Head Admin</option>
+          <option value="donation_admin">Donation Administrator</option>
+          <option value="campaign_admin">Campaign Administrator</option>
+          <option value="moderator">Moderator</option>
+          <option value="support_admin">Support Administrator</option>
+          <option value="head_admin">Head Administrator</option>
         </select>
       </div>
       <div style="margin-bottom:18px;">
@@ -225,10 +249,77 @@
   </div>
 </dialog>
 
+<!-- EDIT ADMIN DIALOG -->
+<dialog id="edit-admin-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:500px;width:92%;">
+  <div class="card" style="padding:28px;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <h2 style="font-size:17px;font-weight:700;margin:0 0 18px;">Edit Administrator Account</h2>
+    <form onsubmit="handleEditAdmin(event)">
+      <input type="hidden" id="edit-adm-id">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">First Name <span style="color:#DC2626;">*</span></label>
+          <input id="edit-adm-first" type="text" class="form-input" style="width:100%;height:36px;font-size:13px;" required>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Last Name <span style="color:#DC2626;">*</span></label>
+          <input id="edit-adm-last" type="text" class="form-input" style="width:100%;height:36px;font-size:13px;" required>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Email Address <span style="color:#DC2626;">*</span></label>
+        <input id="edit-adm-email" type="email" class="form-input" style="width:100%;height:36px;font-size:13px;" required>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Role</label>
+          <select id="edit-adm-role" class="form-input" style="width:100%;height:36px;font-size:13px;">
+            <option value="head_admin">Head Administrator</option>
+            <option value="donation_admin">Donation Administrator</option>
+            <option value="campaign_admin">Campaign Administrator</option>
+            <option value="moderator">Moderator</option>
+            <option value="support_admin">Support Administrator</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Phone</label>
+          <input id="edit-adm-phone" type="tel" class="form-input" style="width:100%;height:36px;font-size:13px;">
+        </div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <label style="display:block;font-size:12px;font-weight:600;margin-bottom:4px;">Department / Sector</label>
+        <input id="edit-adm-dept" type="text" class="form-input" style="width:100%;height:36px;font-size:13px;">
+      </div>
+      <div style="display:flex;justify-content:flex-end;gap:10px;">
+        <button type="button" class="btn btn-outline" onclick="document.getElementById('edit-admin-dialog').close()" style="font-size:13px;padding:7px 16px;">Cancel</button>
+        <button type="submit" class="btn btn-primary" style="font-size:13px;padding:7px 18px;">Save Changes</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- PASSWORD RESET LINK DIALOG -->
+<dialog id="reset-link-dialog" style="border:none;border-radius:var(--radius-lg);padding:0;background:transparent;max-width:520px;width:92%;">
+  <div class="card" style="padding:28px;background:#fff;border-radius:var(--radius-lg);border:1px solid var(--color-border);box-shadow:0 25px 50px -12px rgba(0,0,0,0.25);">
+    <h2 style="font-size:17px;font-weight:700;margin:0 0 8px;">Secure Password Reset Initiated</h2>
+    <p style="font-size:13px;color:#64748B;margin:0 0 14px;">Share this single-use reset link with the administrator. It expires in 1 hour and invalidates all existing sessions.</p>
+    <input type="text" id="generated-reset-url" class="form-input" readonly style="width:100%;height:38px;font-size:12.5px;margin-bottom:14px;background:#F8FAFC;">
+    <div style="display:flex;justify-content:flex-end;gap:10px;">
+      <button type="button" class="btn btn-outline" onclick="copyResetLink()" style="font-size:13px;padding:7px 16px;">Copy Link</button>
+      <button type="button" class="btn btn-primary" onclick="document.getElementById('reset-link-dialog').close()" style="font-size:13px;padding:7px 18px;">Done</button>
+    </div>
+  </div>
+</dialog>
+
 <script src="../js/admin-portal.js"></script>
 <script>
 let ADMINS = [];
 let isLoadingAdmins = false;
+let searchTimer = null;
+
+function fetchAdminsDebounced() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(fetchAdmins, 250);
+}
 
 function escapeHtml(str) {
   if (str === null || str === undefined) return '';
@@ -241,15 +332,20 @@ function escapeHtml(str) {
 }
 
 function roleLabel(r) {
-  return r === 'head_admin'
-    ? '<span class="badge" style="background:#FFF7ED;color:#D97706;border:1px solid #FDE68A;">Head Admin</span>'
-    : '<span class="badge badge-neutral">Admin</span>';
+  const labels = {
+    head_admin:     '<span class="badge" style="background:#FFF7ED;color:#D97706;border:1px solid #FDE68A;">Head Admin</span>',
+    donation_admin: '<span class="badge" style="background:#EFF6FF;color:#1D4ED8;border:1px solid #BFDBFE;">Donation Admin</span>',
+    campaign_admin: '<span class="badge" style="background:#F0FDF4;color:#15803D;border:1px solid #BBF7D0;">Campaign Admin</span>',
+    moderator:      '<span class="badge" style="background:#FAF5FF;color:#7E22CE;border:1px solid #E9D5FF;">Moderator</span>',
+    support_admin:  '<span class="badge" style="background:#ECFEFF;color:#0E7490;border:1px solid #A5F3FC;">Support Admin</span>',
+  };
+  return labels[r] || '<span class="badge badge-neutral">Admin</span>';
 }
 
 function formatAdminDate(dateStr) {
-  if (!dateStr) return 'Recently';
+  if (!dateStr) return 'Never';
   try {
-    const d = new Date(dateStr);
+    const d = new Date(dateStr.replace(' ', 'T'));
     return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
   } catch(e) {
     return dateStr;
@@ -263,10 +359,24 @@ async function fetchAdmins() {
   tbody.innerHTML = `<tr><td colspan="6" style="padding:28px 16px;text-align:center;color:var(--color-text-muted);">Loading administrators...</td></tr>`;
 
   try {
-    const data = await window.AdminAPI.getUsers({ role: 'admin' });
+    const roleFilter = document.getElementById('admin-role-filter').value;
+    const statusFilter = document.getElementById('admin-status-filter').value;
+    const q = document.getElementById('admin-search-input').value.trim();
+
+    const params = { status: statusFilter };
+    if (roleFilter) {
+      params.role_exact = roleFilter;
+    } else {
+      params.role = 'admin';
+    }
+    if (q) params.q = q;
+
+    const data = await window.AdminAPI.getUsers(params);
     if (!data.success) throw new Error(data.message || 'Failed to load admins');
 
     ADMINS = data.users || [];
+    const badge = document.getElementById('admin-count-badge');
+    if (badge) badge.textContent = `${ADMINS.length} account${ADMINS.length === 1 ? '' : 's'}`;
     renderAdmins();
   } catch (err) {
     console.error('Fetch admins error:', err);
@@ -282,15 +392,20 @@ function renderAdmins() {
   const tbody = document.getElementById('admins-tbody');
   if (ADMINS.length === 0) {
     tbody.innerHTML = `<tr><td colspan="6" style="padding:32px 16px;text-align:center;color:var(--color-text-muted);">
-      No administrator accounts found.
+      No administrator accounts found matching your filters.
     </td></tr>`;
     return;
   }
 
+  let currentAdminId = 0;
+  try { currentAdminId = Number((JSON.parse(localStorage.getItem('icd_user') || '{}')).id || 0); } catch(e) {}
+
   tbody.innerHTML = ADMINS.map(a => {
     const initials = (a.name || 'Admin').split(' ').map(p => p[0]).join('').substring(0, 2).toUpperCase();
-    const joined = formatAdminDate(a.created_at);
+    const created = formatAdminDate(a.created_at);
+    const lastLogin = a.last_login_at ? formatAdminDate(a.last_login_at) : 'Not yet logged in';
     const isActive = a.status !== 'suspended' && a.status !== 'banned';
+    const isSelf = Number(a.id) === currentAdminId;
 
     return `
       <tr style="border-bottom:1px solid var(--color-border-light);">
@@ -299,19 +414,115 @@ function renderAdmins() {
             <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#1F4FA3,#2563EB);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;flex-shrink:0;">
               ${escapeHtml(initials)}
             </div>
-            <div style="font-weight:700;">${escapeHtml(a.name)}</div>
+            <div>
+              <div style="font-weight:700;">${escapeHtml(a.name)}</div>
+              <div style="font-size:11.5px;color:var(--color-text-muted);">${escapeHtml(a.department || a.phone || 'Platform Operations')}</div>
+            </div>
           </div>
         </td>
         <td style="padding:14px 16px;color:var(--color-text-muted);">${escapeHtml(a.email)}</td>
         <td style="padding:14px 16px;">${roleLabel(a.role)}</td>
         <td style="padding:14px 16px;text-align:center;"><span class="badge ${isActive ? 'badge-success' : 'badge-danger'}">${isActive ? 'Active' : 'Inactive'}</span></td>
-        <td style="padding:14px 16px;font-size:12.5px;color:var(--color-text-muted);">${escapeHtml(joined)}</td>
+        <td style="padding:14px 16px;font-size:12px;color:var(--color-text-muted);">
+          <div>Joined: ${escapeHtml(created)}</div>
+          <div>Login: ${escapeHtml(lastLogin)}</div>
+        </td>
         <td style="padding:14px 16px;text-align:right;white-space:nowrap;">
-          <span style="font-size:12px;color:var(--color-text-muted);padding:4px 8px;background:var(--color-bg-subtle,#f1f5f9);border-radius:4px;">Verified</span>
+          <div style="display:inline-flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;">
+            <button type="button" class="btn btn-outline" onclick="openEditAdmin(${a.id})" style="font-size:12px;padding:4px 10px;">Edit</button>
+            <button type="button" class="btn btn-outline" onclick="initiateAdminReset(${a.id}, '${escapeHtml(a.name)}')" style="font-size:12px;padding:4px 10px;">Reset PW</button>
+            ${!isSelf ? (isActive
+              ? `<button type="button" class="btn btn-outline" onclick="toggleAdminStatus(${a.id}, 'suspend', '${escapeHtml(a.name)}')" style="font-size:12px;padding:4px 10px;border-color:#DC2626;color:#DC2626;">Deactivate</button>`
+              : `<button type="button" class="btn btn-outline" onclick="toggleAdminStatus(${a.id}, 'activate', '${escapeHtml(a.name)}')" style="font-size:12px;padding:4px 10px;border-color:#16A34A;color:#16A34A;">Activate</button>`
+            ) : ''}
+          </div>
         </td>
       </tr>
     `;
   }).join('');
+}
+
+function openEditAdmin(id) {
+  const adm = ADMINS.find(x => Number(x.id) === Number(id));
+  if (!adm) return;
+  const parts = (adm.name || '').trim().split(/\s+/);
+  document.getElementById('edit-adm-id').value = adm.id;
+  document.getElementById('edit-adm-first').value = adm.first_name || parts[0] || '';
+  document.getElementById('edit-adm-last').value = adm.last_name || parts.slice(1).join(' ') || '';
+  document.getElementById('edit-adm-email').value = adm.email || '';
+  document.getElementById('edit-adm-role').value = adm.role === 'admin' ? 'head_admin' : (adm.role || 'donation_admin');
+  document.getElementById('edit-adm-phone').value = adm.phone || '';
+  document.getElementById('edit-adm-dept').value = adm.department || '';
+  document.getElementById('edit-admin-dialog').showModal();
+}
+
+async function handleEditAdmin(e) {
+  e.preventDefault();
+  const id    = Number(document.getElementById('edit-adm-id').value);
+  const first = document.getElementById('edit-adm-first').value.trim();
+  const last  = document.getElementById('edit-adm-last').value.trim();
+  const email = document.getElementById('edit-adm-email').value.trim();
+  const role  = document.getElementById('edit-adm-role').value;
+  const phone = document.getElementById('edit-adm-phone').value.trim();
+  const dept  = document.getElementById('edit-adm-dept').value.trim();
+  const btn   = e.target.querySelector('button[type="submit"]');
+  if (btn) btn.disabled = true;
+
+  try {
+    const data = await window.AdminAPI.updateUserAccount({
+      action: 'update_admin',
+      id,
+      first_name: first,
+      last_name: last,
+      name: `${first} ${last}`.trim(),
+      email,
+      role,
+      phone,
+      department: dept
+    });
+    if (!data.success) throw new Error(data.message || 'Update failed.');
+    document.getElementById('edit-admin-dialog').close();
+    window.showAdminFlash('success', data.message || 'Administrator updated.');
+    fetchAdmins();
+  } catch (err) {
+    window.showAdminFlash('error', err.message || 'Failed to update administrator.');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function toggleAdminStatus(id, action, name) {
+  const verb = action === 'suspend' ? 'deactivate' : 'activate';
+  if (!confirm(`Are you sure you want to ${verb} ${name}?`)) return;
+  try {
+    const data = await window.AdminAPI.updateUser(id, action, `Administrator status changed via Admin Management`);
+    if (!data.success) throw new Error(data.message || 'Action failed.');
+    window.showAdminFlash('success', data.message);
+    fetchAdmins();
+  } catch (err) {
+    window.showAdminFlash('error', err.message);
+  }
+}
+
+async function initiateAdminReset(id, name) {
+  if (!confirm(`Initiate a secure single-use password reset for ${name}? Their current sessions will be signed out.`)) return;
+  try {
+    const data = await window.AdminAPI.updateUserAccount({ action: 'initiate_password_reset', id });
+    if (!data.success) throw new Error(data.message || 'Failed to initiate reset.');
+    const fullUrl = window.location.origin + data.reset_url;
+    document.getElementById('generated-reset-url').value = fullUrl;
+    document.getElementById('reset-link-dialog').showModal();
+    window.showAdminFlash('success', data.message);
+  } catch (err) {
+    window.showAdminFlash('error', err.message);
+  }
+}
+
+function copyResetLink() {
+  const inp = document.getElementById('generated-reset-url');
+  inp.select();
+  navigator.clipboard?.writeText(inp.value);
+  window.showAdminFlash('info', 'Reset link copied to clipboard.');
 }
 
 async function handleAddAdmin(e) {
@@ -319,6 +530,7 @@ async function handleAddAdmin(e) {
   const first = document.getElementById('new-adm-first').value.trim();
   const last  = document.getElementById('new-adm-last').value.trim();
   const email = document.getElementById('new-adm-email').value.trim();
+  const role  = document.getElementById('new-adm-role').value;
   const pw    = document.getElementById('new-adm-pw').value;
   const submitBtn = e.target.querySelector('button[type="submit"]');
 
@@ -329,6 +541,7 @@ async function handleAddAdmin(e) {
       action: 'create_admin',
       name: `${first} ${last}`.trim(),
       email: email,
+      role: role,
       password: pw
     });
 
@@ -338,15 +551,11 @@ async function handleAddAdmin(e) {
 
     document.getElementById('add-admin-dialog').close();
     e.target.reset();
-    if (typeof window.showAdminFlash === 'function') {
-      window.showAdminFlash('success', data.message || `Admin account created.`);
-    } else {
-      alert(data.message || 'Admin account created.');
-    }
+    window.showAdminFlash('success', data.message || 'Admin account created.');
     fetchAdmins();
   } catch (err) {
     console.error('Error creating admin:', err);
-    alert(err.message || 'Failed to create admin.');
+    window.showAdminFlash('error', err.message || 'Failed to create admin.');
   } finally {
     if (submitBtn) submitBtn.disabled = false;
   }

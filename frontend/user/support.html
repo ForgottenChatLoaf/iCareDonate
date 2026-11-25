@@ -220,6 +220,7 @@
           </div>
 
           <form id="inlineTicketForm">
+            <div id="linkedContextBanner" style="display:none;background:#EFF6FF;border:1px solid #BFDBFE;color:#1E3A8A;border-radius:8px;padding:10px 12px;font-size:12.5px;margin-bottom:14px;"></div>
             <div class="form-group" style="margin-bottom:14px;">
               <label class="form-label" for="inlineTicketSubject">Issue Subject <span style="color:#DC2626;">*</span></label>
               <input type="text" id="inlineTicketSubject" class="form-input" required placeholder="Brief summary of inquiry...">
@@ -249,7 +250,7 @@
               <textarea id="inlineTicketDesc" class="form-input" rows="4" required placeholder="Describe your question or issue in detail..."></textarea>
             </div>
 
-            <button type="submit" class="btn btn-primary" id="btnInlineSubmitTicket" style="width:100%;font-weight:600;">Submit Ticket</button>
+            <button type="submit" class="btn btn-primary" id="btnInlineSubmitTicket" style="width:100%;font-weight:600;">Start Support Conversation</button>
           </form>
         </div>
 
@@ -315,56 +316,45 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
-  let userTickets = [];
+  let userConversations = [];
   let activeFilter = 'all';
+  let activeConvId = null;
+  let cachedCsrfToken = '';
 
-  const defaultMockTickets = [
-    {
-      id: 'TCK-5541',
-      subject: 'Question regarding proof document resubmission',
-      category: 'Verification',
-      date: 'Today',
-      updatedAt: 'Today',
-      status: 'in_progress',
-      statusLabel: 'In Progress',
-      statusBadge: 'badge-info',
-      description: 'I recently submitted an updated Certificate of Indigency. Can you confirm if this satisfies the verification requirement for school supplies?',
-      replies: [
-        { sender: 'Community Support Team', role: 'admin', time: 'Today', text: 'Thank you for reaching out. A community volunteer is reviewing your document and will update your status within 24 hours.' }
-      ]
-    },
-    {
-      id: 'TCK-5210',
-      subject: 'Pickup hub location operating hours inquiry',
-      category: 'Logistics',
-      date: '2 weeks ago',
-      updatedAt: '2 weeks ago',
-      status: 'resolved',
-      statusLabel: 'Resolved',
-      statusBadge: 'badge-success',
-      description: 'What are the operating hours for the Barangay Hall pickup desk on weekends?',
-      replies: [
-        { sender: 'Community Support Team', role: 'admin', time: '2 weeks ago', text: 'Weekend hours are 9:00 AM to 1:00 PM on Saturdays. Closed on Sundays.' }
-      ]
-    },
-    {
-      id: 'TCK-4980',
-      subject: 'Profile name correction request',
-      category: 'Account',
-      date: '1 month ago',
-      updatedAt: '1 month ago',
-      status: 'resolved',
-      statusLabel: 'Resolved',
-      statusBadge: 'badge-success',
-      description: 'Please help update the spelling of my middle name on the verification record.',
-      replies: [
-        { sender: 'Community Support Team', role: 'admin', time: '1 month ago', text: 'Name spelling updated successfully. Please refresh your profile page.' }
-      ]
+  const urlParams = new URLSearchParams(window.location.search);
+  const linkedRequestId = urlParams.get('request_id') ? parseInt(urlParams.get('request_id'), 10) : null;
+  const linkedDonationId = urlParams.get('donation_id') ? parseInt(urlParams.get('donation_id'), 10) : null;
+
+  async function getSupportHeaders(isJsonPost = false) {
+    const headers = { 'Accept': 'application/json' };
+    if (isJsonPost) headers['Content-Type'] = 'application/json';
+    const token = localStorage.getItem('icd_token');
+    if (token) {
+      headers['Authorization'] = 'Bearer ' + token;
+    } else if (isJsonPost) {
+      if (!cachedCsrfToken) {
+        try {
+          const r = await fetch('../../actions/csrf_token.php', { credentials: 'same-origin' });
+          const d = await r.json();
+          if (d && d.csrf_token) cachedCsrfToken = d.csrf_token;
+        } catch (e) {}
+      }
+      if (cachedCsrfToken) headers['X-CSRF-Token'] = cachedCsrfToken;
     }
-  ];
+    return headers;
+  }
+
+  function statusMeta(status) {
+    switch (status) {
+      case 'waiting_support': return { badge: 'badge-warning', label: 'Waiting Support' };
+      case 'waiting_user':    return { badge: 'badge-info', label: 'Reply Received' };
+      case 'resolved':        return { badge: 'badge-success', label: 'Resolved' };
+      case 'closed':          return { badge: 'badge-neutral', label: 'Closed' };
+      default:                return { badge: 'badge-warning', label: 'Open' };
+    }
+  }
 
   function filterTickets(filter) {
     activeFilter = filter;
@@ -377,49 +367,24 @@
   async function loadUserTickets() {
     const tbody = document.getElementById('ticketsTableBody');
     if (tbody) {
-      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:#64748B;">Loading your support tickets...</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:32px;color:#64748B;">Loading your support conversations...</td></tr>';
     }
-    let loadedFromApi = false;
     try {
-      const res = await fetch('../../actions/support_tickets.php', {
+      const res = await fetch('../../actions/support_conversations.php', {
         credentials: 'same-origin',
-        headers: { 'Accept': 'application/json' }
+        headers: await getSupportHeaders(false)
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.success && Array.isArray(data.tickets) && data.tickets.length > 0) {
-          userTickets = data.tickets.map(t => {
-            let badgeClass = 'badge-warning', statusText = 'Open';
-            if (t.status === 'in_progress') { badgeClass = 'badge-info'; statusText = 'In Progress'; }
-            else if (t.status === 'resolved') { badgeClass = 'badge-success'; statusText = 'Resolved'; }
-            else if (t.status === 'closed') { badgeClass = 'badge-neutral'; statusText = 'Closed'; }
-            let replies = [];
-            if (t.admin_reply && t.admin_reply.trim() !== '') {
-              replies.push({ sender: 'Community Support Team', role: 'admin',
-                time: t.updated_at ? new Date(t.updated_at).toLocaleDateString() : 'Recent', text: t.admin_reply });
-            }
-            return {
-              id: t.id, subject: t.subject, category: t.category || 'General',
-              date: t.created_at ? new Date(t.created_at).toLocaleDateString() : 'N/A',
-              updatedAt: t.updated_at ? new Date(t.updated_at).toLocaleDateString() : 'N/A',
-              status: t.status, statusLabel: statusText, statusBadge: badgeClass,
-              description: t.message, replies: replies
-            };
-          });
-          loadedFromApi = true;
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data && data.success && Array.isArray(data.conversations)) {
+        userConversations = data.conversations;
+      } else {
+        userConversations = [];
+        if (res.status === 401 && window.showPortalFlash) {
+          window.showPortalFlash('warning', 'Please sign in to view your support conversations.');
         }
       }
-    } catch(err) {
-      // API unavailable or offline
-    }
-
-    if (!loadedFromApi) {
-      const saved = localStorage.getItem('icd_user_tickets');
-      if (saved) {
-        try { userTickets = JSON.parse(saved); } catch(e) { userTickets = defaultMockTickets; }
-      } else {
-        userTickets = defaultMockTickets;
-      }
+    } catch (err) {
+      userConversations = [];
     }
     renderTickets();
   }
@@ -427,155 +392,214 @@
   function renderTickets() {
     const tbody = document.getElementById('ticketsTableBody');
     if (!tbody) return;
-    const filtered = userTickets.filter(t => {
-      if (activeFilter === 'open') return t.status === 'open' || t.status === 'in_progress';
-      if (activeFilter === 'resolved') return t.status === 'resolved' || t.status === 'closed';
+    const filtered = userConversations.filter(c => {
+      if (activeFilter === 'open') return ['open', 'waiting_support', 'waiting_user'].includes(c.status);
+      if (activeFilter === 'resolved') return ['resolved', 'closed'].includes(c.status);
       return true;
     });
     if (filtered.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px 24px;color:#64748B;"><div style="font-weight:600;margin-bottom:6px;color:#1E293B;">No support tickets found</div><div style="font-size:13px;">Use the form on the left to submit a new support request.</div></td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="6" style="text-align:center;padding:40px 24px;color:#64748B;"><div style="font-weight:600;margin-bottom:6px;color:#1E293B;">No support conversations found</div><div style="font-size:13px;">Use the form on the left to start a conversation with our support team.</div></td></tr>`;
       return;
     }
-    tbody.innerHTML = filtered.map(t => `
-      <tr style="border-bottom:1px solid #F1F5F9;" onmouseenter="this.style.background='#F8FAFC'" onmouseleave="this.style.background=''">
-        <td style="padding:12px;font-weight:700;color:#1E293B;white-space:nowrap;">#${escapeHtml(String(t.id))}</td>
-        <td style="padding:12px;max-width:180px;"><div style="font-weight:600;color:#1E293B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(t.subject)}">${escapeHtml(t.subject)}</div></td>
-        <td style="padding:12px;color:#64748B;">${escapeHtml(t.category)}</td>
-        <td style="padding:12px;"><span class="badge ${t.statusBadge}" style="font-size:11.5px;">${escapeHtml(t.statusLabel)}</span></td>
-        <td style="padding:12px;color:#64748B;white-space:nowrap;">${escapeHtml(t.updatedAt)}</td>
-        <td style="padding:12px;text-align:right;">
-          <button class="btn btn-sm btn-outline" style="font-size:12px;padding:4px 10px;" onclick="viewTicketThread('${t.id}')">View Thread</button>
-        </td>
-      </tr>`).join('');
+    tbody.innerHTML = filtered.map(c => {
+      const meta = statusMeta(c.status);
+      const unread = Number(c.unread_count || 0);
+      const updated = c.updated_at ? new Date(c.updated_at).toLocaleDateString() : 'N/A';
+      return `
+        <tr style="border-bottom:1px solid #F1F5F9;" onmouseenter="this.style.background='#F8FAFC'" onmouseleave="this.style.background=''">
+          <td style="padding:12px;font-weight:700;color:#1E293B;white-space:nowrap;">#${escapeHtml(String(c.id))}</td>
+          <td style="padding:12px;max-width:200px;">
+            <div style="font-weight:600;color:#1E293B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;" title="${escapeHtml(c.subject)}">${escapeHtml(c.subject)}</div>
+            ${unread > 0 ? `<span class="badge badge-danger" style="font-size:10.5px;margin-top:3px;">${unread} unread</span>` : ''}
+          </td>
+          <td style="padding:12px;color:#64748B;">${escapeHtml(c.category || 'General')}</td>
+          <td style="padding:12px;"><span class="badge ${meta.badge}" style="font-size:11.5px;">${escapeHtml(meta.label)}</span></td>
+          <td style="padding:12px;color:#64748B;white-space:nowrap;">${escapeHtml(updated)}</td>
+          <td style="padding:12px;text-align:right;">
+            <button type="button" class="btn btn-sm btn-outline" style="font-size:12px;padding:4px 10px;" onclick="viewTicketThread(${Number(c.id)})">Open Thread</button>
+          </td>
+        </tr>`;
+    }).join('');
   }
 
-  function viewTicketThread(ticketId) {
-    const t = userTickets.find(x => String(x.id) === String(ticketId));
-    if (!t) return;
+  async function viewTicketThread(convId) {
+    activeConvId = convId;
     const panel = document.getElementById('ticketDetailPanel');
     const content = document.getElementById('ticketDetailContent');
     if (!panel || !content) return;
-    const repliesHtml = t.replies && t.replies.length > 0 ? `
-      <div class="reply-thread-box">
-        <div style="font-size:12.5px;font-weight:700;color:#1E293B;margin-bottom:10px;">Replies &amp; Administrator Notes (${t.replies.length})</div>
-        ${t.replies.map(r => `<div class="reply-item ${r.role==='admin'?'reply-item--admin':'reply-item--user'}">
-          <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><strong>${escapeHtml(r.sender)}</strong><span style="font-size:11px;opacity:0.8;">${escapeHtml(r.time)}</span></div>
-          <div>${escapeHtml(r.text)}</div></div>`).join('')}
-      </div>` : '<div style="font-size:12.5px;color:#94A3B8;margin-top:10px;font-style:italic;">Awaiting administrative review. Response typically provided within 24 hours.</div>';
-    const replyBox = t.status!=='resolved'&&t.status!=='closed' ? `
-      <div style="margin-top:14px;display:flex;gap:8px;">
-        <input type="text" id="replyInput-${t.id}" class="form-input" placeholder="Type a follow-up reply..." style="height:36px;font-size:13px;flex:1;">
-        <button type="button" class="btn btn-primary btn-sm" onclick="sendTicketReply('${t.id}')" style="height:36px;padding:0 14px;">Send Reply</button>
-      </div>` : '';
-    content.innerHTML = `
-      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;">
-        <div>
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-            <span class="badge ${t.statusBadge}" style="font-size:12px;">${escapeHtml(t.statusLabel)}</span>
-            <span style="font-size:12.5px;color:#64748B;">Ticket #${escapeHtml(String(t.id))} &bull; ${escapeHtml(t.date)}</span>
-            <span class="badge badge-neutral" style="font-size:11.5px;">${escapeHtml(t.category)}</span>
-          </div>
-          <h3 style="font-size:17px;font-weight:700;color:#1E293B;margin:0;">${escapeHtml(t.subject)}</h3>
-        </div>
-        <button type="button" onclick="closeTicketDetail()" style="background:none;border:none;color:#94A3B8;font-size:20px;cursor:pointer;padding:0 4px;">&times;</button>
-      </div>
-      <p style="font-size:13.5px;color:#334155;background:#F8FAFC;padding:12px 14px;border-radius:8px;margin:0 0 10px;line-height:1.5;white-space:pre-wrap;">${escapeHtml(t.description)}</p>
-      ${repliesHtml}${replyBox}`;
     panel.style.display = 'block';
-    panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    content.innerHTML = '<div style="padding:20px;color:#64748B;font-size:13px;">Loading conversation thread...</div>';
+
+    try {
+      const res = await fetch('../../actions/support_conversations.php?id=' + encodeURIComponent(convId), {
+        credentials: 'same-origin',
+        headers: await getSupportHeaders(false)
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success || !data.conversation) {
+        content.innerHTML = `<div style="color:#DC2626;font-size:13px;">${escapeHtml((data && data.message) || 'Failed to load conversation.')}</div>`;
+        return;
+      }
+
+      const c = data.conversation;
+      const msgs = Array.isArray(data.messages) ? data.messages : [];
+      const meta = statusMeta(c.status);
+      const created = c.created_at ? new Date(c.created_at).toLocaleString() : 'N/A';
+
+      const refHtml = c.donation_title
+        ? `<div style="font-size:12px;color:#1E40AF;margin-bottom:8px;">Linked Donation: <strong>${escapeHtml(c.donation_title)}</strong></div>`
+        : (c.request_title ? `<div style="font-size:12px;color:#1E40AF;margin-bottom:8px;">Linked Request: <strong>${escapeHtml(c.request_title)}</strong></div>` : '');
+
+      const msgsHtml = msgs.length > 0 ? `
+        <div class="reply-thread-box">
+          <div style="font-size:12.5px;font-weight:700;color:#1E293B;margin-bottom:10px;">Conversation Messages (${msgs.length})</div>
+          ${msgs.map(m => {
+            const isStaff = m.sender_type !== 'user';
+            const when = m.created_at ? new Date(m.created_at).toLocaleString() : '';
+            return `<div class="reply-item ${isStaff ? 'reply-item--admin' : 'reply-item--user'}">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+                <strong>${escapeHtml(m.sender_name || (isStaff ? 'Support Team' : 'You'))}</strong>
+                <span style="font-size:11px;opacity:0.8;">${escapeHtml(when)}</span>
+              </div>
+              <div style="white-space:pre-wrap;">${escapeHtml(m.message)}</div>
+            </div>`;
+          }).join('')}
+        </div>` : '<div style="font-size:12.5px;color:#94A3B8;margin-top:10px;">No messages yet.</div>';
+
+      let actionArea = '';
+      if (c.status === 'resolved') {
+        actionArea = `
+          <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:10px 14px;">
+            <span style="font-size:13px;color:#166534;">This conversation is marked resolved. Need more help?</span>
+            <button type="button" class="btn btn-sm btn-outline" onclick="reopenConversation(${Number(c.id)})">Reopen Conversation</button>
+          </div>`;
+      } else if (c.status !== 'closed') {
+        actionArea = `
+          <div style="margin-top:14px;display:flex;gap:8px;">
+            <input type="text" id="replyInput-${Number(c.id)}" class="form-input" placeholder="Type a reply to Support..." style="height:38px;font-size:13px;flex:1;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="sendTicketReply(${Number(c.id)})" style="height:38px;padding:0 16px;">Send Reply</button>
+          </div>`;
+      }
+
+      content.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+          <div>
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;">
+              <span class="badge ${meta.badge}" style="font-size:12px;">${escapeHtml(meta.label)}</span>
+              <span style="font-size:12.5px;color:#64748B;">Conversation #${escapeHtml(String(c.id))} &bull; ${escapeHtml(created)}</span>
+              <span class="badge badge-neutral" style="font-size:11.5px;">${escapeHtml(c.category || 'General')}</span>
+            </div>
+            <h3 style="font-size:17px;font-weight:700;color:#1E293B;margin:0;">${escapeHtml(c.subject)}</h3>
+          </div>
+          <button type="button" onclick="closeTicketDetail()" style="background:none;border:none;color:#94A3B8;font-size:20px;cursor:pointer;padding:0 4px;">&times;</button>
+        </div>
+        ${refHtml}
+        ${msgsHtml}
+        ${actionArea}`;
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      // Refresh list to clear unread badge
+      loadUserTickets();
+    } catch (err) {
+      content.innerHTML = '<div style="color:#DC2626;font-size:13px;">Network error loading conversation.</div>';
+    }
   }
 
   function closeTicketDetail() {
+    activeConvId = null;
     const panel = document.getElementById('ticketDetailPanel');
     if (panel) panel.style.display = 'none';
   }
 
   async function submitTicket(subject, category, desc, priority) {
     try {
-      const res = await fetch('../../actions/support_tickets.php', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin',
-        body: JSON.stringify({ action: 'create', subject, category, message: desc, priority: priority||'medium' })
-      });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.success) {
-          if (window.showPortalFlash) window.showPortalFlash('success', 'Ticket #' + data.ticket_id + ' submitted successfully.');
-          await loadUserTickets();
-          return true;
-        }
-      }
-    } catch(err) {
-      // Fallback to local
-    }
+      const payload = {
+        action: 'create',
+        subject,
+        category,
+        message: desc,
+        priority: priority || 'medium'
+      };
+      if (linkedDonationId) payload.donation_id = linkedDonationId;
+      else if (linkedRequestId) payload.request_id = linkedRequestId;
 
-    // Graceful client-side fallback
-    const newId = 'TCK-' + Math.floor(1000 + Math.random() * 9000);
-    const newTicket = {
-      id: newId,
-      subject: subject,
-      category: category,
-      date: 'Today',
-      updatedAt: 'Today',
-      status: 'open',
-      statusLabel: 'Open',
-      statusBadge: 'badge-warning',
-      description: desc,
-      replies: []
-    };
-    userTickets.unshift(newTicket);
-    localStorage.setItem('icd_user_tickets', JSON.stringify(userTickets));
-    renderTickets();
-    if (window.showPortalFlash) {
-      window.showPortalFlash('success', 'Support Ticket #' + newId + ' submitted successfully.');
-    } else {
-      alert('Support Ticket #' + newId + ' submitted successfully.');
+      const res = await fetch('../../actions/support_conversations.php', {
+        method: 'POST',
+        headers: await getSupportHeaders(true),
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data && data.success) {
+        if (window.showPortalFlash) window.showPortalFlash('success', 'Support conversation #' + data.conversation_id + ' started.');
+        await loadUserTickets();
+        if (data.conversation_id) viewTicketThread(data.conversation_id);
+        return true;
+      }
+      if (window.showPortalFlash) window.showPortalFlash('error', (data && data.message) || 'Could not start support conversation.');
+      return false;
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', 'Network error connecting to support service.');
+      return false;
     }
-    return true;
   }
 
-  async function sendTicketReply(ticketId) {
-    const input = document.getElementById('replyInput-' + ticketId);
+  async function sendTicketReply(convId) {
+    const input = document.getElementById('replyInput-' + convId);
     if (!input || !input.value.trim()) return;
     const replyText = input.value.trim();
     input.disabled = true;
 
     try {
-      const res = await fetch('../../actions/support_tickets.php', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, credentials: 'same-origin',
-        body: JSON.stringify({ action: 'reply', ticket_id: ticketId, reply: replyText })
+      const res = await fetch('../../actions/support_conversations.php', {
+        method: 'POST',
+        headers: await getSupportHeaders(true),
+        credentials: 'same-origin',
+        body: JSON.stringify({ action: 'reply', conversation_id: convId, message: replyText })
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (data && data.success) {
-          input.value = '';
-          if (window.showPortalFlash) window.showPortalFlash('success', 'Follow-up reply added to Ticket #' + ticketId);
-          await loadUserTickets();
-          viewTicketThread(ticketId);
-          return;
-        }
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data && data.success) {
+        input.value = '';
+        if (window.showPortalFlash) window.showPortalFlash('success', 'Reply sent to Support.');
+        await viewTicketThread(convId);
+        return;
       }
-    } catch(err) {
-      // Fallback
+      if (window.showPortalFlash) window.showPortalFlash('error', (data && data.message) || 'Failed to send reply.');
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', 'Network error sending reply.');
+    } finally {
+      if (input) input.disabled = false;
     }
+  }
 
-    const t = userTickets.find(x => String(x.id) === String(ticketId));
-    if (t) {
-      if (!t.replies) t.replies = [];
-      t.replies.push({
-        sender: 'You',
-        role: 'user',
-        time: 'Just now',
-        text: replyText
+  async function reopenConversation(convId) {
+    try {
+      const res = await fetch('../../actions/support_conversations.php', {
+        method: 'POST',
+        headers: await getSupportHeaders(true),
+        credentials: 'same-origin',
+        body: JSON.stringify({ action: 'reopen', conversation_id: convId })
       });
-      localStorage.setItem('icd_user_tickets', JSON.stringify(userTickets));
-      input.value = '';
-      if (window.showPortalFlash) window.showPortalFlash('success', 'Reply posted successfully.');
-      viewTicketThread(ticketId);
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data && data.success) {
+        if (window.showPortalFlash) window.showPortalFlash('success', 'Conversation reopened.');
+        await viewTicketThread(convId);
+      } else if (window.showPortalFlash) {
+        window.showPortalFlash('error', (data && data.message) || 'Unable to reopen conversation.');
+      }
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', 'Network error reopening conversation.');
     }
-    if (input) input.disabled = false;
   }
 
   document.addEventListener('DOMContentLoaded', function() {
+    const banner = document.getElementById('linkedContextBanner');
+    if (banner && (linkedDonationId || linkedRequestId)) {
+      banner.style.display = 'block';
+      banner.innerHTML = linkedDonationId
+        ? `Referencing <strong>Donation #${linkedDonationId}</strong>`
+        : `Referencing <strong>Assistance Request #${linkedRequestId}</strong>`;
+    }
+
     const inlineForm = document.getElementById('inlineTicketForm');
     if (inlineForm) {
       inlineForm.addEventListener('submit', async function(e) {
@@ -584,7 +608,10 @@
         const category = document.getElementById('inlineTicketCategory').value;
         const priority = document.getElementById('inlineTicketPriority').value;
         const desc = document.getElementById('inlineTicketDesc').value.trim();
-        if (!subject || !desc) { alert('Please fill in the subject and description.'); return; }
+        if (!subject || !desc) {
+          if (window.showPortalFlash) window.showPortalFlash('error', 'Please fill in both subject and description.');
+          return;
+        }
         const btn = document.getElementById('btnInlineSubmitTicket');
         if (btn) btn.disabled = true;
         const ok = await submitTicket(subject, category, desc, priority);
@@ -596,7 +623,7 @@
   });
 
   function escapeHtml(str) {
-    if (!str) return '';
+    if (str === null || str === undefined) return '';
     return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
 </script>

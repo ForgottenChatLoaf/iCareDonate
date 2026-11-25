@@ -10,6 +10,7 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../includes/admin_auth.php';
+require_once __DIR__ . '/../includes/achievements.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -25,7 +26,7 @@ if ($pdo === null) {
     exit;
 }
 
-$admin = requireAdminApi($pdo);
+$admin = requireAdminRoleApi($pdo, ['donation_admin']);
 
 // ─────────────────────────────────────────────────────────────
 // POST: Moderation Actions (Approve, Reject, Archive, Restore)
@@ -77,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 } catch (PDOException $e) {}
 
                 logAdminAction($pdo, 'DONATION_APPROVED', $admin['id'], $admin['name'], 'donation', $donationId, "Approved listing {$title}", $reason ?: 'Listing verified');
+                icd_evaluate_user_achievements($pdo, $donorId);
 
                 echo json_encode([
                     'success' => true,
@@ -169,7 +171,7 @@ try {
     // Single donation inspection
     if ($singleId > 0) {
         $stmtSingle = $pdo->prepare("
-            SELECT d.*, d.donor_id AS user_id, 'pcs' AS unit,
+            SELECT d.*, d.donor_id AS user_id, COALESCE(d.unit, 'items') AS unit,
                    d.condition AS condition_type, COALESCE(d.city, d.location, 'Metro Manila') AS pickup_city,
                    u.name AS donor_name, u.email AS donor_email
             FROM donations d
@@ -192,7 +194,7 @@ try {
 
     // List donations with filters
     $sql = "
-        SELECT d.*, d.donor_id AS user_id, 'pcs' AS unit,
+        SELECT d.*, d.donor_id AS user_id, COALESCE(d.unit, 'items') AS unit,
                d.condition AS condition_type, COALESCE(d.city, d.location, 'Metro Manila') AS pickup_city,
                u.name AS donor_name, u.email AS donor_email
         FROM donations d

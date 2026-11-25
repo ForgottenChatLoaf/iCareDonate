@@ -19,6 +19,7 @@ declare(strict_types=1);
 require_once __DIR__ . '/../includes/auth.php';
 require_once __DIR__ . '/../includes/database.php';
 require_once __DIR__ . '/../includes/admin_auth.php';
+require_once __DIR__ . '/../includes/rate_limiter.php';
 
 header('Content-Type: application/json; charset=utf-8');
 header('Cache-Control: no-store, no-cache, must-revalidate');
@@ -32,21 +33,44 @@ if ($pdo === null) {
 
 $method = strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
 
-// Determine if user is admin
+// Determine if user is admin (supports support_admin, moderator, head_admin, etc.)
 $isAdmin = false;
 $adminUser = null;
-if (isset($_SESSION['icd_user_id']) && ($_SESSION['icd_role'] ?? '') === 'admin') {
+$supportCapableRoles = ['admin', 'head_admin', 'superadmin', 'moderator', 'support_admin'];
+$authUid = getAuthenticatedUserId();
+if ($authUid !== null) {
+    $uRoleStmt = $pdo->prepare('SELECT id, name, role FROM users WHERE id = :id LIMIT 1');
+    $uRoleStmt->execute([':id' => $authUid]);
+    $uRoleRow = $uRoleStmt->fetch();
+    if ($uRoleRow && in_array($uRoleRow['role'], $supportCapableRoles, true)) {
+        $isAdmin = true;
+        $adminUser = [
+            'id'   => (int)$uRoleRow['id'],
+            'name' => $uRoleRow['name'] ?? 'Support Administrator',
+            'role' => $uRoleRow['role'],
+        ];
+    }
+} elseif (isset($_SESSION['icd_user_id']) && in_array($_SESSION['icd_role'] ?? '', $supportCapableRoles, true)) {
     $isAdmin = true;
     $adminUser = [
-        'id' => (int)$_SESSION['icd_user_id'],
+        'id'   => (int)$_SESSION['icd_user_id'],
         'name' => $_SESSION['icd_name'] ?? 'Administrator',
-        'role' => 'admin'
+        'role' => $_SESSION['icd_role'],
     ];
 }
 
 $memberUserId = getAuthenticatedUserId();
 
-if ($memberUserId === null && !$isAdmin) {
+$rawInput = file_get_contents('php://input');
+$payload = json_decode($rawInput, true);
+if (!is_array($payload)) {
+    $payload = $_POST;
+}
+$action = trim((string)($payload['action'] ?? 'create'));
+
+$isGuestInquiry = ($method === 'POST' && $action === 'create' && !empty($payload['email']));
+
+if ($memberUserId === null && !$isAdmin && !$isGuestInquiry) {
     http_response_code(401);
     echo json_encode(['success' => false, 'error' => 'Unauthorized. Please sign in to access support.']);
     exit;
@@ -117,9 +141,7 @@ if ($method === 'GET') {
 // POST: Submit or Update Ticket
 // ─────────────────────────────────────────────────────────────
 if ($method === 'POST') {
-    $rawInput = file_get_contents('php://input');
-    $payload = json_decode($rawInput, true) ?? $_POST;
-    $action  = trim((string)($payload['action'] ?? 'create'));
+    // $payload and $action already parsed above
 
     // --- Admin Actions ---
     if ($isAdmin && in_array($action, ['admin_reply', 'update_status'], true)) {
@@ -175,12 +197,7 @@ if ($method === 'POST') {
             }
 
             // Audit log
-            if (function_exists('logAuditAction')) {
-                logAuditAction($pdo, $adminUser, 'support_ticket_reply', 'support_ticket', $ticketId, [
-                    'reply_preview' => substr($reply, 0, 100),
-                    'status' => $newStatus
-                ]);
-            }
+            logAdminAction($pdo, 'SUPPORT_TICKET_REPLY', $adminUser['id'], $adminUser['name'], 'support_ticket', $ticketId, "Replied to ticket #{$ticketId} ({$newStatus})");
 
             echo json_encode([
                 'success' => true,
@@ -218,16 +235,28 @@ if ($method === 'POST') {
         }
     }
 
-    // --- Member Create Ticket ---
+    // --- Member or Guest Create Ticket ---
     if ($action === 'create') {
+        if (icd_is_honeypot_triggered($payload)) {
+            http_response_code(400);
+            echo json_encode(['success' => false, 'error' => 'Submission could not be verified. Please try again.']);
+            exit;
+        }
+        icd_enforce_rate_limit('support_ticket', 8, 900, $memberUserId);
+
         $subject  = trim((string)($payload['subject'] ?? ''));
         $category = trim((string)($payload['category'] ?? 'general'));
         $message  = trim((string)($payload['message'] ?? ($payload['description'] ?? '')));
         $priority = trim((string)($payload['priority'] ?? 'medium'));
 
-        if ($subject === '' || $message === '') {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'error' => 'Subject and message are required.']);
+        if ($subject === '' || $message === '' || mb_strlen($message) < 5) {
+            http_response_code(422);
+            echo json_encode(['success' => false, 'error' => 'Subject and a meaningful message (at least 5 characters) are required.']);
+            exit;
+        }
+        if (mb_strlen($message) > 3000 || icd_has_excessive_repetition($message)) {
+            http_response_code(422);
+            echo json_encode(['success' => false, 'error' => 'Message is too long or contains invalid repeated characters.']);
             exit;
         }
 
@@ -235,13 +264,23 @@ if ($method === 'POST') {
             $priority = 'medium';
         }
 
-        // Fetch verified user info from database
-        $uStmt = $pdo->prepare('SELECT name, email FROM users WHERE id = :id');
-        $uStmt->execute([':id' => $memberUserId]);
-        $userRow = $uStmt->fetch();
+        if ($memberUserId !== null) {
+            // Fetch verified user info from database
+            $uStmt = $pdo->prepare('SELECT name, email FROM users WHERE id = :id');
+            $uStmt->execute([':id' => $memberUserId]);
+            $userRow = $uStmt->fetch();
 
-        $userName  = $userRow['name'] ?? ($_SESSION['icd_name'] ?? 'Community Member');
-        $userEmail = $userRow['email'] ?? ($_SESSION['icd_email'] ?? 'member@icaredonate.org');
+            $userName  = $userRow['name'] ?? ($_SESSION['icd_name'] ?? 'Community Member');
+            $userEmail = $userRow['email'] ?? ($_SESSION['icd_email'] ?? '');
+        } else {
+            $userName  = trim((string)($payload['name'] ?? ''));
+            $userEmail = trim((string)($payload['email'] ?? ''));
+            if ($userName === '' || !filter_var($userEmail, FILTER_VALIDATE_EMAIL)) {
+                http_response_code(422);
+                echo json_encode(['success' => false, 'error' => 'Please provide a valid name and email address.']);
+                exit;
+            }
+        }
 
         $stmt = $pdo->prepare('INSERT INTO support_tickets (user_id, name, email, subject, category, message, status, priority, created_at, updated_at)
                                VALUES (:uid, :name, :email, :subject, :category, :message, :status, :priority, NOW(), NOW())');
@@ -258,17 +297,19 @@ if ($method === 'POST') {
 
         $ticketId = (int)$pdo->lastInsertId();
 
-        // Also create a confirmation notification for the user
-        $notifStmt = $pdo->prepare('INSERT INTO notifications (user_id, type, title, message, related_type, related_id)
-                                    VALUES (:uid, :type, :title, :message, :rel_type, :rel_id)');
-        $notifStmt->execute([
-            ':uid'      => $memberUserId,
-            ':type'     => 'ticket_created',
-            ':title'    => 'Support Ticket #' . $ticketId . ' Received',
-            ':message'  => 'Your ticket regarding "' . $subject . '" has been logged. Our moderation team will review it shortly.',
-            ':rel_type' => 'support_ticket',
-            ':rel_id'   => $ticketId
-        ]);
+        // Also create a confirmation notification for authenticated users
+        if ($memberUserId !== null) {
+            $notifStmt = $pdo->prepare('INSERT INTO notifications (user_id, type, title, message, related_type, related_id)
+                                        VALUES (:uid, :type, :title, :message, :rel_type, :rel_id)');
+            $notifStmt->execute([
+                ':uid'      => $memberUserId,
+                ':type'     => 'ticket_created',
+                ':title'    => 'Support Ticket #' . $ticketId . ' Received',
+                ':message'  => 'Your ticket regarding "' . $subject . '" has been logged. Our moderation team will review it shortly.',
+                ':rel_type' => 'support_ticket',
+                ':rel_id'   => $ticketId
+            ]);
+        }
 
         http_response_code(201);
         echo json_encode([

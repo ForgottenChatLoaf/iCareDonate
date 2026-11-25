@@ -32,6 +32,18 @@
   // Expose globally for portal scripts
   window.icd_actionsBase = icd_actionsBase;
 
+  let _icdCsrfToken = null;
+  async function icd_ensureCsrfToken() {
+    if (_icdCsrfToken) return _icdCsrfToken;
+    try {
+      const res = await fetch(icd_actionsBase() + '/actions/csrf_token.php', { credentials: 'include' });
+      const data = await res.json();
+      if (data && data.csrf_token) _icdCsrfToken = data.csrf_token;
+    } catch (e) {}
+    return _icdCsrfToken;
+  }
+  window.icd_ensureCsrfToken = icd_ensureCsrfToken;
+
   // Production authentication: requests proxy directly to Render PHP backend
   // via /actions/login_process.php and /actions/signup_process.php.
   // Mock-authentication fallbacks have been removed.
@@ -189,13 +201,13 @@
     let isValid = true;
     let message = '';
 
-    const val = input.value.trim();
+    const val = input.type === 'checkbox' ? (input.checked ? '1' : '') : input.value.trim();
 
     // Required check
     if (input.hasAttribute('required') && !val) {
       isValid = false;
-      message = 'This field is required.';
-    } 
+      message = input.type === 'checkbox' ? 'Please confirm this agreement before submitting.' : 'This field is required.';
+    }
     // Email check
     else if (input.type === 'email' && val) {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -203,11 +215,38 @@
         isValid = false;
         message = 'Please enter a valid email address.';
       }
-    } 
+    }
+    // Phone / Tel check
+    else if (input.type === 'tel' && val) {
+      const digits = val.replace(/[^0-9+]/g, '');
+      if (digits.length < 10) {
+        isValid = false;
+        message = 'Please enter a valid phone number (at least 10 digits).';
+      }
+    }
+    // Numeric min/max check
+    else if (input.type === 'number' && val !== '') {
+      const numVal = Number(val);
+      if (Number.isNaN(numVal)) {
+        isValid = false;
+        message = 'Please enter a valid number.';
+      } else if (input.min !== '' && numVal < Number(input.min)) {
+        isValid = false;
+        message = `Value must be at least ${input.min}.`;
+      } else if (input.max !== '' && numVal > Number(input.max)) {
+        isValid = false;
+        message = `Value must not exceed ${input.max}.`;
+      }
+    }
     // Minimum length check
-    else if (input.minLength && val.length < input.minLength) {
+    else if (input.minLength > 0 && val.length < input.minLength) {
       isValid = false;
       message = `Must be at least ${input.minLength} characters.`;
+    }
+    // Maximum length check
+    else if (input.maxLength > 0 && val.length > input.maxLength) {
+      isValid = false;
+      message = `Must not exceed ${input.maxLength} characters.`;
     }
     // Password match check
     else if (input.id === 'signup-confirm-password' || input.name === 'confirm_password') {
@@ -227,6 +266,7 @@
     } else {
       input.classList.remove('is-invalid');
       if (errorEl) {
+        errorEl.textContent = '';
         errorEl.style.display = 'none';
       }
     }
@@ -234,8 +274,8 @@
     return isValid;
   }
 
-  function handleFormSubmit(form, successTitle, successMsg, redirectUrl) {
-    form.addEventListener('submit', function(e) {
+  function handleFormSubmit(form, endpointPath, successTitle, successMsg, redirectUrl, options = {}) {
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
       let isFormValid = true;
@@ -248,7 +288,7 @@
 
       if (!isFormValid) {
         if (window.ICD_MAIN) {
-          window.ICD_MAIN.showToast('Validation Error', 'Please check highlighted fields.', 'error');
+          window.ICD_MAIN.showToast('Validation Error', 'Please check the highlighted fields.', 'error');
         }
         return;
       }
@@ -261,16 +301,60 @@
         submitBtn.innerHTML = '<span class="btn-spinner"></span> Submitting...';
       }
 
-      // Simulate API submission
-      // TODO: connect to PHP endpoint via fetch(`${API_BASE_URL}/...`, { method: 'POST', body: new FormData(form) })
-      setTimeout(() => {
-        if (submitBtn) {
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = originalBtnHTML;
+      try {
+        const token = localStorage.getItem('icd_token');
+        const csrf = await icd_ensureCsrfToken();
+        const headers = { 'Accept': 'application/json' };
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+        if (csrf) headers['X-CSRF-Token'] = csrf;
+
+        let body;
+        if (options.json) {
+          headers['Content-Type'] = 'application/json';
+          const fd = new FormData(form);
+          const obj = Object.fromEntries(fd.entries());
+          if (options.extraPayload) Object.assign(obj, options.extraPayload);
+          body = JSON.stringify(obj);
+        } else {
+          body = new FormData(form);
+          if (options.extraPayload) {
+            Object.entries(options.extraPayload).forEach(([k, v]) => body.append(k, v));
+          }
         }
 
+        const res = await fetch(icd_actionsBase() + endpointPath, {
+          method: 'POST',
+          credentials: 'include',
+          headers,
+          body
+        });
+
+        let data = null;
+        try {
+          data = await res.json();
+        } catch (jsonErr) {
+          throw new Error(`Server returned status ${res.status} with an unexpected response.`);
+        }
+
+        if (res.status === 401) {
+          const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+          if (window.ICD_MAIN) {
+            window.ICD_MAIN.showToast('Sign In Required', (data && data.message) || 'Please log in to submit this form.', 'error');
+          }
+          setTimeout(() => {
+            window.location.href = 'login.html?redirect=' + encodeURIComponent(currentPath);
+          }, 1200);
+          return;
+        }
+
+        if (!res.ok || !data || !data.success) {
+          const errMsg = (data && (data.message || data.error)) ? (data.message || data.error) : `Submission failed (${res.status}).`;
+          throw new Error(errMsg);
+        }
+
+        const finalSuccessMsg = typeof successMsg === 'function' ? successMsg(data) : (data.message || successMsg);
         if (window.ICD_MAIN) {
-          window.ICD_MAIN.showToast(successTitle, successMsg, 'success');
+          window.ICD_MAIN.showToast(successTitle, finalSuccessMsg, 'success');
         }
 
         form.reset();
@@ -282,12 +366,25 @@
             window.location.href = redirectUrl;
           }, 1500);
         }
-      }, 1000);
+      } catch (err) {
+        const msg = err.message || 'Unable to process your submission. Please try again.';
+        if (window.ICD_MAIN) {
+          window.ICD_MAIN.showToast('Submission Error', msg, 'error');
+        } else {
+          alert(msg);
+        }
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalBtnHTML;
+        }
+      }
     });
 
-    // Real-time error clearance on input
+    // Real-time error clearance on input/change
     form.querySelectorAll('input, select, textarea').forEach(input => {
-      input.addEventListener('input', function() {
+      const evt = (input.type === 'checkbox' || input.tagName === 'SELECT') ? 'change' : 'input';
+      input.addEventListener(evt, function() {
         if (this.classList.contains('is-invalid')) {
           validateField(this);
         }
@@ -300,42 +397,50 @@
     initPasswordToggles();
     initFileUploads();
 
-    // Wire forms
+    // Wire forms to real backend endpoints
     const donateForm = document.getElementById('donate-form');
     if (donateForm) {
       handleFormSubmit(
-        donateForm, 
-        'Donation Listing Submitted!', 
+        donateForm,
+        '/actions/submit_donation.php',
+        'Donation Listing Submitted!',
         'Your donation has been sent to administrators for review. Thank you for your generosity!',
-        'donations.html'
+        'user/donations.html'
       );
     }
 
     const requestForm = document.getElementById('request-form');
     if (requestForm) {
       handleFormSubmit(
-        requestForm, 
-        'Request Submitted!', 
+        requestForm,
+        '/actions/submit_request.php',
+        'Request Submitted!',
         'Your request and proof documents are being verified by our community coordinators.',
-        'donations.html'
+        'user/donations.html'
       );
     }
 
     const contactForm = document.getElementById('contact-form');
     if (contactForm) {
       handleFormSubmit(
-        contactForm, 
-        'Message Sent!', 
-        'Thank you for contacting iCareDonate. Our support team will reply within 24 hours.'
+        contactForm,
+        '/actions/support_tickets.php',
+        'Message Sent!',
+        'Thank you for contacting iCareDonate. Our support team will reply within 24 hours.',
+        null,
+        { json: true, extraPayload: { action: 'create', category: 'general' } }
       );
     }
 
     const supportForm = document.getElementById('support-form');
     if (supportForm) {
       handleFormSubmit(
-        supportForm, 
-        'Support Ticket Created!', 
-        'Your help request has been logged. Ticket #ICD-' + Math.floor(1000 + Math.random() * 9000)
+        supportForm,
+        '/actions/support_tickets.php',
+        'Support Ticket Created!',
+        (data) => `Your help request has been logged. Ticket #${data.ticket_id || ''}`,
+        null,
+        { json: true, extraPayload: { action: 'create' } }
       );
     }
 
@@ -400,9 +505,10 @@
               window.location.href = redirect;
               return;
             }
+            const adminRoles = ['admin', 'head_admin', 'superadmin', 'moderator', 'donation_admin', 'campaign_admin'];
             if (data.redirect && !data.redirect.endsWith('.php')) {
               window.location.href = data.redirect;
-            } else if (data.user && (data.user.role === 'admin' || data.user.role === 'superadmin')) {
+            } else if (data.user && adminRoles.includes(data.user.role)) {
               window.location.href = 'admin/index.html';
             } else {
               window.location.href = 'user/dashboard.html';
@@ -572,7 +678,8 @@
             throw new Error(errorMsg);
           }
 
-          if (!data.user || (data.user.role !== 'admin' && data.user.role !== 'superadmin')) {
+          const adminRoles = ['admin', 'head_admin', 'superadmin', 'moderator', 'donation_admin', 'campaign_admin'];
+          if (!data.user || !adminRoles.includes(data.user.role)) {
             throw new Error('Access denied. Administrator privileges required.');
           }
 

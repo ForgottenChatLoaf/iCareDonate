@@ -449,7 +449,6 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/user-portal.js?v=defense3"></script>
 <script>
 (function() {
@@ -597,16 +596,6 @@
       }
     } catch(err) {
       // Backend unavailable or network error
-    }
-
-    // 2. Fall back to MockStore lookup
-    if (!item && window.MockStore && typeof window.MockStore.getDonationById === 'function') {
-      item = window.MockStore.getDonationById(itemId);
-    }
-
-    // 3. Fall back to demo list in user-portal.js
-    if (!item && typeof allItems !== 'undefined' && Array.isArray(allItems)) {
-      item = allItems.find(d => Number(d.id) === Number(itemId));
     }
 
     if (!item) {

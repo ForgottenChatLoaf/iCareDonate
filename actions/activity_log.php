@@ -48,7 +48,7 @@ try {
         $stmtDon = $pdo->prepare('
             SELECT id, title, category, quantity, unit, status, created_at, updated_at
             FROM donations
-            WHERE user_id = :uid
+            WHERE donor_id = :uid
             ORDER BY created_at DESC
             LIMIT 30
         ');
@@ -84,10 +84,12 @@ try {
     // 2. Resource Request Activities
     if ($filterType === 'all' || $filterType === 'requests') {
         $stmtReq = $pdo->prepare('
-            SELECT id, item_title, quantity, unit, status, created_at, updated_at
-            FROM requests
-            WHERE user_id = :uid
-            ORDER BY created_at DESC
+            SELECT r.id, COALESCE(r.item_title, d.title, "Community Request") AS item_title,
+                   r.quantity, r.unit, r.status, r.created_at, r.updated_at
+            FROM requests r
+            LEFT JOIN donations d ON r.donation_id = d.id
+            WHERE r.requester_id = :uid
+            ORDER BY r.created_at DESC
             LIMIT 30
         ');
         $stmtReq->execute([':uid' => $userId]);

@@ -29,15 +29,27 @@ function requireAdminApi(?PDO $pdo = null): array {
     // In local development or when session exists
     if ($userId !== null && $pdo !== null) {
         try {
-            $stmt = $pdo->prepare('SELECT id, name, email, role FROM users WHERE id = :uid LIMIT 1');
+            $stmt = $pdo->prepare('SELECT id, name, email, role, status, must_change_password FROM users WHERE id = :uid LIMIT 1');
             $stmt->execute([':uid' => $userId]);
             $user = $stmt->fetch();
 
-            if ($user && ($user['role'] === 'admin' || $user['role'] === 'superadmin')) {
+            $adminRoles = ['admin', 'head_admin', 'superadmin', 'moderator', 'donation_admin', 'campaign_admin', 'support_admin'];
+            if ($user && in_array($user['role'], $adminRoles, true)) {
+                if (in_array(strtolower((string)($user['status'] ?? 'active')), ['suspended', 'banned'], true)) {
+                    http_response_code(403);
+                    echo json_encode(['success' => false, 'code' => 'ACCOUNT_DISABLED', 'message' => 'Your administrator account is currently ' . $user['status'] . '.']);
+                    exit;
+                }
+                $script = basename($_SERVER['SCRIPT_NAME'] ?? '');
+                if (!empty($user['must_change_password']) && !in_array($script, ['user_profile.php', 'admin_dashboard.php'], true)) {
+                    http_response_code(403);
+                    echo json_encode(['success' => false, 'code' => 'MUST_CHANGE_PASSWORD', 'message' => 'You must change your initial password before accessing administrative actions.']);
+                    exit;
+                }
                 return [
                     'id'    => (int)$user['id'],
-                    'name'  => $user['name'] ?? 'Admin Officer',
-                    'email' => $user['email'] ?? 'admin@icaredonate.test',
+                    'name'  => $user['name'] ?? 'Administrator',
+                    'email' => $user['email'] ?? '',
                     'role'  => $user['role'] ?? 'admin',
                 ];
             }
@@ -47,12 +59,13 @@ function requireAdminApi(?PDO $pdo = null): array {
     }
 
     // Check PHP session role directly if DB query wasn't possible or fallback
-    if (!empty($_SESSION['icd_user_id']) && ($_SESSION['icd_role'] ?? '') === 'admin') {
+    $adminRoles = ['admin', 'head_admin', 'superadmin', 'moderator', 'donation_admin', 'campaign_admin', 'support_admin'];
+    if (!empty($_SESSION['icd_user_id']) && in_array($_SESSION['icd_role'] ?? '', $adminRoles, true)) {
         return [
             'id'    => (int)$_SESSION['icd_user_id'],
             'name'  => $_SESSION['icd_name'] ?? 'System Administrator',
-            'email' => $_SESSION['icd_email'] ?? 'admin@icaredonate.org',
-            'role'  => 'admin',
+            'email' => $_SESSION['icd_email'] ?? '',
+            'role'  => $_SESSION['icd_role'] ?? 'admin',
         ];
     }
 
@@ -61,6 +74,31 @@ function requireAdminApi(?PDO $pdo = null): array {
     echo json_encode([
         'success' => false,
         'message' => 'Unauthorized. Administrator authentication required to perform this action.'
+    ]);
+    exit;
+}
+
+/**
+ * Enforces granular administrative role-based access control (RBAC).
+ * Head Administrator roles ('admin', 'head_admin', 'superadmin') are granted
+ * platform-wide access; specialized roles must appear in $allowedRoles.
+ *
+ * @param PDO|null $pdo
+ * @param array<string> $allowedRoles
+ * @return array{id: int, name: string, email: string, role: string}
+ */
+function requireAdminRoleApi(?PDO $pdo, array $allowedRoles): array {
+    $admin = requireAdminApi($pdo);
+    $headRoles = ['admin', 'head_admin', 'superadmin'];
+    if (in_array($admin['role'], $headRoles, true) || in_array($admin['role'], $allowedRoles, true)) {
+        return $admin;
+    }
+
+    http_response_code(403);
+    echo json_encode([
+        'success' => false,
+        'code'    => 'FORBIDDEN_ROLE',
+        'message' => 'Forbidden. Your administrator role (' . $admin['role'] . ') does not have permission for this operation.'
     ]);
     exit;
 }

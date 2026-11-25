@@ -25,7 +25,7 @@ if ($pdo === null) {
     exit;
 }
 
-$admin = requireAdminApi($pdo);
+$admin = requireAdminRoleApi($pdo, ['head_admin', 'admin', 'superadmin']);
 
 $action    = trim((string)($_GET['action'] ?? ''));
 $startDate = trim((string)($_GET['from'] ?? ''));

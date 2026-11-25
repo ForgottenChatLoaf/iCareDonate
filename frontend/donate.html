@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -93,6 +93,7 @@
       <!-- Form Card -->
       <div class="form-card reveal-on-scroll">
         <form id="donate-form" novalidate>
+          <input type="text" name="website_url" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;">
           
           <!-- Section 1: Donor Information -->
           <div class="form-section-header">
@@ -160,9 +161,10 @@
           <div class="form-group">
             <label for="condition" class="form-label">Item Condition <span class="required">*</span></label>
             <select id="condition" name="condition" class="form-control" required>
-              <option value="Brand New">Brand New / Sealed</option>
-              <option value="Gently Used">Gently Used (Clean &amp; Fully Functional)</option>
-              <option value="Refurbished">Refurbished / Serviced</option>
+              <option value="new">Brand New / Sealed</option>
+              <option value="like_new">Like New (Clean &amp; Barely Used)</option>
+              <option value="good">Good (Clean &amp; Fully Functional)</option>
+              <option value="fair">Fair (Usable with Minor Wear)</option>
             </select>
           </div>
 

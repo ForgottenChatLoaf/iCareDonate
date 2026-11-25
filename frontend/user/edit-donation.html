@@ -182,23 +182,24 @@
             <div class="form-group">
               <label class="form-label" for="edit-category">Category</label>
               <select id="edit-category" class="form-input" required>
-                <option value="1">Food &amp; Groceries</option>
-                <option value="2" selected>School Supplies</option>
-                <option value="3">Clothing &amp; Shoes</option>
-                <option value="4">Medical &amp; First Aid</option>
-                <option value="5">Household Essentials</option>
-                <option value="6">Books &amp; Educational</option>
-                <option value="8">Electronics &amp; Devices</option>
+                <option value="food-groceries">Food &amp; Groceries</option>
+                <option value="school-supplies">School Supplies</option>
+                <option value="clothing-shoes">Clothing &amp; Shoes</option>
+                <option value="medical-first-aid">Medical &amp; First Aid</option>
+                <option value="household-essentials">Household Essentials</option>
+                <option value="books-educational">Books &amp; Educational</option>
+                <option value="electronics-devices">Electronics &amp; Devices</option>
+                <option value="other-essentials">Other Essentials</option>
               </select>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="edit-condition">Condition</label>
               <select id="edit-condition" class="form-input" required>
-                <option value="New" selected>New (Unopened / Unused)</option>
-                <option value="Like New">Like New</option>
-                <option value="Good">Good</option>
-                <option value="Fair">Fair</option>
+                <option value="new">New (Unopened / Unused)</option>
+                <option value="like_new">Like New</option>
+                <option value="good">Good</option>
+                <option value="fair">Fair</option>
               </select>
             </div>
           </div>
@@ -206,29 +207,29 @@
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;">
             <div class="form-group">
               <label class="form-label" for="edit-quantity">Quantity Total</label>
-              <input type="number" id="edit-quantity" class="form-input" required min="1" value="5">
+              <input type="number" id="edit-quantity" class="form-input" required min="1" value="1">
             </div>
 
             <div class="form-group">
               <label class="form-label" for="edit-unit">Unit</label>
-              <input type="text" id="edit-unit" class="form-input" required value="sets">
+              <input type="text" id="edit-unit" class="form-input" required value="items">
             </div>
           </div>
 
           <div class="form-group" style="margin-bottom:16px;">
             <label class="form-label" for="edit-description">Description</label>
-            <textarea id="edit-description" class="form-input" rows="4">Brand new sturdy backpacks with 10 spiral notebooks and coloring materials each for elementary school students.</textarea>
+            <textarea id="edit-description" class="form-input" rows="4" required></textarea>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;">
             <div class="form-group">
               <label class="form-label" for="edit-city">City</label>
-              <input type="text" id="edit-city" class="form-input" required value="Quezon City">
+              <input type="text" id="edit-city" class="form-input" required>
             </div>
 
             <div class="form-group">
               <label class="form-label" for="edit-barangay">Barangay</label>
-              <input type="text" id="edit-barangay" class="form-input" required value="Barangay Central">
+              <input type="text" id="edit-barangay" class="form-input" required>
             </div>
           </div>
 
@@ -257,15 +258,67 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
-<script src="../js/user-portal.js?v=defense3"></script>
+<script src="../js/user-portal.js?v=defense4"></script>
 <script>
-  document.getElementById('edit-donation-form').addEventListener('submit', function(e) {
+  const donationId = Number(new URLSearchParams(window.location.search).get('id') || 0);
+
+  document.addEventListener('DOMContentLoaded', async function() {
+    if (!donationId) {
+      if (window.showPortalFlash) window.showPortalFlash('error', 'No donation ID specified.');
+      return;
+    }
+    try {
+      const res = await window.fetchWithAuth('/actions/user_donations.php?id=' + encodeURIComponent(donationId));
+      const data = await res.json();
+      if (!res.ok || !data.success || !data.donation) {
+        throw new Error((data && data.message) || 'Could not load donation.');
+      }
+      const d = data.donation;
+      const titleInput = document.getElementById('edit-title');
+      if (titleInput) titleInput.value = d.title || '';
+      if (d.category) document.getElementById('edit-category').value = d.category;
+      if (d.condition || d.condition_type) document.getElementById('edit-condition').value = (d.condition || d.condition_type).toLowerCase();
+      document.getElementById('edit-quantity').value = d.quantity || 1;
+      document.getElementById('edit-unit').value = d.unit || 'items';
+      document.getElementById('edit-description').value = d.description || '';
+      document.getElementById('edit-city').value = d.city || d.pickup_city || '';
+      document.getElementById('edit-barangay').value = d.barangay || d.pickup_barangay || '';
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', err.message);
+    }
+  });
+
+  document.getElementById('edit-donation-form').addEventListener('submit', async function(e) {
     e.preventDefault();
-    window.showPortalFlash('success', 'Donation details updated successfully.');
-    setTimeout(() => {
-      window.location.href = 'donations.html';
-    }, 1200);
+    if (!donationId) return;
+    const btn = this.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = true;
+
+    try {
+      const res = await window.fetchWithAuth('/actions/user_donations.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'update',
+          id: donationId,
+          title: (document.getElementById('edit-title') ? document.getElementById('edit-title').value.trim() : ''),
+          category: document.getElementById('edit-category').value,
+          condition: document.getElementById('edit-condition').value,
+          quantity: Number(document.getElementById('edit-quantity').value),
+          unit: document.getElementById('edit-unit').value.trim(),
+          description: document.getElementById('edit-description').value.trim(),
+          city: document.getElementById('edit-city').value.trim(),
+          barangay: document.getElementById('edit-barangay').value.trim()
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Update failed.');
+      window.showPortalFlash('success', data.message || 'Donation details updated successfully.');
+      setTimeout(() => { window.location.href = 'donations.html'; }, 1000);
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', err.message);
+      if (btn) btn.disabled = false;
+    }
   });
 </script>
 

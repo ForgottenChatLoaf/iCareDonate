@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
@@ -170,6 +170,10 @@
 
     <div class="admin-content" style="padding:28px 32px;">
 
+      <div id="force-pw-banner" class="alert alert-error" style="display:none;margin-bottom:20px;padding:14px 18px;border-radius:10px;font-size:13.5px;">
+        <strong>Password Update Required:</strong> Your administrator account is flagged for an initial or reset password change. Please update your password below before accessing other administrative controls.
+      </div>
+
       <!-- Balanced 2-Column Layout -->
       <div style="display:grid;grid-template-columns:1fr 1.6fr;gap:24px;align-items:start;" class="admin-profile-grid">
 
@@ -192,11 +196,11 @@
             <div style="border-top:1px solid var(--border, #E2E8F0);padding-top:16px;text-align:left;font-size:12.5px;display:flex;flex-direction:column;gap:8px;">
               <div style="display:flex;justify-content:space-between;">
                 <span style="color:#64748B;">Role Level:</span>
-                <strong style="color:#1E293B;">Lead Administrator</strong>
+                <strong id="admin-role-label" style="color:#1E293B;">Administrator</strong>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <span style="color:#64748B;">Access Permissions:</span>
-                <strong style="color:#1E293B;">Full Platform Access</strong>
+                <strong id="admin-access-label" style="color:#1E293B;">Role-Based Access</strong>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <span style="color:#64748B;">Account Created:</span>
@@ -216,18 +220,9 @@
               <a href="logs.html" style="font-size:12px;color:var(--cobalt, #1F4FA3);text-decoration:none;font-weight:600;">All Logs &rarr;</a>
             </div>
 
-            <div style="display:flex;flex-direction:column;gap:10px;font-size:12.5px;">
-              <div style="padding:10px 12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;">
-                <div style="font-weight:600;color:#1E293B;">Approved Donation #102</div>
-                <div style="font-size:11.5px;color:#64748B;">Family Rice Packs &bull; Yesterday</div>
-              </div>
-              <div style="padding:10px 12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;">
-                <div style="font-weight:600;color:#1E293B;">Verified Beneficiary Proof #501</div>
-                <div style="font-size:11.5px;color:#64748B;">Indigency Certificate &bull; 2 days ago</div>
-              </div>
-              <div style="padding:10px 12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;">
-                <div style="font-weight:600;color:#1E293B;">Exported Q3 Moderation Report</div>
-                <div style="font-size:11.5px;color:#64748B;">Platform Statistics &bull; 4 days ago</div>
+            <div id="admin-recent-actions" style="display:flex;flex-direction:column;gap:10px;font-size:12.5px;">
+              <div style="padding:12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;color:#64748B;text-align:center;">
+                Loading recent activity...
               </div>
             </div>
 
@@ -354,69 +349,174 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
 <script src="../js/admin-portal.js"></script>
 <script>
-function handleProfileSave(e) {
+function escapeHtml(str) {
+  const d = document.createElement('div');
+  d.textContent = str ?? '';
+  return d.innerHTML;
+}
+
+function applyProfileToUI(p) {
+  if (!p) return;
+  const first = p.first_name || (p.name ? p.name.split(' ')[0] : '');
+  const last  = p.last_name || (p.name ? p.name.split(' ').slice(1).join(' ') : '');
+  const full  = p.name || `${first} ${last}`.trim();
+  const ini   = ((first[0] || '') + (last[0] || '')).toUpperCase() || 'AD';
+
+  document.getElementById('prof-first').value = first;
+  document.getElementById('prof-last').value = last;
+  document.getElementById('prof-email').value = p.email || '';
+  document.getElementById('prof-phone').value = p.phone || '';
+  document.getElementById('prof-dept').value = p.department || '';
+
+  document.getElementById('display-name').textContent = full;
+  document.getElementById('display-email').textContent = p.email || '';
+  document.getElementById('avatar-initials').textContent = ini;
+
+  const roleMap = {
+    head_admin: ['Head Administrator', 'Full Platform Access'],
+    donation_admin: ['Donation Administrator', 'Donations, Requests & Matching'],
+    campaign_admin: ['Campaign Administrator', 'Campaigns & Categories'],
+    moderator: ['Moderator', 'Users & Community Moderation'],
+    support_admin: ['Support Administrator', 'Customer Support Inbox'],
+  };
+  const [rLabel, aLabel] = roleMap[p.role] || ['Administrator', 'Platform Access'];
+  const rlEl = document.getElementById('admin-role-label');
+  const alEl = document.getElementById('admin-access-label');
+  if (rlEl) rlEl.textContent = rLabel;
+  if (alEl) alEl.textContent = aLabel;
+
+  if (p.created_at) {
+    try {
+      document.getElementById('admin-joined-date').textContent = new Date(p.created_at.replace(' ', 'T')).toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+    } catch(e) {}
+  }
+
+  const banner = document.getElementById('force-pw-banner');
+  if (banner) {
+    const forceParam = new URLSearchParams(window.location.search).get('force_pw') === '1';
+    banner.style.display = (Number(p.must_change_password) === 1 || forceParam) ? 'block' : 'none';
+  }
+
+  try {
+    let u = JSON.parse(localStorage.getItem('icd_user') || '{}');
+    u.id = p.id || u.id;
+    u.first_name = first;
+    u.last_name = last;
+    u.name = full;
+    u.email = p.email || u.email;
+    u.role = p.role || u.role;
+    u.must_change_password = Boolean(Number(p.must_change_password));
+    localStorage.setItem('icd_user', JSON.stringify(u));
+    document.querySelectorAll('#topbarUserName, #admin-topbar-name').forEach(el => el.textContent = full);
+    document.querySelectorAll('#topbarUserInitials').forEach(el => el.textContent = ini);
+  } catch(e) {}
+}
+
+async function handleProfileSave(e) {
   e.preventDefault();
   const first = document.getElementById('prof-first').value.trim();
   const last  = document.getElementById('prof-last').value.trim();
   const email = document.getElementById('prof-email').value.trim();
-  document.getElementById('display-name').textContent = `${first} ${last}`;
-  document.getElementById('display-email').textContent = email;
-  const initials = ((first[0]||'') + (last[0]||'')).toUpperCase();
-  document.getElementById('avatar-initials').textContent = initials;
-  
-  // Sync to local storage user object if present
+  const phone = document.getElementById('prof-phone').value.trim();
+  const dept  = document.getElementById('prof-dept').value.trim();
+  const btn   = e.target.querySelector('button[type="submit"]');
+  if (btn) btn.disabled = true;
+
   try {
-    let u = JSON.parse(localStorage.getItem('icd_user') || '{}');
-    u.first_name = first;
-    u.last_name = last;
-    u.email = email;
-    localStorage.setItem('icd_user', JSON.stringify(u));
-  } catch(err) {}
-
-  window.showAdminFlash('success', 'Profile information updated successfully.');
-}
-
-function handlePasswordChange(e) {
-  e.preventDefault();
-  const nw = document.getElementById('pw-new').value;
-  const cf = document.getElementById('pw-confirm').value;
-  if (nw !== cf) { 
-    window.showAdminFlash('error', 'New password and confirmation do not match.'); 
-    return; 
+    const data = await window.AdminAPI.request('user_profile.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'update_profile',
+        first_name: first,
+        last_name: last,
+        email: email,
+        phone: phone,
+        department: dept
+      })
+    });
+    if (!data.success) throw new Error(data.message || 'Unable to update profile.');
+    applyProfileToUI(data.profile);
+    window.showAdminFlash('success', data.message || 'Profile information updated successfully.');
+  } catch (err) {
+    window.showAdminFlash('error', err.message || 'Failed to save profile changes.');
+  } finally {
+    if (btn) btn.disabled = false;
   }
-  e.target.reset();
-  window.showAdminFlash('success', 'Password changed successfully. You will use the new password on next login.');
 }
 
-// Populate with existing session data on load
-document.addEventListener('DOMContentLoaded', function() {
+async function handlePasswordChange(e) {
+  e.preventDefault();
+  const curr = document.getElementById('pw-current').value;
+  const nw   = document.getElementById('pw-new').value;
+  const cf   = document.getElementById('pw-confirm').value;
+  const btn  = e.target.querySelector('button[type="submit"]');
+
+  if (nw !== cf) {
+    window.showAdminFlash('error', 'New password and confirmation do not match.');
+    return;
+  }
+  if (btn) btn.disabled = true;
+
   try {
-    const u = JSON.parse(localStorage.getItem('icd_user') || 'null');
-    if (u) {
-      if (u.first_name) document.getElementById('prof-first').value = u.first_name;
-      if (u.last_name) document.getElementById('prof-last').value = u.last_name;
-      if (u.email) {
-        document.getElementById('prof-email').value = u.email;
-        document.getElementById('display-email').textContent = u.email;
-      }
-      const full = `${u.first_name || ''} ${u.last_name || ''}`.trim();
-      if (full) document.getElementById('display-name').textContent = full;
-      const ini = ((u.first_name ? u.first_name[0] : '') + (u.last_name ? u.last_name[0] : '')).toUpperCase();
-      if (ini) document.getElementById('avatar-initials').textContent = ini;
-      if (u.created_at) {
-        try {
-          document.getElementById('admin-joined-date').textContent = new Date(u.created_at).toLocaleDateString(undefined, {month:'long', year:'numeric'});
-        } catch(e) {}
-      } else {
-        document.getElementById('admin-joined-date').textContent = new Date().toLocaleDateString(undefined, {month:'long', year:'numeric'});
-      }
-    } else {
-      document.getElementById('admin-joined-date').textContent = new Date().toLocaleDateString(undefined, {month:'long', year:'numeric'});
+    const data = await window.AdminAPI.request('user_profile.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'change_password',
+        current_password: curr,
+        new_password: nw,
+        confirm_password: cf
+      })
+    });
+    if (!data.success) throw new Error(data.message || 'Unable to update password.');
+    e.target.reset();
+    try {
+      let u = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      u.must_change_password = false;
+      localStorage.setItem('icd_user', JSON.stringify(u));
+    } catch(err) {}
+    const banner = document.getElementById('force-pw-banner');
+    if (banner) banner.style.display = 'none';
+    window.showAdminFlash('success', data.message || 'Password updated securely.');
+  } catch (err) {
+    window.showAdminFlash('error', err.message || 'Failed to update password.');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+  try {
+    const data = await window.AdminAPI.request('user_profile.php');
+    if (data && data.success && data.profile) {
+      applyProfileToUI(data.profile);
     }
-  } catch(e) {}
+  } catch (err) {
+    window.showAdminFlash('error', err.message || 'Could not load profile from server.');
+  }
+
+  const actionsBox = document.getElementById('admin-recent-actions');
+  if (actionsBox) {
+    try {
+      const logRes = await window.AdminAPI.getLogs({ limit: 3 });
+      const logs = (logRes && logRes.logs) ? logRes.logs.slice(0, 3) : [];
+      if (logs.length === 0) {
+        actionsBox.innerHTML = `<div style="padding:12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;color:#64748B;text-align:center;">No recent administrative actions recorded yet.</div>`;
+      } else {
+        actionsBox.innerHTML = logs.map(l => `
+          <div style="padding:10px 12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;">
+            <div style="font-weight:600;color:#1E293B;">${escapeHtml(l.action)}</div>
+            <div style="font-size:11.5px;color:#64748B;">${escapeHtml(l.details || l.target_type || '')} &bull; ${escapeHtml((l.created_at || '').split(' ')[0])}</div>
+          </div>
+        `).join('');
+      }
+    } catch (e) {
+      actionsBox.innerHTML = `<div style="padding:12px;border-radius:8px;background:#F8FAFC;border:1px solid #E2E8F0;color:#64748B;text-align:center;">Audit log summary restricted to Head Administrator.</div>`;
+    }
+  }
 });
 </script>
 

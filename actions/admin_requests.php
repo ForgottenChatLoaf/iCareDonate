@@ -25,7 +25,7 @@ if ($pdo === null) {
     exit;
 }
 
-$admin = requireAdminApi($pdo);
+$admin = requireAdminRoleApi($pdo, ['donation_admin']);
 
 // ─────────────────────────────────────────────────────────────
 // POST: Moderation Actions (Approve Proof, Reject Proof, Interview)
@@ -156,10 +156,10 @@ try {
     if ($singleId > 0) {
         $stmtSingle = $pdo->prepare("
             SELECT r.*, r.requester_id AS user_id,
-                   COALESCE(d.title, 'Community Request') AS item_title,
-                   'items' AS unit, 'items' AS donation_unit,
+                   COALESCE(r.item_title, d.title, 'Community Request') AS item_title,
+                   COALESCE(r.unit, 'items') AS unit, COALESCE(d.unit, 'items') AS donation_unit,
                    d.quantity AS donation_qty, d.title AS donation_title,
-                   COALESCE(d.city, 'Metro Manila') AS city,
+                   COALESCE(r.city, d.city, 'Metro Manila') AS city,
                    r.message AS reason, r.proof_file_path AS proof_document_url,
                    u.name AS user_name, u.email AS user_email,
                    u.name AS beneficiary_name, u.name AS requester_name
@@ -194,8 +194,8 @@ try {
 
     $sql = "
         SELECT r.*, r.requester_id AS user_id,
-               COALESCE(d.title, 'Community Request') AS item_title,
-               'items' AS unit, COALESCE(d.city, 'Metro Manila') AS city,
+               COALESCE(r.item_title, d.title, 'Community Request') AS item_title,
+               COALESCE(r.unit, 'items') AS unit, COALESCE(r.city, d.city, 'Metro Manila') AS city,
                r.message AS reason, r.proof_file_path AS proof_document_url,
                u.name AS user_name, u.email AS user_email,
                u.name AS beneficiary_name, u.name AS requester_name,

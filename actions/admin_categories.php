@@ -26,7 +26,7 @@ if ($pdo === null) {
     exit;
 }
 
-$admin = requireAdminApi($pdo);
+$admin = requireAdminRoleApi($pdo, ['campaign_admin', 'donation_admin']);
 
 // ─────────────────────────────────────────────────────────────
 // POST: Category Management (Create, Update, Delete)

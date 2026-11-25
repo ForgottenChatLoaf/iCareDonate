@@ -589,9 +589,17 @@
   </div>
 </div>
 
-<script src="../js/mock-data.js"></script>
-<script src="../js/user-portal.js?v=defense3"></script>
+<script src="../js/user-portal.js?v=defense4"></script>
 <script>
+  function resolveActionsBase() {
+    if (typeof window.icd_actionsBase === 'function') return window.icd_actionsBase();
+    const p = window.location.pathname;
+    const idx = p.indexOf('/frontend/');
+    if (idx !== -1) return p.substring(0, idx);
+    if (p.includes('/user/') || p.includes('/admin/')) return '../..';
+    return '';
+  }
+
   function switchSettingsSection(sectionId) {
     const sections = ['personal', 'verification', 'security', 'privacy', 'notifs', 'locale', 'linked', 'account'];
     sections.forEach(s => {
@@ -602,32 +610,70 @@
     });
   }
 
-  // Load stored user info if present
-  document.addEventListener('DOMContentLoaded', function() {
+  function applyUserProfileToUI(p) {
+    if (!p) return;
+    const fn = p.first_name || (p.name ? p.name.split(' ')[0] : '');
+    const ln = p.last_name || (p.name ? p.name.split(' ').slice(1).join(' ') : '');
+    const full = p.name || `${fn} ${ln}`.trim() || 'Community Member';
+    const ini = ((fn ? fn[0] : '') + (ln ? ln[0] : '')).toUpperCase() || 'CM';
+
+    if (document.getElementById('profFirstName')) document.getElementById('profFirstName').value = fn;
+    if (document.getElementById('profLastName')) document.getElementById('profLastName').value = ln;
+    if (document.getElementById('profEmail')) document.getElementById('profEmail').value = p.email || '';
+    if (document.getElementById('profPhone')) document.getElementById('profPhone').value = p.phone || '';
+    if (document.getElementById('profCity')) document.getElementById('profCity').value = p.city || '';
+    if (document.getElementById('profBarangay')) document.getElementById('profBarangay').value = p.barangay || '';
+
+    if (document.getElementById('profileDisplayName')) document.getElementById('profileDisplayName').textContent = full;
+    if (document.getElementById('profileAvatarBig')) document.getElementById('profileAvatarBig').textContent = ini;
+
+    try {
+      const stored = JSON.parse(localStorage.getItem('icd_user') || '{}');
+      Object.assign(stored, {
+        id: p.id || stored.id,
+        first_name: fn,
+        last_name: ln,
+        name: full,
+        email: p.email || stored.email,
+        phone: p.phone || '',
+        city: p.city || '',
+        barangay: p.barangay || '',
+        role: p.role || stored.role
+      });
+      localStorage.setItem('icd_user', JSON.stringify(stored));
+      document.querySelectorAll('#topbarUserName, .topbar-user-name').forEach(el => el.textContent = full);
+      document.querySelectorAll('#topbarUserInitials').forEach(el => el.textContent = ini);
+    } catch(e) {}
+  }
+
+  // Load live user profile from MySQL on load
+  document.addEventListener('DOMContentLoaded', async function() {
     try {
       const u = JSON.parse(localStorage.getItem('icd_user') || '{}');
-      if (u.first_name) document.getElementById('profFirstName').value = u.first_name;
-      if (u.last_name) document.getElementById('profLastName').value = u.last_name;
-      if (u.email) document.getElementById('profEmail').value = u.email;
-      if (u.phone) document.getElementById('profPhone').value = u.phone;
-      if (u.city) document.getElementById('profCity').value = u.city;
-      if (u.barangay) document.getElementById('profBarangay').value = u.barangay;
-
-      const fullName = `${u.first_name || 'Maria'} ${u.last_name || 'Santos'}`.trim();
-      const initials = ((u.first_name ? u.first_name[0] : 'M') + (u.last_name ? u.last_name[0] : 'S')).toUpperCase();
-      document.getElementById('profileDisplayName').textContent = fullName;
-      document.getElementById('profileAvatarBig').textContent = initials;
+      if (u && (u.first_name || u.email)) applyUserProfileToUI(u);
     } catch(e) {}
 
-    // Check URL hash for direct tab navigation
+    try {
+      const token = localStorage.getItem('icd_token');
+      const headers = { 'Accept': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      const res = await fetch(resolveActionsBase() + '/actions/user_profile.php', { credentials: 'include', headers });
+      const data = await res.json();
+      if (res.ok && data.success && data.profile) {
+        applyUserProfileToUI(data.profile);
+      }
+    } catch (err) {
+      console.warn('Could not load live profile:', err);
+    }
+
     const hash = window.location.hash.replace('#', '');
     if (hash && ['personal', 'verification', 'security', 'privacy', 'notifs', 'locale', 'linked', 'account'].includes(hash)) {
       switchSettingsSection(hash);
     }
   });
 
-  // Personal Info Form Submission
-  document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+  // Personal Info Form Submission -> persisted to MySQL via user_profile.php
+  document.getElementById('personalInfoForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const fn = document.getElementById('profFirstName').value.trim();
     const ln = document.getElementById('profLastName').value.trim();
@@ -635,30 +681,46 @@
     const phone = document.getElementById('profPhone').value.trim();
     const city = document.getElementById('profCity').value.trim();
     const barangay = document.getElementById('profBarangay').value.trim();
+    const btn = this.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = true;
+
+    const actionsBase = resolveActionsBase();
+    const token = localStorage.getItem('icd_token');
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
 
     try {
-      const stored = JSON.parse(localStorage.getItem('icd_user') || '{}');
-      stored.first_name = fn;
-      stored.last_name = ln;
-      stored.name = `${fn} ${ln}`;
-      stored.email = email;
-      stored.phone = phone;
-      stored.city = city;
-      stored.barangay = barangay;
-      localStorage.setItem('icd_user', JSON.stringify(stored));
-    } catch(err) {}
+      const res = await fetch(actionsBase + '/actions/user_profile.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers,
+        body: JSON.stringify({
+          action: 'update_profile',
+          first_name: fn,
+          last_name: ln,
+          email: email,
+          phone: phone,
+          city: city,
+          barangay: barangay
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Unable to save profile.');
 
-    const initials = ((fn ? fn[0] : '') + (ln ? ln[0] : '')).toUpperCase() || 'CM';
-    document.getElementById('profileDisplayName').textContent = `${fn} ${ln}`;
-    document.getElementById('profileAvatarBig').textContent = initials;
+      applyUserProfileToUI(data.profile || { first_name: fn, last_name: ln, email, phone, city, barangay });
 
-    if (window.showPortalFlash) {
-      window.showPortalFlash('success', 'Personal information saved successfully.');
+      if (window.showPortalFlash) {
+        window.showPortalFlash('success', data.message || 'Personal information saved successfully.');
+      }
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', err.message);
+    } finally {
+      if (btn) btn.disabled = false;
     }
   });
 
-  // Password Change
-  document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+  // Password Change -> verified & persisted via user_profile.php
+  document.getElementById('changePasswordForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     const curr = document.getElementById('currPassword').value;
     const newPwd = document.getElementById('newPassword').value;
@@ -667,15 +729,39 @@
     if (newPwd !== conf) {
       if (window.showPortalFlash) {
         window.showPortalFlash('error', 'New passwords do not match. Please re-enter.');
-      } else {
-        alert('New passwords do not match.');
       }
       return;
     }
 
-    this.reset();
-    if (window.showPortalFlash) {
-      window.showPortalFlash('success', 'Your password has been changed securely.');
+    const actionsBase = resolveActionsBase();
+    const token = localStorage.getItem('icd_token');
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+    const btn = this.querySelector('button[type="submit"]');
+    if (btn) btn.disabled = true;
+
+    try {
+      const res = await fetch(actionsBase + '/actions/user_profile.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers,
+        body: JSON.stringify({
+          action: 'change_password',
+          current_password: curr,
+          new_password: newPwd,
+          confirm_password: conf
+        })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Unable to change password.');
+      this.reset();
+      if (window.showPortalFlash) {
+        window.showPortalFlash('success', data.message || 'Your password has been changed securely.');
+      }
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', err.message);
+    } finally {
+      if (btn) btn.disabled = false;
     }
   });
 
@@ -711,11 +797,29 @@
     }
   }
 
-  function confirmDeactivation() {
-    if (confirm('Are you sure you want to request deactivation of your account? An administrator will review your active records before processing.')) {
-      if (window.showPortalFlash) {
-        window.showPortalFlash('success', 'Deactivation request submitted. A coordinator will follow up via email.');
-      }
+  async function confirmDeactivation() {
+    if (!confirm('Are you sure you want to deactivate your account? Your historical donation and handover records will be preserved, and you will be signed out.')) {
+      return;
+    }
+    const actionsBase = resolveActionsBase();
+    const token = localStorage.getItem('icd_token');
+    const headers = { 'Content-Type': 'application/json', 'Accept': 'application/json' };
+    if (token) headers['Authorization'] = 'Bearer ' + token;
+
+    try {
+      const res = await fetch(actionsBase + '/actions/user_profile.php', {
+        method: 'POST',
+        credentials: 'include',
+        headers,
+        body: JSON.stringify({ action: 'deactivate_account' })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Unable to deactivate account.');
+      try { localStorage.removeItem('icd_token'); localStorage.removeItem('icd_user'); } catch(e) {}
+      alert(data.message || 'Your account has been deactivated.');
+      window.location.href = '../login.html';
+    } catch (err) {
+      if (window.showPortalFlash) window.showPortalFlash('error', err.message);
     }
   }
 </script>
